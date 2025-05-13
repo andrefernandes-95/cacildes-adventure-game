@@ -38,6 +38,8 @@ namespace AF.Events
         public static readonly string ON_MUSIC_VOLUME_CHANGED = "ON_MUSIC_VOLUME_CHANGED";
         public static readonly string ON_USE_CUSTOM_INPUT_CHANGED = "ON_USE_CUSTOM_INPUT_CHANGED";
         public static readonly string ON_CAMERA_SENSITIVITY_CHANGED = "ON_CAMERA_SENSITIVITY_CHANGED";
+        public static readonly string ON_CAMERA_DISTANCE_CHANGED = "ON_CAMERA_DISTANCE_CHANGED";
+        public static readonly string ON_INVERT_Y_AXIS = "ON_INVERT_Y_AXIS";
 
         public static readonly string ON_CAN_USE_IK_IS_TRUE = "ON_CAN_USE_IK_IS_TRUE";
 

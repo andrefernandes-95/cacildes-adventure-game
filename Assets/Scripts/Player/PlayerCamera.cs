@@ -1,6 +1,8 @@
 namespace AF
 {
+    using AF.Events;
     using Cinemachine;
+    using TigerForge;
     using UnityEngine;
 
     public class PlayerCamera : MonoBehaviour
@@ -13,9 +15,11 @@ namespace AF
             cinemachineVirtualCamera = GetComponent<CinemachineVirtualCamera>();
 
             UpdateCameraDistance();
+
+            EventManager.StartListening(EventMessages.ON_CAMERA_DISTANCE_CHANGED, UpdateCameraDistance);
         }
 
-        public void UpdateCameraDistance()
+        void UpdateCameraDistance()
         {
             cinemachineVirtualCamera.GetCinemachineComponent<Cinemachine3rdPersonFollow>().CameraDistance = gameSettings.GetCameraDistance();
         }

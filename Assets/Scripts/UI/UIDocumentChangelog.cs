@@ -222,7 +222,7 @@ namespace AF
             };
             additionLabel.AddToClassList("label-text");
             additionLabel.style.unityFontStyleAndWeight = FontStyle.Normal;
-            additionLabel.style.fontSize = 12;
+            additionLabel.style.fontSize = 18;
 
             additionLabel.RegisterCallback<FocusInEvent>((ev) =>
             {

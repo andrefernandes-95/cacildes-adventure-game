@@ -14,6 +14,14 @@
                         </Bindings>
                     </ui:Label>
                 </ui:Button>
+                <ui:Button name="GameplaySettings" class="primary-button" style="border-left-color: rgba(149, 149, 149, 0); border-right-color: rgba(149, 149, 149, 0); border-top-color: rgba(149, 149, 149, 0); border-bottom-color: rgba(149, 149, 149, 0); margin-top: 0; margin-right: 10px; margin-bottom: 0; margin-left: 0; padding-top: 2px; padding-right: 2px; padding-bottom: 2px; padding-left: 2px; justify-content: center; align-items: center;">
+                    <ui:VisualElement picking-mode="Ignore" style="flex-grow: 1; width: 50px; height: 50px; background-image: url(&quot;project://database/Assets/Synty/InterfaceFantasyWarriorHUD/Sprites/Icons_Map/ICON_FantasyWarrior_Map_ShopWeapons_01_Underlay.png?fileID=2800000&amp;guid=4fb2e204fa9f499449fa3f188f986367&amp;type=3#ICON_FantasyWarrior_Map_ShopWeapons_01_Underlay&quot;);" />
+                    <ui:Label text="Controls" picking-mode="Ignore" class="label-text" style="margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0;">
+                        <Bindings>
+                            <UnityEngine.Localization.LocalizedString property="text" table="GUID:dbb3674ad34b76b458d72593e4ca5a4a" entry="Id(122846069299081216)" />
+                        </Bindings>
+                    </ui:Label>
+                </ui:Button>
                 <ui:Button name="LanguageSettings" class="primary-button" style="border-left-color: rgba(149, 149, 149, 0); border-right-color: rgba(149, 149, 149, 0); border-top-color: rgba(149, 149, 149, 0); border-bottom-color: rgba(149, 149, 149, 0); margin-top: 0; margin-right: 10px; margin-bottom: 0; margin-left: 0; padding-top: 2px; padding-right: 2px; padding-bottom: 2px; padding-left: 2px; justify-content: center; align-items: center;">
                     <ui:VisualElement picking-mode="Ignore" style="flex-grow: 1; width: 50px; height: 50px; background-image: url(&quot;project://database/Assets/Synty/InterfaceFantasyWarriorHUD/Sprites/Icons_Map/ICON_FantasyWarrior_Map_Message_01_Underlay.png?fileID=2800000&amp;guid=117bdde716ff74c4d90069190cb8d1e8&amp;type=3#ICON_FantasyWarrior_Map_Message_01_Underlay&quot;);" />
                     <ui:Label text="Controls" picking-mode="Ignore" class="label-text" style="margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0;">
@@ -84,12 +92,6 @@
                         </Bindings>
                     </ui:Label>
                     <ui:Instance template="KeyboardActions" style="align-items: center; flex-direction: column; justify-content: center; align-self: auto; align-content: center; scale: 1 1; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; background-color: rgba(255, 255, 255, 0); border-top-left-radius: 5px; border-top-right-radius: 5px; border-bottom-right-radius: 5px; border-bottom-left-radius: 5px;" />
-                    <ui:Label text="List of Controls" picking-mode="Ignore" name="Label" class="label-text" style="font-size: 24px; -unity-font-style: italic; -unity-text-align: middle-center;">
-                        <Bindings>
-                            <UnityEngine.Localization.LocalizedString property="text" table="GUID:dbb3674ad34b76b458d72593e4ca5a4a" entry="Id(121692980370206720)" />
-                        </Bindings>
-                    </ui:Label>
-                    <ui:Slider label="Camera Sensitivity" value="1" high-value="100" low-value="1" name="CameraSensitivity" class="label-text" style="flex-grow: 0; align-items: center; flex-shrink: 1; width: 100%; margin-bottom: 8px;" />
                 </ui:VisualElement>
                 <ui:VisualElement name="Language" style="flex-grow: 1; display: none;">
                     <ui:RadioButtonGroup label="Keybindings" value="-1" choices="English,Português" name="GameLanguage" class="label-text" style="width: 100%; margin-bottom: 8px; -unity-font-style: bold;">
@@ -98,7 +100,7 @@
                         </Bindings>
                     </ui:RadioButtonGroup>
                 </ui:VisualElement>
-                <ui:VisualElement name="Graphics" style="flex-grow: 1; display: flex;">
+                <ui:VisualElement name="Graphics" style="flex-grow: 1; display: none;">
                     <ui:RadioButtonGroup label="Graphics Quality" value="-1" choices="Low,Medium,High,Ultra" name="GraphicsQuality" class="label-text" style="margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 8px; flex-direction: row; flex-wrap: nowrap; flex-grow: 0; flex-shrink: 1;">
                         <Bindings>
                             <UnityEngine.Localization.LocalizedString property="label" table="GUID:dbb3674ad34b76b458d72593e4ca5a4a" entry="Id(1218689486422016)" />
@@ -111,6 +113,19 @@
                             <UnityEngine.Localization.LocalizedString property="label" table="GUID:dbb3674ad34b76b458d72593e4ca5a4a" entry="Id(1218821867044864)" />
                         </Bindings>
                     </ui:Slider>
+                </ui:VisualElement>
+                <ui:VisualElement name="Gameplay" style="flex-grow: 1; flex-direction: column; display: flex;">
+                    <ui:Label text="List of Controls" picking-mode="Ignore" name="Label" class="label-text" style="font-size: 24px; -unity-font-style: italic; -unity-text-align: middle-center;">
+                        <Bindings>
+                            <UnityEngine.Localization.LocalizedString property="text" table="GUID:dbb3674ad34b76b458d72593e4ca5a4a" entry="Id(121692980370206720)" />
+                        </Bindings>
+                    </ui:Label>
+                    <ui:Slider label="Camera Sensitivity" value="1" high-value="100" low-value="1" name="CameraSensitivity" class="label-text" style="flex-grow: 0; align-items: center; flex-shrink: 1; width: 100%; margin-bottom: 8px;" />
+                    <ui:Toggle label="Toggle" name="InvertYAxis" class="label-text">
+                        <Bindings>
+                            <UnityEngine.Localization.LocalizedString property="label" table="GUID:dbb3674ad34b76b458d72593e4ca5a4a" entry="Id(122846540466221056)" />
+                        </Bindings>
+                    </ui:Toggle>
                 </ui:VisualElement>
             </ui:VisualElement>
         </ui:VisualElement>

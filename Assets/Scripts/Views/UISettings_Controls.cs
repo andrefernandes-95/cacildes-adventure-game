@@ -34,22 +34,6 @@ namespace AF
 
         void SetupUI()
         {
-            Slider cameraSensitivity = root.Q<Slider>("CameraSensitivity");
-
-            cameraSensitivity.lowValue = gameSettings.minimumMouseSensitivity;
-            cameraSensitivity.highValue = gameSettings.maximumMouseSensitivity;
-            cameraSensitivity.value = gameSettings.GetCameraSensitivity();
-            cameraSensitivity.label =
-                (Utils.IsPortuguese() ? "Sensibilidade da Câmara: " : "Camera Sensitivity: ") + gameSettings.GetCameraSensitivity();
-
-            cameraSensitivity.RegisterValueChangedCallback(ev =>
-            {
-                gameSettings.SetCameraSensitivity(ev.newValue);
-                cameraSensitivity.label =
-                    (Utils.IsPortuguese() ? "Sensibilidade da Câmara: " : "Camera Sensitivity: ") + gameSettings.GetCameraSensitivity();
-            });
-
-
             AssignRebindListeners();
         }
 

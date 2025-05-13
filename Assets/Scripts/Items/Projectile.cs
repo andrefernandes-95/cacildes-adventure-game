@@ -15,6 +15,7 @@ namespace AF
         public ForceMode forceMode;
         public float forwardVelocity = 10f;
         public bool useOwnDirection = false;
+        public float upwardsVelocity = 1f;
 
         [Header("Stats")]
         public Damage damage;
@@ -170,6 +171,11 @@ namespace AF
         public ForceMode GetForceMode()
         {
             return forceMode;
+        }
+
+        public float GetUpwardVelocity()
+        {
+            return upwardsVelocity;
         }
     }
 }

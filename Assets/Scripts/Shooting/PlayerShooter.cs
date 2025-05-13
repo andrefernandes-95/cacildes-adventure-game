@@ -75,6 +75,11 @@ namespace AF.Shooting
             queuedSpell = null;
 
             Invoke(nameof(ResetCanShootBow), 0.1f);
+
+            if (isAiming && equipmentDatabase.IsBowEquipped())
+            {
+                ShowArrowPlaceholder();
+            }
         }
 
         void ResetCanShootBow()
@@ -202,11 +207,7 @@ namespace AF.Shooting
 
             if (equipmentDatabase.IsBowEquipped())
             {
-                GetPlayerManager().animator.SetBool(hashIsAiming, true);
-
-                cinemachine3RdPersonFollow.CameraDistance = equipmentDatabase.GetCurrentWeapon().isCrossbow ? crossbowAimCameraDistance : bowAimCameraDistance;
-
-                onBowAim_Begin?.Invoke();
+                OnAimingBowBegin();
             }
             else if (equipmentDatabase.IsStaffEquipped())
             {
@@ -215,6 +216,25 @@ namespace AF.Shooting
             }
 
             GetPlayerManager().thirdPersonController.virtualCamera.gameObject.SetActive(false);
+        }
+
+        void OnAimingBowBegin()
+        {
+            GetPlayerManager().animator.SetBool(hashIsAiming, true);
+
+            cinemachine3RdPersonFollow.CameraDistance = equipmentDatabase.GetCurrentWeapon().isCrossbow ? crossbowAimCameraDistance : bowAimCameraDistance;
+
+            onBowAim_Begin?.Invoke();
+
+            ShowArrowPlaceholder();
+        }
+
+        void ShowArrowPlaceholder()
+        {
+            if (equipmentDatabase.GetCurrentArrow() != null)
+            {
+                GetPlayerManager().projectileSpawner.ShowArrowPlaceholder(equipmentDatabase.GetCurrentArrow());
+            }
         }
 
         public void Aim_End()
@@ -230,15 +250,15 @@ namespace AF.Shooting
             GetPlayerManager().thirdPersonController.rotateWithCamera = false;
             GetPlayerManager().animator.SetBool(hashIsAiming, false);
             GetPlayerManager().thirdPersonController.virtualCamera.gameObject.SetActive(true);
+
+            GetPlayerManager().projectileSpawner.HideArrowPlaceholders();
         }
 
         private void Update()
         {
-            if (isAiming && equipmentDatabase.IsBowEquipped())
-            {
-                lookAtConstraint.constraintActive = GetPlayerManager().thirdPersonController._input.move.magnitude <= 0;
-            }
+            lookAtConstraint.constraintActive = isAiming && equipmentDatabase.IsBowEquipped();
         }
+
         public void ShootBow(ConsumableProjectile consumableProjectile, Transform origin, Transform lockOnTarget)
         {
             if (equipmentDatabase.IsBowEquipped())
@@ -254,6 +274,8 @@ namespace AF.Shooting
             GetPlayerManager().staminaStatManager.DecreaseStamina(minimumStaminaToShoot);
 
             FireProjectile(consumableProjectile.projectile.gameObject, lockOnTarget, null);
+
+            GetPlayerManager().projectileSpawner.HideArrowPlaceholders();
         }
 
 
@@ -335,13 +357,22 @@ namespace AF.Shooting
                 distanceFromCamera = 1f;
             }
 
-            HandleProjectile(
-                queuedProjectile,
-                distanceFromCamera,
-                ray,
-                0f,
-                queuedSpell,
-                ignoreSpawnFromCamera);
+            Vector3 origin = ray.GetPoint(distanceFromCamera);
+
+            if (equipmentDatabase.IsBowEquipped())
+            {
+                HandleArrowProjectile(queuedProjectile);
+            }
+            else
+            {
+                HandleProjectile(
+                    queuedProjectile,
+                    origin,
+                    ray,
+                    0f,
+                    queuedSpell,
+                    ignoreSpawnFromCamera);
+            }
         }
 
         /// <summary>
@@ -354,9 +385,33 @@ namespace AF.Shooting
             queuedSpell = null;
         }
 
-        void HandleProjectile(GameObject projectile, float originDistanceFromCamera, Ray ray, float delay, Spell spell, bool ignoreSpawnFromCamera)
+        void HandleArrowProjectile(GameObject projectile)
         {
-            Vector3 origin = ray.GetPoint(originDistanceFromCamera);
+            // Origin: where the arrow starts
+
+            Ray ray = Camera.main.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2, 0f));
+            Vector3 origin = isAiming ? ray.origin : playerShootingHandRef.transform.position;
+            Vector3 lookPosition = ray.direction;
+
+            // Instantiate projectile facing toward the screen center
+            GameObject projectileInstance = Instantiate(projectile, origin, Quaternion.LookRotation(lookPosition));
+
+            IProjectile[] projectileComponents = GetProjectileComponentsInChildren(projectileInstance);
+
+            foreach (IProjectile componentProjectile in projectileComponents)
+            {
+                componentProjectile.Shoot(characterBaseManager,
+                    projectileInstance.transform.up * componentProjectile.GetUpwardVelocity() +
+                    projectileInstance.transform.forward * componentProjectile.GetForwardVelocity(),
+                    componentProjectile.GetForceMode());
+            }
+
+            HandleProjectileDamageManagers(projectileInstance, null);
+        }
+
+
+        void HandleProjectile(GameObject projectile, Vector3 origin, Ray ray, float delay, Spell spell, bool ignoreSpawnFromCamera)
+        {
             Quaternion lookPosition = Quaternion.identity;
 
             // If shooting spell but not locked on, use player transform forward to direct the spell

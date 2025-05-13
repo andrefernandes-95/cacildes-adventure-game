@@ -8,6 +8,8 @@ namespace AF.Shooting
 
         public float GetForwardVelocity();
 
+        public float GetUpwardVelocity();
+
         public ForceMode GetForceMode();
 
     }

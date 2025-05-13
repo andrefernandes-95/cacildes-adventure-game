@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using AF.Events;
 using AF.Inventory;
 using AF.Stats;
@@ -7,6 +8,7 @@ using TigerForge;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Localization;
+using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 
 namespace AF
@@ -61,8 +63,6 @@ namespace AF
         [Header("Animations")]
         public Vector3 popEffectWhenSwitchingSlots = new Vector3(0.8f, 0.8f, 0.8f);
 
-        VisualElement leftGamepad, alpha1, upGamepad, alpha2, rightGamepad, alpha3, downGamepad, alpha4;
-        VisualElement useKeyboard, useGamepad, useXbox;
         VisualElement equipmentContainer;
 
         Label currentObjectiveLabel, currentObjectiveValue, combatStanceIndicatorLabel;
@@ -73,18 +73,15 @@ namespace AF
         public LocalizedString oneHandIndicator_LocalizedString;
         public LocalizedString twoHandIndicator_LocalizedString;
 
-        public LocalizedString dodgeLabel; // Dodge
-        public LocalizedString jumpLabel; // Jump
-        public LocalizedString toggle1Or2Handing; // Toggle 1/2 Handing
-        public LocalizedString heavyAttack; // Heavy Attack
-        public LocalizedString sprint; // Sprint
-
         PlayerHealth playerHealth;
 
         public Color staminaOriginalColor;
         public Color manaOriginalColor;
 
         public Color highlightColor;
+
+        [Header("Scenes To Show In-Game Controls")]
+        public List<string> scenesToDisplayInGameControls = new();
 
         private void Awake()
         {
@@ -103,6 +100,7 @@ namespace AF
             EventManager.StartListening(EventMessages.ON_PLAYER_HUD_VISIBILITY_CHANGED, EvaluatePlayerHUD);
 
             EventManager.StartListening(EventMessages.ON_TWO_HANDING_CHANGED, UpdateCombatStanceIndicator);
+
         }
 
         void EvaluatePlayerHUD()
@@ -113,6 +111,10 @@ namespace AF
         {
             playerHealth = playerManager.health as PlayerHealth;
             this.root = this.uIDocument.rootVisualElement;
+
+            root.Q("InGameControls").style.display =
+                scenesToDisplayInGameControls.Contains(SceneManager.GetActiveScene().name)
+                ? DisplayStyle.Flex : DisplayStyle.None;
 
             healthContainer = root.Q<VisualElement>("Health");
             healthFill = root.Q<VisualElement>("HealthFill");
@@ -130,22 +132,6 @@ namespace AF
             shieldSlotContainer = root.Q<IMGUIContainer>("ShieldSlot");
 
             shieldBlockedIcon = shieldSlotContainer.Q<IMGUIContainer>("Blocked");
-
-            leftGamepad = shieldSlotContainer.Q<VisualElement>("Gamepad");
-            alpha1 = shieldSlotContainer.Q<VisualElement>("Keyboard");
-
-            upGamepad = spellSlotContainer.Q<VisualElement>("Gamepad");
-            alpha2 = spellSlotContainer.Q<VisualElement>("Keyboard");
-
-            rightGamepad = weaponSlotContainer.Q<VisualElement>("Gamepad");
-            alpha3 = weaponSlotContainer.Q<VisualElement>("Keyboard");
-
-            downGamepad = consumableSlotContainer.Q<VisualElement>("Gamepad");
-            alpha4 = consumableSlotContainer.Q<VisualElement>("Keyboard");
-
-            useKeyboard = consumableSlotContainer.Q<VisualElement>("UseKeyboard");
-            useGamepad = consumableSlotContainer.Q<VisualElement>("UseGamepad");
-            useXbox = consumableSlotContainer.Q<VisualElement>("UseXbox");
 
             equipmentContainer = root.Q<VisualElement>("EquipmentContainer");
 
@@ -274,21 +260,6 @@ namespace AF
             quickItemName.text = "";
             arrowsLabel.text = "";
 
-
-            alpha1.style.display = Gamepad.current == null ? DisplayStyle.Flex : DisplayStyle.None;
-            alpha2.style.display = Gamepad.current == null ? DisplayStyle.Flex : DisplayStyle.None;
-            alpha3.style.display = Gamepad.current == null ? DisplayStyle.Flex : DisplayStyle.None;
-            alpha4.style.display = Gamepad.current == null ? DisplayStyle.Flex : DisplayStyle.None;
-
-            leftGamepad.style.display = Gamepad.current != null ? DisplayStyle.Flex : DisplayStyle.None;
-            upGamepad.style.display = Gamepad.current != null ? DisplayStyle.Flex : DisplayStyle.None;
-            rightGamepad.style.display = Gamepad.current != null ? DisplayStyle.Flex : DisplayStyle.None;
-            downGamepad.style.display = Gamepad.current != null ? DisplayStyle.Flex : DisplayStyle.None;
-
-            useGamepad.style.display = equipmentDatabase.GetCurrentConsumable() != null && Gamepad.current != null ? DisplayStyle.Flex : DisplayStyle.None;
-            useXbox.style.display = equipmentDatabase.GetCurrentConsumable() != null && Gamepad.current != null ? DisplayStyle.Flex : DisplayStyle.None;
-            useKeyboard.style.display = equipmentDatabase.GetCurrentConsumable() != null && Gamepad.current == null ? DisplayStyle.Flex : DisplayStyle.None;
-
             if (equipmentDatabase.IsBowEquipped())
             {
                 arrowsLabel.text = equipmentDatabase.GetCurrentArrow() != null
@@ -324,7 +295,6 @@ namespace AF
 
             if (equipmentDatabase.GetCurrentConsumable() is Card)
             {
-                consumableSlotContainer.style.height = 55;
                 consumableSlotContainer.style.unityBackgroundScaleMode = ScaleMode.ScaleToFit;
                 consumableSlotContainer.style.borderTopWidth = 0;
                 consumableSlotContainer.style.borderBottomWidth = 0;
@@ -335,16 +305,19 @@ namespace AF
             else
             {
                 consumableSlotContainer.style.unityBackgroundScaleMode = ScaleMode.ScaleAndCrop;
-                consumableSlotContainer.style.height = 45;
                 consumableSlotContainer.style.borderTopWidth = new StyleFloat(1);
                 consumableSlotContainer.style.borderBottomWidth = new StyleFloat(1);
                 consumableSlotContainer.style.borderLeftWidth = new StyleFloat(1);
                 consumableSlotContainer.style.borderRightWidth = new StyleFloat(1);
             }
 
-            consumableSlotContainer.style.backgroundImage = equipmentDatabase.GetCurrentConsumable() != null
+            bool hasConsumable = equipmentDatabase.GetCurrentConsumable() != null;
+
+            consumableSlotContainer.style.backgroundImage = hasConsumable
                 ? new StyleBackground(equipmentDatabase.GetCurrentConsumable().sprite)
                 : new StyleBackground(unequippedConsumableSlot);
+
+            root.Q("ConsumableInfo").style.display = hasConsumable ? DisplayStyle.Flex : DisplayStyle.None;
         }
 
         public void OnSwitchWeapon()

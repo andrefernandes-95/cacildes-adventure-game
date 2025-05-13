@@ -10,7 +10,7 @@ namespace AF
     {
         VisualElement optionsContainer;
 
-        Button controlsButton, audioButton, languageButton, graphicsButton, saveProgressButton, exitButton, newGamePlusButton, resetSettingsButton;
+        Button controlsButton, audioButton, languageButton, graphicsButton, saveProgressButton, exitButton, newGamePlusButton, gameplayButton, resetSettingsButton;
 
         [SerializeField] GameSettings gameSettings;
         [SerializeField] StarterAssetsInputs inputs;
@@ -24,6 +24,7 @@ namespace AF
         VisualElement graphicsMenu;
         VisualElement audioMenu;
         VisualElement languageMenu;
+        VisualElement gameplayMenu;
 
         [SerializeField] SaveManager saveManager;
         [SerializeField] GameSession gameSession;
@@ -55,6 +56,7 @@ namespace AF
 
             controlsButton = root.Q<Button>("ControlsSettings");
             graphicsButton = root.Q<Button>("GraphicsSettings");
+            gameplayButton = root.Q<Button>("GameplaySettings");
             languageButton = root.Q<Button>("LanguageSettings");
             audioButton = root.Q<Button>("AudioSettings");
 
@@ -69,6 +71,7 @@ namespace AF
             graphicsMenu = root.Q<VisualElement>("Graphics");
             audioMenu = root.Q<VisualElement>("Audio");
             languageMenu = root.Q<VisualElement>("Language");
+            gameplayMenu = root.Q<VisualElement>("Gameplay");
 
             DisableSubMenus();
 
@@ -93,6 +96,7 @@ namespace AF
             SetupNewGamePlusButtons();
             SetupExitButton();
             SetupResetSettingsButton();
+            SetupGameplaySettingsButton();
         }
 
         void DisableSubMenus()
@@ -101,6 +105,7 @@ namespace AF
             graphicsMenu.style.display = DisplayStyle.None;
             audioMenu.style.display = DisplayStyle.None;
             languageMenu.style.display = DisplayStyle.None;
+            gameplayMenu.style.display = DisplayStyle.None;
         }
 
         void SetupControlsButton()
@@ -110,6 +115,16 @@ namespace AF
                 DisableSubMenus();
 
                 controlsMenu.style.display = DisplayStyle.Flex;
+            }, soundbank);
+        }
+
+        void SetupGameplaySettingsButton()
+        {
+            UIUtils.SetupButton(gameplayButton, () =>
+            {
+                DisableSubMenus();
+
+                gameplayMenu.style.display = DisplayStyle.Flex;
             }, soundbank);
         }
 

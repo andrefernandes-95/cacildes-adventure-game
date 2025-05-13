@@ -20,12 +20,15 @@ public class GameSettings : ScriptableObject
     public float minimumMouseSensitivity = 0.1f;
     public float maximumMouseSensitivity = 10f;
 
+    public bool invertYAxis = false;
+
     public enum GraphicsQuality { LOW, MEDIUM, GOOD, ULTRA };
 
     public readonly string GRAPHICS_QUALITY_KEY = "graphicsQuality";
     public readonly string MUSIC_VOLUME_KEY = "musicVolume";
     public readonly string MOUSE_SENSITIVITY_KEY = "mouseSensitivity";
     public readonly string CAMERA_DISTANCE_KEY = "cameraDistance";
+    public readonly string INVERT_Y_AXIS_KEY = "invertYAxis";
 
     public readonly string JUMP_OVERRIDE_BINDING_PAYLOAD_KEY = "JUMP_OVERRIDE_BINDING_PAYLOAD_KEY";
     public readonly string DODGE_OVERRIDE_BINDING_PAYLOAD_KEY = "DODGE_OVERRIDE_BINDING_PAYLOAD_KEY";
@@ -119,6 +122,7 @@ public class GameSettings : ScriptableObject
         SetHeavyAttackOverrideBindingPayload("");
         SetTwoHandModeOverrideBindingPayload("");
         SetSprintOverrideBindingPayload("");
+        SetInvertYAxis(false);
 
         EventManager.EmitEvent(EventMessages.ON_USE_CUSTOM_INPUT_CHANGED);
     }
@@ -159,10 +163,44 @@ public class GameSettings : ScriptableObject
         EventManager.EmitEvent(EventMessages.ON_GRAPHICS_QUALITY_CHANGED);
     }
 
+    public void SetInvertYAxis(bool value)
+    {
+        invertYAxis = value;
+        PlayerPrefs.SetString(INVERT_Y_AXIS_KEY, value ? "true" : "");
+        EventManager.EmitEvent(EventMessages.ON_INVERT_Y_AXIS);
+    }
+
+    public bool GetInvertYAxis()
+    {
+        if (!PlayerPrefs.HasKey(INVERT_Y_AXIS_KEY))
+        {
+            return false;
+        }
+
+        string invertYAxisValue = PlayerPrefs.GetString(INVERT_Y_AXIS_KEY);
+
+        if (string.IsNullOrEmpty(invertYAxisValue))
+        {
+            return false;
+        }
+
+        return true;
+    }
 
     public void SetCameraDistance(float newValue)
     {
-        PlayerPrefs.SetFloat(CAMERA_DISTANCE_KEY, newValue);
+        PlayerPrefs.SetFloat(CAMERA_DISTANCE_KEY, Mathf.Clamp(newValue, minimumCameraDistanceToPlayer, maximumCameraDistanceToPlayer));
+        EventManager.EmitEvent(EventMessages.ON_CAMERA_DISTANCE_CHANGED);
+    }
+
+    public void IncreaseCameraDistance(float cameraDistanceAmountPerZoom = 0.5f)
+    {
+        SetCameraDistance(GetCameraDistance() - cameraDistanceAmountPerZoom);
+    }
+
+    public void DecreaseCameraDistance(float cameraDistanceAmountPerZoom = 0.5f)
+    {
+        SetCameraDistance(GetCameraDistance() + cameraDistanceAmountPerZoom);
     }
 
     public void SetCameraSensitivity(float newValue)

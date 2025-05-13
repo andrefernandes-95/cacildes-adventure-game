@@ -174,7 +174,7 @@ namespace AF
             {
                 LogAnalytic(AnalyticsUtils.OnUIButtonClick("Github"));
 
-                Application.OpenURL("https://github.com/cacildesadventure/cacildes-adventure");
+                Application.OpenURL("https://github.com/andrefernandes-95/cacildes-adventure-game");
             }, soundbank);
 
             UIUtils.SetupButton(btnBlueSky, () =>

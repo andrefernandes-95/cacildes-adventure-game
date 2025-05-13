@@ -47,6 +47,7 @@ namespace AF
 		[Header("UI")]
 		public UnityEvent onMenuEvent;
 		public UnityEvent onCustomizeCharacter;
+		[SerializeField] MenuManager menuManager;
 
 		[Header("Movement Settings")]
 		public bool analogMovement;
@@ -76,13 +77,21 @@ namespace AF
 		private void Awake()
 		{
 			EventManager.StartListening(EventMessages.ON_CAMERA_SENSITIVITY_CHANGED, UpdateScaleVector);
+			EventManager.StartListening(EventMessages.ON_INVERT_Y_AXIS, UpdateScaleVector);
 
 			UpdateScaleVector();
 		}
 
 		private void UpdateScaleVector()
 		{
-			scaleVector = new(gameSettings.GetCameraSensitivity(), gameSettings.GetCameraSensitivity());
+			Vector2 newScale = new(gameSettings.GetCameraSensitivity(), gameSettings.GetCameraSensitivity());
+
+			if (gameSettings.GetInvertYAxis())
+			{
+				newScale.y *= -1;
+			}
+
+			scaleVector = newScale;
 		}
 
 		public void OnMove(InputValue value)
@@ -255,6 +264,26 @@ namespace AF
 		public void OnGoBackOneHour()
 		{
 			onGoBackOneHour?.Invoke();
+		}
+
+		public void OnZoomIn(InputValue inputValue)
+		{
+			if (menuManager.isMenuOpen)
+			{
+				return;
+			}
+
+			gameSettings.IncreaseCameraDistance(inputValue.Get<float>());
+		}
+
+		public void OnZoomOut(InputValue inputValue)
+		{
+			if (menuManager.isMenuOpen)
+			{
+				return;
+			}
+
+			gameSettings.DecreaseCameraDistance(inputValue.Get<float>());
 		}
 
 		public RebindingOperation ChangeInput(InputAction inputAction)

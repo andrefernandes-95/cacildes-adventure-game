@@ -47,8 +47,8 @@ namespace AF
         {
             root.Q<VisualElement>("PlayerName").Q<Label>().text = playerManager.playerAppearance.GetPlayerName();
 
-            SetLocalizedLabel("Level", "Level ", "Nível ", playerStatsDatabase.GetCurrentLevel());
-            SetLocalizedLabel("Gold", " Gold ", " Ouro ", playerStatsDatabase.gold);
+            root.Q<VisualElement>("Level").Q<Label>("Value").text = playerStatsDatabase.GetCurrentLevel().ToString();
+            root.Q<VisualElement>("Gold").Q<Label>("Value").text = playerStatsDatabase.gold.ToString();
             SetGoldForNextLevelLabel();
 
             int baseAttack = attackStatManager.GetCurrentAttackForWeapon(equipmentDatabase.GetCurrentWeapon());
@@ -161,17 +161,10 @@ namespace AF
 
         void SetGoldForNextLevelLabel()
         {
-            string goldLabel = " " + LocalizationSettings.SelectedLocale.Identifier.Code == "en" ? "Gold" : "Ouro";
-
-            root.Q<VisualElement>("GoldForNextLevel").Q<Label>("Label").text =
-                playerManager.playerLevelManager.GetRequiredExperienceForNextLevel() + " " + goldLabel;
-            Label description =
-            root.Q<VisualElement>("GoldForNextLevel").Q<Label>("Description");
-
-            // TODO: Add logic to check if the player has enough gold for levelling up
-            bool hasEnoughGoldForLevellingUp = false;
-            description.style.opacity = hasEnoughGoldForLevellingUp ? 1 : 0.5f;
+            root.Q<VisualElement>("GoldForNextLevel").Q<Label>("Value").text =
+                playerManager.playerLevelManager.GetRequiredExperienceForNextLevel().ToString();
         }
+
         private void SetWeightLoadLabel(string elementName, float baseValue, float itemValue)
         {
             // Format baseValue and itemValue as percentages with two decimal places
@@ -200,12 +193,6 @@ namespace AF
             }
 
             root.Q<VisualElement>(elementName).Q<Label>("Value").text = label;
-        }
-
-        private void SetLocalizedLabel(string elementName, string enLabel, string ptLabel, int value)
-        {
-            string label = LocalizationSettings.SelectedLocale.Identifier.Code == "pt" ? ptLabel : enLabel;
-            root.Q<VisualElement>(elementName).Q<Label>().text = label + value;
         }
 
         private (int vitality, int endurance, int strength, int dexterity, int intelligence, int reputation) GetPlayerBaseStats()

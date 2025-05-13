@@ -83,6 +83,8 @@ namespace AF
         public LocalizedString NextMagicBonus_LocalizedString;
         // "Next Darkness Bonus: "
         public LocalizedString NextDarknessBonus_LocalizedString;
+        // "Next Darkness Bonus: "
+        public LocalizedString NextWaterBonus_LocalizedString;
         // "Gold"
         public LocalizedString Gold_LocalizedString;
 
@@ -168,6 +170,7 @@ namespace AF
             root.Q<Label>("LightningAttack").style.display = DisplayStyle.None;
             root.Q<Label>("MagicAttack").style.display = DisplayStyle.None;
             root.Q<Label>("DarknessAttack").style.display = DisplayStyle.None;
+            root.Q<Label>("WaterAttack").style.display = DisplayStyle.None;
         }
 
         void SetupActivity()
@@ -562,6 +565,12 @@ namespace AF
                     + weapon.GetWeaponDarknessAttackForLevel(weapon.level, playerReputation, playerManager.attackStatManager) + " > " + weapon.GetWeaponDarknessAttackForLevel(nextLevel, playerReputation, playerManager.attackStatManager);
             }
 
+            if (weapon.GetWeaponWaterAttackForLevel(nextLevel, playerManager.attackStatManager) > 0)
+            {
+                root.Q<Label>("WaterAttack").style.display = DisplayStyle.Flex;
+                root.Q<Label>("WaterAttack").text = NextWaterBonus_LocalizedString.GetLocalizedString() + " "
+                    + weapon.GetWeaponWaterAttackForLevel(weapon.level, playerManager.attackStatManager) + " > " + weapon.GetWeaponWaterAttackForLevel(nextLevel, playerManager.attackStatManager);
+            }
             // Requirements
 
             root.Q<VisualElement>("ItemInfo").Clear();

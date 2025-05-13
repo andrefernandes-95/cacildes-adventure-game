@@ -1,11 +1,7 @@
-﻿
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using DG.Tweening;
 using UnityEngine;
-using UnityEngine.Events;
-using UnityEngine.InputSystem;
 using UnityEngine.Localization.Settings;
 using UnityEngine.UIElements;
 
@@ -92,19 +88,6 @@ namespace AF
 
             cardContainer = root.Q<VisualElement>("CardContainer");
             cardContainer.style.display = DisplayStyle.None;
-
-            if (Gamepad.current != null)
-            {
-                root.Q<IMGUIContainer>("KeyboardIcon").style.display = DisplayStyle.None;
-                root.Q<IMGUIContainer>("GamepadIcon").style.display = DisplayStyle.Flex;
-                root.Q<IMGUIContainer>("XboxIcon").style.display = DisplayStyle.Flex;
-            }
-            else
-            {
-                root.Q<IMGUIContainer>("KeyboardIcon").style.display = DisplayStyle.Flex;
-                root.Q<IMGUIContainer>("GamepadIcon").style.display = DisplayStyle.None;
-                root.Q<IMGUIContainer>("XboxIcon").style.display = DisplayStyle.None;
-            }
 
             rootPanel = root.Q<VisualElement>("ReceivedItemsContainer");
             rootPanel.Clear();

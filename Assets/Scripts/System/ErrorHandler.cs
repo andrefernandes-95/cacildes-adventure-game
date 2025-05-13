@@ -37,7 +37,8 @@ namespace AF
             "CaptureScreenshotAsTexture() failed to generate texture!",
             "CharacterController.Move called on inactive controller",
             "Stack Trace: AF.Shooting.CharacterShooter.FireProjectile",
-            "AF.Combat.TargetManager.ClearTarget ()"
+            "AF.Combat.TargetManager.ClearTarget ()",
+            "Concave Mesh Colliders are not supported when used with dynamic Rigidbody GameObjects"
         };
 
         void Start()

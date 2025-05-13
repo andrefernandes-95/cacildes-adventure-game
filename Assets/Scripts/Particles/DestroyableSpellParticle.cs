@@ -28,7 +28,7 @@ namespace AF
 
         public ForceMode forceMode;
         public float forwardVelocity = 10f;
-
+        public float upwardsVelocity = 1f;
         private void OnParticleCollision(GameObject other)
         {
             OnCollide(other);
@@ -52,6 +52,11 @@ namespace AF
         public ForceMode GetForceMode()
         {
             return forceMode;
+        }
+
+        public float GetUpwardVelocity()
+        {
+            return upwardsVelocity;
         }
     }
 }

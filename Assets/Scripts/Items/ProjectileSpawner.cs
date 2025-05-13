@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using AYellowpaper.SerializedCollections;
 using UnityEngine;
 
 namespace AF.Inventory
@@ -7,6 +9,13 @@ namespace AF.Inventory
         public PlayerManager playerManager;
         public LockOnManager lockOnManager;
         Projectile queuedProjectile;
+
+        public SerializedDictionary<Arrow, GameObject> arrowPlaceholderInstances = new();
+
+        private void Awake()
+        {
+            HideArrowPlaceholders();
+        }
 
         /// <summary>
         /// Unity Event
@@ -55,6 +64,21 @@ namespace AF.Inventory
             }
 
             instance.Shoot(playerManager, instance.GetForwardVelocity() * instance.transform.forward, instance.forceMode);
+        }
+
+        public void ShowArrowPlaceholder(Arrow arrow)
+        {
+            if (arrowPlaceholderInstances.ContainsKey(arrow))
+            {
+                arrowPlaceholderInstances[arrow].SetActive(true);
+            }
+        }
+        public void HideArrowPlaceholders()
+        {
+            foreach (KeyValuePair<Arrow, GameObject> keyValuePair in arrowPlaceholderInstances)
+            {
+                keyValuePair.Value.SetActive(false);
+            }
         }
     }
 }
