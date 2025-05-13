@@ -1,0 +1,137 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI%20Components/Styles/Styles.uss?fileID=7433441132597879392&amp;guid=756241e74d42bab43b4532533f359ba2&amp;type=3#Styles" />
+    <ui:VisualElement name="KeyboardActions" picking-mode="Ignore" style="flex-grow: 1; position: relative; bottom: auto; right: auto; display: flex;">
+        <ui:VisualElement name="Move" picking-mode="Ignore" class="controls-label">
+            <ui:Label tabindex="-1" text="Move" display-tooltip-when-elided="true" name="Label" picking-mode="Ignore" class="label-text controls-label">
+                <Bindings>
+                    <UnityEngine.Localization.LocalizedString property="text" table="GUID:dbb3674ad34b76b458d72593e4ca5a4a" entry="Id(1102802066472960)" />
+                </Bindings>
+            </ui:Label>
+            <ui:VisualElement name="Keyboard" picking-mode="Ignore" class="input-key-sprite" />
+            <ui:VisualElement name="Keyboard" picking-mode="Ignore" class="input-key-sprite" style="flex-grow: 0; background-image: url(&quot;project://database/Assets/Graphics/Sprites/Keyboard%20&amp;%20Mouse/Dark/A_Key_Dark%201.png?fileID=21300000&amp;guid=637eb30e9b5444c4b9b9456f095bcf7d&amp;type=3#A_Key_Dark 1&quot;);" />
+            <ui:VisualElement name="Keyboard" picking-mode="Ignore" class="input-key-sprite" style="flex-grow: 0; background-image: url(&quot;project://database/Assets/Graphics/Sprites/Keyboard%20&amp;%20Mouse/Dark/S_Key_Dark%201.png?fileID=21300000&amp;guid=aa352aae3e049a144ba777e6ae1e4720&amp;type=3#S_Key_Dark 1&quot;);" />
+            <ui:VisualElement name="Keyboard" picking-mode="Ignore" class="input-key-sprite" style="flex-grow: 0; background-image: url(&quot;project://database/Assets/Graphics/Sprites/Keyboard%20&amp;%20Mouse/Dark/D_Key_Dark%201.png?fileID=21300000&amp;guid=17f4fe2a523f1af4a981a18886306a48&amp;type=3#D_Key_Dark 1&quot;);" />
+            <ui:VisualElement name="PS4" picking-mode="Ignore" class="input-key-sprite" style="flex-grow: 0; background-image: url(&quot;project://database/Assets/Synty/InterfaceCore/Sprites/Icons_Input/PlayStation/ICON_Input_PlayStation_Dpad_Master_Underlay.png?fileID=2800000&amp;guid=167f16ffaa83cfe4a8482c463b2f43bf&amp;type=3#ICON_Input_PlayStation_Dpad_Master_Underlay&quot;);" />
+            <ui:VisualElement name="Xbox" picking-mode="Ignore" class="input-key-sprite" style="flex-grow: 0; background-image: url(&quot;project://database/Assets/Synty/InterfaceCore/Sprites/Icons_Input/Xbox/ICON_Input_Xbox_DpadColor_Master_Underlay.png?fileID=2800000&amp;guid=d527d39d0f4087b4bb6c70d1707139ea&amp;type=3#ICON_Input_Xbox_DpadColor_Master_Underlay&quot;);" />
+        </ui:VisualElement>
+        <ui:VisualElement name="Sprint" picking-mode="Ignore" style="flex-grow: 1; flex-direction: row; align-items: center; justify-content: flex-end;">
+            <ui:Label tabindex="-1" text="Sprint" display-tooltip-when-elided="true" name="SprintKeyLabel" picking-mode="Ignore" class="label-text controls-label" style="flex-grow: 0;" />
+            <ui:VisualElement name="Keyboard" picking-mode="Ignore" class="input-key-sprite" />
+            <ui:VisualElement name="PS4" picking-mode="Ignore" class="input-key-sprite" style="flex-grow: 0; background-image: url(&quot;project://database/Assets/Synty/InterfaceCore/Sprites/Icons_Input/PlayStation/ICON_Input_PlayStation_Button_R2_Underlay.png?fileID=2800000&amp;guid=1a044ff84bbf77949840887227a78f85&amp;type=3#ICON_Input_PlayStation_Button_R2_Underlay&quot;);" />
+            <ui:VisualElement name="Xbox" picking-mode="Ignore" class="input-key-sprite" style="flex-grow: 0; background-image: url(&quot;project://database/Assets/Synty/InterfaceCore/Sprites/Icons_Input/Xbox/ICON_Input_Xbox_Button_LT_Underlay.png?fileID=2800000&amp;guid=70b04f5a645dcf74bb4d763f06f24cf8&amp;type=3#ICON_Input_Xbox_Button_LT_Underlay&quot;);" />
+            <ui:Button text="Button" name="Rebind" class="primary-button controls-rebind-button">
+                <Bindings>
+                    <UnityEngine.Localization.LocalizedString property="text" table="GUID:dbb3674ad34b76b458d72593e4ca5a4a" entry="Id(121420431740628992)" />
+                </Bindings>
+            </ui:Button>
+        </ui:VisualElement>
+        <ui:VisualElement name="Jump" style="flex-grow: 1; flex-direction: row; align-items: center; justify-content: flex-end;">
+            <ui:Label tabindex="-1" text="Jump" display-tooltip-when-elided="true" name="JumpKeyLabel" class="label-text controls-label" />
+            <ui:VisualElement name="Keyboard" class="input-key-sprite" style="flex-grow: 0; background-image: url(&quot;project://database/Assets/Graphics/Sprites/Keyboard%20&amp;%20Mouse/Dark/F_Key_Dark%201.png?fileID=2800000&amp;guid=535a58c78b78a444ca6029798a95590a&amp;type=3#F_Key_Dark 1&quot;);" />
+            <ui:VisualElement name="PS4" class="input-key-sprite" style="flex-grow: 0; background-image: url(&quot;project://database/Assets/Synty/InterfaceCore/Sprites/Icons_Input/PlayStation/ICON_Input_PlayStation_ButtonColor_Cross_Underlay.png?fileID=2800000&amp;guid=c93d91fe23f946d47b6d8d83b8d33cbc&amp;type=3#ICON_Input_PlayStation_ButtonColor_Cross_Underlay&quot;);" />
+            <ui:VisualElement name="Xbox" class="input-key-sprite" style="flex-grow: 0; background-image: url(&quot;project://database/Assets/Synty/InterfaceCore/Sprites/Icons_Input/Xbox/ICON_Input_Xbox_ButtonColor_A_Underlay.png?fileID=2800000&amp;guid=9a90020586103344daf973657440b68c&amp;type=3#ICON_Input_Xbox_ButtonColor_A_Underlay&quot;);" />
+            <ui:Button text="Button" name="Rebind" class="primary-button controls-rebind-button">
+                <Bindings>
+                    <UnityEngine.Localization.LocalizedString property="text" table="GUID:dbb3674ad34b76b458d72593e4ca5a4a" entry="Id(121420431740628992)" />
+                </Bindings>
+            </ui:Button>
+        </ui:VisualElement>
+        <ui:VisualElement name="Dodge" style="flex-grow: 1; flex-direction: row; align-items: center; justify-content: flex-end;">
+            <ui:Label tabindex="-1" text="Dodge" display-tooltip-when-elided="true" name="DodgeKeyLabel" class="label-text controls-label" />
+            <ui:VisualElement name="Keyboard" class="input-key-sprite" style="flex-grow: 0; background-image: url(&quot;project://database/Assets/Graphics/Sprites/Keyboard%20&amp;%20Mouse/Dark/Space_Key_Dark%202.png?fileID=2800000&amp;guid=ee2de74d49929c545b66502d5b4b7f06&amp;type=3#Space_Key_Dark 2&quot;);" />
+            <ui:VisualElement name="PS4" class="input-key-sprite" style="flex-grow: 0; background-image: url(&quot;project://database/Assets/Synty/InterfaceCore/Sprites/Icons_Input/PlayStation/ICON_Input_PlayStation_ButtonColor_Circle_Underlay.png?fileID=2800000&amp;guid=3cec0c385d854e246a11c10eea701b3d&amp;type=3#ICON_Input_PlayStation_ButtonColor_Circle_Underlay&quot;);" />
+            <ui:VisualElement name="Xbox" class="input-key-sprite" style="flex-grow: 0; background-image: url(&quot;project://database/Assets/Synty/InterfaceCore/Sprites/Icons_Input/Xbox/ICON_Input_Xbox_ButtonColor_B_Underlay.png?fileID=2800000&amp;guid=d39a2feffcb8a2242a7ff81e83a73ec1&amp;type=3#ICON_Input_Xbox_ButtonColor_B_Underlay&quot;);" />
+            <ui:Button text="Button" name="Rebind" class="primary-button controls-rebind-button">
+                <Bindings>
+                    <UnityEngine.Localization.LocalizedString property="text" table="GUID:dbb3674ad34b76b458d72593e4ca5a4a" entry="Id(121420431740628992)" />
+                </Bindings>
+            </ui:Button>
+        </ui:VisualElement>
+        <ui:VisualElement name="ToggleHands" style="flex-grow: 1; flex-direction: row; align-items: center; justify-content: flex-end;">
+            <ui:Label tabindex="-1" text="Toggle 1/2 Handing" display-tooltip-when-elided="true" name="ToggleHandsKeyLabel" class="label-text controls-label" style="margin-left: 5px;" />
+            <ui:VisualElement name="Keyboard" class="input-key-sprite" style="flex-grow: 0; background-image: url(&quot;project://database/Assets/Graphics/Sprites/Keyboard%20&amp;%20Mouse/Dark/Tab_Key_Dark%201.png?fileID=2800000&amp;guid=85cbf87a3137b314eb3de259f02d3829&amp;type=3#Tab_Key_Dark 1&quot;);" />
+            <ui:VisualElement name="PS4" class="input-key-sprite" style="flex-grow: 0; background-image: url(&quot;project://database/Assets/Graphics/Sprites/Inputs%20&amp;%20Gamepad/options.png?fileID=2800000&amp;guid=65a1960f29b6f5b43b703b1e2d2bba61&amp;type=3#options&quot;);" />
+            <ui:VisualElement name="Xbox" class="input-key-sprite" style="flex-grow: 0; background-image: url(&quot;project://database/Assets/Synty/InterfaceCore/Sprites/Icons_Input/Xbox/ICON_Input_Xbox_Button_Home_Underlay.png?fileID=2800000&amp;guid=b63ed77777a81c74a951a7cac1031535&amp;type=3#ICON_Input_Xbox_Button_Home_Underlay&quot;);" />
+            <ui:Button text="Button" name="Rebind" class="primary-button controls-rebind-button">
+                <Bindings>
+                    <UnityEngine.Localization.LocalizedString property="text" table="GUID:dbb3674ad34b76b458d72593e4ca5a4a" entry="Id(121420431740628992)" />
+                </Bindings>
+            </ui:Button>
+        </ui:VisualElement>
+        <ui:VisualElement name="Attack" style="flex-grow: 1; flex-direction: row; align-items: center; justify-content: flex-end;">
+            <ui:Label tabindex="-1" text="Attack/Shoot/Cast Spell" display-tooltip-when-elided="true" name="Label" class="label-text controls-label">
+                <Bindings>
+                    <UnityEngine.Localization.LocalizedString property="text" table="GUID:dbb3674ad34b76b458d72593e4ca5a4a" entry="Id(1103114856693760)" />
+                </Bindings>
+            </ui:Label>
+            <ui:VisualElement name="Keyboard" class="input-key-sprite" style="flex-grow: 0; background-image: url(&quot;project://database/Assets/Graphics/Sprites/Keyboard%20&amp;%20Mouse/Dark/Mouse_Left_Key_Dark%201.png?fileID=2800000&amp;guid=3fc93b61eb533f747aa828fface2a713&amp;type=3#Mouse_Left_Key_Dark 1&quot;);" />
+            <ui:VisualElement name="PS4" class="input-key-sprite" style="flex-grow: 0; background-image: url(&quot;project://database/Assets/Synty/InterfaceCore/Sprites/Icons_Input/PlayStation/ICON_Input_PlayStation_Button_R1_Underlay.png?fileID=2800000&amp;guid=4def63e4b1471854089a515ebaeba3f6&amp;type=3#ICON_Input_PlayStation_Button_R1_Underlay&quot;);" />
+            <ui:VisualElement name="Xbox" class="input-key-sprite" style="flex-grow: 0; background-image: url(&quot;project://database/Assets/Synty/InterfaceCore/Sprites/Icons_Input/Xbox/ICON_Input_Xbox_Button_RB_Underlay.png?fileID=2800000&amp;guid=0c6d8c6a1a1d435438afb46405c344f5&amp;type=3#ICON_Input_Xbox_Button_RB_Underlay&quot;);" />
+        </ui:VisualElement>
+        <ui:VisualElement name="BlockParryAim" style="flex-grow: 1; flex-direction: row; align-items: center; justify-content: flex-end;">
+            <ui:Label tabindex="-1" text="Block/Parry/Aim" display-tooltip-when-elided="true" name="Label" class="label-text controls-label">
+                <Bindings>
+                    <UnityEngine.Localization.LocalizedString property="text" table="GUID:dbb3674ad34b76b458d72593e4ca5a4a" entry="Id(1103232234291200)" />
+                </Bindings>
+            </ui:Label>
+            <ui:VisualElement name="Keyboard" class="input-key-sprite" style="flex-grow: 0; background-image: url(&quot;project://database/Assets/Graphics/Sprites/Keyboard%20&amp;%20Mouse/Dark/Mouse_Right_Key_Dark%201.png?fileID=2800000&amp;guid=3ba8d7a7261960f4da5bf3c32b5cf26a&amp;type=3#Mouse_Right_Key_Dark 1&quot;);" />
+            <ui:VisualElement name="PS4" class="input-key-sprite" style="flex-grow: 0; background-image: url(&quot;project://database/Assets/Synty/InterfaceCore/Sprites/Icons_Input/PlayStation/ICON_Input_PlayStation_Button_L1_Underlay.png?fileID=2800000&amp;guid=9538c7cca4c802944bbd4855fa9246a8&amp;type=3#ICON_Input_PlayStation_Button_L1_Underlay&quot;);" />
+            <ui:VisualElement name="Xbox" class="input-key-sprite" style="flex-grow: 0; background-image: url(&quot;project://database/Assets/Synty/InterfaceCore/Sprites/Icons_Input/Xbox/ICON_Input_Xbox_Button_LB_Underlay.png?fileID=2800000&amp;guid=8e7c58424a03ff84bb21b585cfcf30d6&amp;type=3#ICON_Input_Xbox_Button_LB_Underlay&quot;);" />
+        </ui:VisualElement>
+        <ui:VisualElement name="LockOn" style="flex-grow: 1; flex-direction: row; align-items: center; justify-content: flex-end;">
+            <ui:Label tabindex="-1" text="Lock On" display-tooltip-when-elided="true" name="Jump" class="label-text controls-label">
+                <Bindings>
+                    <UnityEngine.Localization.LocalizedString property="text" table="GUID:dbb3674ad34b76b458d72593e4ca5a4a" entry="Id(1103312265805824)" />
+                </Bindings>
+            </ui:Label>
+            <ui:VisualElement name="Keyboard" class="input-key-sprite" style="flex-grow: 0; background-image: url(&quot;project://database/Assets/Graphics/Sprites/Keyboard%20&amp;%20Mouse/Dark/Mouse_Middle_Key_Dark%201.png?fileID=2800000&amp;guid=7e9366887316be845a52850015d27f6f&amp;type=3#Mouse_Middle_Key_Dark 1&quot;);" />
+            <ui:VisualElement name="PS4" class="input-key-sprite" style="flex-grow: 0; background-image: url(&quot;project://database/Assets/Synty/InterfaceCore/Sprites/Icons_Input/GamepadGeneric/ICON_Input_Stick_R3_02_Underlay.png?fileID=2800000&amp;guid=97132e0f68ffda443aba431890961bc8&amp;type=3#ICON_Input_Stick_R3_02_Underlay&quot;);" />
+            <ui:VisualElement name="Xbox" class="input-key-sprite" style="flex-grow: 0; background-image: url(&quot;project://database/Assets/Synty/InterfaceCore/Sprites/Icons_Input/GamepadGeneric/ICON_Input_Stick_R3_02_Underlay.png?fileID=2800000&amp;guid=97132e0f68ffda443aba431890961bc8&amp;type=3#ICON_Input_Stick_R3_02_Underlay&quot;);" />
+        </ui:VisualElement>
+        <ui:VisualElement name="HeavyAttack" style="flex-grow: 1; flex-direction: row; align-items: center; justify-content: flex-end;">
+            <ui:Label tabindex="-1" text="Heavy Attack" display-tooltip-when-elided="true" name="HeavyAttackKeyLabel" class="label-text controls-label" />
+            <ui:VisualElement name="Keyboard" class="input-key-sprite" style="flex-grow: 0; background-image: url(&quot;project://database/Assets/Graphics/Sprites/Keyboard%20&amp;%20Mouse/Dark/G_Key_Dark%201.png?fileID=2800000&amp;guid=c15ee872cb005d349b47a8435da44a48&amp;type=3#G_Key_Dark 1&quot;);" />
+            <ui:VisualElement name="PS4" class="input-key-sprite" style="flex-grow: 0; background-image: url(&quot;project://database/Assets/Synty/InterfaceCore/Sprites/Icons_Input/PlayStation/ICON_Input_PlayStation_Button_R2_Underlay.png?fileID=2800000&amp;guid=1a044ff84bbf77949840887227a78f85&amp;type=3#ICON_Input_PlayStation_Button_R2_Underlay&quot;);" />
+            <ui:VisualElement name="Xbox" class="input-key-sprite" style="flex-grow: 0; background-image: url(&quot;project://database/Assets/Synty/InterfaceCore/Sprites/Icons_Input/Xbox/ICON_Input_Xbox_Button_RT_Underlay.png?fileID=2800000&amp;guid=cec53ee04ac522844b4ab3612a08a3a5&amp;type=3#ICON_Input_Xbox_Button_RT_Underlay&quot;);" />
+            <ui:Button text="Button" name="Rebind" class="primary-button controls-rebind-button">
+                <Bindings>
+                    <UnityEngine.Localization.LocalizedString property="text" table="GUID:dbb3674ad34b76b458d72593e4ca5a4a" entry="Id(121420431740628992)" />
+                </Bindings>
+            </ui:Button>
+        </ui:VisualElement>
+        <ui:VisualElement name="MainMenu" style="flex-grow: 1; flex-direction: row; align-items: center; justify-content: flex-end;">
+            <ui:Label tabindex="-1" text="Main Menu" display-tooltip-when-elided="true" name="Jump" class="label-text controls-label">
+                <Bindings>
+                    <UnityEngine.Localization.LocalizedString property="text" table="GUID:dbb3674ad34b76b458d72593e4ca5a4a" entry="Id(1103801015468032)" />
+                </Bindings>
+            </ui:Label>
+            <ui:VisualElement name="Keyboard" class="input-key-sprite" style="flex-grow: 0; background-image: url(&quot;project://database/Assets/Graphics/Sprites/Keyboard%20&amp;%20Mouse/Dark/Esc_Key_Dark%201.png?fileID=2800000&amp;guid=d8dfd9619782d1e47bef7ca1a1fca0de&amp;type=3#Esc_Key_Dark 1&quot;);" />
+            <ui:VisualElement name="PS4" class="input-key-sprite" style="flex-grow: 0; background-image: url(&quot;project://database/Assets/Graphics/Sprites/Inputs%20&amp;%20Gamepad/PS4%20Home%20Button.png?fileID=2800000&amp;guid=116196920cf69984fbaf2f953cb5a632&amp;type=3#PS4 Home Button&quot;); -unity-background-image-tint-color: rgb(255, 255, 255);" />
+            <ui:VisualElement name="Xbox" class="input-key-sprite" style="flex-grow: 0; background-image: url(&quot;project://database/Assets/Graphics/Sprites/Inputs%20&amp;%20Gamepad/Xbox%20Home.png?fileID=2800000&amp;guid=ed2a39c4df28b12478d36e6b308d4391&amp;type=3#Xbox Home&quot;); -unity-background-image-tint-color: rgb(255, 255, 255);" />
+        </ui:VisualElement>
+        <ui:VisualElement name="SaveGame" style="flex-grow: 1; flex-direction: row; align-items: center; justify-content: flex-end;">
+            <ui:Label tabindex="-1" text="Save Game" display-tooltip-when-elided="true" name="Jump" class="label-text controls-label">
+                <Bindings>
+                    <UnityEngine.Localization.LocalizedString property="text" table="GUID:dbb3674ad34b76b458d72593e4ca5a4a" entry="Id(1103728307208192)" />
+                </Bindings>
+            </ui:Label>
+            <ui:VisualElement class="input-key-sprite" style="flex-grow: 0; background-image: url(&quot;project://database/Assets/Graphics/Sprites/Keyboard%20&amp;%20Mouse/Dark/F5_Key_Dark%201.png?fileID=2800000&amp;guid=52ea363406b43f24cb3bb62e60c5bab0&amp;type=3#F5_Key_Dark 1&quot;);" />
+        </ui:VisualElement>
+        <ui:VisualElement name="LoadGame" style="flex-grow: 1; flex-direction: row; align-items: center; justify-content: flex-end;">
+            <ui:Label tabindex="-1" text="Load Game" display-tooltip-when-elided="true" name="Jump" class="label-text controls-label">
+                <Bindings>
+                    <UnityEngine.Localization.LocalizedString property="text" table="GUID:dbb3674ad34b76b458d72593e4ca5a4a" entry="Id(1103653547933696)" />
+                </Bindings>
+            </ui:Label>
+            <ui:VisualElement class="input-key-sprite" style="flex-grow: 0; background-image: url(&quot;project://database/Assets/Graphics/Sprites/Keyboard%20&amp;%20Mouse/Dark/F9_Key_Dark%201.png?fileID=2800000&amp;guid=26e2d4a6e056fff4b94ea94d3a3a03d9&amp;type=3#F9_Key_Dark 1&quot;);" />
+        </ui:VisualElement>
+        <ui:VisualElement name="CustomizeCharacter" style="flex-grow: 1; flex-direction: row; align-items: center; justify-content: flex-end;">
+            <ui:Label tabindex="-1" text="Main Menu" display-tooltip-when-elided="true" name="Jump" class="label-text controls-label">
+                <Bindings>
+                    <UnityEngine.Localization.LocalizedString property="text" table="GUID:dbb3674ad34b76b458d72593e4ca5a4a" entry="Id(1103566235107328)" />
+                </Bindings>
+            </ui:Label>
+            <ui:VisualElement class="input-key-sprite" style="flex-grow: 0; background-image: url(&quot;project://database/Assets/Graphics/Sprites/Keyboard%20&amp;%20Mouse/Dark/F6_Key_Dark%201.png?fileID=2800000&amp;guid=3e56f02e2e23b634cbb60300cbf8b464&amp;type=3#F6_Key_Dark 1&quot;);" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>
