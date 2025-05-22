@@ -70,9 +70,13 @@ namespace AF.Inventory
         {
             if (arrowPlaceholderInstances.ContainsKey(arrow))
             {
-                arrowPlaceholderInstances[arrow].SetActive(true);
+                if (playerManager.equipmentDatabase.GetCurrentWeapon() != null && playerManager.equipmentDatabase.GetCurrentWeapon().IsCompatibleWithAmmo(arrow))
+                {
+                    arrowPlaceholderInstances[arrow].SetActive(true);
+                }
             }
         }
+
         public void HideArrowPlaceholders()
         {
             foreach (KeyValuePair<Arrow, GameObject> keyValuePair in arrowPlaceholderInstances)

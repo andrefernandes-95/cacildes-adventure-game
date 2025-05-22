@@ -139,6 +139,16 @@ namespace AF
                 }
             );
         }
-    }
 
+        public string GetBonfireLocalizedNameByBonfireId(string bonfireId)
+        {
+            var target = bonfireLocations.Find(x => x.name == bonfireId);
+            if (target == null)
+            {
+                return "Unknown Bonfire";
+            }
+
+            return Utils.IsPortuguese() ? target.portugueseName : target.englishName;
+        }
+    }
 }

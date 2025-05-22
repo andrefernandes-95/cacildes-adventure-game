@@ -25,8 +25,6 @@ namespace AF.Music
         Coroutine FadeInCoreCoroutine;
         Coroutine FadeOutCoreCoroutine;
 
-        public float fadeDuration = 1f;
-
         // Flags
         public bool isPlayingBossMusic = false;
 
@@ -83,7 +81,7 @@ namespace AF.Music
             yield return FadeCore(fadeOut: false);
         }
 
-        IEnumerator FadeCore(bool fadeOut)
+        IEnumerator FadeCore(bool fadeOut, float fadeDuration = 1, bool clearMusic = true)
         {
             float targetVolume = fadeOut ? 0f : gameSettings.GetMusicVolume();
             float startVolume = bgmAudioSource.volume;
@@ -102,7 +100,11 @@ namespace AF.Music
             if (fadeOut)
             {
                 bgmAudioSource.Stop();
-                bgmAudioSource.clip = null;
+
+                if (clearMusic)
+                {
+                    bgmAudioSource.clip = null;
+                }
             }
         }
 
@@ -198,6 +200,33 @@ namespace AF.Music
         public bool IsNotPlayingMusic()
         {
             return this.bgmAudioSource.clip == null;
+        }
+
+        public void PlayMusicalEffect(AudioClip musicEffect)
+        {
+            StartCoroutine(PauseMusicPlayEffectThenResume_Coroutine(musicEffect));
+        }
+
+        IEnumerator PauseMusicPlayEffectThenResume_Coroutine(AudioClip musicEffect)
+        {
+            if (bgmAudioSource.isPlaying)
+            {
+                // Fade out the music before pausing
+                yield return FadeCore(fadeOut: true, .1f, false);
+            }
+
+            // Play the one-shot musical effect
+            sfxAudioSource.PlayOneShot(musicEffect);
+
+            // Wait until the sound finishes playing
+            yield return new WaitForSeconds(musicEffect.length);
+
+            // Resume the original music clip with fade-in
+            if (bgmAudioSource.clip != null)
+            {
+                bgmAudioSource.Play();
+                FadeInCoreCoroutine = StartCoroutine(FadeCore(fadeOut: false));
+            }
         }
     }
 }

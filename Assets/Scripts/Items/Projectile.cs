@@ -132,7 +132,7 @@ namespace AF
                     damage.ScaleSpell(
                         playerManager.attackStatManager, playerManager.attackStatManager.equipmentDatabase.GetCurrentWeapon(), 0, false, false, false);
                 }
-                else if (playerManager.attackStatManager.HasBowEquipped())
+                else if (playerManager.attackStatManager.HasRangeWeaponEquipped())
                 {
                     damage.ScaleProjectile(playerManager.attackStatManager, playerManager.attackStatManager.equipmentDatabase.GetCurrentWeapon());
                 }

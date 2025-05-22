@@ -1,12 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
-using AF.Equipment;
 using AF.Inventory;
-using AF.Stats;
-using AYellowpaper.SerializedCollections;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.InputSystem;
 using UnityEngine.Localization.Settings;
 using UnityEngine.UIElements;
 
@@ -32,6 +28,7 @@ namespace AF.UI.EquipmentMenu
         ScrollView itemsScrollView;
 
         Label menuLabel;
+        VisualElement warning;
 
         public const string SCROLL_ITEMS_LIST = "ItemsList";
 
@@ -66,6 +63,12 @@ namespace AF.UI.EquipmentMenu
 
         [HideInInspector] public UnityEvent onEnabled;
         [HideInInspector] public UnityEvent onDisabled;
+
+
+        [Header("Item Type Tooltips")]
+        [SerializeField] Color meleeWeaponTypeColor;
+        [SerializeField] Color rangeWeaponTypeColor;
+        [SerializeField] Color magicWeaponTypeColor;
 
         private void OnEnable()
         {
@@ -104,6 +107,7 @@ namespace AF.UI.EquipmentMenu
         {
             root = uIDocument.rootVisualElement;
             menuLabel = root.Q<Label>("MenuLabel");
+            warning = root.Q<VisualElement>("Warning");
 
             returnButton = root.Q<Button>("ReturnButton");
             UIUtils.SetupButton(returnButton, () =>
@@ -123,7 +127,7 @@ namespace AF.UI.EquipmentMenu
         public void DrawUI(EquipmentType equipmentType, int slotIndex)
         {
             menuLabel.style.display = DisplayStyle.None;
-
+            warning.style.display = DisplayStyle.None;
 
             if (equipmentType == EquipmentType.WEAPON)
             {
@@ -136,10 +140,38 @@ namespace AF.UI.EquipmentMenu
             else if (equipmentType == EquipmentType.ARROW)
             {
                 PopulateScrollView<Arrow>(false, slotIndex);
+
+                if (!equipmentDatabase.IsRangeWeaponEquippedOnAnySlot())
+                {
+                    warning.style.display = DisplayStyle.Flex;
+
+                    if (Utils.IsPortuguese())
+                    {
+                        warning.Q<Label>().text = "Precisas de equipar uma arma de longo alcance para usares projéteis.";
+                    }
+                    else
+                    {
+                        warning.Q<Label>().text = "You need to equip a ranged weapon to use projectiles.";
+                    }
+                }
             }
             else if (equipmentType == EquipmentType.SPELL)
             {
                 PopulateScrollView<Spell>(false, slotIndex);
+
+                if (!equipmentDatabase.IsStaffWeaponEquippedOnAnySlot())
+                {
+                    warning.style.display = DisplayStyle.Flex;
+
+                    if (Utils.IsPortuguese())
+                    {
+                        warning.Q<Label>().text = "Precisas de equipar um cajado para usares feitiços.";
+                    }
+                    else
+                    {
+                        warning.Q<Label>().text = "You need to equip a staff to cast spells.";
+                    }
+                }
             }
             else if (equipmentType == EquipmentType.HELMET)
             {
@@ -300,6 +332,9 @@ namespace AF.UI.EquipmentMenu
 
                 instance.Q<VisualElement>("Sprite").style.backgroundImage = new StyleBackground(item.Key.sprite);
                 var itemName = instance.Q<Label>("ItemName");
+                var itemType = instance.Q<Label>("ItemType");
+                itemType.style.display = DisplayStyle.None;
+
                 itemName.text = item.Key.GetName();
 
                 if (item.Key is Consumable || item.Key is Arrow || showOnlyKeyItems)
@@ -310,6 +345,25 @@ namespace AF.UI.EquipmentMenu
                 if (isEquipped)
                 {
                     itemName.text += " " + LocalizationSettings.StringDatabase.GetLocalizedString("UIDocuments", "(Equipped)");
+                }
+
+                if (item.Key is Weapon weapon)
+                {
+                    itemType.text = Utils.IsPortuguese() ? "Corpo a Corpo" : "Melee Weapon";
+                    itemType.style.color = meleeWeaponTypeColor;
+
+                    if (weapon.damage.weaponAttackType == WeaponAttackType.Range)
+                    {
+                        itemType.text = Utils.IsPortuguese() ? "Longo Alcance" : "Ranged Weapon";
+                        itemType.style.color = rangeWeaponTypeColor;
+                    }
+                    else if (weapon.damage.weaponAttackType == WeaponAttackType.Staff)
+                    {
+                        itemType.text = Utils.IsPortuguese() ? "Cajado Mágico" : "Magic Staff";
+                        itemType.style.color = magicWeaponTypeColor;
+                    }
+
+                    itemType.style.display = DisplayStyle.Flex;
                 }
 
                 var equipmentColorIndicator = GetEquipmentColorIndicator(item.Key);

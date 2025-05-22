@@ -13,17 +13,28 @@ namespace AF
 
     public class QuestParent : ScriptableObject
     {
+        [Header("Quest Type")]
+        public QuestType questType;
+
         [TextArea]
         public new string name;
         public LocalizedString questName_LocalizedString;
 
         public Texture questIcon;
 
+        [Header("Quest Objectives")]
         public string[] questObjectives;
-
         public LocalizedString[] questObjectives_LocalizedString;
+        public QuestObjectiveInfo[] questObjectiveInfos;
+        public Character questGiver;
+        public Character[] relatedCharacters;
 
+        [Header("Quest Progress")]
         public int questProgress = -1;
+
+        [Header("Quest Description")]
+        public LocalizedString questDescription;
+
 
         [Header("Databases")]
         public QuestsDatabase questsDatabase;
@@ -83,6 +94,12 @@ namespace AF
                     LogAnalytic(AnalyticsUtils.OnQuestProgressed(name, questObjective));
                 }
             }
+
+            if (IsCompleted() && IsTracked())
+            {
+                // Untrack quest
+                questsDatabase.UntrackQuest(this);
+            }
         }
 
         public void SetProgressIfHigher(int progress)
@@ -103,11 +120,15 @@ namespace AF
             questsDatabase.SetQuestToTrack(this);
         }
 
+        public bool IsTracked()
+        {
+            return questsDatabase.IsQuestTracked(this);
+        }
+
         public bool IsObjectiveCompleted(string questObjective)
         {
             return questProgress > Array.IndexOf(questObjectives, questObjective);
         }
-
 
         void LogAnalytic(string eventName)
         {
@@ -117,6 +138,11 @@ namespace AF
             }
 
             GameAnalytics.NewDesignEvent(eventName);
+        }
+
+        public bool HasStarted()
+        {
+            return questProgress != -1;
         }
     }
 }

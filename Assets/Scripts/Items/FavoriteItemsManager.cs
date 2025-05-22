@@ -130,7 +130,7 @@ namespace AF
                 return;
             }
 
-            if (equipmentDatabase.IsBowEquipped())
+            if (equipmentDatabase.IsRangeWeaponEquipped())
             {
                 equipmentDatabase.SwitchToNextArrow();
             }

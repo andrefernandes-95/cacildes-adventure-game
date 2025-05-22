@@ -3,6 +3,7 @@ using AF.Events;
 using TigerForge;
 using UnityEditor;
 using UnityEngine;
+using System.Linq;
 
 namespace AF
 {
@@ -14,7 +15,7 @@ namespace AF
         [Header("Quests")]
         public List<QuestParent> questsReceived = new();
 
-        public int currentTrackedQuestIndex = -1;
+        public List<QuestParent> trackedQuests = new();
 
 
 #if UNITY_EDITOR 
@@ -37,7 +38,7 @@ namespace AF
         public void Clear()
         {
             questsReceived.Clear();
-            currentTrackedQuestIndex = -1;
+            trackedQuests.Clear();
 
             foreach (var quest in Resources.LoadAll<QuestParent>("Quests"))
             {
@@ -47,48 +48,31 @@ namespace AF
 
         public bool IsQuestTracked(QuestParent questParent)
         {
-            if (currentTrackedQuestIndex == -1)
-            {
-                return false;
-            }
-
-            return questsReceived[currentTrackedQuestIndex] == questParent;
+            return trackedQuests.Contains(questParent);
         }
 
         public void SetQuestToTrack(QuestParent questParent)
         {
             if (IsQuestTracked(questParent))
             {
-                currentTrackedQuestIndex = -1;
+                trackedQuests.Remove(questParent);
             }
             else
             {
-                currentTrackedQuestIndex = questsReceived.IndexOf(questParent);
+                trackedQuests.Add(questParent);
             }
 
             EventManager.EmitEvent(EventMessages.ON_QUEST_TRACKED);
         }
 
-        public string GetCurrentTrackedQuestObjective()
+        public void UntrackQuest(QuestParent questParent)
         {
-            if (currentTrackedQuestIndex == -1)
+            if (IsQuestTracked(questParent))
             {
-                return "";
+                trackedQuests.Remove(questParent);
             }
 
-            if (questsReceived == null || questsReceived.Count <= 0)
-            {
-                return "";
-            }
-
-            QuestParent questParent = questsReceived[currentTrackedQuestIndex];
-
-            if (questParent != null && questParent.questProgress >= 0 && questParent.IsCompleted() == false)
-            {
-                return questParent.questObjectives_LocalizedString[questParent.questProgress].GetLocalizedString();
-            }
-
-            return "";
+            EventManager.EmitEvent(EventMessages.ON_QUEST_TRACKED);
         }
 
         public void AddQuest(QuestParent questParent)

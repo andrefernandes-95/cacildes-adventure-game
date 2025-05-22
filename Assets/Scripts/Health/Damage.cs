@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using UnityEngine.Localization.Settings;
 
 namespace AF.Health
 {
@@ -238,5 +239,6 @@ namespace AF.Health
 
             return newDamage;
         }
+
     }
 }

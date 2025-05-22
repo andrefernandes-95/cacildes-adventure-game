@@ -38,6 +38,11 @@ namespace AF
                 return;
             }
 
+            if (playerManager.isBusy)
+            {
+                return;
+            }
+
             equipmentDatabase.SetIsTwoHanding(!equipmentDatabase.isTwoHanding);
             soundbank.PlaySound(soundbank.switchTwoHand);
         }

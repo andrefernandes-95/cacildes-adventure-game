@@ -48,6 +48,7 @@ namespace AF
 		public UnityEvent onMenuEvent;
 		public UnityEvent onCustomizeCharacter;
 		[SerializeField] MenuManager menuManager;
+		public UnityEvent onMainMenuUnequipSlot;
 
 		[Header("Movement Settings")]
 		public bool analogMovement;
@@ -362,6 +363,8 @@ namespace AF
 			{
 				equipmentSlots.OnUnequip();
 			}
+
+			onMainMenuUnequipSlot?.Invoke();
 		}
 
 		public bool IsPS4Controller()

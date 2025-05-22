@@ -109,7 +109,7 @@ namespace AF
 
         bool CanBlock()
         {
-            if (equipmentDatabase.IsBowEquipped())
+            if (equipmentDatabase.IsRangeWeaponEquipped())
             {
                 return false;
             }

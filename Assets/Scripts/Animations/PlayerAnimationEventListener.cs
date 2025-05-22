@@ -52,6 +52,7 @@ namespace AF.Animations
                 playerManager.playerWeaponsManager.leftHandHitbox.DisableHitbox();
             }
 
+            playerManager.playerCombatController.ResetCanAttack();
         }
 
         public void OpenRightWeaponHitbox()
@@ -79,6 +80,7 @@ namespace AF.Animations
                 playerManager.playerWeaponsManager.rightHandHitbox.DisableHitbox();
             }
 
+            playerManager.playerCombatController.ResetCanAttack();
         }
 
         public void OpenLeftFootHitbox()
@@ -100,6 +102,7 @@ namespace AF.Animations
                 playerManager.playerCombatController.isAttackingWithFoot = false;
             }
 
+            playerManager.playerCombatController.ResetCanAttack();
         }
 
         public void OpenRightFootHitbox()
@@ -121,7 +124,9 @@ namespace AF.Animations
                 playerManager.playerCombatController.isAttackingWithFoot = false;
             }
 
+            playerManager.playerCombatController.ResetCanAttack();
         }
+
         public void EnableRotation()
         {
             playerManager.thirdPersonController.canRotateCharacter = true;
@@ -165,6 +170,7 @@ namespace AF.Animations
         public void OnFireArrow()
         {
             playerManager.playerShootingManager.OnShoot();
+            playerManager.projectileSpawner.HideArrowPlaceholders();
         }
 
         public void OnFireMultipleArrows()
@@ -317,9 +323,5 @@ namespace AF.Animations
         {
         }
 
-        public void IsFetchingArrow()
-        {
-            playerManager.isBusy = false;
-        }
     }
 }

@@ -316,14 +316,24 @@ public class EquipmentDatabase : ScriptableObject
         return accessories.Contains(accessory);
     }
 
-    public bool IsBowEquipped()
+    public bool IsRangeWeaponEquipped()
     {
         return GetCurrentWeapon() != null && GetCurrentWeapon().damage.weaponAttackType == WeaponAttackType.Range;
+    }
+
+    public bool IsRangeWeaponEquippedOnAnySlot()
+    {
+        return weapons.Any(wp => wp != null && wp.damage.weaponAttackType == WeaponAttackType.Range);
     }
 
     public bool IsStaffEquipped()
     {
         return GetCurrentWeapon() != null && GetCurrentWeapon().damage.weaponAttackType == WeaponAttackType.Staff;
+    }
+
+    public bool IsStaffWeaponEquippedOnAnySlot()
+    {
+        return weapons.Any(wp => wp != null && wp.damage.weaponAttackType == WeaponAttackType.Staff);
     }
 
     public bool HasEnoughCurrentArrows()

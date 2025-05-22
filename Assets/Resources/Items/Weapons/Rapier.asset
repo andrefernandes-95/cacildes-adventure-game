@@ -46,7 +46,6 @@ MonoBehaviour:
     _serializedList: []
   notes: 
   location: 
-  weaponCategory: 0
   damage:
     physical: 30
     fire: 0
@@ -186,8 +185,7 @@ MonoBehaviour:
   intelligenceRequired: 0
   positiveReputationRequired: 0
   negativeReputationRequired: 0
-  lightAttackStaminaCost: 15
-  heavyAttackStaminaCost: 28
+  staminaCostPerAttack: 30
   strengthScaling: 4
   dexterityScaling: 1
   intelligenceScaling: 5
@@ -207,19 +205,23 @@ MonoBehaviour:
     animationClip: {fileID: 7400000, guid: 7de9548e1fbb48a4d973a1d18dc201d5, type: 2}
   - animationName: Cacildes - Sprint
     animationClip: {fileID: 7400000, guid: c446ed76b80fe064a9e70d0555a6d27f, type: 3}
+  - animationName: Cacildes - Light Attack - 3
+    animationClip: {fileID: 7400000, guid: 350f9c32cd8845b45acb4df4e765a447, type: 2}
   twoHandOverrides:
   - animationName: Cacildes - Idle
     animationClip: {fileID: 8964600445696990181, guid: 0de582e2e8cb38545b545f8809f89464, type: 3}
   - animationName: Cacildes - Light Attack - 1
-    animationClip: {fileID: -2476186774619786600, guid: 6522955476234314ea736f6dc351590f, type: 3}
+    animationClip: {fileID: 8057410621142222933, guid: 6025cc3edf494c92aa287ca73607f247, type: 3}
   - animationName: Cacildes - Light Attack - 2
-    animationClip: {fileID: -6978093718252760216, guid: d4c24407e77722e439fafea34fd72f96, type: 3}
+    animationClip: {fileID: -3886548430630302617, guid: 6025cc3edf494c92aa287ca73607f247, type: 3}
   - animationName: Cacildes - Run
     animationClip: {fileID: -1101304024635554206, guid: 14ad04e1468f2a641b13e69b4eb7f77c, type: 3}
   - animationName: Cacildes - Heavy Attack - 1
-    animationClip: {fileID: 7400000, guid: 7de9548e1fbb48a4d973a1d18dc201d5, type: 2}
+    animationClip: {fileID: 4101367630973519119, guid: 083fdd3b80f2449dafc30c8ed06d8e37, type: 3}
   - animationName: Cacildes - Walk
     animationClip: {fileID: 8675331951642062190, guid: 93a4ec6288213534ca9d45ace85cff95, type: 3}
+  - animationName: Cacildes - Light Attack - 3
+    animationClip: {fileID: 7400000, guid: 795d5c8e549d4720ba71a13d0bf99d25, type: 3}
   blockOverrides:
   - animationName: Cacildes - Block - Run
     animationClip: {fileID: 2020037054592537271, guid: bc72da370ed90b54baeddb22f6b96f63, type: 3}
@@ -247,17 +249,16 @@ MonoBehaviour:
     animationClip: {fileID: -4707334615908003554, guid: 93d8a8a075e8269488ec031ecdad4fc6, type: 3}
   - animationName: Counter Attack
     animationClip: {fileID: -5963623502854497957, guid: 819b611452413ac4cbe14d8781ac0168, type: 3}
-  - animationName: Frank_Sword2@Parry2
+  - animationName: Cacildes - Parrying
     animationClip: {fileID: 7400000, guid: 118861ff34cce98438a904a278539d65, type: 2}
   lightAttackCombos: 2
   heavyAttackCombos: 1
-  useUpperLayerAnimations: 0
-  allowUpperLayerWhenOneHanding: 1
-  allowUpperLayerWhenTwoHanding: 1
+  th_lightAttackCombos: 2
+  th_heavyAttackCombos: 1
   halveDamage: 0
   speedPenalty: 0
-  oneHandAttackSpeedPenalty: 1.2
-  twoHandAttackSpeedPenalty: 1.35
+  oneHandAttackSpeedPenalty: 1.05
+  twoHandAttackSpeedPenalty: 1.1
   amountOfGoldReceivedPerHit: 0
   doubleCoinsUponKillingEnemies: 0
   doubleDamageDuringNightTime: 0
@@ -266,8 +267,7 @@ MonoBehaviour:
   jumpAttackVelocity: 0
   isHolyWeapon: 0
   isHexWeapon: 0
-  isCrossbow: 0
-  isHuntingRifle: 0
+  projectileType: {fileID: 0}
   blockAbsorption: 0.8
   shouldRegenerateMana: 0
   ignoreSpellsAnimationClips: 0

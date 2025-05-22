@@ -48,6 +48,11 @@ namespace AF.Shooting
         public bool isAiming = false;
         public bool isShooting = false;
 
+        [Header("Enums")]
+        public ProjectileType arrowProjectileType;
+        public ProjectileType boltProjectileType;
+        public ProjectileType bulletProjectileType;
+
         // For cache purposes
         Spell previousSpell;
 
@@ -65,7 +70,11 @@ namespace AF.Shooting
         public GameObject queuedProjectile;
         public Spell queuedSpell;
 
-        public bool canShootBow = true;
+        public bool hasAimShotCooldown = false;
+
+        [Header("Sounds")]
+        [SerializeField] AudioSource audioSource;
+        [SerializeField] AudioClip drawArrowSfx;
 
         public void ResetStates()
         {
@@ -73,18 +82,6 @@ namespace AF.Shooting
 
             queuedProjectile = null;
             queuedSpell = null;
-
-            Invoke(nameof(ResetCanShootBow), 0.1f);
-
-            if (isAiming && equipmentDatabase.IsBowEquipped())
-            {
-                ShowArrowPlaceholder();
-            }
-        }
-
-        void ResetCanShootBow()
-        {
-            canShootBow = true;
         }
 
         void SetupCinemachine3rdPersonFollowReference()
@@ -97,31 +94,62 @@ namespace AF.Shooting
             cinemachine3RdPersonFollow = aimingCamera.GetComponent<CinemachineVirtualCamera>().GetCinemachineComponent<Cinemachine3rdPersonFollow>();
         }
 
-        bool IsRangeWeaponIncompatibleWithProjectile()
+        bool IsRangeWeaponCompatibleWithProjectile()
         {
             Weapon currentRangeWeapon = equipmentDatabase.GetCurrentWeapon();
             Arrow arrow = equipmentDatabase.GetCurrentArrow();
 
             if (currentRangeWeapon == null || arrow == null)
             {
-                return true;
-            }
-
-            if (currentRangeWeapon.isHuntingRifle && arrow.isRifleBullet)
-            {
                 return false;
             }
 
-            if (currentRangeWeapon.isCrossbow && arrow.isBolt)
+            if (currentRangeWeapon.projectileType == bulletProjectileType && arrow.projectileType != bulletProjectileType)
             {
+                string alert = "";
+                if (Utils.IsPortuguese())
+                {
+                    alert = "Precisas de balas para usar esta arma.";
+                }
+                else
+                {
+                    alert = "You need bullets to use this weapon.";
+                }
+
+                GetPlayerManager().uIDocumentAlert.ShowAlert(alert);
                 return false;
             }
 
-            bool isBow = currentRangeWeapon.isCrossbow == false && currentRangeWeapon.isHuntingRifle == false;
-            bool isArrow = arrow.isRifleBullet == false && arrow.isBolt == false;
-
-            if (isBow && isArrow)
+            if (currentRangeWeapon.projectileType == boltProjectileType && arrow.projectileType != boltProjectileType)
             {
+                string alert = "";
+
+                if (Utils.IsPortuguese())
+                {
+                    alert = "Precisas de virotes para usar esta besta.";
+                }
+                else
+                {
+                    alert = "You need bolts to use this crossbow.";
+                }
+
+                GetPlayerManager().uIDocumentAlert.ShowAlert(alert);
+                return false;
+            }
+
+            if (currentRangeWeapon.projectileType == arrowProjectileType && arrow.projectileType != arrowProjectileType)
+            {
+                string alert = "";
+                if (Utils.IsPortuguese())
+                {
+                    alert = "Precisas de flechas para usar este arco.";
+                }
+                else
+                {
+                    alert = "You need arrows to use this bow.";
+                }
+
+                GetPlayerManager().uIDocumentAlert.ShowAlert(alert);
                 return false;
             }
 
@@ -135,16 +163,20 @@ namespace AF.Shooting
         {
             if (CanShoot())
             {
-                if (equipmentDatabase.IsBowEquipped() && equipmentDatabase.HasEnoughCurrentArrows())
+                if (equipmentDatabase.IsRangeWeaponEquipped() && equipmentDatabase.HasEnoughCurrentArrows())
                 {
-                    if (IsRangeWeaponIncompatibleWithProjectile())
+                    if (!IsRangeWeaponCompatibleWithProjectile())
+                    {
+                        return;
+                    }
+
+                    if (isAiming && hasAimShotCooldown)
                     {
                         return;
                     }
 
                     ShootBow(equipmentDatabase.GetCurrentArrow(), transform, lockOnManager.nearestLockOnTarget?.transform);
                     uIDocumentPlayerHUDV2.UpdateEquipment();
-                    canShootBow = false;
                     return;
                 }
 
@@ -205,7 +237,7 @@ namespace AF.Shooting
 
             SetupCinemachine3rdPersonFollowReference();
 
-            if (equipmentDatabase.IsBowEquipped())
+            if (equipmentDatabase.IsRangeWeaponEquipped())
             {
                 OnAimingBowBegin();
             }
@@ -222,7 +254,8 @@ namespace AF.Shooting
         {
             GetPlayerManager().animator.SetBool(hashIsAiming, true);
 
-            cinemachine3RdPersonFollow.CameraDistance = equipmentDatabase.GetCurrentWeapon().isCrossbow ? crossbowAimCameraDistance : bowAimCameraDistance;
+            cinemachine3RdPersonFollow.CameraDistance = equipmentDatabase.GetCurrentWeapon().projectileType == boltProjectileType
+                ? crossbowAimCameraDistance : bowAimCameraDistance;
 
             onBowAim_Begin?.Invoke();
 
@@ -234,6 +267,11 @@ namespace AF.Shooting
             if (equipmentDatabase.GetCurrentArrow() != null)
             {
                 GetPlayerManager().projectileSpawner.ShowArrowPlaceholder(equipmentDatabase.GetCurrentArrow());
+
+                if (drawArrowSfx != null)
+                {
+                    audioSource.PlayOneShot(drawArrowSfx);
+                }
             }
         }
 
@@ -256,26 +294,26 @@ namespace AF.Shooting
 
         private void Update()
         {
-            lookAtConstraint.constraintActive = isAiming && equipmentDatabase.IsBowEquipped();
+            lookAtConstraint.constraintActive = isAiming && equipmentDatabase.IsRangeWeaponEquipped();
         }
 
-        public void ShootBow(ConsumableProjectile consumableProjectile, Transform origin, Transform lockOnTarget)
+        public void ShootBow(Arrow arrow, Transform origin, Transform lockOnTarget)
         {
-            if (equipmentDatabase.IsBowEquipped())
+            ShowArrowPlaceholder();
+
+            if (equipmentDatabase.IsRangeWeaponEquipped())
             {
                 achievementOnShootingBowForFirstTime.AwardAchievement();
             }
 
             if (equipmentDatabase.GetCurrentArrow().loseUponFiring)
             {
-                inventoryDatabase.RemoveItem(consumableProjectile, 1);
+                inventoryDatabase.RemoveItem(arrow, 1);
             }
 
             GetPlayerManager().staminaStatManager.DecreaseStamina(minimumStaminaToShoot);
 
-            FireProjectile(consumableProjectile.projectile.gameObject, lockOnTarget, null);
-
-            GetPlayerManager().projectileSpawner.HideArrowPlaceholders();
+            FireProjectile(arrow.arrowProjectile.gameObject, lockOnTarget, null);
         }
 
 
@@ -317,7 +355,7 @@ namespace AF.Shooting
                 characterBaseManager.transform.rotation = Quaternion.LookRotation(rotation);
             }
 
-            if (equipmentDatabase.IsBowEquipped())
+            if (equipmentDatabase.IsRangeWeaponEquipped())
             {
                 if (isAiming)
                 {
@@ -359,7 +397,7 @@ namespace AF.Shooting
 
             Vector3 origin = ray.GetPoint(distanceFromCamera);
 
-            if (equipmentDatabase.IsBowEquipped())
+            if (equipmentDatabase.IsRangeWeaponEquipped())
             {
                 HandleArrowProjectile(queuedProjectile);
             }
@@ -387,26 +425,45 @@ namespace AF.Shooting
 
         void HandleArrowProjectile(GameObject projectile)
         {
+            if (projectile == null)
+            {
+                return;
+            }
+
             // Origin: where the arrow starts
 
-            Ray ray = Camera.main.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2, 0f));
+            Ray ray = Camera.main.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2, playerShootingHandRef.transform.position.z));
             Vector3 origin = isAiming ? ray.origin : playerShootingHandRef.transform.position;
             Vector3 lookPosition = ray.direction;
 
             // Instantiate projectile facing toward the screen center
-            GameObject projectileInstance = Instantiate(projectile, origin, Quaternion.LookRotation(lookPosition));
+            GameObject projectileInstance = Instantiate(projectile, origin, isAiming ? Quaternion.LookRotation(lookPosition) : playerFeetRef.transform.rotation);
+
+            // If aiming, instantiate the projectile a bit forward as to not occupy the whole screen
+            if (isAiming)
+            {
+                projectileInstance.transform.position = projectileInstance.transform.position + projectileInstance.transform.forward * 2;
+            }
 
             IProjectile[] projectileComponents = GetProjectileComponentsInChildren(projectileInstance);
 
             foreach (IProjectile componentProjectile in projectileComponents)
             {
+                Vector3 velocity = projectileInstance.transform.forward * componentProjectile.GetForwardVelocity();
+
                 componentProjectile.Shoot(characterBaseManager,
-                    projectileInstance.transform.up * componentProjectile.GetUpwardVelocity() +
-                    projectileInstance.transform.forward * componentProjectile.GetForwardVelocity(),
+                    velocity,
                     componentProjectile.GetForceMode());
             }
 
             HandleProjectileDamageManagers(projectileInstance, null);
+
+            if (isAiming)
+            {
+                hasAimShotCooldown = true;
+            }
+
+            HandleShootingArrowSideEffects(GetPlayerManager(), equipmentDatabase.GetCurrentArrow());
         }
 
 
@@ -581,7 +638,7 @@ namespace AF.Shooting
                 return false;
             }
 
-            return equipmentDatabase.IsBowEquipped() || equipmentDatabase.IsStaffEquipped();
+            return equipmentDatabase.IsRangeWeaponEquipped() || equipmentDatabase.IsStaffEquipped();
         }
 
         public override bool CanShoot()
@@ -613,18 +670,13 @@ namespace AF.Shooting
 
             // If not ranged weapons equipped, dont allow shooting
             if (
-                !equipmentDatabase.IsBowEquipped()
+                !equipmentDatabase.IsRangeWeaponEquipped()
                 && !equipmentDatabase.IsStaffEquipped())
             {
                 return false;
             }
 
             if (GetPlayerManager().thirdPersonController.isSwimming)
-            {
-                return false;
-            }
-
-            if (!canShootBow)
             {
                 return false;
             }
@@ -656,6 +708,42 @@ namespace AF.Shooting
             ShootWithoutClearingProjectilesAndSpells(true);
             queuedProjectile = null;
             queuedSpell = null;
+        }
+
+        public void ResetHasAimShotCooldown()
+        {
+            if (isAiming && equipmentDatabase.IsRangeWeaponEquipped())
+            {
+                ShowArrowPlaceholder();
+            }
+
+            hasAimShotCooldown = false;
+        }
+
+        public bool IsAimingBowOrCrossbow()
+        {
+            if (!isAiming)
+            {
+                return false;
+            }
+
+            if (equipmentDatabase.GetCurrentWeapon() != null && equipmentDatabase.GetCurrentWeapon().projectileType == bulletProjectileType)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        void HandleShootingArrowSideEffects(PlayerManager playerManager, Arrow arrowThatWasShot)
+        {
+            if (arrowThatWasShot.statusEffectsInflictedUponShootingArrow != null && arrowThatWasShot.statusEffectsInflictedUponShootingArrow.Length > 0)
+            {
+                foreach (var statusEffectEntry in arrowThatWasShot.statusEffectsInflictedUponShootingArrow)
+                {
+                    playerManager.statusController.InflictStatusEffect(statusEffectEntry.statusEffect, statusEffectEntry.amountPerHit, false);
+                }
+            }
         }
 
     }

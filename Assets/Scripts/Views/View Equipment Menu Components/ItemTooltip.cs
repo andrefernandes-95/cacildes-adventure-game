@@ -1,4 +1,5 @@
 using System;
+using AF.Health;
 using UnityEngine;
 using UnityEngine.Localization;
 using UnityEngine.Localization.Settings;
@@ -270,7 +271,6 @@ namespace AF.UI.EquipmentMenu
                 tooltipItemSprite.style.borderLeftWidth = 0;
                 tooltipItemSprite.style.borderRightWidth = 0;
                 tooltipItemSprite.style.unityBackgroundScaleMode = ScaleMode.ScaleToFit;
-                tooltip.style.width = new StyleLength(400);
             }
             else
             {
@@ -281,7 +281,6 @@ namespace AF.UI.EquipmentMenu
                 tooltipItemSprite.style.borderLeftWidth = new StyleFloat(1);
                 tooltipItemSprite.style.borderRightWidth = new StyleFloat(1);
                 tooltipItemSprite.style.unityBackgroundScaleMode = ScaleMode.ScaleAndCrop;
-                tooltip.style.width = new StyleLength(300);
             }
 
             string itemName = item.GetName().ToUpper();
@@ -293,8 +292,6 @@ namespace AF.UI.EquipmentMenu
 
             tooltipItemName.text = item.GetName();
             tooltipItemDescription.text = item.GetDescription();
-
-
 
             if (item is Weapon weapon)
             {
@@ -328,6 +325,10 @@ namespace AF.UI.EquipmentMenu
             else if (item is CraftingMaterial craftingMaterial)
             {
                 DrawCraftingMaterial(craftingMaterial);
+            }
+            else if (item is Arrow arrow)
+            {
+                DrawArrow(arrow);
             }
         }
 
@@ -495,10 +496,8 @@ namespace AF.UI.EquipmentMenu
             {
                 CreateTooltip(slashSprite, Color.white, damageTypeSlashLabel.GetLocalizedString());
             }
-            if (weapon.damage.statusEffects != null && weapon.damage.statusEffects.Length > 0)
-            {
-                CreateTooltip(statusEffectsSprite, Color.white, weapon.GetFormattedStatusDamages());
-            }
+
+            DrawStatusEffects(weapon.damage);
 
             CreateEquipLoadTooltip(weapon.speedPenalty);
 
@@ -529,7 +528,7 @@ namespace AF.UI.EquipmentMenu
             CreateTooltip(
                 staminaCostSprite,
                 Color.white,
-                String.Format(staminaCostLabel.GetLocalizedString(), weapon.lightAttackStaminaCost, weapon.heavyAttackStaminaCost));
+                String.Format(staminaCostLabel.GetLocalizedString(), weapon.GetLightAttackStaminaCost(), weapon.GetHeavyAttackStaminaCost()));
 
             if (weapon.canBeUpgraded && weapon.CanBeUpgradedFurther())
             {
@@ -1324,9 +1323,122 @@ namespace AF.UI.EquipmentMenu
                     );
                 }
             }
-
         }
-        public void CreateTooltip(Texture2D sprite, Color color, string description)
+
+        void DrawArrow(Arrow arrow)
+        {
+            if (arrow.damage.physical > 0)
+            {
+                CreateTooltip(weaponPhysicalAttackSprite, Color.white, TooltipUtils.GetArrowPhysicalDamage(arrow.damage.physical));
+            }
+
+            if (arrow.damage.fire > 0)
+            {
+                CreateTooltip(
+                    fireSprite,
+                    fire,
+                    String.Format(
+                        fireAttackLabel.GetLocalizedString(),
+                        arrow.damage.fire));
+            }
+
+            if (arrow.damage.frost > 0)
+            {
+                CreateTooltip(
+                    frostSprite,
+                    frost,
+                    String.Format(
+                        frostAttackLabel.GetLocalizedString(),
+                        arrow.damage.frost));
+            }
+
+            if (arrow.damage.lightning > 0)
+            {
+                CreateTooltip(
+                lightningSprite,
+                lightning,
+                TooltipUtils.GetArrowLightiningDamage(arrow.damage.lightning));
+            }
+
+            if (arrow.damage.darkness > 0)
+            {
+                CreateTooltip(
+                darknessSprite,
+                magic,
+                TooltipUtils.GetArrowDarknessDamage(arrow.damage.darkness));
+            }
+
+            if (arrow.damage.magic > 0)
+            {
+                CreateTooltip(
+                magicSprite,
+                magic,
+                TooltipUtils.GetArrowMagicDamage(arrow.damage.magic));
+            }
+
+            DrawStatusEffects(arrow.damage);
+
+            DrawSelfInflictedStatusEffectsForShootingArrow(arrow);
+
+            if (arrow.damage.pushForce > 0)
+            {
+                CreateTooltip(pushForceSprite, Color.white, String.Format(
+                    pushForceLabel.GetLocalizedString(), arrow.damage.pushForce));
+            }
+
+            if (arrow.damage.postureDamage > 0)
+            {
+                CreateTooltip(postureSprite, Color.white, String.Format(
+                    postureDamageLabel.GetLocalizedString(), arrow.damage.postureDamage));
+            }
+
+            if (arrow.damage.ignoreBlocking)
+            {
+                CreateTooltip(defenseAbsorptionSprite, Color.white, ignoresEnemyShields.GetLocalizedString());
+            }
+
+            if (arrow.damage.canNotBeParried)
+            {
+                CreateTooltip(defenseAbsorptionSprite, Color.white, canNotBeParried.GetLocalizedString());
+            }
+        }
+
+        void DrawStatusEffects(Damage damage)
+        {
+            if (damage.statusEffects != null && damage.statusEffects.Length > 0)
+            {
+                foreach (var statusEffect in damage.statusEffects)
+                {
+                    if (statusEffect != null)
+                    {
+                        string prefix = Utils.IsPortuguese() ? "de" : "of";
+                        string suffix = Utils.IsPortuguese() ? " infligido" : " inflicted";
+                        string text = $"+{statusEffect.amountPerHit} {prefix} {statusEffect.statusEffect.GetName()} {suffix}\n";
+                        CreateTooltip(Utils.SpriteToTexture2D(statusEffect.statusEffect.icon), statusEffect.statusEffect.barColor, text);
+                    }
+                }
+            }
+        }
+
+        void DrawSelfInflictedStatusEffectsForShootingArrow(Arrow arrow)
+        {
+            if (arrow.statusEffectsInflictedUponShootingArrow != null && arrow.statusEffectsInflictedUponShootingArrow.Length > 0)
+            {
+                foreach (var statusEffect in arrow.statusEffectsInflictedUponShootingArrow)
+                {
+                    if (statusEffect != null)
+                    {
+                        string prefix = Utils.IsPortuguese() ? "de" : "of";
+                        string suffix = Utils.IsPortuguese() ? " auto-infligido ao disparar flecha" : " self-inflicted upon firing arrow";
+                        string text = $"+{statusEffect.amountPerHit} {prefix} {statusEffect.statusEffect.GetName()} {suffix}\n";
+                        CreateTooltip(Utils.SpriteToTexture2D(statusEffect.statusEffect.icon), statusEffect.statusEffect.barColor, text);
+                    }
+                }
+            }
+        }
+
+
+        void CreateTooltip(Texture2D sprite, Color color, string description)
         {
             VisualElement clone = itemEffectTooltipEntry.CloneTree();
 

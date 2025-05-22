@@ -15,88 +15,102 @@ namespace AF
 
             string damageExplanation = "";
 
-            if (LocalizationSettings.SelectedLocale.Identifier.Code == "en")
+            if (Utils.IsPortuguese())
             {
-                damageExplanation += $"Total Physical Damage: {totalPhysicalDamage}\n\n";
+                damageExplanation += $"Dano Físico Total: {totalPhysicalDamage}\n";
+            }
+            else
+            {
+                damageExplanation += $"Total Physical Damage: {totalPhysicalDamage}\n";
+            }
 
+            if (Utils.IsPortuguese())
+            {
+                damageExplanation += "Explicação: \n";
+            }
+            else
+            {
                 damageExplanation += "Explanation: \n";
+            }
+
+            if (Utils.IsPortuguese())
+            {
+                damageExplanation += $"+{weapon.GetWeaponBaseAttack()} dano físico da arma\n";
+            }
+            else
+            {
                 damageExplanation += $"+{weapon.GetWeaponBaseAttack()} weapon physical damage\n";
+            }
 
-                if (strengthAttackBonus > 0)
+            if (strengthAttackBonus > 0)
+            {
+                if (Utils.IsPortuguese())
                 {
-                    damageExplanation += $"+{strengthAttackBonus} from strength bonus ({weapon.strengthScaling} Scaling)\n";
+                    damageExplanation += $"+{strengthAttackBonus} de bónus de Força ({weapon.strengthScaling} Escala)\n";
                 }
-                if (dexterityAttackBonus > 0)
+                else
                 {
-                    damageExplanation += $"+{dexterityAttackBonus} from dexterity bonus ({weapon.dexterityScaling} Scaling)\n";
+                    damageExplanation += $"+{strengthAttackBonus} from Strength bonus ({weapon.strengthScaling} Scaling)\n";
                 }
-                if (intelligenceAttackBonus > 0)
-                {
-                    damageExplanation += $"+{intelligenceAttackBonus} from intelligence bonus ({weapon.intelligenceScaling} Scaling)\n";
-                }
+            }
 
-                if (playerManager.equipmentDatabase.isTwoHanding)
+            if (dexterityAttackBonus > 0)
+            {
+                if (Utils.IsPortuguese())
                 {
-                    int twoHandBonus = (int)(attackStatManager.GetWeaponAttack(weapon) - attackStatManager.GetWeaponAttack(weapon) / playerManager.attackStatManager.twoHandAttackBonusMultiplier);
+                    damageExplanation += $"+{dexterityAttackBonus} de bónus de Destreza ({weapon.dexterityScaling} Escala)\n";
+                }
+                else
+                {
+                    damageExplanation += $"+{dexterityAttackBonus} from Dexterity bonus ({weapon.dexterityScaling} Scaling)\n";
+                }
+            }
 
-                    if (twoHandBonus > 0)
+            if (intelligenceAttackBonus > 0)
+            {
+                if (Utils.IsPortuguese())
+                {
+                    damageExplanation += $"+{intelligenceAttackBonus} de bónus de Inteligência ({weapon.intelligenceScaling} Escala)\n";
+                }
+                else
+                {
+                    damageExplanation += $"+{intelligenceAttackBonus} from Intelligence bonus ({weapon.intelligenceScaling} Scaling)\n";
+                }
+            }
+
+            if (playerManager.equipmentDatabase.isTwoHanding)
+            {
+                int twoHandBonus = attackStatManager.GetTwoHandAttackBonus(weapon);
+
+                if (twoHandBonus > 0)
+                {
+                    if (Utils.IsPortuguese())
+                    {
+                        damageExplanation += $"+{twoHandBonus} de empunhar arma com duas mãos\n";
+                    }
+                    else
                     {
                         damageExplanation += $"+{twoHandBonus} from two-handing weapon\n";
                     }
                 }
+            }
 
-                if (!playerManager.thirdPersonController.Grounded)
+            if (!playerManager.thirdPersonController.Grounded)
+            {
+                int jumpAttackBonus = (int)(attackStatManager.GetWeaponAttack(weapon) - attackStatManager.GetWeaponAttack(weapon) / playerManager.attackStatManager.jumpAttackMultiplier);
+
+                if (jumpAttackBonus > 0)
                 {
-                    int jumpAttackBonus = (int)(attackStatManager.GetWeaponAttack(weapon) - attackStatManager.GetWeaponAttack(weapon) / playerManager.attackStatManager.jumpAttackMultiplier);
-
-                    if (jumpAttackBonus > 0)
+                    if (Utils.IsPortuguese())
+                    {
+                        damageExplanation += $"+{jumpAttackBonus} de bónus de ataque áereo\n";
+                    }
+                    else
                     {
                         damageExplanation += $"+{jumpAttackBonus} from jump attack bonus\n";
                     }
                 }
             }
-            else if (LocalizationSettings.SelectedLocale.Identifier.Code == "pt")
-            {
-
-                damageExplanation += $"Dano Físico Total: {totalPhysicalDamage}\n\n";
-
-                damageExplanation += "Explicação: \n";
-                damageExplanation += $"+{weapon.GetWeaponBaseAttack()} dano físico da arma\n";
-
-                if (strengthAttackBonus > 0)
-                {
-                    damageExplanation += $"+{strengthAttackBonus} de bónus de força ({weapon.strengthScaling} Escala)\n";
-                }
-                if (dexterityAttackBonus > 0)
-                {
-                    damageExplanation += $"+{dexterityAttackBonus} de bónus de destreza ({weapon.dexterityScaling} Escala)\n";
-                }
-                if (intelligenceAttackBonus > 0)
-                {
-                    damageExplanation += $"+{intelligenceAttackBonus} de bónus de inteligência ({weapon.intelligenceScaling} Escala)\n";
-                }
-
-                if (playerManager.equipmentDatabase.isTwoHanding)
-                {
-                    int twoHandBonus = (int)(attackStatManager.GetWeaponAttack(weapon) - attackStatManager.GetWeaponAttack(weapon) / playerManager.attackStatManager.twoHandAttackBonusMultiplier);
-
-                    if (twoHandBonus > 0)
-                    {
-                        damageExplanation += $"+{twoHandBonus} por usar duas mãos\n";
-                    }
-                }
-
-                if (!playerManager.thirdPersonController.Grounded)
-                {
-                    int jumpAttackBonus = (int)(attackStatManager.GetWeaponAttack(weapon) - attackStatManager.GetWeaponAttack(weapon) / playerManager.attackStatManager.jumpAttackMultiplier);
-
-                    if (jumpAttackBonus > 0)
-                    {
-                        damageExplanation += $"+{jumpAttackBonus} por atacar no ar\n";
-                    }
-                }
-            }
-
             return damageExplanation;
         }
 
@@ -139,7 +153,6 @@ namespace AF
 
             return damageExplained;
         }
-
 
         public static string GetDarknessDamageExplanation(int baseAttack, int damageFromReputation, int intelligenceBonusFromWeapon)
         {
@@ -215,6 +228,70 @@ namespace AF
             }
 
             return damageExplanation;
+        }
+
+        public static string GetArrowPhysicalDamage(int damage)
+        {
+            string damageExplained = "";
+
+            if (Utils.IsPortuguese())
+            {
+                damageExplained += $"+{damage} de Ataque Físico";
+            }
+            else
+            {
+                damageExplained += $"+{damage} Physical Attack";
+            }
+
+            return damageExplained;
+        }
+
+        public static string GetArrowLightiningDamage(int damage)
+        {
+            string damageExplained = "";
+
+            if (Utils.IsPortuguese())
+            {
+                damageExplained += $"+{damage} de Ataque de Trovão";
+            }
+            else
+            {
+                damageExplained += $"+{damage} Lightning Attack";
+            }
+
+            return damageExplained;
+        }
+
+        public static string GetArrowDarknessDamage(int damage)
+        {
+            string damageExplained = "";
+
+            if (Utils.IsPortuguese())
+            {
+                damageExplained += $"+{damage} de Ataque de Trevas";
+            }
+            else
+            {
+                damageExplained += $"+{damage} Darkness Attack";
+            }
+
+            return damageExplained;
+        }
+
+        public static string GetArrowMagicDamage(int damage)
+        {
+            string damageExplained = "";
+
+            if (Utils.IsPortuguese())
+            {
+                damageExplained += $"+{damage} de Ataque Nágico";
+            }
+            else
+            {
+                damageExplained += $"+{damage} Magic Attack";
+            }
+
+            return damageExplained;
         }
     }
 }

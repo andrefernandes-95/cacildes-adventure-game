@@ -1,17 +1,36 @@
 using System.Linq;
-using AF.Combat;
 using AF.Events;
 using AF.Flags;
-using AF.Health;
 using AF.Music;
 using GameAnalyticsSDK;
 using TigerForge;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UIElements;
 
 namespace AF
 {
+#if UNITY_EDITOR
+
+    [CustomEditor(typeof(CharacterBossController), editorForChildClasses: true)]
+    public class CharacterBossControllerEditor : Editor
+    {
+        public override void OnInspectorGUI()
+        {
+            base.OnInspectorGUI();
+
+            GUI.enabled = Application.isPlaying;
+
+            CharacterBossController bossController = target as CharacterBossController;
+
+            if (GUILayout.Button("Test Boss Fight"))
+            {
+                bossController.TestBossFight();
+            }
+        }
+    }
+#endif
     public class CharacterBossController : MonoBehaviour
     {
         public bool isBoss = false;
@@ -211,6 +230,14 @@ namespace AF
             }
 
             GameAnalytics.NewDesignEvent(eventName);
+        }
+
+        public void TestBossFight()
+        {
+            characterManager.gameObject.SetActive(true);
+            characterManager.targetManager.SetPlayerAsTarget();
+            BeginBossBattle();
+            ShowBossHud();
         }
     }
 }

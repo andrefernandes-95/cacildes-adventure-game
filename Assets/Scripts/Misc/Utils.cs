@@ -205,5 +205,28 @@ namespace AF
                 x => x.currentTarget != null
                 && x.characterManager.health.GetCurrentHealth() > 0);
         }
+
+        public static Texture2D SpriteToTexture2D(Sprite sprite)
+        {
+            if (sprite == null) return null;
+
+            // If the sprite already uses a full texture, return it directly
+            if (sprite.rect.width == sprite.texture.width && sprite.rect.height == sprite.texture.height)
+            {
+                return sprite.texture;
+            }
+
+            Texture2D newTexture = new Texture2D((int)sprite.rect.width, (int)sprite.rect.height, TextureFormat.RGBA32, false);
+            Color[] pixels = sprite.texture.GetPixels(
+                (int)sprite.textureRect.x,
+                (int)sprite.textureRect.y,
+                (int)sprite.textureRect.width,
+                (int)sprite.textureRect.height
+            );
+
+            newTexture.SetPixels(pixels);
+            newTexture.Apply();
+            return newTexture;
+        }
     }
 }

@@ -50,6 +50,7 @@ namespace AF
         public PlayerCardManager playerCardManager;
         public ExecutionerManager executionerManager;
         public UIDocumentPlayerHUDV2 uIDocumentPlayerHUDV2;
+        public UIDocumentAlert uIDocumentAlert;
 
         [Header("Databases")]
         public PlayerStatsDatabase playerStatsDatabase;
@@ -63,6 +64,9 @@ namespace AF
         [Header("IK Helpers")]
         bool _canUseWeaponIK = true;
 
+        [Header("Unarmed Animations Overrides")]
+        [SerializeField] List<AnimationOverride> oh_unarmedAnimationOverrides = new();
+        [SerializeField] List<AnimationOverride> th_unarmedAnimationOverrides = new();
 
         private void Awake()
         {
@@ -169,6 +173,20 @@ namespace AF
             var clipOverrides = new AnimationClipOverrides(animatorOverrideController.overridesCount);
             animatorOverrideController.GetOverrides(clipOverrides);
             animator.runtimeAnimatorController = defaultAnimatorController;
+
+            // Always apply unarmed first
+            if (oh_unarmedAnimationOverrides.Count > 0)
+            {
+                UpdateAnimationOverrides(animator, clipOverrides, oh_unarmedAnimationOverrides);
+            }
+
+            if (equipmentDatabase.isTwoHanding)
+            {
+                if (th_unarmedAnimationOverrides != null && th_unarmedAnimationOverrides.Count > 0)
+                {
+                    UpdateAnimationOverrides(animator, clipOverrides, th_unarmedAnimationOverrides);
+                }
+            }
 
             Weapon currentWeapon = equipmentDatabase.GetCurrentWeapon();
             if (currentWeapon != null)

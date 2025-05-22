@@ -1,9 +1,5 @@
-using AF.Music;
-using AF.Stats;
 using DG.Tweening;
 using UnityEngine;
-using UnityEngine.Localization;
-using UnityEngine.Localization.Settings;
 using UnityEngine.UIElements;
 
 namespace AF
@@ -28,7 +24,6 @@ namespace AF
             root.focusable = false;
         }
 
-
         /// <summary>
         /// Unity Event
         /// </summary>
@@ -36,7 +31,8 @@ namespace AF
         public void Display(StatusEffect statusEffect)
         {
             label.text = statusEffect.GetAppliedName();
-            background.style.backgroundColor = statusEffect.barColor;
+            label.style.color = statusEffect.barColor;
+            background.style.unityBackgroundImageTintColor = statusEffect.barColor;
 
             // Ensure elements are visible initially
             background.style.opacity = 1;

@@ -59,6 +59,7 @@ namespace AF
 
             GetPlayerManager().playerComponentManager.DisableComponents();
             GetPlayerManager().playerComponentManager.DisableCharacterController();
+            GetPlayerManager().uIDocumentPlayerHUDV2.FadeOut();
 
             GetUIDocumentBook().BeginRead(this);
         }
@@ -71,6 +72,7 @@ namespace AF
 
             GetPlayerManager().playerComponentManager.EnableCharacterController();
             GetPlayerManager().playerComponentManager.EnableComponents();
+            GetPlayerManager().uIDocumentPlayerHUDV2.FadeIn();
         }
     }
 }

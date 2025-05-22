@@ -551,7 +551,7 @@ namespace AF
             bool isSprinting = IsSprinting();
             float targetSpeed = isSprinting ? SprintSpeed : (_input.toggleWalk ? WalkSpeed : RunSpeed);
 
-            if (playerManager.playerBlockController.isBlocking)
+            if (playerManager.playerBlockController.isBlocking || playerManager.playerShootingManager.IsAimingBowOrCrossbow())
             {
                 targetSpeed = WalkSpeed;
             }

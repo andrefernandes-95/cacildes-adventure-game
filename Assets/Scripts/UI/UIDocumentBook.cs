@@ -1,3 +1,4 @@
+using System.Collections;
 using AF.Journals;
 using UnityEngine;
 using UnityEngine.Events;
@@ -23,12 +24,19 @@ namespace AF
         public UnityEvent onJournalClose;
 
         [Header("Components")]
+        [SerializeField] StarterAssetsInputs starterAssetsInputs;
         public Soundbank soundbank;
         public CursorManager cursorManager;
+
+        bool isReading = false;
+        Coroutine SetIsReadingCoroutine;
 
         private void Awake()
         {
             this.gameObject.SetActive(false);
+
+            starterAssetsInputs.onMenuEvent.AddListener(OnClose);
+            starterAssetsInputs.onInteract.AddListener(OnClose);
         }
 
         void SetupRefs()
@@ -56,9 +64,9 @@ namespace AF
         /// <summary>
         /// Unity Event
         /// </summary>
-        public void OnClose()
+        void OnClose()
         {
-            if (currentJournal == null)
+            if (!this.isActiveAndEnabled || currentJournal == null || !isReading)
             {
                 return;
             }
@@ -66,8 +74,8 @@ namespace AF
             onJournalClose.Invoke();
             currentJournal.CloseBook();
             currentJournal = null;
-
             cursorManager.HideCursor();
+            isReading = false;
         }
 
         /// <summary>
@@ -120,6 +128,19 @@ namespace AF
             }
 
             onJournalOpen?.Invoke();
+
+            if (SetIsReadingCoroutine != null)
+            {
+                StopCoroutine(SetIsReadingCoroutine);
+            }
+
+            SetIsReadingCoroutine = StartCoroutine(HandleIsReading());
+        }
+
+        IEnumerator HandleIsReading()
+        {
+            yield return new WaitForEndOfFrame();
+            isReading = true;
         }
 
         public void ShowCover()

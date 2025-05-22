@@ -30,13 +30,6 @@ namespace AF
         Staff,
     }
 
-    public enum WeaponCategory
-    {
-        Melee,
-        Range,
-        Staff,
-    }
-
     public enum WeaponElementType
     {
         None,
@@ -70,7 +63,6 @@ namespace AF
     [CreateAssetMenu(menuName = "Items / Weapon / New Weapon")]
     public class Weapon : Item
     {
-        public WeaponCategory weaponCategory;
 
         [Header("Attack")]
         public Damage damage;
@@ -96,8 +88,9 @@ namespace AF
 
 
         [Header("Stamina")]
-        public int lightAttackStaminaCost = 20;
-        public int heavyAttackStaminaCost = 35;
+        public int staminaCostPerAttack = 30;
+        public int GetLightAttackStaminaCost() => staminaCostPerAttack;
+        public int GetHeavyAttackStaminaCost() => staminaCostPerAttack * 2;
 
         [Header("Scaling")]
         public Scaling strengthScaling = Scaling.E;
@@ -111,13 +104,14 @@ namespace AF
         [Tooltip("Optional")] public List<AnimationOverride> twoHandOverrides;
         [Tooltip("Optional")] public List<AnimationOverride> blockOverrides;
 
+        [Header("Combos")]
         public int lightAttackCombos = 2;
         public int heavyAttackCombos = 1;
 
-        [Header("Upper Layer Options")]
-        public bool useUpperLayerAnimations = false;
-        public bool allowUpperLayerWhenOneHanding = true;
-        public bool allowUpperLayerWhenTwoHanding = true;
+        [Header("Two Hand Combos")]
+        public int th_lightAttackCombos = 2;
+        public int th_heavyAttackCombos = 1;
+
 
         [Header("Dual Wielding Options")]
         public bool halveDamage = false;
@@ -143,8 +137,7 @@ namespace AF
         public bool isHexWeapon = false;
 
         [Header("Range Category")]
-        public bool isCrossbow = false;
-        public bool isHuntingRifle = false;
+        public ProjectileType projectileType;
 
         [Header("Block Options")]
         [Range(0, 1f)] public float blockAbsorption = .8f;
@@ -317,21 +310,6 @@ namespace AF
             return CalculateValue(this.level);
         }
 
-        public string GetFormattedStatusDamages()
-        {
-            string result = "";
-
-            foreach (var statusEffect in damage.statusEffects)
-            {
-                if (statusEffect != null)
-                {
-                    result += $"+{statusEffect.amountPerHit} {statusEffect.statusEffect.GetName()} {LocalizationSettings.StringDatabase.GetLocalizedString("UIDocuments", "Inflicted per Hit")}\n";
-                }
-            }
-
-            return result.TrimEnd();
-        }
-
         public bool CanBeUpgradedFurther()
         {
             return canBeUpgraded && weaponUpgrades != null && weaponUpgrades.Length > 0 && this.level > 0 && this.level <= weaponUpgrades.Length - 1;
@@ -428,24 +406,9 @@ namespace AF
             return text.TrimEnd();
         }
 
-        public bool CanUseUpperLayer(EquipmentDatabase equipmentDatabase)
+        public bool IsCompatibleWithAmmo(Arrow arrow)
         {
-            if (!useUpperLayerAnimations)
-            {
-                return false;
-            }
-
-            if (!allowUpperLayerWhenOneHanding && !equipmentDatabase.isTwoHanding)
-            {
-                return false;
-            }
-            if (!allowUpperLayerWhenTwoHanding && equipmentDatabase.isTwoHanding)
-            {
-                return false;
-            }
-
-            return true;
+            return arrow.projectileType == projectileType;
         }
     }
-
 }

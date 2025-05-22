@@ -1,0 +1,25 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI%20Components/Styles/Styles.uss?fileID=7433441132597879392&amp;guid=756241e74d42bab43b4532533f359ba2&amp;type=3#Styles" />
+    <ui:Button name="QuestInfoButton" class="primary-button" style="flex-direction: row; background-image: url(&quot;project://database/Assets/Synty/InterfaceFantasyWarriorHUD/Sprites/HUD/SPR_HUD_FantasyWarrior_Box_Medium_ParchmentGradient_07.png?fileID=2800000&amp;guid=e11928702dad5be45ba08217117b12da&amp;type=3#SPR_HUD_FantasyWarrior_Box_Medium_ParchmentGradient_07&quot;); -unity-slice-left: 100; -unity-slice-top: 100; -unity-slice-right: 100; -unity-slice-bottom: 100; -unity-slice-scale: 0.5px; -unity-background-image-tint-color: rgba(0, 0, 0, 0.2); align-items: flex-start;">
+        <ui:VisualElement name="MainDetails" style="flex-grow: 1;">
+            <ui:VisualElement name="ObjectiveInfo" style="flex-grow: 1; flex-direction: row;">
+                <ui:VisualElement name="Image" style="flex-grow: 0; flex-shrink: 0; width: 100px; height: 100px; background-image: url(&quot;project://database/Assets/Graphics/Sprites/Avatar%20Portraits/Player%20Portraits/CACILDES_PLAYER_PORTRAIT.png?fileID=2800000&amp;guid=98f1a678561589d46b6cc2cbf4c10bf9&amp;type=3#CACILDES_PLAYER_PORTRAIT&quot;); padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; margin-right: 10px; border-left-color: rgba(255, 255, 255, 0.1); border-right-color: rgba(255, 255, 255, 0.1); border-top-color: rgba(255, 255, 255, 0.1); border-bottom-color: rgba(255, 255, 255, 0.1); border-top-width: 3px; border-right-width: 3px; border-bottom-width: 3px; border-left-width: 3px; border-top-left-radius: 50%; border-top-right-radius: 50%; border-bottom-right-radius: 50%; border-bottom-left-radius: 50%;" />
+                <ui:VisualElement name="Info" style="flex-grow: 1;">
+                    <ui:VisualElement style="flex-grow: 0; flex-direction: row; justify-content: space-between;">
+                        <ui:VisualElement style="flex-grow: 0;">
+                            <ui:Label tabindex="-1" text="Objective" display-tooltip-when-elided="true" name="Type" class="label-text" style="padding-left: 0; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 5px; padding-top: 0; padding-right: 0; padding-bottom: 0; -unity-font-style: normal; font-size: 18px; color: rgba(255, 255, 255, 0.39);" />
+                            <ui:Label tabindex="-1" text="Label" display-tooltip-when-elided="true" name="Label" class="label-text" style="color: rgb(255, 255, 255); -unity-font-style: bold; padding-left: 0; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 5px; padding-top: 0; padding-right: 0; padding-bottom: 0; font-size: 24px;" />
+                        </ui:VisualElement>
+                        <ui:Toggle label="Objective Completed" name="ObjectiveCompletedCheckbox" enabled="false" class="label-text">
+                            <Bindings>
+                                <UnityEngine.Localization.LocalizedString property="label" table="GUID:dbb3674ad34b76b458d72593e4ca5a4a" entry="Id(125807881267179520)" />
+                            </Bindings>
+                        </ui:Toggle>
+                    </ui:VisualElement>
+                    <ui:Label tabindex="-1" text="A great character" display-tooltip-when-elided="true" name="Description" class="label-text" style="padding-left: 0; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 5px; padding-top: 0; padding-right: 0; padding-bottom: 0; -unity-font-style: normal;" />
+                </ui:VisualElement>
+            </ui:VisualElement>
+        </ui:VisualElement>
+        <ui:VisualElement name="CardDetails" style="flex-grow: 0; margin-left: 25px;" />
+    </ui:Button>
+</ui:UXML>

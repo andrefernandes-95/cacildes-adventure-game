@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using AF.Characters;
+using UnityEngine;
 using UnityEngine.Localization;
 using UnityEngine.Localization.Settings;
 
@@ -16,9 +17,15 @@ namespace AF
         public string title;
         public LocalizedString title_Localized;
 
+        [Header("Character Faction")]
+        public CharacterFaction characterFaction;
+
         [Header("Graphics")]
         public Sprite avatar;
         public bool isPlayer = false;
+
+        [Header("Biography")]
+        public LocalizedString biography;
 
         public string GetCharacterName()
         {

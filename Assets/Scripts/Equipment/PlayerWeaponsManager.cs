@@ -112,7 +112,7 @@ namespace AF.Equipment
             playerManager.UpdateAnimatorOverrideControllerClips();
 
             // If we equipped a bow, we must hide any active shield
-            if (equipmentDatabase.IsBowEquipped() || equipmentDatabase.IsStaffEquipped())
+            if (equipmentDatabase.IsRangeWeaponEquipped() || equipmentDatabase.IsStaffEquipped())
             {
                 UnassignShield();
             }
@@ -125,7 +125,7 @@ namespace AF.Equipment
 
         void UpdateCurrentArrows()
         {
-            if (equipmentDatabase.IsBowEquipped() == false)
+            if (equipmentDatabase.IsRangeWeaponEquipped() == false)
             {
                 return;
             }

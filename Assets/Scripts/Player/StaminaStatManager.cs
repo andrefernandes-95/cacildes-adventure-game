@@ -11,12 +11,12 @@ namespace AF
         public float STAMINA_REGENERATION_RATE = 20f;
         public float STAMINA_REGENERATION_RATE_BONUS = 0f;
         public float negativeStaminaRegenerationBonus = 0f;
-        public const float EMPTY_STAMINA_REGENERATION_DELAY = 0.5f;
+        public const float EMPTY_STAMINA_REGENERATION_DELAY = 1f;
         public bool shouldRegenerateStamina = false;
 
         [Header("Combat Stamina")]
-        public int unarmedLightAttackStaminaCost = 15;
-        public int unarmedHeavyAttackStaminaCost = 35;
+        public int unarmedLightAttackStaminaCost = 25;
+        public int GetUnarmedHeavyAttackStaminaCost() => unarmedLightAttackStaminaCost * 2;
 
         [Header("Databases")]
         public PlayerStatsDatabase playerStatsDatabase;
@@ -30,6 +30,8 @@ namespace AF
         public EquipmentGraphicsHandler equipmentGraphicsHandler;
 
         public PlayerManager playerManager;
+
+        Coroutine RegenerateEmptyStaminaCoroutine;
 
         private void Start()
         {
@@ -62,7 +64,12 @@ namespace AF
 
             playerStatsDatabase.currentStamina = Mathf.Clamp(playerStatsDatabase.currentStamina - amount, 0, GetMaxStamina());
 
-            StartCoroutine(RegenerateEmptyStamina());
+            if (RegenerateEmptyStaminaCoroutine != null)
+            {
+                StopCoroutine(RegenerateEmptyStaminaCoroutine);
+            }
+
+            RegenerateEmptyStaminaCoroutine = StartCoroutine(RegenerateEmptyStamina());
         }
 
         IEnumerator RegenerateEmptyStamina()
@@ -155,21 +162,21 @@ namespace AF
         {
             DecreaseStamina(
                 equipmentDatabase.GetCurrentWeapon() != null
-                    ? equipmentDatabase.GetCurrentWeapon().lightAttackStaminaCost
+                    ? equipmentDatabase.GetCurrentWeapon().GetLightAttackStaminaCost()
                     : unarmedLightAttackStaminaCost);
         }
         public void DecreaseHeavyAttackStamina()
         {
             DecreaseStamina(
                 equipmentDatabase.GetCurrentWeapon() != null
-                    ? equipmentDatabase.GetCurrentWeapon().heavyAttackStaminaCost
-                    : unarmedHeavyAttackStaminaCost);
+                    ? equipmentDatabase.GetCurrentWeapon().GetHeavyAttackStaminaCost()
+                    : GetUnarmedHeavyAttackStaminaCost());
         }
 
         public bool HasEnoughStaminaForLightAttack()
         {
             var staminaCost = equipmentDatabase.GetCurrentWeapon() != null
-                ? equipmentDatabase.GetCurrentWeapon().lightAttackStaminaCost : unarmedLightAttackStaminaCost;
+                ? equipmentDatabase.GetCurrentWeapon().GetLightAttackStaminaCost() : unarmedLightAttackStaminaCost;
 
             return HasEnoughStaminaForAction(staminaCost);
         }
@@ -177,7 +184,7 @@ namespace AF
         public bool HasEnoughStaminaForHeavyAttack()
         {
             var staminaCost = equipmentDatabase.GetCurrentWeapon() != null
-                ? equipmentDatabase.GetCurrentWeapon().heavyAttackStaminaCost : unarmedHeavyAttackStaminaCost;
+                ? equipmentDatabase.GetCurrentWeapon().GetHeavyAttackStaminaCost() : GetUnarmedHeavyAttackStaminaCost();
 
             return HasEnoughStaminaForAction(staminaCost);
         }

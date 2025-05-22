@@ -1,31 +1,96 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
     <ui:Template name="ViewComponent_Navbar" src="project://database/Assets/UI%20Components/ViewComponent_Navbar.uxml?fileID=9197481963319205126&amp;guid=130589f98d077114c87ec2c83987eb80&amp;type=3#ViewComponent_Navbar" />
     <ui:Template name="QuestButton" src="project://database/Assets/UI%20Components/Components/QuestButton.uxml?fileID=9197481963319205126&amp;guid=3b18703d924191049b0797535349152f&amp;type=3#QuestButton" />
-    <ui:Template name="QuestObjectiveEntry" src="project://database/Assets/UI%20Components/Components/QuestObjectiveEntry.uxml?fileID=9197481963319205126&amp;guid=d5f2a358f4ef49a41abab1ae24918ec1&amp;type=3#QuestObjectiveEntry" />
+    <ui:Template name="QuestInfoButtonEntry" src="project://database/Assets/UI%20Components/Components/QuestInfoButtonEntry.uxml?fileID=9197481963319205126&amp;guid=bdad704499d5c9f42857422fa694132f&amp;type=3#QuestInfoButtonEntry" />
     <Style src="project://database/Assets/UI%20Components/Styles/Styles.uss?fileID=7433441132597879392&amp;guid=756241e74d42bab43b4532533f359ba2&amp;type=3#Styles" />
     <Style src="project://database/Assets/UI%20Components/Styles/EquipmentMenu.uss?fileID=7433441132597879392&amp;guid=8130d4f12839ca94fa1bef036e27ad88&amp;type=3#EquipmentMenu" />
     <Style src="project://database/Assets/UI%20Components/Styles/MainStyle.uss?fileID=7433441132597879392&amp;guid=6e69b83449d639a46a49a607ab548cd2&amp;type=3#MainStyle" />
     <Style src="project://database/Assets/UI%20Components/Styles/EquipmentView.uss?fileID=7433441132597879392&amp;guid=87a2b0424b4f04edcb169d127627e754&amp;type=3#EquipmentView" />
     <Style src="project://database/Assets/UI%20Components/Styles/ViewSettings.uss?fileID=7433441132597879392&amp;guid=33cb7d9fbd32b4f209747b67c0b2ad18&amp;type=3#ViewSettings" />
     <ui:VisualElement name="Panel" style="flex-shrink: 1; flex-grow: 1; justify-content: flex-start; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; background-image: url(&quot;project://database/Assets/Graphics/Sprites/FadeIn.png?fileID=2800000&amp;guid=74e70b408342762408313ad9ae11c5df&amp;type=3#FadeIn&quot;); -unity-background-image-tint-color: rgba(255, 255, 255, 0.73);">
-        <ui:Instance template="ViewComponent_Navbar" />
+        <ui:Instance template="ViewComponent_Navbar" style="flex-shrink: 0;" />
         <ui:VisualElement name="Container" style="margin-top: 35px; flex-grow: 1; min-height: auto; min-width: auto; padding-left: 25px; padding-right: 25px; padding-bottom: 0; margin-bottom: 35px; margin-right: 35px; margin-left: 35px; justify-content: center; align-items: center;">
-            <ui:VisualElement name="QuestlogContainer" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0.9); position: relative; border-left-color: rgba(255, 255, 255, 0.21); border-right-color: rgba(255, 255, 255, 0.21); border-top-color: rgba(255, 255, 255, 0.21); border-bottom-color: rgba(255, 255, 255, 0.21); border-left-width: 5px; border-right-width: 5px; border-top-width: 5px; border-bottom-width: 5px; flex-direction: row; padding-left: 10px; padding-right: 10px; padding-top: 10px; padding-bottom: 10px; align-items: flex-start; align-self: auto; display: flex; color: rgba(27, 27, 27, 0.78); right: auto; margin-top: 1px; flex-shrink: 1; border-top-left-radius: 5px; border-top-right-radius: 5px; border-bottom-right-radius: 5px; border-bottom-left-radius: 5px; background-image: url(&quot;project://database/Assets/_Asset%20Store/PolygonDarkFantasy/Textures/Misc/Wood_FloorBoards_01_Diffuse.png?fileID=2800000&amp;guid=884f535bb5bda3641ab26cec1cf93f91&amp;type=3#Wood_FloorBoards_01_Diffuse&quot;); -unity-slice-left: 1; -unity-slice-top: 1; -unity-slice-right: 1; -unity-slice-bottom: 1; -unity-background-image-tint-color: rgb(243, 243, 243); -unity-slice-scale: 0.9px; -unity-slice-type: tiled; width: 90%;">
-                <ui:VisualElement name="QuestList" style="flex-grow: 0; height: 100%; justify-content: center; align-items: center; align-self: auto; min-width: auto; width: 382px; flex-shrink: 0;">
+            <ui:VisualElement name="QuestlogContainer" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0.9); position: relative; border-left-color: rgba(255, 255, 255, 0.21); border-right-color: rgba(255, 255, 255, 0.21); border-top-color: rgba(255, 255, 255, 0.21); border-bottom-color: rgba(255, 255, 255, 0.21); border-left-width: 5px; border-right-width: 5px; border-top-width: 5px; border-bottom-width: 5px; flex-direction: row; padding-left: 10px; padding-right: 10px; padding-top: 10px; padding-bottom: 10px; align-items: flex-start; align-self: auto; display: flex; color: rgba(27, 27, 27, 0.78); right: auto; margin-top: 1px; flex-shrink: 1; border-top-left-radius: 5px; border-top-right-radius: 5px; border-bottom-right-radius: 5px; border-bottom-left-radius: 5px; background-image: url(&quot;project://database/Assets/_Asset%20Store/PolygonDarkFantasy/Textures/Misc/Wood_FloorBoards_01_Diffuse.png?fileID=2800000&amp;guid=884f535bb5bda3641ab26cec1cf93f91&amp;type=3#Wood_FloorBoards_01_Diffuse&quot;); -unity-slice-left: 1; -unity-slice-top: 1; -unity-slice-right: 1; -unity-slice-bottom: 1; -unity-background-image-tint-color: rgb(243, 243, 243); -unity-slice-scale: 0.9px; -unity-slice-type: tiled; width: 100%;">
+                <ui:VisualElement name="QuestList" style="flex-grow: 0; height: 100%; justify-content: center; align-items: center; align-self: center; min-width: auto; width: 382px; flex-shrink: 0; padding-top: 25px;">
                     <ui:VisualElement name="Flag" style="flex-grow: 1; position: absolute; width: 100%; height: 100%; background-image: url(&quot;project://database/Assets/Synty/InterfaceFantasyWarriorHUD/Sprites/HUD/SPR_HUD_FantasyWarrior_Flag_02_Clean.png?fileID=2800000&amp;guid=42495fcdd634a9a468c7e511a27a16b7&amp;type=3#SPR_HUD_FantasyWarrior_Flag_02_Clean&quot;); -unity-slice-type: sliced; -unity-background-image-tint-color: rgba(0, 0, 0, 0.35); bottom: -7px; left: 2px;" />
                     <ui:VisualElement name="Flag" style="flex-grow: 1; position: absolute; width: 100%; height: 100%; background-image: url(&quot;project://database/Assets/Synty/InterfaceFantasyWarriorHUD/Sprites/HUD/SPR_HUD_FantasyWarrior_Flag_02_Clean.png?fileID=2800000&amp;guid=42495fcdd634a9a468c7e511a27a16b7&amp;type=3#SPR_HUD_FantasyWarrior_Flag_02_Clean&quot;); -unity-slice-type: sliced; -unity-background-image-tint-color: rgb(118, 73, 67);" />
-                    <ui:ScrollView scroll-deceleration-rate="0,135" elasticity="0,1" horizontal-scroller-visibility="Hidden" vertical-scroller-visibility="Auto" name="ScrollView" class="text" style="width: 84%; height: 89%;">
+                    <ui:VisualElement name="VisualElement" style="flex-grow: 0; align-items: center; justify-content: center;">
+                        <ui:VisualElement style="flex-grow: 0; width: 25px; height: 25px; top: auto; right: auto; position: absolute; background-image: url(&quot;project://database/Assets/Synty/InterfaceFantasyWarriorHUD/Sprites/HUD/SPR_HUD_FantasyWarrior_Symbol_FleurDeLis_01.png?fileID=2800000&amp;guid=5ea8b99a2bf349f4587175dad6b1b49a&amp;type=3#SPR_HUD_FantasyWarrior_Symbol_FleurDeLis_01&quot;); left: -35px; scale: 1 1;" />
+                        <ui:VisualElement name="QuestsReceivedLabel" style="flex-grow: 0;">
+                            <ui:Label text="Label" class="label-text" style="-unity-font-style: normal;">
+                                <Bindings>
+                                    <UnityEngine.Localization.LocalizedString property="text" table="GUID:dbb3674ad34b76b458d72593e4ca5a4a" entry="Id(126139208453582848)" />
+                                </Bindings>
+                            </ui:Label>
+                        </ui:VisualElement>
+                        <ui:VisualElement style="flex-grow: 0; width: 25px; height: 25px; top: auto; right: -35px; position: absolute; background-image: url(&quot;project://database/Assets/Synty/InterfaceFantasyWarriorHUD/Sprites/HUD/SPR_HUD_FantasyWarrior_Symbol_FleurDeLis_01.png?fileID=2800000&amp;guid=5ea8b99a2bf349f4587175dad6b1b49a&amp;type=3#SPR_HUD_FantasyWarrior_Symbol_FleurDeLis_01&quot;); scale: -1 1;" />
+                    </ui:VisualElement>
+                    <ui:ScrollView scroll-deceleration-rate="0,135" elasticity="0,1" horizontal-scroller-visibility="Hidden" vertical-scroller-visibility="Auto" name="QuestListScroll" focusable="true" class="text" style="width: 84%; height: 89%; margin-top: 15px;">
                         <ui:Instance template="QuestButton" name="QuestButton" />
                     </ui:ScrollView>
                 </ui:VisualElement>
                 <ui:VisualElement name="Border" style="flex-grow: 0; flex-shrink: 1; width: 1px; height: 100%; border-left-color: rgb(255, 255, 255); border-right-color: rgba(255, 255, 255, 0); border-top-color: rgba(255, 255, 255, 0); border-bottom-color: rgba(255, 255, 255, 0); border-left-width: 1px; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; border-top-width: 1px; border-right-width: 1px; border-bottom-width: 1px; -unity-background-image-tint-color: rgb(0, 0, 0); display: none;" />
-                <ui:VisualElement name="QuestPreview" style="flex-grow: 1; flex-shrink: 0; width: 65%; height: 100%; border-left-color: rgb(255, 255, 255); border-right-color: rgba(255, 255, 255, 0); border-top-color: rgba(255, 255, 255, 0); border-bottom-color: rgba(255, 255, 255, 0); border-left-width: 0; padding-top: 10px; padding-right: 10px; padding-bottom: 10px; padding-left: 10px; -unity-background-image-tint-color: rgb(185, 161, 116); background-image: url(&quot;project://database/Assets/Synty/InterfaceFantasyWarriorHUD/Sprites/HUD/SPR_HUD_FantasyWarrior_Box_Medium_ParchmentGradient_02.png?fileID=2800000&amp;guid=5c1af49f566e20a43943021fac8bf900&amp;type=3#SPR_HUD_FantasyWarrior_Box_Medium_ParchmentGradient_02&quot;); -unity-slice-left: 253; -unity-slice-top: 253; -unity-slice-right: 253; -unity-slice-bottom: 253;">
-                    <ui:VisualElement style="flex-grow: 0; flex-direction: column; margin-top: 10px; margin-right: 10px; margin-bottom: 10px; margin-left: 10px; align-items: center;">
-                        <ui:VisualElement name="QuestIcon" style="flex-grow: 0; background-image: url(&quot;project://database/Assets/Graphics/Sprites/Menu%20Icons/atlas.png?fileID=2800000&amp;guid=bab97aa6a1fd540bebf06a188af311dd&amp;type=3#atlas&quot;); width: 100px; height: 100px; align-items: center;" />
-                        <ui:Label tabindex="-1" text="&quot;A very cool quest&quot;" display-tooltip-when-elided="true" name="QuestTitle" class="label-text" style="padding-top: 10px; padding-right: 10px; padding-bottom: 10px; padding-left: 10px; font-size: 36px; -unity-text-align: middle-center; text-overflow: ellipsis; -unity-font-style: bold; flex-shrink: 1; align-items: auto;" />
+                <ui:VisualElement name="QuestPreview" style="flex-grow: 1; flex-shrink: 1; width: 65%; height: 100%; border-left-color: rgb(255, 255, 255); border-right-color: rgba(255, 255, 255, 0); border-top-color: rgba(255, 255, 255, 0); border-bottom-color: rgba(255, 255, 255, 0); border-left-width: 0; -unity-background-image-tint-color: rgb(185, 161, 116); background-image: url(&quot;project://database/Assets/Synty/InterfaceFantasyWarriorHUD/Sprites/HUD/SPR_HUD_FantasyWarrior_Box_Medium_ParchmentGradient_02.png?fileID=2800000&amp;guid=5c1af49f566e20a43943021fac8bf900&amp;type=3#SPR_HUD_FantasyWarrior_Box_Medium_ParchmentGradient_02&quot;); -unity-slice-left: 253; -unity-slice-top: 253; -unity-slice-right: 253; -unity-slice-bottom: 253; padding-right: 50px; padding-left: 50px; padding-top: 50px;">
+                    <ui:VisualElement name="QuestInfoEntry" template="QuestInfoEntry" style="flex-shrink: 0;">
+                        <ui:Toggle label="Completed" name="QuestCompleted" enabled="false" class="label-text" style="overflow: hidden; flex-direction: row; flex-shrink: 1; align-content: auto; justify-content: flex-start; align-self: auto; align-items: center; flex-wrap: nowrap; position: absolute; right: 0;">
+                            <Bindings>
+                                <UnityEngine.Localization.LocalizedString property="label" table="GUID:dbb3674ad34b76b458d72593e4ca5a4a" entry="Id(125807717735460864)" />
+                            </Bindings>
+                        </ui:Toggle>
+                        <ui:Button name="QuestInfoButton" focusable="false" class="primary-button" style="flex-direction: column; align-items: center; justify-content: center; align-self: center;">
+                            <ui:VisualElement style="flex-grow: 1; flex-direction: row;">
+                                <ui:VisualElement name="QuestIcon" style="flex-grow: 0; flex-shrink: 0; width: 85px; height: 85px; background-image: resource(&apos;Items/Consumables/Holy Water&apos;); padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; margin-right: 10px; border-left-color: rgba(255, 255, 255, 0.1); border-right-color: rgba(255, 255, 255, 0.1); border-top-color: rgba(255, 255, 255, 0.1); border-bottom-color: rgba(255, 255, 255, 0.1); border-top-width: 3px; border-right-width: 3px; border-bottom-width: 3px; border-left-width: 3px; border-top-left-radius: 50%; border-top-right-radius: 50%; border-bottom-right-radius: 50%; border-bottom-left-radius: 50%;">
+                                    <ui:VisualElement name="TrackQuestImage" style="flex-grow: 0; background-image: url(&quot;project://database/Assets/Modern%20GDR%20-%20Free%20icons%20pack/00_Atlas/BrightBackground.png?fileID=1727470623&amp;guid=05e0567213a58c840a3ea79a4409bdfd&amp;type=3#Medal_BrightBG&quot;); -unity-background-image-tint-color: rgb(173, 255, 114); width: 32px; height: 35px; position: absolute; right: 0; top: 0; background-color: rgba(0, 0, 0, 0.39); border-top-left-radius: 50px; border-top-right-radius: 50px; border-bottom-right-radius: 50px; border-bottom-left-radius: 50px;" />
+                                </ui:VisualElement>
+                                <ui:VisualElement name="Info" style="flex-grow: 0; align-items: auto; justify-content: flex-start; align-self: auto; align-content: auto;">
+                                    <ui:VisualElement style="flex-grow: 0; flex-direction: column; justify-content: space-between;">
+                                        <ui:VisualElement style="flex-grow: 0;">
+                                            <ui:Label tabindex="-1" text="Main Story" display-tooltip-when-elided="true" name="QuestType" class="label-text" style="padding-left: 0; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 5px; padding-top: 0; padding-right: 0; padding-bottom: 0; -unity-font-style: normal;" />
+                                            <ui:Label tabindex="-1" text="A Sister&apos;s Plea" display-tooltip-when-elided="true" name="QuestTitle" class="label-text" style="color: rgb(255, 255, 255); -unity-font-style: bold; padding-left: 0; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 5px; padding-top: 0; padding-right: 0; padding-bottom: 0; font-size: 30px;" />
+                                        </ui:VisualElement>
+                                    </ui:VisualElement>
+                                </ui:VisualElement>
+                            </ui:VisualElement>
+                            <ui:Label tabindex="-1" text="A great character was now gone and i dont know where to start" display-tooltip-when-elided="true" name="QuestDescription" class="label-text" style="color: rgb(255, 255, 255); -unity-font-style: italic; padding-left: 0; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 5px; padding-top: 0; padding-right: 0; padding-bottom: 0; font-size: 20px;" />
+                        </ui:Button>
                     </ui:VisualElement>
-                    <ui:VisualElement name="QuestObjectivesContainer" style="flex-grow: 1; padding-top: 25px; padding-right: 50px; padding-bottom: 25px; padding-left: 50px;">
-                        <ui:Instance template="QuestObjectiveEntry" name="QuestObjectiveEntry" />
+                    <ui:VisualElement style="flex-grow: 0; align-items: flex-start;">
+                        <ui:VisualElement style="flex-grow: 1; flex-direction: row;">
+                            <ui:Button name="ShowObjectives" class="primary-button" style="flex-direction: row;">
+                                <ui:VisualElement style="flex-grow: 1; width: 55px; height: 55px; background-image: url(&quot;project://database/Assets/Synty/InterfaceFantasyWarriorHUD/Sprites/Icons_Inventory/ICON_FantasyWarrior_Inventory_Notes_01_Underlay.png?fileID=2800000&amp;guid=1452db2c4ad1dd046b46a27aa2e76108&amp;type=3#ICON_FantasyWarrior_Inventory_Notes_01_Underlay&quot;);" />
+                                <ui:Label text="Label" class="label-text">
+                                    <Bindings>
+                                        <UnityEngine.Localization.LocalizedString property="text" table="GUID:dbb3674ad34b76b458d72593e4ca5a4a" entry="Id(126061748114419712)" />
+                                    </Bindings>
+                                </ui:Label>
+                            </ui:Button>
+                            <ui:Button name="ShowCharacters" class="primary-button" style="flex-direction: row;">
+                                <ui:VisualElement style="flex-grow: 1; width: 55px; height: 55px; background-image: url(&quot;project://database/Assets/Graphics/Sprites/Icons/character.png?fileID=2800000&amp;guid=e5107e0f643d5b44ca03e956d66dcd62&amp;type=3#character&quot;); text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.67); -unity-text-outline-width: 2px;" />
+                                <ui:Label text="Label" class="label-text">
+                                    <Bindings>
+                                        <UnityEngine.Localization.LocalizedString property="text" table="GUID:dbb3674ad34b76b458d72593e4ca5a4a" entry="Id(126062215879979008)" />
+                                    </Bindings>
+                                </ui:Label>
+                            </ui:Button>
+                        </ui:VisualElement>
+                    </ui:VisualElement>
+                    <ui:VisualElement name="QuestDetailsRow" style="flex-grow: 1; flex-direction: column;">
+                        <ui:VisualElement name="QuestObjectivesPanel">
+                            <ui:ScrollView name="QuestObjectivesScrollView" style="background-image: url(&quot;project://database/Assets/Synty/InterfaceFantasyWarriorHUD/Sprites/HUD/SPR_HUD_FantasyWarrior_Box_Medium_ParchmentGradient_07.png?fileID=2800000&amp;guid=e11928702dad5be45ba08217117b12da&amp;type=3#SPR_HUD_FantasyWarrior_Box_Medium_ParchmentGradient_07&quot;); -unity-slice-left: 100; -unity-slice-top: 100; -unity-slice-right: 100; -unity-slice-bottom: 100; -unity-slice-scale: 0.5px; -unity-background-image-tint-color: rgba(0, 0, 0, 0);">
+                                <ui:Instance template="QuestInfoButtonEntry" />
+                            </ui:ScrollView>
+                        </ui:VisualElement>
+                        <ui:VisualElement name="Characters">
+                            <ui:ScrollView name="MissionRelatedCharacters" style="background-image: url(&quot;project://database/Assets/Synty/InterfaceFantasyWarriorHUD/Sprites/HUD/SPR_HUD_FantasyWarrior_Box_Medium_ParchmentGradient_07.png?fileID=2800000&amp;guid=e11928702dad5be45ba08217117b12da&amp;type=3#SPR_HUD_FantasyWarrior_Box_Medium_ParchmentGradient_07&quot;); -unity-slice-left: 100; -unity-slice-top: 100; -unity-slice-right: 100; -unity-slice-bottom: 100; -unity-slice-scale: 0.5px; -unity-background-image-tint-color: rgba(0, 0, 0, 0);">
+                                <ui:Instance template="QuestInfoButtonEntry" />
+                            </ui:ScrollView>
+                        </ui:VisualElement>
+                        <Bindings>
+                            <UnityEngine.Localization.LocalizedString property="label" table="GUID:dbb3674ad34b76b458d72593e4ca5a4a" entry="Id(126098175833403392)" />
+                        </Bindings>
+                        <Bindings>
+                            <UnityEngine.Localization.LocalizedString property="label" table="GUID:dbb3674ad34b76b458d72593e4ca5a4a" entry="Id(126098266061271040)" />
+                        </Bindings>
                     </ui:VisualElement>
                 </ui:VisualElement>
             </ui:VisualElement>
@@ -38,9 +103,9 @@
                             <UnityEngine.Localization.LocalizedString property="text" table="GUID:dbb3674ad34b76b458d72593e4ca5a4a" entry="Id(121348524756430848)" />
                         </Bindings>
                     </ui:Label>
-                    <ui:VisualElement name="Keyboard" style="flex-grow: 0; width: 30px; height: 30px; background-image: url(&quot;project://database/Assets/Synty/InterfaceCore/Sprites/Icons_Input/MouseKeyboard/ICON_Input_PC_Enter_Underlay.png?fileID=2800000&amp;guid=969c9f23a4d23524e855d7c7844a9188&amp;type=3#ICON_Input_PC_Enter_Underlay&quot;);" />
-                    <ui:VisualElement name="PS4" style="flex-grow: 0; width: 30px; height: 30px; background-image: url(&quot;project://database/Assets/Synty/InterfaceCore/Sprites/Icons_Input/PlayStation/ICON_Input_PlayStation_ButtonColor_Cross_Clean.png?fileID=2800000&amp;guid=f2010f6313f93b44c9eb8d7d6cec3bbe&amp;type=3#ICON_Input_PlayStation_ButtonColor_Cross_Clean&quot;);" />
-                    <ui:VisualElement name="Xbox" style="flex-grow: 0; width: 30px; height: 30px; background-image: url(&quot;project://database/Assets/Synty/InterfaceCore/Sprites/Icons_Input/Xbox/ICON_Input_Xbox_ButtonColor_A_Clean.png?fileID=2800000&amp;guid=260dd9ccf3b034f4283b4cb92158b0b0&amp;type=3#ICON_Input_Xbox_ButtonColor_A_Clean&quot;);" />
+                    <ui:VisualElement name="Keyboard" style="flex-grow: 0; width: 50px; height: 50px; background-image: url(&quot;project://database/Assets/Graphics/Sprites/Keyboard%20&amp;%20Mouse/Light/Backspace_Key_Light%201.png?fileID=2800000&amp;guid=4f90dab900a42fa4d8680deeab0e0d5d&amp;type=3#Backspace_Key_Light 1&quot;);" />
+                    <ui:VisualElement name="PS4" style="flex-grow: 0; width: 30px; height: 30px; background-image: url(&quot;project://database/Assets/Synty/InterfaceCore/Sprites/Icons_Input/PlayStation/ICON_Input_PlayStation_ButtonColor_Square_Underlay.png?fileID=2800000&amp;guid=44a29bd9781c01a4c9a76dd8a4904314&amp;type=3#ICON_Input_PlayStation_ButtonColor_Square_Underlay&quot;);" />
+                    <ui:VisualElement name="Xbox" style="flex-grow: 0; width: 30px; height: 30px; background-image: url(&quot;project://database/Assets/Synty/InterfaceCore/Sprites/Icons_Input/Xbox/ICON_Input_Xbox_ButtonColor_X_Underlay.png?fileID=2800000&amp;guid=978425d2c9012c643b64a0220f678bf7&amp;type=3#ICON_Input_Xbox_ButtonColor_X_Underlay&quot;);" />
                 </ui:VisualElement>
                 <ui:VisualElement name="CloseMenu" class="footer-input-indicator" style="flex-grow: 0; flex-direction: row; padding-top: 5px; padding-right: 5px; padding-bottom: 5px; padding-left: 5px; align-items: center;">
                     <ui:Label text="Change Slot" name="Label" style="-unity-font-definition: url(&quot;project://database/Assets/Synty/InterfaceFantasyWarriorHUD/Fonts/Grenze/Grenze-SemiBold.ttf?fileID=12800000&amp;guid=7c97367a93d4cc844a4113ad6cf8d2e0&amp;type=3#Grenze-SemiBold&quot;); color: rgb(255, 255, 255); -unity-font-style: normal; font-size: 16px;">

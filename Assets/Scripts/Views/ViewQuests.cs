@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 using AF.UI;
 using UnityEngine;
@@ -7,41 +6,83 @@ using UnityEngine.UIElements;
 
 namespace AF
 {
-
     public class ViewQuestsMenu : ViewMenu
     {
         [Header("Prefabs")]
         public VisualTreeAsset questPrefabButton;
-        public VisualTreeAsset questObjectivePrefab;
+        [SerializeField] VisualTreeAsset questInfoButton;
 
         [Header("Quests")]
         public QuestsDatabase questsDatabase;
 
-        ScrollView questsScrollView;
+        [Header("Components")]
+        [SerializeField] StarterAssetsInputs starterAssetsInputs;
 
-        VisualElement questPreview, questIcon, questObjectivesContainer;
-        Label questTitle;
+        [Header("Sprites")]
+        [SerializeField] Sprite unrevealedObjectiveSprite;
 
-        int elementToFocusIndex = 0;
+        VisualElement questPreview;
+
+        QuestParent selectedQuest;
+
+        [Header("Audio")]
+        [SerializeField] AudioClip trackQuestSound;
 
         protected override void OnEnable()
         {
+            selectedQuest = null;
             base.OnEnable();
             SetupRefs();
-
             RedrawUI();
         }
 
         void SetupRefs()
         {
-            questsScrollView = root.Q<VisualElement>("QuestlogContainer").Q<ScrollView>();
-            questPreview = root.Q<VisualElement>("QuestPreview");
-            questPreview.style.opacity = 0;
+            questPreview = root?.Q<VisualElement>("QuestPreview");
+            if (questPreview != null)
+            {
+                questPreview.style.opacity = 0;
+            }
 
-            questIcon = questPreview.Q<VisualElement>("QuestIcon");
-            questTitle = questPreview.Q<Label>("QuestTitle");
-            questObjectivesContainer = questPreview.Q<VisualElement>("QuestObjectivesContainer");
-            questObjectivesContainer.Clear();
+            UIUtils.SetupButton(root.Q<Button>("ShowObjectives"), () =>
+            {
+                HideAllTabs();
+                DrawObjectivesTab();
+
+            }, soundbank);
+
+            UIUtils.SetupButton(root.Q<Button>("ShowCharacters"), () =>
+            {
+                HideAllTabs();
+                DrawCharactersTab();
+            }, soundbank);
+
+            starterAssetsInputs.onMainMenuUnequipSlot.AddListener(OnTryToTrackQuest);
+        }
+
+        void OnDisable()
+        {
+            starterAssetsInputs.onMainMenuUnequipSlot.RemoveListener(OnTryToTrackQuest);
+        }
+
+        void OnTryToTrackQuest()
+        {
+            if (!this.isActiveAndEnabled)
+            {
+                return;
+            }
+
+            if (selectedQuest == null)
+            {
+                return;
+            }
+
+            questsDatabase.SetQuestToTrack(selectedQuest);
+            RedrawUI();
+            soundbank.PlaySound(trackQuestSound);
+
+            // Force refresh on quest details to show or hide the bookmark icon
+            SetSelectedQuest(selectedQuest);
         }
 
         void RedrawUI()
@@ -51,105 +92,255 @@ namespace AF
 
         void DrawQuestsMenu()
         {
-            questsScrollView.Clear();
-
-            List<QuestParent> questParentsReversed = questsDatabase.questsReceived.ToList();
-            questParentsReversed.Reverse();
-
-            for (int i = 0; i < questsDatabase.questsReceived.Count; i++)
+            var questListScroll = root.Q<ScrollView>("QuestListScroll");
+            questListScroll.RegisterCallback<FocusInEvent>(ev =>
             {
-                var quest = questParentsReversed[i];
+                if (questListScroll.childCount > 0)
+                {
+                    questListScroll.ElementAt(0).Q<Button>().Focus();
+                }
+            });
 
-                VisualElement clone = questPrefabButton.CloneTree();
+            questListScroll.Clear();
+
+            var reversedQuests = questsDatabase.questsReceived.AsEnumerable().Reverse().ToList();
+
+            for (int i = 0; i < reversedQuests.Count; i++)
+            {
+                var quest = reversedQuests[i];
+                var clone = questPrefabButton.CloneTree();
+
                 clone.Q<Label>("QuestName").text = quest.questName_LocalizedString.GetLocalizedString();
-                clone.Q<VisualElement>("TrackIcon").style.display = questsDatabase.IsQuestTracked(quest) ? DisplayStyle.Flex : DisplayStyle.None;
+                clone.viewDataKey = quest.name;
 
-                int index = i; // Store the current value of 'i' in a separate variable to avoid closure issues
-
+                int questIndex = i;
                 UIUtils.SetupButton(
                     clone.Q<Button>("QuestButton"),
                     () =>
                     {
-                        questsDatabase.SetQuestToTrack(quest);
-                        elementToFocusIndex = index;
-                        RedrawUI();
+                        SetSelectedQuest(quest);
+                        questListScroll.ScrollTo(clone);
                     },
-                    () =>
-                    {
-                        PreviewQuest(quest);
-                        questsScrollView.ScrollTo(clone.Q<Button>("QuestButton"));
-                    },
-                    () =>
-                    {
-                        questPreview.style.opacity = 0;
-                    },
-                    true,
                     soundbank
                 );
 
-                if (quest.IsCompleted())
+                bool isCompleted = quest.IsCompleted();
+                if (isCompleted)
                 {
                     clone.style.opacity = 0.5f;
                 }
 
-                questsScrollView.Add(clone);
-            }
+                clone.Q<VisualElement>("CompletedIcon").style.display = isCompleted ? DisplayStyle.Flex : DisplayStyle.None;
+                clone.Q<VisualElement>("IncompleteIcon").style.display = !isCompleted ? DisplayStyle.Flex : DisplayStyle.None;
+                clone.Q<VisualElement>("TrackIcon").style.display = quest.IsTracked() ? DisplayStyle.Flex : DisplayStyle.None;
 
-            StartCoroutine(GiveFocus());
+                questListScroll.Add(clone);
+            }
         }
 
-        IEnumerator GiveFocus()
+        void SetSelectedQuest(QuestParent questParent)
+        {
+            this.selectedQuest = questParent;
+            PreviewQuest();
+            StartCoroutine(FocusOnFirstObjective());
+        }
+
+        IEnumerator FocusOnFirstObjective()
         {
             yield return new WaitForEndOfFrame();
-
-            if (questsScrollView.childCount > 0 && elementToFocusIndex <= questsScrollView.childCount && questsScrollView.ElementAt(elementToFocusIndex) != null)
+            var objectiveScrollView = root.Q<ScrollView>("QuestObjectivesScrollView");
+            if (objectiveScrollView.childCount > 0)
             {
-                var btn = questsScrollView.ElementAt(elementToFocusIndex).Q<Button>("QuestButton");
-                btn.Focus();
-                questsScrollView.ScrollTo(btn);
+                objectiveScrollView.ElementAt(0).Q<Button>().Focus();
             }
         }
 
-        void PreviewQuest(QuestParent questParent)
+        public void TrackObjective(QuestParent quest)
         {
-            questIcon.style.backgroundImage = new StyleBackground(questParent.questIcon as Texture2D);
-            questTitle.text = questParent.questName_LocalizedString.GetLocalizedString();
+            questsDatabase.SetQuestToTrack(quest);
+            RedrawUI();
+        }
 
-            questObjectivesContainer.Clear();
-
-            int idx = 0;
-            foreach (var questObjective in questParent.questObjectives)
+        void PreviewQuest()
+        {
+            if (selectedQuest == null)
             {
-                var questObjectiveEntry = questObjectivePrefab.CloneTree();
-                questObjectiveEntry.Q<Label>("QuestObjectiveLabel").text = questParent.questObjectives_LocalizedString[idx].GetLocalizedString();
-                questObjectiveEntry.Q<Label>("QuestObjectiveLocation").text = "";
-
-                bool isCompleted = questParent.IsObjectiveCompleted(questObjective);
-
-                questObjectiveEntry.Q<VisualElement>("QuestObjectiveComplete").style.display = isCompleted ? DisplayStyle.Flex : DisplayStyle.None;
-                questObjectiveEntry.Q<VisualElement>("QuestObjectiveIncomplete").style.display = !isCompleted ? DisplayStyle.Flex : DisplayStyle.None;
-
-                questObjectiveEntry.style.opacity = 1;
-
-                if (idx == questParent.questProgress)
-                {
-                    questObjectiveEntry.Q<Label>("QuestObjectiveLabel").style.color = new Color(255, 194, 0);
-                    questObjectiveEntry.Q<Label>("QuestObjectiveLabel").style.unityFontStyleAndWeight = new StyleEnum<FontStyle>(FontStyle.Bold);
-                    questObjectiveEntry.Q<VisualElement>("QuestObjectiveIncomplete").style.unityBackgroundImageTintColor = new Color(255, 194, 0);
-                }
-
-                if (!isCompleted && idx > questParent.questProgress)
-                {
-                    questObjectiveEntry.style.opacity = 0.15f;
-                }
-
-                questObjectivesContainer.Add(questObjectiveEntry);
-
-                idx++;
+                return;
             }
 
-            questObjectivesContainer.style.opacity = 1;
+            root.Q<Label>("QuestType").text = selectedQuest.questType.questType.GetLocalizedString();
+            root.Q<Label>("QuestTitle").text = selectedQuest.questName_LocalizedString.GetLocalizedString();
+            root.Q<Toggle>("QuestCompleted").value = selectedQuest.IsCompleted();
+            root.Q<Label>("QuestDescription").text = selectedQuest.questDescription.IsEmpty ? "" : selectedQuest.questDescription.GetLocalizedString();
+            root.Q<VisualElement>("TrackQuestImage").style.display = selectedQuest.IsTracked() ? DisplayStyle.Flex : DisplayStyle.None;
+
+            HandleTabs();
+
             questPreview.style.opacity = 1;
+        }
+
+        void HandleTabs()
+        {
+            DrawObjectivesTab();
+        }
+
+        void HideAllTabs()
+        {
+            root.Q<VisualElement>("QuestObjectivesPanel").style.display = DisplayStyle.None;
+            root.Q<VisualElement>("Characters").style.display = DisplayStyle.None;
+
+            root.Q<Button>("ShowObjectives").Q<Label>().style.borderBottomWidth = 0;
+            root.Q<Button>("ShowCharacters").Q<Label>().style.borderBottomWidth = 0;
+        }
+
+        void DrawObjectivesTab()
+        {
+            HideAllTabs();
+
+            root.Q<VisualElement>("QuestObjectivesPanel").style.display = DisplayStyle.Flex;
+            root.Q<Button>("ShowObjectives").Q<Label>().style.borderBottomColor = Color.white;
+            root.Q<Button>("ShowObjectives").Q<Label>().style.borderBottomWidth = 2;
+            var objectiveScrollView = root.Q<ScrollView>("QuestObjectivesScrollView");
+            objectiveScrollView.Clear();
+
+            for (int i = 0; i < selectedQuest.questObjectives.Length; i++)
+            {
+                DrawObjective(selectedQuest, selectedQuest.questObjectives[i], i, objectiveScrollView);
+            }
+        }
+
+        void DrawCharactersTab()
+        {
+            HideAllTabs();
+
+            root.Q<VisualElement>("Characters").style.display = DisplayStyle.Flex;
+
+            root.Q<Button>("ShowCharacters").Q<Label>().style.borderBottomColor = Color.white;
+            root.Q<Button>("ShowCharacters").Q<Label>().style.borderBottomWidth = 2;
+
+            ScrollView relatedCharactersScrollView = root.Q<ScrollView>("MissionRelatedCharacters");
+            relatedCharactersScrollView.Clear();
+            if (selectedQuest.questGiver != null)
+            {
+                DrawCharacter(selectedQuest.questGiver, relatedCharactersScrollView);
+            }
+
+            foreach (Character character in selectedQuest.relatedCharacters)
+            {
+                DrawCharacter(character, relatedCharactersScrollView);
+            }
+        }
+
+        public void DrawObjective(QuestParent questParent, string questObjective, int index, ScrollView scrollView)
+        {
+            bool isCompleted = questParent.IsObjectiveCompleted(questObjective);
+            bool isLocked = !isCompleted && index > questParent.questProgress;
+            bool isCurrent = index == questParent.questProgress;
+
+            var entry = questInfoButton.CloneTree();
+            var descLabel = entry.Q<Label>("Description");
+
+            entry.Q<Label>("Type").text = Utils.IsPortuguese() ? "Objetivo" : "Objective";
+            entry.Q<Label>("Label").style.display = DisplayStyle.None;
+
+            descLabel.text = isLocked ? (Utils.IsPortuguese() ? "Objetivo não revelado" : "Unrevealed Objective") : questParent.questObjectives_LocalizedString[index].GetLocalizedString();
+            descLabel.style.fontSize = isLocked ? 16 : 24;
+            descLabel.style.color = Color.white;
+            descLabel.style.marginRight = 10;
+            descLabel.style.unityFontStyleAndWeight = isCurrent ? FontStyle.Bold : FontStyle.Normal;
+
+            var checkbox = entry.Q<Toggle>("ObjectiveCompletedCheckbox");
+            checkbox.value = isCompleted;
+            checkbox.style.display = isLocked ? DisplayStyle.None : DisplayStyle.Flex;
+
+            var image = entry.Q<VisualElement>("Image");
+            if (isLocked)
+            {
+                image.style.backgroundImage = new StyleBackground(unrevealedObjectiveSprite);
+                image.style.display = DisplayStyle.Flex;
+                image.style.width = 120;
+                image.style.height = 120;
+                entry.style.opacity = 0.5f;
+            }
+            else
+            {
+                var info = index < questParent.questObjectiveInfos.Length ? questParent.questObjectiveInfos[index] : null;
+                if (info?.objectiveImage != null)
+                {
+                    image.style.backgroundImage = new StyleBackground(info.objectiveImage);
+                    image.style.display = DisplayStyle.Flex;
+                }
+                else
+                {
+                    image.style.display = DisplayStyle.None;
+                }
+            }
+
+            entry.Q<Button>().RegisterCallback<FocusInEvent>(ev => scrollView.ScrollTo(entry));
+            scrollView.Add(entry);
+
+            var objectiveInfo = index < questParent.questObjectiveInfos.Length ? questParent.questObjectiveInfos[index] : null;
+
+            if (objectiveInfo != null && !objectiveInfo.location.IsEmpty)
+            {
+                DrawLocation(objectiveInfo, entry.Q("CardDetails"));
+            }
+        }
+
+        public void DrawLocation(QuestObjectiveInfo info, VisualElement parent)
+        {
+            var entry = CreateInfoEntry(
+                Utils.IsPortuguese() ? "Localização" : "Location",
+                info.location.GetLocalizedString(),
+                (Utils.IsPortuguese() ? "Viagem Rápida: " : "Quick Travel: ") + info.closestBonfire.GetLocalizedString(),
+                info.locationImage,
+                false
+            );
+            parent.Add(entry);
+        }
+
+        public void DrawCharacter(Character character, VisualElement parent)
+        {
+            var entry = CreateInfoEntry(
+                Utils.IsPortuguese() ? "Relacionado com:" : "Related to:",
+                character.name_Localized.IsEmpty ? character.name : character.name_Localized.GetLocalizedString(),
+                character.biography.IsEmpty ? "" : character.biography.GetLocalizedString(),
+                character.avatar,
+                false
+            );
+
+            entry.style.fontSize = 16;
+            VisualElement image = entry.Q("Image");
+            image.style.width = 50;
+            image.style.height = 50;
+
+            parent.Add(entry);
+        }
+
+        VisualElement CreateInfoEntry(string type, string label, string description, Sprite image = null, bool showCheckbox = true)
+        {
+            var entry = questInfoButton.CloneTree();
+            entry.Q<Label>("Type").text = type;
+            entry.Q<Label>("Label").text = label;
+            entry.Q<Label>("Description").text = description;
+
+            var checkbox = entry.Q<Toggle>("ObjectiveCompletedCheckbox");
+            checkbox.style.display = showCheckbox ? DisplayStyle.Flex : DisplayStyle.None;
+
+            var imageElement = entry.Q<VisualElement>("Image");
+            if (image != null)
+            {
+                imageElement.style.backgroundImage = new StyleBackground(image);
+                imageElement.style.display = DisplayStyle.Flex;
+            }
+            else
+            {
+                imageElement.style.display = DisplayStyle.None;
+            }
+
+            entry.Q("QuestInfoButton").style.unityBackgroundImageTintColor = new Color(0, 0, 0, 0.05f);
+
+            return entry;
         }
     }
 }

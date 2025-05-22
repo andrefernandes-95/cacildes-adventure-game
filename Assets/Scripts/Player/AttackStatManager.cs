@@ -46,6 +46,7 @@ namespace AF
         [Header("Components")]
         public PlayerManager playerManager;
 
+
         public enum AttackSource
         {
             WEAPON,
@@ -77,9 +78,9 @@ namespace AF
             return playerManager.playerCombatController.isJumpAttacking;
         }
 
-        public bool HasBowEquipped()
+        public bool HasRangeWeaponEquipped()
         {
-            return equipmentDatabase.IsBowEquipped();
+            return equipmentDatabase.IsRangeWeaponEquipped();
         }
 
         public Damage GetAttackDamage()
@@ -234,18 +235,42 @@ namespace AF
             return -1;
         }
 
+        int GetWeaponBaseDamage(Weapon weapon)
+        {
+            int playerBaseAttackValue = GetCurrentPhysicalAttack();
+
+            if (weapon.damage.weaponAttackType == WeaponAttackType.Range)
+            {
+                playerBaseAttackValue = 0;
+            }
+            else if (weapon.damage.physical <= 0)
+            {
+                playerBaseAttackValue = 0;
+            }
+
+            return playerBaseAttackValue + weapon.GetWeaponAttack(this);
+        }
+
+        public int GetTwoHandAttackBonus(Weapon weapon)
+        {
+            int weaponDamage = GetWeaponBaseDamage(weapon);
+
+            if (HasRangeWeaponEquipped())
+            {
+                return 0;
+            }
+
+            int enhancedWeaponDamage = (int)(weaponDamage * twoHandAttackBonusMultiplier);
+            return Mathf.Max(enhancedWeaponDamage - weaponDamage, 0);
+        }
+
         public int GetWeaponAttack(Weapon weapon)
         {
-            var baseValue = HasBowEquipped() || weapon.damage.physical <= 0 ? 0 : GetCurrentPhysicalAttack();
-
-            var value = (int)
-                baseValue + weapon.damage.physical <= 0 ? 0 : (
-                weapon.GetWeaponAttack(this)
-            );
+            int value = GetWeaponBaseDamage(weapon);
 
             if (equipmentDatabase.isTwoHanding)
             {
-                value = (int)(value * twoHandAttackBonusMultiplier);
+                value += GetTwoHandAttackBonus(weapon);
             }
 
             if (playerManager.playerCombatController.isHeavyAttacking)

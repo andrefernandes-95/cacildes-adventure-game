@@ -162,7 +162,7 @@ namespace AF
             });
 
             quickSaveWriter.Write("questsReceived", payload);
-            quickSaveWriter.Write("currentTrackedQuestIndex", questsDatabase.currentTrackedQuestIndex);
+            quickSaveWriter.Write("trackedQuests", questsDatabase.trackedQuests.Select(trackedQuest => trackedQuest.name).ToArray());
         }
 
         void SaveFlags(QuickSaveWriter quickSaveWriter)
@@ -543,8 +543,19 @@ namespace AF
                 questsDatabase.questsReceived.Add(questParent);
             }
 
-            quickSaveReader.TryRead("currentTrackedQuestIndex", out int currentTrackedQuestIndex);
-            questsDatabase.currentTrackedQuestIndex = currentTrackedQuestIndex;
+            if (quickSaveReader.TryRead("trackedQuests", out string[] trackedQuestNames))
+            {
+                questsDatabase.trackedQuests.Clear();
+
+                foreach (var trackedQuestName in trackedQuestNames)
+                {
+                    QuestParent loadedQuest = Resources.Load<QuestParent>("Quests/" + trackedQuestName);
+                    if (loadedQuest != null)
+                    {
+                        questsDatabase.SetQuestToTrack(loadedQuest);
+                    }
+                }
+            }
         }
 
         void LoadFlags(QuickSaveReader quickSaveReader)
@@ -662,6 +673,8 @@ namespace AF
             SaveRecipes(quickSaveWriter);
             SaveSceneSettings(quickSaveWriter);
             SaveGameSessionSettings(quickSaveWriter);
+
+            quickSaveWriter.Write("gameVersion", Application.version);
             quickSaveWriter.TryCommit();
 
             Texture2D finalScreenshot = screenshot;

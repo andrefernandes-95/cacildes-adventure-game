@@ -18,7 +18,7 @@ namespace AF
     public class Shield : Item
     {
         [Header("Stamina Costs")]
-        public float blockStaminaCost = 30f;
+        public float blockStaminaCost = 50;
 
         // Defense Absorption
         [Range(0, 1f)] public float physicalAbsorption = 1f;

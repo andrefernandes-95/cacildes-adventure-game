@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using AF.Events;
 using AF.Inventory;
 using AF.Stats;
@@ -65,7 +66,7 @@ namespace AF
 
         VisualElement equipmentContainer;
 
-        Label currentObjectiveLabel, currentObjectiveValue, combatStanceIndicatorLabel;
+        Label combatStanceIndicatorLabel;
 
         public StarterAssetsInputs starterAssetsInputs;
 
@@ -82,6 +83,9 @@ namespace AF
 
         [Header("Scenes To Show In-Game Controls")]
         public List<string> scenesToDisplayInGameControls = new();
+
+        [Header("Quest Objectives")]
+        [SerializeField] VisualTreeAsset highlightedMissinEntry;
 
         private void Awake()
         {
@@ -135,10 +139,6 @@ namespace AF
 
             equipmentContainer = root.Q<VisualElement>("EquipmentContainer");
 
-            currentObjectiveLabel = root.Q<Label>("CurrentObjectiveLabel");
-            currentObjectiveValue = root.Q<Label>("CurrentObjectiveValue");
-            currentObjectiveLabel.style.display = DisplayStyle.None;
-            currentObjectiveValue.text = "";
 
             combatStanceIndicatorLabel = root.Q<Label>("CombatStanceIndicator");
 
@@ -260,7 +260,7 @@ namespace AF
             quickItemName.text = "";
             arrowsLabel.text = "";
 
-            if (equipmentDatabase.IsBowEquipped())
+            if (equipmentDatabase.IsRangeWeaponEquipped())
             {
                 arrowsLabel.text = equipmentDatabase.GetCurrentArrow() != null
                     ? equipmentDatabase.GetCurrentArrow().GetName() + " (" + inventoryDatabase.GetItemAmount(equipmentDatabase.GetCurrentArrow()) + ")"
@@ -281,7 +281,7 @@ namespace AF
                 ? new StyleBackground(equipmentDatabase.GetCurrentShield().sprite)
                 : new StyleBackground(unequippedShieldSlot);
 
-            shieldBlockedIcon.style.display = equipmentDatabase.IsBowEquipped() || equipmentDatabase.IsStaffEquipped()
+            shieldBlockedIcon.style.display = equipmentDatabase.IsRangeWeaponEquipped() || equipmentDatabase.IsStaffEquipped()
                 ? DisplayStyle.Flex
                 : DisplayStyle.None;
 
@@ -353,16 +353,19 @@ namespace AF
 
         void UpdateQuestTracking()
         {
-            currentObjectiveLabel.style.display = DisplayStyle.None;
-            currentObjectiveValue.text = "";
+            root.Q("CurrentObjectives").style.display = questsDatabase.trackedQuests.Count > 0 ? DisplayStyle.Flex : DisplayStyle.None;
 
-            string currentQuestObjective = questsDatabase.GetCurrentTrackedQuestObjective();
+            var highlightedMissionsContainer = root.Q("HighlightedMissions");
+            highlightedMissionsContainer.Clear();
 
-            if (!string.IsNullOrEmpty(currentQuestObjective))
+            foreach (QuestParent trackedQust in questsDatabase.trackedQuests)
             {
-                currentObjectiveValue.text = currentQuestObjective;
-                currentObjectiveLabel.style.display = DisplayStyle.Flex;
+                VisualElement clone = highlightedMissinEntry.CloneTree();
+                clone.Q<Label>("QuestObjective").text = trackedQust.questObjectives_LocalizedString[trackedQust.questProgress].GetLocalizedString();
+                clone.Q<Label>("QuestType").text = trackedQust.questName_LocalizedString.GetLocalizedString();
+                highlightedMissionsContainer.Add(clone);
             }
+
         }
 
         public void DisplayInsufficientStamina()

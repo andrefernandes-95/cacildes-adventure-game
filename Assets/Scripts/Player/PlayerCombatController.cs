@@ -51,6 +51,16 @@ namespace AF
         [Header("Foot Damage")]
         public bool isAttackingWithFoot = false;
 
+        [Header("Flags")]
+        bool canAttack = false;
+
+        [Header("Combos")]
+        [SerializeField] int oh_unarmedLightAttackCombos = 3;
+        [SerializeField] int th_unarmedLightAttackCombos = 3;
+
+        [SerializeField] int oh_unarmedHeavyAttackCombos = 2;
+        [SerializeField] int th_unarmedHeavyAttackCombos = 2;
+
         private void Start()
         {
             animator.SetFloat(SpeedMultiplierHash, 1f);
@@ -63,6 +73,7 @@ namespace AF
             isLightAttacking = false;
             isAttackingWithFoot = false;
             animator.SetFloat(SpeedMultiplierHash, 1f);
+            canAttack = true;
         }
 
         public void OnLightAttack()
@@ -70,6 +81,7 @@ namespace AF
             if (CanLightAttack())
             {
                 HandleLightAttack();
+                canAttack = false;
             }
         }
 
@@ -78,6 +90,7 @@ namespace AF
             if (CanHeavyAttack())
             {
                 HandleHeavyAttack(false);
+                canAttack = false;
             }
         }
 
@@ -139,13 +152,13 @@ namespace AF
 
         int GetMaxLightCombo()
         {
-            int maxCombo = 1;
+            int maxCombo = (equipmentDatabase.isTwoHanding ? th_unarmedLightAttackCombos : oh_unarmedLightAttackCombos) - 1;
 
             Weapon currentWeapon = equipmentDatabase.GetCurrentWeapon();
 
             if (currentWeapon != null)
             {
-                maxCombo = currentWeapon.lightAttackCombos - 1;
+                maxCombo = (equipmentDatabase.isTwoHanding ? currentWeapon.th_lightAttackCombos : currentWeapon.lightAttackCombos) - 1;
             }
 
             return maxCombo;
@@ -233,13 +246,13 @@ namespace AF
 
         int GetMaxHeavyCombo()
         {
-            int maxCombo = 0;
+            int maxCombo = (equipmentDatabase.isTwoHanding ? th_unarmedHeavyAttackCombos : oh_unarmedHeavyAttackCombos) - 1;
 
             Weapon currentWeapon = equipmentDatabase.GetCurrentWeapon();
 
             if (currentWeapon != null)
             {
-                maxCombo = currentWeapon.heavyAttackCombos - 1;
+                maxCombo = (equipmentDatabase.isTwoHanding ? currentWeapon.th_heavyAttackCombos : currentWeapon.heavyAttackCombos) - 1;
             }
 
             return maxCombo;
@@ -258,7 +271,7 @@ namespace AF
                 return false;
             }
 
-            if (equipmentDatabase.IsStaffEquipped() || equipmentDatabase.IsBowEquipped())
+            if (equipmentDatabase.IsStaffEquipped() || equipmentDatabase.IsRangeWeaponEquipped())
             {
                 return false;
             }
@@ -278,7 +291,7 @@ namespace AF
 
         bool CanAttack()
         {
-            if (playerManager.IsBusy())
+            if (!canAttack)
             {
                 return false;
             }
@@ -354,6 +367,12 @@ namespace AF
             {
                 playerManager.attackStatManager.attackSource = AttackStatManager.AttackSource.UNARMED;
             }
+        }
+
+        public void ResetCanAttack()
+        {
+            canAttack = true;
+            playerManager.thirdPersonController.canRotateCharacter = true;
         }
     }
 }

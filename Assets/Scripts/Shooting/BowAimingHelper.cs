@@ -12,6 +12,9 @@ namespace AF
 
         Vector3 originalPosition;
 
+        [Header("Projectile Types")]
+        [SerializeField] ProjectileType boltProjectileType;
+
         private void Awake()
         {
             originalPosition = transform.localPosition;
@@ -23,7 +26,7 @@ namespace AF
 
         void Evaluate()
         {
-            if (equipmentDatabase.GetCurrentWeapon() != null && equipmentDatabase.GetCurrentWeapon().isCrossbow)
+            if (equipmentDatabase.GetCurrentWeapon() != null && equipmentDatabase.GetCurrentWeapon().projectileType == boltProjectileType)
             {
                 transform.localPosition = crossBowPosition;
             }
