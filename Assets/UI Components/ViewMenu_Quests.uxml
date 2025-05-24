@@ -25,12 +25,20 @@
                         </ui:VisualElement>
                         <ui:VisualElement style="flex-grow: 0; width: 25px; height: 25px; top: auto; right: -35px; position: absolute; background-image: url(&quot;project://database/Assets/Synty/InterfaceFantasyWarriorHUD/Sprites/HUD/SPR_HUD_FantasyWarrior_Symbol_FleurDeLis_01.png?fileID=2800000&amp;guid=5ea8b99a2bf349f4587175dad6b1b49a&amp;type=3#SPR_HUD_FantasyWarrior_Symbol_FleurDeLis_01&quot;); scale: -1 1;" />
                     </ui:VisualElement>
-                    <ui:ScrollView scroll-deceleration-rate="0,135" elasticity="0,1" horizontal-scroller-visibility="Hidden" vertical-scroller-visibility="Auto" name="QuestListScroll" focusable="true" class="text" style="width: 84%; height: 89%; margin-top: 15px;">
+                    <ui:ScrollView scroll-deceleration-rate="0,135" elasticity="0,1" horizontal-scroller-visibility="Hidden" vertical-scroller-visibility="Auto" name="QuestListScroll" focusable="false" class="text" style="width: 84%; height: 89%; margin-top: 15px;">
                         <ui:Instance template="QuestButton" name="QuestButton" />
                     </ui:ScrollView>
                 </ui:VisualElement>
                 <ui:VisualElement name="Border" style="flex-grow: 0; flex-shrink: 1; width: 1px; height: 100%; border-left-color: rgb(255, 255, 255); border-right-color: rgba(255, 255, 255, 0); border-top-color: rgba(255, 255, 255, 0); border-bottom-color: rgba(255, 255, 255, 0); border-left-width: 1px; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; border-top-width: 1px; border-right-width: 1px; border-bottom-width: 1px; -unity-background-image-tint-color: rgb(0, 0, 0); display: none;" />
                 <ui:VisualElement name="QuestPreview" style="flex-grow: 1; flex-shrink: 1; width: 65%; height: 100%; border-left-color: rgb(255, 255, 255); border-right-color: rgba(255, 255, 255, 0); border-top-color: rgba(255, 255, 255, 0); border-bottom-color: rgba(255, 255, 255, 0); border-left-width: 0; -unity-background-image-tint-color: rgb(185, 161, 116); background-image: url(&quot;project://database/Assets/Synty/InterfaceFantasyWarriorHUD/Sprites/HUD/SPR_HUD_FantasyWarrior_Box_Medium_ParchmentGradient_02.png?fileID=2800000&amp;guid=5c1af49f566e20a43943021fac8bf900&amp;type=3#SPR_HUD_FantasyWarrior_Box_Medium_ParchmentGradient_02&quot;); -unity-slice-left: 253; -unity-slice-top: 253; -unity-slice-right: 253; -unity-slice-bottom: 253; padding-right: 50px; padding-left: 50px; padding-top: 50px;">
+                    <ui:Button name="ReturnToQuestList" class="primary-button" style="flex-direction: row;">
+                        <ui:VisualElement style="flex-grow: 0; width: 40px; height: 35px; background-image: url(&quot;project://database/Assets/Modern%20GDR%20-%20Free%20icons%20pack/00_Atlas/BrightBackground.png?fileID=-236887718&amp;guid=05e0567213a58c840a3ea79a4409bdfd&amp;type=3#Rewind_BrightBG&quot;); margin-right: 10px;" />
+                        <ui:Label text="Label" class="label-text">
+                            <Bindings>
+                                <UnityEngine.Localization.LocalizedString property="text" table="GUID:dbb3674ad34b76b458d72593e4ca5a4a" entry="Id(126107018462228480)" />
+                            </Bindings>
+                        </ui:Label>
+                    </ui:Button>
                     <ui:VisualElement name="QuestInfoEntry" template="QuestInfoEntry" style="flex-shrink: 0;">
                         <ui:Toggle label="Completed" name="QuestCompleted" enabled="false" class="label-text" style="overflow: hidden; flex-direction: row; flex-shrink: 1; align-content: auto; justify-content: flex-start; align-self: auto; align-items: center; flex-wrap: nowrap; position: absolute; right: 0;">
                             <Bindings>

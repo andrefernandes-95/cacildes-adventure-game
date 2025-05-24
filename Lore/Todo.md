@@ -7,15 +7,21 @@ DONE
 - Parry with wood shield has no animation
 - Allow books to be closed by pressing E
 - Allow italic in messages
+- Adicionar indicador de missao concluida, pendente, e tracked 
+- Adicionar multiplas missoes como tracked
 
 Quest System:
-- Adicionar multiplas missoes como tracked
-- Adicionar indicador de missao concluida, pendente, e tracked 
 - Marcar quest na lista com um border ou algo indicativo deque esta selecionada
 
-- focus logic on menu quest list is broken because we always focus on the first item...
-- when completing quest, it breaks the game because tracked quests are changed
+- Make the entrance to slepbone abandoned whard obvious
+change the trigger in west bridge, hide the orcs for when we truly are in the west bridge quest, make the door not open if not orcs at our door
 
+- Hide player hud when bonfire
+- when completing quest, it breaks the game because tracked quests are changed
+- Add cutscene event when entering snailcliff for the first time with camera going up on the character that is at the top
+
+- Track quest should be more obvious, add a button to the screen
+- chnage tracking quest icon
 
 
 READY FOR DEV:
@@ -44,7 +50,6 @@ BACKLOG:
 Bonus:
 - Ring that checks if enemy is hit with arrow, there's 50% chances of recovering that arrow upon enemy death
 - Version save files
-
 - crafting should be earlier
 
 1.6.2

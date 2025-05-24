@@ -33,6 +33,11 @@ namespace AF
 
             if (enemy != null && CanBackstab(enemy, playerManager.GetAttackDamage()))
             {
+                if (enemy.characterCombatController.IsReactingAgainstBackstab())
+                {
+                    return false;
+                }
+
                 enemy.characterPosture.isStunned = true;
                 enemy.damageReceiver.waitingForBackstab = true;
 

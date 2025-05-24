@@ -361,11 +361,15 @@ namespace AF
             foreach (QuestParent trackedQust in questsDatabase.trackedQuests)
             {
                 VisualElement clone = highlightedMissinEntry.CloneTree();
-                clone.Q<Label>("QuestObjective").text = trackedQust.questObjectives_LocalizedString[trackedQust.questProgress].GetLocalizedString();
+
+                if (trackedQust.questProgress < trackedQust.questObjectives_LocalizedString.Length)
+                {
+                    clone.Q<Label>("QuestObjective").text = trackedQust.questObjectives_LocalizedString[trackedQust.questProgress].GetLocalizedString();
+                }
+
                 clone.Q<Label>("QuestType").text = trackedQust.questName_LocalizedString.GetLocalizedString();
                 highlightedMissionsContainer.Add(clone);
             }
-
         }
 
         public void DisplayInsufficientStamina()

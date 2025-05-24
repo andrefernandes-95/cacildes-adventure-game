@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using AF.Events;
 using AYellowpaper.SerializedCollections;
 using TigerForge;
@@ -20,6 +21,7 @@ namespace AF.Animations
 
         [Header("Animation Clip Overrides")]
         public SerializedDictionary<string, AnimationClip> clipOverrides;
+        [SerializeField] AIHumanoidAnimationOverrideHelper aIHumanoidAnimationOverrideHelper;
 
         [Header("Unity Events")]
         public UnityEvent onLeftFootstep;
@@ -58,6 +60,16 @@ namespace AF.Animations
 
         void OverrideAnimatorClips()
         {
+            if (aIHumanoidAnimationOverrideHelper != null)
+            {
+                Dictionary<string, AnimationClip> clipOverridesForAIHumanoid = aIHumanoidAnimationOverrideHelper.GetClipOverrides();
+                foreach (var entry in clipOverridesForAIHumanoid)
+                {
+                    characterManager.UpdateAnimatorOverrideControllerClips(entry.Key, entry.Value);
+                }
+                return;
+            }
+
             foreach (var entry in clipOverrides)
             {
                 characterManager.UpdateAnimatorOverrideControllerClips(entry.Key, entry.Value);

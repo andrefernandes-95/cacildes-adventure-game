@@ -11,8 +11,15 @@ namespace AF.Detection
 {
     public class Sight : MonoBehaviour
     {
+        [Header("Radius")]
+        [SerializeField] float detectionRadius = 15f;
+        [SerializeField] float minimumDetectionAngle = -35;
+        [SerializeField] float maximumDetectionAngle = 35;
+
+        [Header("Detection")]
         public float viewDistance = 10f;
         public LayerMask targetLayer;
+        public LayerMask environmentBlockLayer;
 
         [Header("Components")]
         public Transform origin;
@@ -34,22 +41,61 @@ namespace AF.Detection
         [SerializeField] bool isSighted = false;
         public bool canSight = true;
 
-        public Transform IsTargetInSight()
+        public CharacterBaseManager GetTargetInSight()
         {
-            Vector3 originPosition = origin.transform.position;
-
-            Vector3 direction = origin.transform.forward * viewDistance;
-
-            // Perform the raycast
-            if (Physics.Raycast(originPosition, direction, out RaycastHit hit, viewDistance, targetLayer))
+            if (targetManager.currentTarget != null)
             {
-                if (debug) Debug.DrawLine(originPosition, hit.point, Color.red); // Draw a red line for the raycast
-
-                return hit.transform;
+                return null;
             }
 
-            // Draw a green debug line if no target is hit
-            if (debug) Debug.DrawRay(originPosition, direction, Color.green);
+            CharacterManager sightOwner = targetManager.characterManager;
+
+            Collider[] colliders = Physics.OverlapSphere(sightOwner.transform.position, detectionRadius, targetLayer);
+            for (int i = 0; i < colliders.Length; i++)
+            {
+                CharacterBaseManager targetCharacter = colliders[i].transform.GetComponent<CharacterBaseManager>();
+
+                if (targetCharacter == null)
+                {
+                    continue;
+                }
+
+                if (tagsToDetect.Count > 0 && !tagsToDetect.Contains(colliders[i].transform.gameObject.tag))
+                {
+                    continue;
+                }
+
+                // Target is self? Ignore
+                if (targetCharacter.transform.root == sightOwner.transform.root)
+                {
+                    continue;
+                }
+
+                if (targetCharacter.health.GetCurrentHealth() <= 0)
+                {
+                    continue;
+                }
+
+                if (sightOwner.IsFromSameFaction(targetCharacter))
+                {
+                    continue;
+                }
+
+                // If a potential target is found, it has to be in front of us
+                Vector3 possibleTargetDirection = targetCharacter.transform.position - sightOwner.transform.position;
+                float viewableAngleOfPossibleTarget = Vector3.Angle(possibleTargetDirection, sightOwner.transform.forward);
+
+                if (viewableAngleOfPossibleTarget > minimumDetectionAngle && viewableAngleOfPossibleTarget < maximumDetectionAngle)
+                {
+                    // Lastly, check for environment blocks
+                    bool isObstructed = Physics.Linecast(origin.position, origin.position, environmentBlockLayer);
+                    if (!isObstructed)
+                    {
+                        return targetCharacter;
+                    }
+                }
+            }
+
             return null;
         }
         public void CastSight()
@@ -59,27 +105,14 @@ namespace AF.Detection
                 return;
             }
 
-            Transform hit = IsTargetInSight();
+            CharacterBaseManager potentialTarget = GetTargetInSight();
 
-            if (hit != null)
+            if (potentialTarget != null)
             {
-                // Check if the hit object's tag is in the list of tags to detect
-
-                if (tagsToDetect.Count > 0)
+                targetManager.SetTarget(potentialTarget, () =>
                 {
-                    isSighted = tagsToDetect.Contains(hit.transform.gameObject.tag);
-                }
-
-                if (isSighted && hit.TryGetComponent(out CharacterBaseManager target))
-                {
-                    if (factionsToIgnore == null || factionsToIgnore.Count == 0 || !target.characterFactions.Any(faction => factionsToIgnore.Contains(faction)))
-                    {
-                        targetManager.SetTarget(target, () =>
-                        {
-                            OnTargetSighted?.Invoke();
-                        }, false);
-                    }
-                }
+                    OnTargetSighted?.Invoke();
+                }, false);
             }
         }
 

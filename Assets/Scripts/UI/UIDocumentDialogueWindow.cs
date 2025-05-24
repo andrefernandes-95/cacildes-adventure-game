@@ -7,6 +7,7 @@ using DG.Tweening;
 using UnityEngine.Events;
 using AF.Dialogue;
 using AF.Flags;
+using System.Collections.Generic;
 
 namespace AF
 {
@@ -241,14 +242,12 @@ namespace AF
             // Use Sub Events Option
             if (selectedResponse.subEventPage != null)
             {
-                EventBase[] choiceEvents = selectedResponse.subEventPage.GetComponents<EventBase>();
+                List<EventBase> choiceEvents = selectedResponse.subEventPage
+                    .GetComponentsInChildren<EventBase>().ToList();
 
-                if (choiceEvents.Length > 0)
+                foreach (EventBase subEvent in choiceEvents)
                 {
-                    foreach (EventBase subEvent in choiceEvents)
-                    {
-                        yield return subEvent.Dispatch();
-                    }
+                    yield return subEvent.Dispatch();
                 }
             }
             else if (string.IsNullOrEmpty(selectedResponse.reply) == false)

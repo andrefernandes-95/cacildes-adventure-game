@@ -16,8 +16,7 @@ devem querer usá-la como um cão de caça, para lhes indicar os salgueiros cert
 
 2. Para onde a levaram?
 Petra:
-Vi-os levar-na para as Minas de Slepbone, logo depois do viaduto que atravessaste para chegar à praia. Há um velho porto escondido ao lado desse viaduto, enterrado sob a terra.
-
+Vi-os levar-na para as Minas de Slepbone, logo depois do viaduto que atravessaste para chegar à praia. Há um velho porto escondido ao lado desse viaduto, enterrado sob a terra. 
 Contrabandistas vão e vêm por ali, carregados de artefactos, minério... possivelmente ela está lá, aprisionada e sozinha, à espera do pior.
 
 Estou demasiado ferida e o nosso grupo está disperso, ainda muito confuso para se organizar... Mas, se te aventurares por lá, por favor, encontra a minha irmã.
@@ -64,9 +63,7 @@ They must want to use her like a hunting dog, to lead them to the right willows 
 2. Where did they take her?
 Petra:
 I saw them take her toward the Slepbone Mines, just past the viaduct you crossed to reach the beach. There’s an old hidden port next to that viaduct, buried beneath the earth.
-
-Smugglers come and go through there, loaded with artifacts, ore...
-She’s likely there, imprisoned and alone, awaiting the worst.
+Smugglers come and go through there, loaded with artifacts, ore... She’s likely there, imprisoned and alone, awaiting the worst.
 
 I’m too wounded and our group is scattered, still too shaken to regroup... But if you venture that way, please, find my sister.
 
@@ -89,3 +86,37 @@ Now they’ll sell her like a hunting dog, just so those loggers can find the ri
 Petra:
 Thank you...
 The forest does not forget those who protect it.
+
+
+
+
+## After Rescuing Thelma
+
+[EN]
+My sister is back! I'm so grateful for your help.
+She's understandably shaken by all that has happened... I’m afraid she’s suffering from more than just wounds of the body — her spirit feels splintered... but she needs rest... time to root herself again in the world.
+
+[PT]
+A minha irmã já voltou! Estou muito agradecido pela tua ajuda.
+Ela está compreensivelmente abalada por tudo o que aconteceu... receio que esteja a sofrer de mais do que apenas feridas no corpo... mas também precisa de descanso... tempo para se voltar a enraizar no mundo.
+
+
+## All is Well
+
+Thelma:
+
+[PT]
+Obrigado por tudo. É tão bom estar junto da minha irmã e da minha família novamente... vai demorar para esquecer todos os maus momentos que passei com aqueles contrabandistas... mas um dia, talvez, os consiga esquecer completamente...
+
+[EN]
+Thank you for everything. It feels so good to be with my sister and my family again...
+It will take time to forget all the terrible moments I went through with those smugglers...
+But maybe, one day, I’ll be able to forget them completely.
+
+(Cacildes)
+
+[EN]
+She looks a bit shaken up still... Honestly, it's best not to bother her for now.
+
+[PT]
+Ela ainda parece um pouco abalada... Sinceramente, o melhor é não a incomodar por agora.

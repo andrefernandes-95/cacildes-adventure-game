@@ -37907,6 +37907,7 @@ MonoBehaviour:
   characterWeaponsManager: {fileID: 7353292270462359461}
   characterBossController: {fileID: 2102271419543537189}
   executionManager: {fileID: 3652008012499799501}
+  characterGravity: {fileID: 41835741450275024}
   animatorOverrideController: {fileID: 0}
   patrolSpeed: 2
   chaseSpeed: 4.5
@@ -37970,6 +37971,7 @@ MonoBehaviour:
   overrideChaseSpeed: -1
   clipOverrides:
     _serializedList: []
+  aIHumanoidAnimationOverrideHelper: {fileID: 0}
   onLeftFootstep:
     m_PersistentCalls:
       m_Calls:
@@ -40956,6 +40958,7 @@ MonoBehaviour:
   chaseActions:
   - {fileID: 4121755260804781728}
   reactionToTargetBehindBack: {fileID: 0}
+  chanceToReactToTargetBehindBack: 100
   currentCombatAction: {fileID: 0}
   chanceToReact: 80
   usedCombatActions: []
@@ -58269,6 +58272,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   maxIntervalBetweenDecidingChaseActions: 5
+  canJumpToReachTarget: 0
+  minimumDistanceToJump: 4
   companionsDatabase: {fileID: 0}
 --- !u!1 &6330269721485861177
 GameObject:
@@ -59734,10 +59739,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94822fb3bb6a29143bbadafc6c7377a1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  detectionRadius: 15
+  minimumDetectionAngle: -35
+  maximumDetectionAngle: 35
   viewDistance: 10
   targetLayer:
     serializedVersion: 2
     m_Bits: 256
+  environmentBlockLayer:
+    serializedVersion: 2
+    m_Bits: 1
   origin: {fileID: 826813144468769505}
   targetManager: {fileID: 2735465378605405321}
   tagsToDetect: []
@@ -83959,6 +83970,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   characterManager: {fileID: 1759811369383153655}
   ignoreGravity: 0
+  _verticalVelocity: 0
+  JumpHeight: 3
+  JumpHeightBonus: 0
+  Gravity: -15
+  JumpTimeout: 0.5
+  FallTimeout: 0.15
+  shouldJumpToTarget: 0
+  jumpTowardsTargetSpeed: 25
 --- !u!1 &8919674591871552269
 GameObject:
   m_ObjectHideFlags: 0

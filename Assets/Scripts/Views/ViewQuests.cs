@@ -34,6 +34,7 @@ namespace AF
             base.OnEnable();
             SetupRefs();
             RedrawUI();
+            StartCoroutine(FocusOnFirstQuestListButton());
         }
 
         void SetupRefs()
@@ -55,6 +56,12 @@ namespace AF
             {
                 HideAllTabs();
                 DrawCharactersTab();
+            }, soundbank);
+
+            UIUtils.SetupButton(root.Q<Button>("ReturnToQuestList"), () =>
+            {
+                SetSelectedQuest(null);
+                StartCoroutine(FocusOnFirstQuestListButton());
             }, soundbank);
 
             starterAssetsInputs.onMainMenuUnequipSlot.AddListener(OnTryToTrackQuest);
@@ -93,14 +100,6 @@ namespace AF
         void DrawQuestsMenu()
         {
             var questListScroll = root.Q<ScrollView>("QuestListScroll");
-            questListScroll.RegisterCallback<FocusInEvent>(ev =>
-            {
-                if (questListScroll.childCount > 0)
-                {
-                    questListScroll.ElementAt(0).Q<Button>().Focus();
-                }
-            });
-
             questListScroll.Clear();
 
             var reversedQuests = questsDatabase.questsReceived.AsEnumerable().Reverse().ToList();
@@ -145,6 +144,16 @@ namespace AF
             StartCoroutine(FocusOnFirstObjective());
         }
 
+        IEnumerator FocusOnFirstQuestListButton()
+        {
+            yield return new WaitForEndOfFrame();
+            var scrollView = root.Q<ScrollView>("QuestListScroll");
+            if (scrollView.childCount > 0)
+            {
+                scrollView.ElementAt(0).Q<Button>().Focus();
+            }
+        }
+
         IEnumerator FocusOnFirstObjective()
         {
             yield return new WaitForEndOfFrame();
@@ -165,11 +174,14 @@ namespace AF
         {
             if (selectedQuest == null)
             {
+                questPreview.style.opacity = 0;
+
                 return;
             }
 
             root.Q<Label>("QuestType").text = selectedQuest.questType.questType.GetLocalizedString();
             root.Q<Label>("QuestTitle").text = selectedQuest.questName_LocalizedString.GetLocalizedString();
+            root.Q<VisualElement>("QuestIcon").style.backgroundImage = new StyleBackground(Utils.Texture2DToSprite(selectedQuest.questIcon as Texture2D));
             root.Q<Toggle>("QuestCompleted").value = selectedQuest.IsCompleted();
             root.Q<Label>("QuestDescription").text = selectedQuest.questDescription.IsEmpty ? "" : selectedQuest.questDescription.GetLocalizedString();
             root.Q<VisualElement>("TrackQuestImage").style.display = selectedQuest.IsTracked() ? DisplayStyle.Flex : DisplayStyle.None;
@@ -243,7 +255,7 @@ namespace AF
             entry.Q<Label>("Type").text = Utils.IsPortuguese() ? "Objetivo" : "Objective";
             entry.Q<Label>("Label").style.display = DisplayStyle.None;
 
-            descLabel.text = isLocked ? (Utils.IsPortuguese() ? "Objetivo não revelado" : "Unrevealed Objective") : questParent.questObjectives_LocalizedString[index].GetLocalizedString();
+            descLabel.text = isLocked ? (Utils.IsPortuguese() ? "Objetivo ainda não revelado" : "Unrevelead objective") : questParent.questObjectives_LocalizedString[index].GetLocalizedString();
             descLabel.style.fontSize = isLocked ? 16 : 24;
             descLabel.style.color = Color.white;
             descLabel.style.marginRight = 10;
@@ -281,7 +293,7 @@ namespace AF
 
             var objectiveInfo = index < questParent.questObjectiveInfos.Length ? questParent.questObjectiveInfos[index] : null;
 
-            if (objectiveInfo != null && !objectiveInfo.location.IsEmpty)
+            if (objectiveInfo != null && !isLocked && !objectiveInfo.location.IsEmpty)
             {
                 DrawLocation(objectiveInfo, entry.Q("CardDetails"));
             }

@@ -25,6 +25,7 @@ namespace AF
         public CharacterWeaponsManager characterWeaponsManager;
         public CharacterBossController characterBossController;
         public ExecutionManager executionManager;
+        public CharacterGravity characterGravity;
 
         // Animator Overrides
         [HideInInspector] public AnimatorOverrideController animatorOverrideController;

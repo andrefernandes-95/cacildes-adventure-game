@@ -5,7 +5,6 @@ using UnityEngine.Events;
 
 namespace AF
 {
-
     public class ChaseState : State
     {
         [Header("Components")]
@@ -13,7 +12,6 @@ namespace AF
 
         [Header("Chase Settings")]
         public float maxChaseDistance = 20f;
-
 
         [Header("States")]
         public State patrolOrIdleState;
@@ -24,10 +22,13 @@ namespace AF
         public UnityEvent onTargetReached;
         public UnityEvent onTargetLost;
 
-
         [Header("Chase Actions Settings")]
         public float maxIntervalBetweenDecidingChaseActions = 5f;
         float currentIntervalBetweenChaseActions = 0f;
+
+        [Header("Jump Actions")]
+        [SerializeField] bool canJumpToReachTarget = false;
+        [SerializeField] float minimumDistanceToJump = 4f;
 
         [Header("Companion Settings")]
         PlayerManager playerManager;
@@ -44,6 +45,11 @@ namespace AF
         public override void OnStateEnter(StateManager stateManager)
         {
             currentIntervalBetweenChaseActions = 0f;
+
+            if (!characterManager.agent.enabled)
+            {
+                characterManager.agent.enabled = true;
+            }
 
             characterManager.agent.speed = characterManager.chaseSpeed;
             characterManager.agent.ResetPath();
@@ -64,17 +70,27 @@ namespace AF
 
         public override State Tick(StateManager stateManager)
         {
+            if (characterManager.IsBusy())
+            {
+                return this;
+            }
+
+            if (ShouldJumpTowardsTarget())
+            {
+                PerformJumpTowardsTarget();
+                return this;
+            }
 
             if (!characterManager.isCuttingDistanceToTarget)
             {
                 characterManager.agent.speed = characterManager.chaseSpeed;
             }
 
-            if (characterManager.IsBusy())
+            // If grounded again, re-enable agent
+            if (!characterManager.agent.enabled && characterManager.characterController.isGrounded)
             {
-                return this;
+                characterManager.agent.enabled = true;
             }
-
             if (characterManager.targetManager.currentTarget != null)
             {
                 // If Target Is Dead, Stop Chasing
@@ -86,19 +102,16 @@ namespace AF
 
                 UpdatePosition();
 
-                // Calculate the distance between the agent and the target
                 float distanceToTarget = Vector3.Distance(characterManager.transform.position, characterManager.targetManager.currentTarget.transform.position);
 
                 if (distanceToTarget <= characterManager.agent.stoppingDistance)
                 {
-                    // We have reached the target
                     onTargetReached.Invoke();
                     return combatState;
                 }
                 else if (distanceToTarget > maxChaseDistance)
                 {
                     characterManager.targetManager.currentTarget = null;
-
                     onTargetLost?.Invoke();
                     return patrolOrIdleState;
                 }
@@ -115,7 +128,6 @@ namespace AF
                     }
                 }
             }
-            // Is Active Companion And Is Not Targetting Any Enemy
             else if (characterManager.IsCompanion() && characterManager?.health?.GetCurrentHealth() > 0 && companionsDatabase.IsCompanionAndIsActivelyInParty(characterManager.GetCharacterID()))
             {
                 return FollowPlayer();
@@ -126,11 +138,14 @@ namespace AF
 
         State FollowPlayer()
         {
+            if (!characterManager.agent.enabled)
+            {
+                characterManager.agent.enabled = true;
+            }
+
             characterManager.agent.SetDestination(playerManager.transform.position);
 
-            // Calculate the distance between the agent and the target
-            float distanceToTarget =
-                Vector3.Distance(characterManager.transform.position, playerManager.transform.position);
+            float distanceToTarget = Vector3.Distance(characterManager.transform.position, playerManager.transform.position);
 
             if (distanceToTarget <= characterManager.agent.stoppingDistance + companionsDatabase.companionToPlayerStoppingDistance)
             {
@@ -142,6 +157,38 @@ namespace AF
             }
 
             return this;
+        }
+
+        bool ShouldJumpTowardsTarget()
+        {
+            if (!canJumpToReachTarget || characterManager.characterGravity == null)
+            {
+                return false;
+            }
+
+            if (characterManager == null || characterManager.targetManager.currentTarget == null)
+            {
+                return false;
+            }
+
+            float verticalDifference = characterManager.targetManager.currentTarget.transform.position.y - characterManager.transform.position.y;
+
+            if (Vector3.Distance(characterManager.targetManager.currentTarget.transform.position, characterManager.transform.position) > maxChaseDistance)
+            {
+                return false;
+            }
+
+            return Mathf.Abs(verticalDifference) > 1.5f && characterManager.characterController.isGrounded;
+        }
+
+        void PerformJumpTowardsTarget()
+        {
+            if (characterManager.agent.enabled)
+            {
+                characterManager.agent.enabled = false;
+            }
+
+            characterManager.characterGravity.shouldJumpToTarget = true;
         }
     }
 }

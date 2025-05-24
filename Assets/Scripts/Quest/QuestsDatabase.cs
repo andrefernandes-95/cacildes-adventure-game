@@ -53,6 +53,17 @@ namespace AF
 
         public void SetQuestToTrack(QuestParent questParent)
         {
+            // Do not track completed quests
+            if (questParent.IsCompleted())
+            {
+                if (IsQuestTracked(questParent))
+                {
+                    trackedQuests.Remove(questParent);
+                }
+
+                return;
+            }
+
             if (IsQuestTracked(questParent))
             {
                 trackedQuests.Remove(questParent);

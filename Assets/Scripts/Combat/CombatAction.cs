@@ -56,6 +56,11 @@ namespace AF.Combat
 
         public bool CanUseCombatAction()
         {
+            if (!this.isActiveAndEnabled)
+            {
+                return false;
+            }
+
             if (characterManager.IsBusy())
             {
                 return false;

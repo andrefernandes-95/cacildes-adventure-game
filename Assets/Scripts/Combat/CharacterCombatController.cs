@@ -23,6 +23,7 @@ namespace AF.Combat
 
         [Header("Directional")]
         public CombatAction reactionToTargetBehindBack;
+        [Range(0, 100f)] public float chanceToReactToTargetBehindBack = 100f;
         public CombatAction currentCombatAction = null;
 
         [Header("Combat Options")]
@@ -89,20 +90,15 @@ namespace AF.Combat
             return characterManager.targetManager.IsTargetBusy() || characterManager.targetManager.IsTargetShooting();
         }
 
-        bool IsTargetBehind()
+        public bool IsReactingAgainstBackstab()
         {
-            if (characterManager.targetManager == null || characterManager.targetManager.currentTarget == null)
+            if (reactionToTargetBehindBack != null && Random.Range(0, 100) < chanceToReactToTargetBehindBack)
             {
-                return false;
+                UseCombatAction(reactionToTargetBehindBack);
+                return true;
             }
 
-            // Calculate vector from enemy to player
-            Vector3 toPlayer = characterManager.targetManager.currentTarget.transform.position - characterManager.transform.position;
-
-            // Calculate angle between enemy's forward direction and vector to player
-            float angle = Vector3.Angle(characterManager.transform.forward, toPlayer);
-
-            return angle > 90f;
+            return false;
         }
 
         CombatAction GetCombatAction()
@@ -118,11 +114,6 @@ namespace AF.Combat
                         return possibleReaction;
                     }
                 }
-            }
-
-            if (reactionToTargetBehindBack != null && IsTargetBehind())
-            {
-                return reactionToTargetBehindBack;
             }
 
             if (combatActions.Count > 0)
@@ -150,6 +141,12 @@ namespace AF.Combat
             }
 
             this.currentCombatAction = newCombatAction;
+            ExecuteCurrentCombatAction(0f);
+        }
+
+        void UseCombatAction(CombatAction combatAction)
+        {
+            this.currentCombatAction = combatAction;
             ExecuteCurrentCombatAction(0f);
         }
 
