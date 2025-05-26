@@ -16,6 +16,8 @@ namespace AF
         [Header("Character")]
         public CharacterBaseManager character;
         [Range(0, 1f)] public float pushForceAbsorption = 1;
+
+        [Header("Backstab Options")]
         public bool canBeBackstabbed = true;
 
         [Header("Components")]
@@ -42,7 +44,7 @@ namespace AF
         public bool damageOnDodge = false;
         public bool waitingForBackstab = false;
         public bool hasFlatulence = false;
-
+        public bool isTakingDamage = false;
 
         public void OnDamage(CharacterBaseManager attacker, Action onDamageInflicted)
         {
@@ -71,6 +73,7 @@ namespace AF
         public void ResetStates()
         {
             canTakeDamage = true;
+            isTakingDamage = false;
         }
 
         /// <summary>
@@ -82,7 +85,7 @@ namespace AF
             canTakeDamage = value;
         }
 
-        bool CanTakeDamage()
+        public bool CanTakeDamage()
         {
             if (ignoreDamage)
             {
@@ -216,6 +219,7 @@ namespace AF
             ApplyDamage(incomingDamage);
 
             onTakeDamage?.Invoke(incomingDamage);
+            isTakingDamage = true;
         }
 
         void HandlePlayerArmorAttacks(CharacterBaseManager damageOwner)

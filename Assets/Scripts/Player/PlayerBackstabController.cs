@@ -108,6 +108,11 @@ namespace AF
 
         public bool CanBackstab(CharacterManager target, Damage incomingDamage)
         {
+            if (target == null)
+            {
+                return false;
+            }
+
             if (dontAllowBackstab)
             {
                 return false;
@@ -123,7 +128,14 @@ namespace AF
                 return false;
             }
 
-            if (target != null && target.health != null && target.health.GetCurrentHealth() - incomingDamage.GetTotalDamage() <= 0)
+            // Is Taking Damage? Do not allopw backstab
+            if (target.damageReceiver.isTakingDamage)
+            {
+                return false;
+            }
+
+            // Do not play backstab animation if it is going to kill the target
+            if (target.health.GetCurrentHealth() - incomingDamage.GetTotalDamage() <= 0)
             {
                 return false;
             }

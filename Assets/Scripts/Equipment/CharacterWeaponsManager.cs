@@ -11,6 +11,9 @@ namespace AF.Equipment
         public GameObject shield;
         public bool shouldHideShield = true;
 
+        [Header("Backpack Options")]
+        public GameObject unequippedShieldInTheBack;
+
         public void ResetStates()
         {
             CloseAllWeaponHitboxes();
@@ -57,12 +60,22 @@ namespace AF.Equipment
             {
                 shield.SetActive(true);
             }
+
+            if (unequippedShieldInTheBack != null)
+            {
+                unequippedShieldInTheBack.SetActive(false);
+            }
         }
         public void HideShield()
         {
             if (shield != null && shouldHideShield)
             {
                 shield.SetActive(false);
+            }
+
+            if (unequippedShieldInTheBack != null)
+            {
+                unequippedShieldInTheBack.SetActive(true);
             }
         }
 

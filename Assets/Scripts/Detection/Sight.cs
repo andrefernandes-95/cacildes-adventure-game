@@ -87,8 +87,10 @@ namespace AF.Detection
 
                 if (viewableAngleOfPossibleTarget > minimumDetectionAngle && viewableAngleOfPossibleTarget < maximumDetectionAngle)
                 {
+                    Debug.DrawLine(origin.position, targetCharacter.transform.position + targetCharacter.transform.up, Color.green);
+
                     // Lastly, check for environment blocks
-                    bool isObstructed = Physics.Linecast(origin.position, origin.position, environmentBlockLayer);
+                    bool isObstructed = Physics.Linecast(origin.position, targetCharacter.transform.position + targetCharacter.transform.up, out RaycastHit hitInfo, environmentBlockLayer);
                     if (!isObstructed)
                     {
                         return targetCharacter;
@@ -100,7 +102,7 @@ namespace AF.Detection
         }
         public void CastSight()
         {
-            if (canSight == false)
+            if (canSight == false || tagsToDetect == null || tagsToDetect.Count == 0)
             {
                 return;
             }

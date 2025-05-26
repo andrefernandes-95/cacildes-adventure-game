@@ -26,7 +26,8 @@ namespace AF
         bool ambushHasBegun = false;
         public bool shouldAwake = false;
 
-        Coroutine ambushCoroutine;
+        [Header("Options")]
+        [SerializeField] float exitAmbushCrossFade = 0.2f;
 
         private void Awake()
         {
@@ -47,17 +48,15 @@ namespace AF
             }
 
             characterManager.agent.speed = 0f;
+
+            characterManager.PlayBusyAnimationWithRootMotion("Ambush [Skeleton] - Idle");
         }
 
         public override void OnStateExit(StateManager stateManager)
         {
-            if (ambushCoroutine != null)
-            {
-                StopCoroutine(ambushCoroutine);
-            }
-
             onStateExit?.Invoke();
         }
+
         public override State Tick(StateManager stateManager)
         {
             onStateUpdate?.Invoke();
@@ -70,7 +69,16 @@ namespace AF
             return this;
         }
 
-        public void BeginAmbush(float animationDuration)
+        /// <summary>
+        /// Unity Event
+        /// </summary>
+        public void BeginAmbush()
+        {
+            BeginAmbush(0f);
+        }
+
+        // TODO: Remove float begin ambush once we finish changing every ambush state enemy in the game
+        public void BeginAmbush(float beginAmbush)
         {
             if (ambushHasBegun)
             {
@@ -78,21 +86,19 @@ namespace AF
             }
 
             ambushHasBegun = true;
-
-            if (ambushCoroutine != null)
-            {
-                StopCoroutine(ambushCoroutine);
-            }
-
-            ambushCoroutine = StartCoroutine(Ambush_Coroutine(animationDuration));
+            PlayExitAmbush();
+            onAmbushBegin?.Invoke();
         }
 
-        IEnumerator Ambush_Coroutine(float duration)
+        public void FinishAmbush()
         {
-            onAmbushBegin?.Invoke();
-            yield return new WaitForSeconds(duration);
             onAmbushFinish?.Invoke();
             shouldAwake = true;
+        }
+
+        public void PlayExitAmbush()
+        {
+            characterManager.PlayCrossFadeBusyAnimationWithRootMotion("Ambush [Skeleton]", exitAmbushCrossFade);
         }
     }
 }

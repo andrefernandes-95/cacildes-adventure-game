@@ -136,7 +136,7 @@ namespace AF
 
         public int GetPostureDamageBonus()
         {
-            return health.GetMaxHealth() * 25 / 100;
+            return (int)(health.GetMaxHealth() * 12.5f) / 100;
         }
     }
 

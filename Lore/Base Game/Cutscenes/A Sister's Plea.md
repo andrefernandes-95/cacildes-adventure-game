@@ -101,6 +101,15 @@ A minha irmã já voltou! Estou muito agradecido pela tua ajuda.
 Ela está compreensivelmente abalada por tudo o que aconteceu... receio que esteja a sofrer de mais do que apenas feridas no corpo... mas também precisa de descanso... tempo para se voltar a enraizar no mundo.
 
 
+## Confrontation with Lenny
+
+Lenny:
+Well, well... a thief stealing from a thief? You'd fit right in with our merry band of misfits. But we're out of vacancies. Leave that key alone... that girl is worth more than your life.
+
+
+
+
+
 ## All is Well
 
 Thelma:

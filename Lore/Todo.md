@@ -12,17 +12,23 @@ DONE
 
 Quest System:
 - Marcar quest na lista com um border ou algo indicativo deque esta selecionada
+- Add poison barrels minigame
+- Check boss music
+- Fix bee
+- Make magic staff burried in the sand
 
+**TODO**
 - Make the entrance to slepbone abandoned whard obvious
-change the trigger in west bridge, hide the orcs for when we truly are in the west bridge quest, make the door not open if not orcs at our door
-
 - Hide player hud when bonfire
-- when completing quest, it breaks the game because tracked quests are changed
 - Add cutscene event when entering snailcliff for the first time with camera going up on the character that is at the top
-
 - Track quest should be more obvious, add a button to the screen
 - chnage tracking quest icon
+- change the trigger in west bridge, hide the orcs for when we truly are in the west bridge quest, make the door not open if not orcs at our door
 
+
+**Backstory**
+Lenny, Smuggler of the Pale Road
+Lenny, O Contrabandista das Terras Alvas
 
 READY FOR DEV:
 - Add total game progress

@@ -92,6 +92,12 @@ namespace AF.Combat
 
         public bool IsReactingAgainstBackstab()
         {
+            // If is not in combat, do not react against backstab since that would be unfair to stealth players
+            if (characterManager.targetManager.currentTarget == null)
+            {
+                return false;
+            }
+
             if (reactionToTargetBehindBack != null && Random.Range(0, 100) < chanceToReactToTargetBehindBack)
             {
                 UseCombatAction(reactionToTargetBehindBack);

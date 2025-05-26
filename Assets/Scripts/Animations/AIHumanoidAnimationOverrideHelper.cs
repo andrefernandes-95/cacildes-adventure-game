@@ -14,6 +14,7 @@ namespace AF
         [Header("Combat")]
         public AnimationClip combatIdle;
         public AnimationClip takingDamage;
+        public AnimationClip dying;
         public AnimationClip knockdown;
         public AnimationClip knockdownGetup;
 
@@ -41,6 +42,7 @@ namespace AF
             // Combat
             if (combatIdle != null) animations.Add("AI Humanoid - Combat Idle", combatIdle);
             if (takingDamage != null) animations.Add("AI Humanoid - Taking Damage", takingDamage);
+            if (dying != null) animations.Add("AI Humanoid - Dying", dying);
             if (knockdown != null) animations.Add("AI Humanoid - Posture Break", knockdown);
             if (knockdownGetup != null) animations.Add("AI Humanoid - Posture Break - Exit", knockdownGetup);
             if (parried != null) animations.Add("Cacildes - Parried", parried);
