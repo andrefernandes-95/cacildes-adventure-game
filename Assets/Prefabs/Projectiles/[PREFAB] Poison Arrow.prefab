@@ -100,10 +100,10 @@ Rigidbody:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6611259348332053617}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Mass: 0.5
-  m_Drag: 0
-  m_AngularDrag: 0
+  m_LinearDamping: 0
+  m_AngularDamping: 0
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -176,10 +176,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   timeBeforeDestroying: 10
   forceMode: 0
-  forwardVelocity: 950
+  forwardVelocity: 1250
   useOwnDirection: 0
+  upwardsVelocity: 1
   damage:
-    physical: 60
+    physical: 90
     fire: 0
     frost: 0
     magic: 0
@@ -192,7 +193,7 @@ MonoBehaviour:
     weaponAttackType: 3
     statusEffects:
     - statusEffect: {fileID: 11400000, guid: 41a056432dfe6544098e9e1ee5ff29a1, type: 2}
-      amountPerHit: 8
+      amountPerHit: 15
     ignoreBlocking: 0
     canNotBeParried: 0
     damageType: 0

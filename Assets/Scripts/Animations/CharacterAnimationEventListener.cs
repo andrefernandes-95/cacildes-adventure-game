@@ -257,6 +257,7 @@ namespace AF.Animations
 
         public void OnWeaponSpecial()
         {
+            characterManager.characterWeaponsManager.OnWeaponSpecial();
         }
 
         public void MoveTowardsTarget()

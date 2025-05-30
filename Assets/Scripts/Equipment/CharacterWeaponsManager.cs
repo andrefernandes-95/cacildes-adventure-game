@@ -128,5 +128,38 @@ namespace AF.Equipment
                 characterWeaponHitbox?.DisableHitbox();
             }
         }
+
+        public void OnWeaponSpecial()
+        {
+            if (weapons.Length > 0)
+            {
+                foreach (CharacterWeaponHitbox weapon in weapons)
+                {
+                    if (weapon.gameObject.activeSelf)
+                    {
+                        weapon.onWeaponSpecial?.Invoke();
+                    }
+                }
+            }
+        }
+
+        public void SwitchWeapon(int idx, CharacterWeaponHitbox newWeapon)
+        {
+            if (newWeapon == null)
+            {
+                return;
+            }
+
+            if (weapons.Length > 0)
+            {
+                if (weapons[idx] != null)
+                {
+                    weapons[idx].gameObject.SetActive(false);
+                }
+
+                weapons[idx] = newWeapon;
+                weapons[idx].gameObject.SetActive(true);
+            }
+        }
     }
 }

@@ -99,6 +99,8 @@ namespace AF.Health
             {
                 HandleEnemyDeath();
             }
+
+            onHealthChange?.Invoke();
         }
 
         void HandleEnemyDeath()

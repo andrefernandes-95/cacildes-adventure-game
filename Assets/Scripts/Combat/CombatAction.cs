@@ -22,7 +22,7 @@ namespace AF.Combat
         [Range(1, 100)]
         public int minimumHealthToUse = 100;
         public bool dontUseBelowHalfHealth = false;
-
+        [Range(0, 1f)] public float halfHealthThreshold = .5f;
         public float minimumDistanceToTarget = 0f;
         public float maximumDistanceToTarget = 15f;
 
@@ -80,7 +80,7 @@ namespace AF.Combat
                 return false;
             }
 
-            if (dontUseBelowHalfHealth && currentHealthPercentage < 0.5f)
+            if (dontUseBelowHalfHealth && currentHealthPercentage < (halfHealthThreshold * 100f))
             {
                 return false;
             }

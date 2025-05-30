@@ -180,6 +180,11 @@ namespace AF
             Invoke(nameof(ResetFaceTargetFlag), faceTargetDuration);
         }
 
+        public void SetAlwaysFaceTarget(bool value)
+        {
+            alwaysFaceTarget = value;
+        }
+
         public void ResetFaceTargetFlag()
         {
             faceTarget = false;

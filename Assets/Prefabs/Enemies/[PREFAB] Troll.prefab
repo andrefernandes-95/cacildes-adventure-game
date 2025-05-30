@@ -169,7 +169,7 @@ MonoBehaviour:
     lightning: 0
     darkness: 0
     water: 0
-    postureDamage: 25
+    postureDamage: 45
     poiseDamage: 3
     pushForce: 0
     weaponAttackType: 1
@@ -177,6 +177,7 @@ MonoBehaviour:
     ignoreBlocking: 0
     canNotBeParried: 0
     damageType: 0
+  targetHitReaction: {fileID: 0}
   maxCooldown: 5
   frequency: 0.5
   animationSpeed: 1
@@ -372,6 +373,7 @@ MonoBehaviour:
     ignoreBlocking: 0
     canNotBeParried: 0
     damageType: 0
+  targetHitReaction: {fileID: 0}
   maxCooldown: 5
   frequency: 0.5
   animationSpeed: 1
@@ -1025,7 +1027,7 @@ MonoBehaviour:
     lightning: 0
     darkness: 0
     water: 0
-    postureDamage: 25
+    postureDamage: 45
     poiseDamage: 3
     pushForce: 0
     weaponAttackType: 1
@@ -1033,6 +1035,7 @@ MonoBehaviour:
     ignoreBlocking: 0
     canNotBeParried: 0
     damageType: 0
+  targetHitReaction: {fileID: 0}
   maxCooldown: 5
   frequency: 0.5
   animationSpeed: 1
@@ -1132,7 +1135,7 @@ MonoBehaviour:
     lightning: 0
     darkness: 0
     water: 0
-    postureDamage: 25
+    postureDamage: 45
     poiseDamage: 3
     pushForce: 0
     weaponAttackType: 1
@@ -1140,6 +1143,7 @@ MonoBehaviour:
     ignoreBlocking: 0
     canNotBeParried: 0
     damageType: 0
+  targetHitReaction: {fileID: 0}
   maxCooldown: 5
   frequency: 0.5
   animationSpeed: 1
@@ -1283,9 +1287,6 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   onWeaponSpecial:
-    m_PersistentCalls:
-      m_Calls: []
-  onEnvironmentCollision:
     m_PersistentCalls:
       m_Calls: []
   characterTwoHandRef: {fileID: 0}
@@ -1850,9 +1851,6 @@ MonoBehaviour:
   onWeaponSpecial:
     m_PersistentCalls:
       m_Calls: []
-  onEnvironmentCollision:
-    m_PersistentCalls:
-      m_Calls: []
   characterTwoHandRef: {fileID: 0}
   characterWeaponBuffs: {fileID: 0}
   shouldDisableHitboxOnStart: 1
@@ -1958,6 +1956,7 @@ MonoBehaviour:
     ignoreBlocking: 0
     canNotBeParried: 0
     damageType: 0
+  targetHitReaction: {fileID: 0}
   maxCooldown: 5
   frequency: 0.5
   animationSpeed: 1
@@ -2261,6 +2260,7 @@ MonoBehaviour:
     ignoreBlocking: 0
     canNotBeParried: 0
     damageType: 0
+  targetHitReaction: {fileID: 0}
   maxCooldown: 5
   frequency: 0.5
   animationSpeed: 1
@@ -2643,6 +2643,7 @@ MonoBehaviour:
     ignoreBlocking: 0
     canNotBeParried: 0
     damageType: 0
+  targetHitReaction: {fileID: 0}
   maxCooldown: 5
   frequency: 0.5
   animationSpeed: 1
@@ -2750,6 +2751,7 @@ MonoBehaviour:
     ignoreBlocking: 0
     canNotBeParried: 0
     damageType: 0
+  targetHitReaction: {fileID: 0}
   maxCooldown: 5
   frequency: 0.5
   animationSpeed: 1
@@ -2857,6 +2859,7 @@ MonoBehaviour:
     ignoreBlocking: 0
     canNotBeParried: 0
     damageType: 0
+  targetHitReaction: {fileID: 0}
   maxCooldown: 5
   frequency: 0.5
   animationSpeed: 1
@@ -3171,6 +3174,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1094959737035716, guid: 39e0fb4b243ffb645a622d1945004ee5, type: 3}
       insertIndex: -1
       addedObject: {fileID: 8385508783132326104}
+    - targetCorrespondingSourceObject: {fileID: 1094959737035716, guid: 39e0fb4b243ffb645a622d1945004ee5, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3559974480900601226}
   m_SourcePrefab: {fileID: 100100000, guid: 39e0fb4b243ffb645a622d1945004ee5, type: 3}
 --- !u!1 &1343244057941510689 stripped
 GameObject:
@@ -3225,16 +3231,78 @@ MonoBehaviour:
       m_Calls: []
   onDamageInflicted:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 3559974480900601226}
+        m_TargetAssemblyTypeName: Cinemachine.CinemachineImpulseSource, Cinemachine
+        m_MethodName: GenerateImpulseWithForce
+        m_Mode: 4
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0.05
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   onWeaponSpecial:
-    m_PersistentCalls:
-      m_Calls: []
-  onEnvironmentCollision:
     m_PersistentCalls:
       m_Calls: []
   characterTwoHandRef: {fileID: 0}
   characterWeaponBuffs: {fileID: 0}
   shouldDisableHitboxOnStart: 1
+--- !u!114 &3559974480900601226
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1343244057941510689}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 180ecf9b41d478f468eb3e9083753217, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ImpulseDefinition:
+    m_ImpulseChannel: 1
+    m_ImpulseShape: 2
+    m_CustomImpulseShape:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    m_ImpulseDuration: 0.1
+    m_ImpulseType: 0
+    m_DissipationRate: 0.25
+    m_RawSignal: {fileID: 0}
+    m_AmplitudeGain: 1
+    m_FrequencyGain: 1
+    m_RepeatMode: 0
+    m_Randomize: 1
+    m_TimeEnvelope:
+      m_AttackShape:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      m_DecayShape:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      m_AttackTime: 0
+      m_SustainTime: 0.2
+      m_DecayTime: 0.7
+      m_ScaleWithImpact: 1
+      m_HoldForever: 0
+    m_ImpactRadius: 100
+    m_DirectionMode: 0
+    m_DissipationMode: 2
+    m_DissipationDistance: 100
+    m_PropagationSpeed: 343
+  m_DefaultVelocity: {x: 0, y: -1, z: 0}
 --- !u!4 &1348702093165657619 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4582690453958646, guid: 39e0fb4b243ffb645a622d1945004ee5, type: 3}
@@ -3844,9 +3912,6 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   onWeaponSpecial:
-    m_PersistentCalls:
-      m_Calls: []
-  onEnvironmentCollision:
     m_PersistentCalls:
       m_Calls: []
   characterTwoHandRef: {fileID: 0}
@@ -4607,6 +4672,10 @@ PrefabInstance:
       propertyPath: onAttack_Start.m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_ObjectArgument
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 5255286791517628280, guid: 0a2dc40b83f430d4a8bcc9b4765111c1, type: 3}
+      propertyPath: maxPoiseHits
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 5294511836640902218, guid: 0a2dc40b83f430d4a8bcc9b4765111c1, type: 3}
       propertyPath: m_Name
       value: '[PREFAB] Troll'
@@ -4989,7 +5058,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7175667770796630008, guid: 0a2dc40b83f430d4a8bcc9b4765111c1, type: 3}
       propertyPath: maxPostureDamage
-      value: 170
+      value: 250
       objectReference: {fileID: 0}
     - target: {fileID: 7280605997947356846, guid: 0a2dc40b83f430d4a8bcc9b4765111c1, type: 3}
       propertyPath: maxCooldown

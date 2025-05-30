@@ -55,6 +55,9 @@ namespace AF.Combat
         public CombatAction combatActionToRespondToDodgeInput;
         public float chanceToReactToDodgeInput = 0.75f;
 
+        [Header("Pause Options")]
+        [SerializeField] bool isPaused = false;
+
         private void Awake()
         {
             characterManager.animator.SetFloat(AttackSpeedHash, 1f);
@@ -197,6 +200,12 @@ namespace AF.Combat
 
         public void ExecuteCurrentCombatAction(float crossFade)
         {
+            if (isPaused)
+            {
+                return;
+            }
+
+
             if (currentCombatAction != reactionToTargetBehindBack)
             {
                 characterManager.FaceTarget();
@@ -355,6 +364,11 @@ namespace AF.Combat
         public Damage GetCurrentDamage()
         {
             return currentCombatAction?.damage;
+        }
+
+        public void SetIsPaused(bool value)
+        {
+            this.isPaused = value;
         }
     }
 }

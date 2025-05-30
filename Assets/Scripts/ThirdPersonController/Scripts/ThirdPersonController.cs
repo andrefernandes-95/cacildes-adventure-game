@@ -547,6 +547,11 @@ namespace AF
 
         private void Move()
         {
+            if (!playerManager.characterController.enabled)
+            {
+                return;
+            }
+
             // set target speed based on move speed, sprint speed and if sprint is pressed
             bool isSprinting = IsSprinting();
             float targetSpeed = isSprinting ? SprintSpeed : (_input.toggleWalk ? WalkSpeed : RunSpeed);

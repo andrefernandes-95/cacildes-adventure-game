@@ -49,7 +49,6 @@ namespace AF
             if (parrying != null) animations.Add("ARPG_Warrior_Parry", parrying);
             if (blocking != null) animations.Add("Cacildes - Block - Idle", blocking);
             if (blockingReaction != null) animations.Add("AI Humanoid - Block Hit", blockingReaction);
-            if (blockingReaction != null) animations.Add("AI Humanoid - Block Hit", blockingReaction);
             if (ambushIdle != null) animations.Add("Getup01-Idle", ambushIdle);
             if (ambushExit != null) animations.Add("Frank_Sword2@Getup01", ambushExit);
             if (throwProjectile != null) animations.Add("AI Throw Projectile", throwProjectile);

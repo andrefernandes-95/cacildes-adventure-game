@@ -242,12 +242,14 @@ namespace AF
             // Use Sub Events Option
             if (selectedResponse.subEventPage != null)
             {
-                List<EventBase> choiceEvents = selectedResponse.subEventPage
-                    .GetComponentsInChildren<EventBase>().ToList();
+                EventBase[] choiceEvents = selectedResponse.subEventPage.GetComponents<EventBase>();
 
-                foreach (EventBase subEvent in choiceEvents)
+                if (choiceEvents.Length > 0)
                 {
-                    yield return subEvent.Dispatch();
+                    foreach (EventBase subEvent in choiceEvents)
+                    {
+                        yield return subEvent.Dispatch();
+                    }
                 }
             }
             else if (string.IsNullOrEmpty(selectedResponse.reply) == false)
