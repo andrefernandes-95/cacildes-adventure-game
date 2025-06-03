@@ -144,8 +144,6 @@ namespace AF.Arena
 
             ClearEnemiesFromRound();
 
-            bgmManager.PlayMapMusicAfterKillingEnemy();
-
             if (hasWon)
             {
                 arenaAchievement?.AwardAchievement();

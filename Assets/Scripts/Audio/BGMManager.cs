@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using System.Collections;
-using System.Linq;
 using TigerForge;
 using AF.Events;
 
@@ -15,217 +14,158 @@ namespace AF.Music
 
         [Header("Settings")]
         public GameSettings gameSettings;
-        public float fadeMusicSpeed = .1f;
+        public float fadeDuration = 1f;
 
         [Header("Components")]
         public SceneSettings sceneSettings;
 
-        // Internal
-        Coroutine HandleMusicChangeCoroutine;
-        Coroutine FadeInCoreCoroutine;
-        Coroutine FadeOutCoreCoroutine;
+        private Coroutine musicCoroutine;
+        private Coroutine fadeCoroutine;
 
-        // Flags
-        public bool isPlayingBossMusic = false;
+        private AudioClip mainMusic;
 
         private void Awake()
         {
-            EventManager.StartListening(EventMessages.ON_MUSIC_VOLUME_CHANGED, HandleVolume);
+            EventManager.StartListening(EventMessages.ON_MUSIC_VOLUME_CHANGED, ApplyVolumeSettings);
+            ApplyVolumeSettings();
         }
 
-        private void Start()
+        private void ApplyVolumeSettings()
         {
-            HandleVolume();
+            float volume = gameSettings.GetMusicVolume();
+            if (bgmAudioSource != null) bgmAudioSource.volume = volume;
+            if (ambienceAudioSource != null) ambienceAudioSource.volume = volume;
         }
 
-        void HandleVolume()
+        public void PlayMusic(AudioClip clip)
         {
-            bgmAudioSource.volume = gameSettings.GetMusicVolume();
-            ambienceAudioSource.volume = gameSettings.GetMusicVolume();
+            if (clip == null || bgmAudioSource.clip == clip) return;
+
+            StopCoroutineSafe(ref musicCoroutine);
+            musicCoroutine = StartCoroutine(TransitionMusicCoroutine(clip));
         }
 
-        public void PlayMusic(AudioClip musicToPlay)
-        {
-            if (this.bgmAudioSource.clip != null)
-            {
-                if (HandleMusicChangeCoroutine != null)
-                {
-                    StopCoroutine(HandleMusicChangeCoroutine);
-                }
-
-                HandleMusicChangeCoroutine = StartCoroutine(HandleMusicChange_Coroutine(musicToPlay));
-            }
-            else
-            {
-                // No music playing before, lets do a fade in
-                this.bgmAudioSource.volume = 0;
-                this.bgmAudioSource.clip = musicToPlay;
-                this.bgmAudioSource.Play();
-
-                if (FadeInCoreCoroutine != null)
-                {
-                    StopCoroutine(FadeInCoreCoroutine);
-                }
-
-                FadeInCoreCoroutine = StartCoroutine(FadeCore(false));
-            }
-        }
-
-        IEnumerator HandleMusicChange_Coroutine(AudioClip musicToPlay)
-        {
-            yield return FadeCore(fadeOut: true);
-
-            bgmAudioSource.clip = musicToPlay;
-            bgmAudioSource.Play();
-
-            yield return FadeCore(fadeOut: false);
-        }
-
-        IEnumerator FadeCore(bool fadeOut, float fadeDuration = 1, bool clearMusic = true)
-        {
-            float targetVolume = fadeOut ? 0f : gameSettings.GetMusicVolume();
-            float startVolume = bgmAudioSource.volume;
-            float elapsedTime = 0f;
-
-            while (elapsedTime < fadeDuration)
-            {
-                float newVolume = Mathf.Lerp(startVolume, targetVolume, elapsedTime / fadeDuration);
-                bgmAudioSource.volume = newVolume;
-                elapsedTime += Time.deltaTime;
-                yield return null;
-            }
-
-            bgmAudioSource.volume = targetVolume;
-
-            if (fadeOut)
-            {
-                bgmAudioSource.Stop();
-
-                if (clearMusic)
-                {
-                    bgmAudioSource.clip = null;
-                }
-            }
-        }
-
-        void StopCoroutines()
-        {
-            if (FadeInCoreCoroutine != null)
-            {
-                StopCoroutine(FadeInCoreCoroutine);
-            }
-
-            if (HandleMusicChangeCoroutine != null)
-            {
-                StopCoroutine(HandleMusicChangeCoroutine);
-            }
-
-            if (FadeOutCoreCoroutine != null)
-            {
-                StopCoroutine(FadeOutCoreCoroutine);
-            }
-        }
-
-        public void StopMusic()
-        {
-            StopCoroutines();
-
-            if (this.bgmAudioSource.clip != null)
-            {
-                FadeOutCoreCoroutine = StartCoroutine(FadeCore(true));
-            }
-            else
-            {
-                this.bgmAudioSource.Stop();
-                this.bgmAudioSource.clip = null;
-            }
-        }
+        public void StopMusic() => FadeOutMusic(clearClip: true);
 
         public void StopMusicImmediately()
         {
-            this.bgmAudioSource.Stop();
-            this.bgmAudioSource.clip = null;
+            StopAllCoroutines();
+            bgmAudioSource.Stop();
+            bgmAudioSource.clip = null;
         }
 
-        public void PlayAmbience(AudioClip ambience)
+        private IEnumerator TransitionMusicCoroutine(AudioClip newClip)
         {
-            this.ambienceAudioSource.clip = ambience;
-            this.ambienceAudioSource.Play();
+            yield return FadeMusic(toVolume: 0f);
+
+            bgmAudioSource.clip = newClip;
+            bgmAudioSource.Play();
+
+            yield return FadeMusic(toVolume: gameSettings.GetMusicVolume());
+        }
+
+        private IEnumerator FadeMusic(float toVolume, bool clearClip = false)
+        {
+            float startVolume = bgmAudioSource.volume;
+            float timeElapsed = 0f;
+
+            while (timeElapsed < fadeDuration)
+            {
+                bgmAudioSource.volume = Mathf.Lerp(startVolume, toVolume, timeElapsed / fadeDuration);
+                timeElapsed += Time.deltaTime;
+                yield return null;
+            }
+
+            bgmAudioSource.volume = toVolume;
+
+            if (toVolume == 0f)
+            {
+                bgmAudioSource.Stop();
+                if (clearClip) bgmAudioSource.clip = null;
+            }
+        }
+
+        private void FadeOutMusic(bool clearClip)
+        {
+            StopCoroutineSafe(ref fadeCoroutine);
+            fadeCoroutine = StartCoroutine(FadeMusic(0f, clearClip));
+        }
+
+        public void PlayAmbience(AudioClip clip)
+        {
+            if (clip == null) return;
+            ambienceAudioSource.clip = clip;
+            ambienceAudioSource.Play();
         }
 
         public void StopAmbience()
         {
-            this.ambienceAudioSource.clip = null;
-            this.ambienceAudioSource.Stop();
+            ambienceAudioSource.Stop();
+            ambienceAudioSource.clip = null;
         }
 
-        public void PlaySound(AudioClip sfxToPlay, AudioSource customAudioSource, float volumeScale = 1f)
+        public void PlaySound(AudioClip clip, AudioSource customSource = null, float volumeScale = 1f)
         {
-            if (customAudioSource != null)
-            {
-                customAudioSource.PlayOneShot(sfxToPlay);
-                return;
-            }
-
-            this.sfxAudioSource.PlayOneShot(sfxToPlay, volumeScale);
+            if (clip == null) return;
+            (customSource ?? sfxAudioSource)?.PlayOneShot(clip, volumeScale);
         }
 
-        public void PlaySoundWithPitchVariation(AudioClip sfxToPlay, AudioSource customAudioSource)
+        public void PlaySoundWithPitchVariation(AudioClip clip, AudioSource source)
         {
-            float pitch = UnityEngine.Random.Range(0.99f, 1.01f);
-            customAudioSource.pitch = pitch;
-            customAudioSource.PlayOneShot(sfxToPlay);
+            if (clip == null || source == null) return;
+            source.pitch = Random.Range(0.99f, 1.01f);
+            source.PlayOneShot(clip);
         }
 
-        public void PlayMapMusicAfterKillingEnemy()
+        public bool IsPlayingMusicClip(string clipName) =>
+            bgmAudioSource.clip != null && bgmAudioSource.clip.name == clipName;
+
+        public bool IsPlayingMusicClip(AudioClip clip) =>
+            bgmAudioSource.clip == clip;
+
+        public bool IsNotPlayingMusic() =>
+            bgmAudioSource.clip == null;
+
+        public void PlayMusicalEffect(AudioClip effectClip)
         {
-            sceneSettings.HandleSceneSound(true);
+            if (effectClip == null) return;
+            StopCoroutineSafe(ref musicCoroutine);
+            musicCoroutine = StartCoroutine(MusicalEffectCoroutine(effectClip));
         }
 
-        public bool IsPlayingMusicClip(string clipName)
-        {
-            if (this.bgmAudioSource.clip == null)
-            {
-                return false;
-            }
-
-            if (this.bgmAudioSource.clip.name == clipName)
-            {
-                return true;
-            }
-
-            return false;
-        }
-
-        public bool IsNotPlayingMusic()
-        {
-            return this.bgmAudioSource.clip == null;
-        }
-
-        public void PlayMusicalEffect(AudioClip musicEffect)
-        {
-            StartCoroutine(PauseMusicPlayEffectThenResume_Coroutine(musicEffect));
-        }
-
-        IEnumerator PauseMusicPlayEffectThenResume_Coroutine(AudioClip musicEffect)
+        private IEnumerator MusicalEffectCoroutine(AudioClip effectClip)
         {
             if (bgmAudioSource.isPlaying)
-            {
-                // Fade out the music before pausing
-                yield return FadeCore(fadeOut: true, .1f, false);
-            }
+                yield return FadeMusic(0f, clearClip: false);
 
-            // Play the one-shot musical effect
-            sfxAudioSource.PlayOneShot(musicEffect);
+            sfxAudioSource.PlayOneShot(effectClip);
+            yield return new WaitForSeconds(effectClip.length);
 
-            // Wait until the sound finishes playing
-            yield return new WaitForSeconds(musicEffect.length);
-
-            // Resume the original music clip with fade-in
             if (bgmAudioSource.clip != null)
             {
                 bgmAudioSource.Play();
-                FadeInCoreCoroutine = StartCoroutine(FadeCore(fadeOut: false));
+                yield return FadeMusic(gameSettings.GetMusicVolume(), clearClip: false);
+            }
+        }
+
+        public bool IsBusy() => mainMusic != null;
+
+        public void PlayMainMusic(AudioClip clip)
+        {
+            if (clip == null || clip == mainMusic) return;
+
+            mainMusic = clip;
+            PlayMusic(mainMusic);
+        }
+
+        public void ClearMainMusic() => mainMusic = null;
+
+        private void StopCoroutineSafe(ref Coroutine coroutine)
+        {
+            if (coroutine != null)
+            {
+                StopCoroutine(coroutine);
+                coroutine = null;
             }
         }
     }

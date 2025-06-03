@@ -51,6 +51,7 @@ MonoBehaviour:
   comboClip3: {fileID: 0}
   minimumHealthToUse: 100
   dontUseBelowHalfHealth: 0
+  halfHealthThreshold: 0.5
   minimumDistanceToTarget: 0
   maximumDistanceToTarget: 15
   onAttack_Start:
@@ -159,6 +160,7 @@ MonoBehaviour:
   comboClip3: {fileID: 0}
   minimumHealthToUse: 100
   dontUseBelowHalfHealth: 0
+  halfHealthThreshold: 0.5
   minimumDistanceToTarget: 2
   maximumDistanceToTarget: 15
   onAttack_Start:
@@ -267,6 +269,7 @@ MonoBehaviour:
   comboClip3: {fileID: 0}
   minimumHealthToUse: 100
   dontUseBelowHalfHealth: 0
+  halfHealthThreshold: 0.5
   minimumDistanceToTarget: 0
   maximumDistanceToTarget: 15
   onAttack_Start:
@@ -523,6 +526,7 @@ MonoBehaviour:
   comboClip3: {fileID: 0}
   minimumHealthToUse: 100
   dontUseBelowHalfHealth: 0
+  halfHealthThreshold: 0.5
   minimumDistanceToTarget: 0
   maximumDistanceToTarget: 15
   onAttack_Start:
@@ -801,12 +805,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3426157205307979658, guid: b92394b295146f54fb28e3e10665101d, type: 3}
       propertyPath: chaseActions.Array.size
-      value: 4
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 3426157205307979658, guid: b92394b295146f54fb28e3e10665101d, type: 3}
       propertyPath: combatActions.Array.size
-      value: 11
+      value: 9
       objectReference: {fileID: 0}
+    - target: {fileID: 3426157205307979658, guid: b92394b295146f54fb28e3e10665101d, type: 3}
+      propertyPath: 'chaseActions.Array.data[1]'
+      value: 
+      objectReference: {fileID: 1477316531756371282}
     - target: {fileID: 3426157205307979658, guid: b92394b295146f54fb28e3e10665101d, type: 3}
       propertyPath: 'chaseActions.Array.data[2]'
       value: 
@@ -816,21 +824,29 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1477316531756371282}
     - target: {fileID: 3426157205307979658, guid: b92394b295146f54fb28e3e10665101d, type: 3}
-      propertyPath: 'combatActions.Array.data[6]'
+      propertyPath: 'combatActions.Array.data[4]'
       value: 
       objectReference: {fileID: 8686299574397911667}
     - target: {fileID: 3426157205307979658, guid: b92394b295146f54fb28e3e10665101d, type: 3}
-      propertyPath: 'combatActions.Array.data[7]'
+      propertyPath: 'combatActions.Array.data[5]'
       value: 
       objectReference: {fileID: 7147036622620658559}
+    - target: {fileID: 3426157205307979658, guid: b92394b295146f54fb28e3e10665101d, type: 3}
+      propertyPath: 'combatActions.Array.data[6]'
+      value: 
+      objectReference: {fileID: 7147036622620658559}
+    - target: {fileID: 3426157205307979658, guid: b92394b295146f54fb28e3e10665101d, type: 3}
+      propertyPath: 'combatActions.Array.data[7]'
+      value: 
+      objectReference: {fileID: 2736902870000177535}
     - target: {fileID: 3426157205307979658, guid: b92394b295146f54fb28e3e10665101d, type: 3}
       propertyPath: 'combatActions.Array.data[8]'
       value: 
-      objectReference: {fileID: 7147036622620658559}
+      objectReference: {fileID: 2579623235407127083}
     - target: {fileID: 3426157205307979658, guid: b92394b295146f54fb28e3e10665101d, type: 3}
       propertyPath: 'combatActions.Array.data[9]'
       value: 
-      objectReference: {fileID: 2736902870000177535}
+      objectReference: {fileID: 2579623235407127083}
     - target: {fileID: 3426157205307979658, guid: b92394b295146f54fb28e3e10665101d, type: 3}
       propertyPath: 'combatActions.Array.data[10]'
       value: 

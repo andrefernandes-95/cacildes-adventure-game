@@ -48,19 +48,7 @@ MonoBehaviour:
   characterManager: {fileID: 3865653172640197477}
   onStateEnter:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 3865653172640197477}
-        m_TargetAssemblyTypeName: AF.CharacterBaseManager, AF
-        m_MethodName: PlayBusyAnimationWithRootMotion
-        m_Mode: 5
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: Ambush - Idle
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   onStateUpdate:
     m_PersistentCalls:
       m_Calls:
@@ -82,18 +70,6 @@ MonoBehaviour:
   onAmbushBegin:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 3865653172640197477}
-        m_TargetAssemblyTypeName: AF.CharacterBaseManager, AF
-        m_MethodName: PlayBusyAnimationWithRootMotion
-        m_Mode: 5
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: Ambush
-          m_BoolArgument: 0
-        m_CallState: 2
       - m_Target: {fileID: 8272140999687535686}
         m_TargetAssemblyTypeName: AF.EventBase, AF
         m_MethodName: Execute
@@ -135,6 +111,9 @@ MonoBehaviour:
         m_CallState: 2
   idleState: {fileID: 1253305505646504546}
   shouldAwake: 0
+  exitAmbushCrossFade: 0.2
+  ambushIdle: Ambush - Idle
+  ambushExit: Ambush
 --- !u!82 &4813271079888190412
 AudioSource:
   m_ObjectHideFlags: 0
@@ -480,7 +459,11 @@ MonoBehaviour:
   attackAnimationClip: {fileID: 0}
   attackAnimationName: Slime Dodge And Attack
   comboClip: {fileID: 0}
+  comboClip2: {fileID: 0}
+  comboClip3: {fileID: 0}
   minimumHealthToUse: 100
+  dontUseBelowHalfHealth: 0
+  halfHealthThreshold: 0.5
   minimumDistanceToTarget: 0
   maximumDistanceToTarget: 15
   onAttack_Start:
@@ -547,6 +530,7 @@ MonoBehaviour:
     magic: 0
     lightning: 0
     darkness: 0
+    water: 0
     postureDamage: 0
     poiseDamage: 0
     pushForce: 0
@@ -555,9 +539,11 @@ MonoBehaviour:
     ignoreBlocking: 0
     canNotBeParried: 0
     damageType: 0
+  targetHitReaction: {fileID: 0}
   maxCooldown: 5
   frequency: 0.5
   animationSpeed: 1
+  hasHyperArmor: 0
   characterManager: {fileID: 3865653172640197477}
 --- !u!1 &5170322188259823041
 GameObject:
@@ -606,7 +592,11 @@ MonoBehaviour:
   attackAnimationClip: {fileID: 1827226128182048838, guid: 707b0d85f7a38654db92fac37e418480, type: 3}
   attackAnimationName: 
   comboClip: {fileID: 0}
+  comboClip2: {fileID: 0}
+  comboClip3: {fileID: 0}
   minimumHealthToUse: 100
+  dontUseBelowHalfHealth: 0
+  halfHealthThreshold: 0.5
   minimumDistanceToTarget: 0
   maximumDistanceToTarget: 15
   onAttack_Start:
@@ -649,6 +639,7 @@ MonoBehaviour:
     magic: 0
     lightning: 0
     darkness: 0
+    water: 0
     postureDamage: 15
     poiseDamage: 2
     pushForce: 0
@@ -657,9 +648,11 @@ MonoBehaviour:
     ignoreBlocking: 0
     canNotBeParried: 0
     damageType: 0
+  targetHitReaction: {fileID: 0}
   maxCooldown: 4
   frequency: 0.5
   animationSpeed: 1
+  hasHyperArmor: 0
   characterManager: {fileID: 3865653172640197477}
 --- !u!1 &6345935525263321700
 GameObject:
@@ -830,6 +823,7 @@ MonoBehaviour:
       m_Calls: []
   characterTwoHandRef: {fileID: 0}
   characterWeaponBuffs: {fileID: 0}
+  shouldDisableHitboxOnStart: 1
 --- !u!1 &7411313176307394217
 GameObject:
   m_ObjectHideFlags: 0
@@ -878,7 +872,11 @@ MonoBehaviour:
   attackAnimationClip: {fileID: 1827226128182048838, guid: 4efca88c87d93bd41a0fa659057012a1, type: 3}
   attackAnimationName: 
   comboClip: {fileID: 0}
+  comboClip2: {fileID: 0}
+  comboClip3: {fileID: 0}
   minimumHealthToUse: 100
+  dontUseBelowHalfHealth: 0
+  halfHealthThreshold: 0.5
   minimumDistanceToTarget: 0
   maximumDistanceToTarget: 15
   onAttack_Start:
@@ -957,6 +955,7 @@ MonoBehaviour:
     magic: 0
     lightning: 0
     darkness: 0
+    water: 0
     postureDamage: 15
     poiseDamage: 2
     pushForce: 0
@@ -965,9 +964,11 @@ MonoBehaviour:
     ignoreBlocking: 0
     canNotBeParried: 0
     damageType: 0
+  targetHitReaction: {fileID: 0}
   maxCooldown: 15
   frequency: 0.5
   animationSpeed: 1
+  hasHyperArmor: 0
   characterManager: {fileID: 3865653172640197477}
 --- !u!1 &7538665425220316049
 GameObject:
@@ -1165,7 +1166,11 @@ MonoBehaviour:
   attackAnimationClip: {fileID: 1827226128182048838, guid: 41ee43436c2031844a904d5d7b807f27, type: 3}
   attackAnimationName: 
   comboClip: {fileID: 0}
+  comboClip2: {fileID: 0}
+  comboClip3: {fileID: 0}
   minimumHealthToUse: 100
+  dontUseBelowHalfHealth: 0
+  halfHealthThreshold: 0.5
   minimumDistanceToTarget: 0
   maximumDistanceToTarget: 15
   onAttack_Start:
@@ -1244,6 +1249,7 @@ MonoBehaviour:
     magic: 0
     lightning: 0
     darkness: 0
+    water: 0
     postureDamage: 15
     poiseDamage: 2
     pushForce: 0
@@ -1252,9 +1258,11 @@ MonoBehaviour:
     ignoreBlocking: 0
     canNotBeParried: 0
     damageType: 0
+  targetHitReaction: {fileID: 0}
   maxCooldown: 20
   frequency: 0.5
   animationSpeed: 1
+  hasHyperArmor: 0
   characterManager: {fileID: 3865653172640197477}
 --- !u!1 &9138139318935891609
 GameObject:
@@ -1425,6 +1433,7 @@ MonoBehaviour:
       m_Calls: []
   characterTwoHandRef: {fileID: 0}
   characterWeaponBuffs: {fileID: 0}
+  shouldDisableHitboxOnStart: 1
 --- !u!1001 &2885670607548619036
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1705,6 +1714,7 @@ MonoBehaviour:
     magic: 0
     lightning: 0
     darkness: 0
+    water: 0
     postureDamage: 0
     poiseDamage: 0
     pushForce: 0
@@ -1724,6 +1734,8 @@ MonoBehaviour:
   onAnyCollisionEvent:
     m_PersistentCalls:
       m_Calls: []
+  collisionSound: {fileID: 0}
+  collisionSoundCooldown: 0.1
 --- !u!1001 &3299330970612819090
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3285,16 +3297,21 @@ MonoBehaviour:
   onDarknessDamage:
     m_PersistentCalls:
       m_Calls: []
+  onWaterDamage:
+    m_PersistentCalls:
+      m_Calls: []
   onBackstabbed:
     m_PersistentCalls:
       m_Calls: []
   onAttackedWhileWithFlatulence:
     m_PersistentCalls:
       m_Calls: []
+  ignoreDamage: 0
   canTakeDamage: 1
   damageOnDodge: 0
   waitingForBackstab: 0
   hasFlatulence: 0
+  isTakingDamage: 0
 --- !u!114 &8716817558369120008
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4327,6 +4344,7 @@ MonoBehaviour:
     magic: 0
     lightning: 0
     darkness: 0
+    water: 0
     postureDamage: 0
     poiseDamage: 0
     pushForce: 0
@@ -4346,6 +4364,8 @@ MonoBehaviour:
   onAnyCollisionEvent:
     m_PersistentCalls:
       m_Calls: []
+  collisionSound: {fileID: 0}
+  collisionSoundCooldown: 0.1
 --- !u!1 &6198168549201016850 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3204323169783182644, guid: 26307ac6a7e9d6b47a6226233deaeb87, type: 3}

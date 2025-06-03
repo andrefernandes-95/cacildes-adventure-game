@@ -44,6 +44,8 @@ namespace AF
         // Flags that allow us to save the game
         bool hasBossFightOnGoing = false;
 
+        public bool canSave = true;
+
         public string SAVE_FILES_FOLDER = "QuickSave";
 
         private void Awake()
@@ -71,7 +73,12 @@ namespace AF
                 return false;
             }
 
-            return true;
+            if (gameSession.gameState != GameSession.GameState.INITIALIZED_AND_SHOWN_TITLE_SCREEN)
+            {
+                return false;
+            }
+
+            return canSave;
         }
 
         public void ResetGameState(bool isFromGameOver)
@@ -774,6 +781,11 @@ namespace AF
             {
                 LoadLastSavedGame(false);
             }
+        }
+
+        public void SetCanSave(bool canSave)
+        {
+            this.canSave = canSave;
         }
     }
 }

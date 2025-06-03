@@ -40,7 +40,7 @@ namespace AF.Tutorial
 
             if (tutorialName.IsEmpty == false)
             {
-                StartCoroutine(sceneSettings.DisplaySceneNameCoroutine(tutorialName.GetLocalizedString()));
+                sceneSettings.DisplaySceneName(tutorialName.GetLocalizedString());
             }
         }
     }

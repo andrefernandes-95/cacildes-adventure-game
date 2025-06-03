@@ -18,17 +18,18 @@ namespace AF
         public PlayerManager playerManager;
         public TeleportManager teleportManager;
 
-        [Header("Music")]
+        [Header("Ambient Music")]
         public AudioClip dayMusic;
         public AudioClip nightMusic;
 
-        public AudioClip dayAmbience;
-        public AudioClip nightAmbience;
-
-        [Header("Scene Musics")]
+        [Header("Playlists (Alternative to Ambient Music)")]
         public AudioClip[] playlist;
         Coroutine ChooseNextSongCoroutine;
         bool isPlayingMusicFromThePlaylist = false;
+
+        [Header("Ambience Sounds")]
+        public AudioClip dayAmbience;
+        public AudioClip nightAmbience;
 
         [Header("Map")]
         public bool isInterior;
@@ -51,6 +52,8 @@ namespace AF
         [Header("Events")]
         public UnityEvent onSceneStart;
 
+        Coroutine DisplaySceneNameCoroutineInstance;
+
         void Awake()
         {
             sceneNameDocument.rootVisualElement.contentContainer.style.opacity = 0;
@@ -69,19 +72,11 @@ namespace AF
         {
             if (displaySceneName)
             {
-                StartCoroutine(DisplaySceneName_Coroutine(() =>
-                {
-                    HandleSceneSound(true);
-                }));
-            }
-            else
-            {
-                HandleSceneSound(true);
+                DisplaySceneName();
             }
 
-            OnHourChanged(!displaySceneName);
-
-            EventManager.StartListening(EventMessages.ON_HOUR_CHANGED, () => OnHourChanged(true));
+            EventManager.StartListening(EventMessages.ON_HOUR_CHANGED, OnHourChanged);
+            OnHourChanged();
         }
 
         /// <summary>
@@ -89,13 +84,15 @@ namespace AF
         /// </summary>
         public void DisplaySceneName()
         {
-            StartCoroutine(DisplaySceneName_Coroutine(() =>
+            if (DisplaySceneNameCoroutineInstance != null)
             {
-                HandleSceneSound(true);
-            }));
+                StopCoroutine(DisplaySceneNameCoroutineInstance);
+            }
+
+            DisplaySceneNameCoroutineInstance = StartCoroutine(DisplaySceneName_Coroutine());
         }
 
-        IEnumerator DisplaySceneName_Coroutine(UnityAction onFinish)
+        IEnumerator DisplaySceneName_Coroutine()
         {
             yield return new WaitForSeconds(displaySceneNameDelay);
 
@@ -122,32 +119,43 @@ namespace AF
                   0,
                   1f
             );
-
-            onFinish?.Invoke();
         }
 
-        public IEnumerator DisplaySceneNameCoroutine(string sceneName)
+        /// <summary>
+        /// Public Method to use for showing certain titles during in-game events
+        /// </summary>
+        /// <param name="sceneName"></param>
+        /// <returns></returns>
+
+        public void DisplaySceneName(string sceneName)
         {
+            if (DisplaySceneNameCoroutineInstance != null)
             {
-                sceneNameDocument.rootVisualElement.Q<Label>().text = sceneName;
-
-                DOTween.To(
-                      () => sceneNameDocument.rootVisualElement.contentContainer.style.opacity.value,
-                      (value) => sceneNameDocument.rootVisualElement.contentContainer.style.opacity = value,
-                      1,
-                      1f
-                );
-
-                yield return new WaitForSeconds(displaySceneNameDuration);
-
-                DOTween.To(
-                      () => sceneNameDocument.rootVisualElement.contentContainer.style.opacity.value,
-                      (value) => sceneNameDocument.rootVisualElement.contentContainer.style.opacity = value,
-                      0,
-                      1f
-                );
-
+                StopCoroutine(DisplaySceneNameCoroutineInstance);
             }
+
+            DisplaySceneNameCoroutineInstance = StartCoroutine(DisplaySceneName_Coroutine(sceneName));
+        }
+
+        public IEnumerator DisplaySceneName_Coroutine(string sceneName)
+        {
+            sceneNameDocument.rootVisualElement.Q<Label>().text = sceneName;
+
+            DOTween.To(
+                  () => sceneNameDocument.rootVisualElement.contentContainer.style.opacity.value,
+                  (value) => sceneNameDocument.rootVisualElement.contentContainer.style.opacity = value,
+                  1,
+                  1f
+            );
+
+            yield return new WaitForSeconds(displaySceneNameDuration);
+
+            DOTween.To(
+                  () => sceneNameDocument.rootVisualElement.contentContainer.style.opacity.value,
+                  (value) => sceneNameDocument.rootVisualElement.contentContainer.style.opacity = value,
+                  0,
+                  1f
+            );
         }
 
         /// <summary>
@@ -157,16 +165,6 @@ namespace AF
         public void SetDayMusic(AudioClip audioClip)
         {
             this.dayMusic = audioClip;
-        }
-
-        public void HandleSceneSound(bool evaluateMusic)
-        {
-            if (evaluateMusic)
-            {
-                EvaluateMusic();
-            }
-
-            EvaluateAmbience();
         }
 
         void EvaluatePlaylist()
@@ -202,12 +200,16 @@ namespace AF
             EvaluatePlaylist();
         }
 
-        /// <summary>
-        /// Evaluate and control the music based on time of day.
-        /// </summary>
-        void EvaluateMusic()
+        void OnHourChanged()
         {
-            if (bgmManager.isPlayingBossMusic)
+            pickupDatabase.OnHourChangedCheckForReplenishablesToClear();
+
+            EvaluateDayNightMusic();
+        }
+
+        public void EvaluateDayNightMusic()
+        {
+            if (bgmManager.IsBusy())
             {
                 return;
             }
@@ -215,86 +217,41 @@ namespace AF
             if (playlist != null && playlist.Length > 0)
             {
                 EvaluatePlaylist();
-                return;
             }
-
-            if (dayMusic == null && nightMusic == null)
+            else if (gameSession.IsNightTime())
             {
-                // Stop the music playback if there are no available tracks.
-                bgmManager.StopMusic();
-                return;
+                EvaluateNightMusic();
             }
-
-            if (dayMusic != null && CanPlayDaySfx(dayMusic))
+            else
             {
-                if (IsPlayingSameMusicTrack(dayMusic.name) == false)
-                {
-                    bgmManager.PlayMusic(dayMusic);
-                }
+                EvaluateDayMusic();
             }
-            else if (nightMusic != null && CanPlayNightSfx(nightMusic))
+        }
+
+        void EvaluateNightMusic()
+        {
+            if (nightMusic != null)
             {
-                if (IsPlayingSameMusicTrack(nightMusic.name) == false)
-                {
-                    bgmManager.PlayMusic(nightMusic);
-                }
+                bgmManager.PlayMusic(nightMusic);
             }
-        }
 
-        void EvaluateAmbience()
-        {
-            if (nightAmbience == null && dayAmbience == null)
+            if (nightAmbience != null)
             {
-                bgmManager.StopAmbience();
-                return;
+                bgmManager.PlayAmbience(nightAmbience);
             }
+        }
 
-            if (dayAmbience != null && CanPlayDaySfx(dayAmbience))
+        void EvaluateDayMusic()
+        {
+            if (dayMusic != null)
             {
-                if (IsPlayingSameAmbienceTrack(dayAmbience.name) == false)
-                {
-                    bgmManager.PlayAmbience(dayAmbience);
-                }
+                bgmManager.PlayMusic(dayMusic);
             }
-            else if (nightAmbience != null && CanPlayNightSfx(nightAmbience))
+
+            if (dayAmbience != null)
             {
-                if (IsPlayingSameAmbienceTrack(nightAmbience.name) == false)
-                {
-                    bgmManager.PlayAmbience(nightAmbience);
-                }
+                bgmManager.PlayAmbience(dayAmbience);
             }
-        }
-
-        bool IsPlayingSameMusicTrack(string musicClipName)
-        {
-            return bgmManager.bgmAudioSource.clip != null && bgmManager.bgmAudioSource.clip.name == musicClipName;
-        }
-
-        bool IsPlayingSameAmbienceTrack(string musicClipName)
-        {
-            return bgmManager.ambienceAudioSource.clip != null && bgmManager.ambienceAudioSource.clip.name == musicClipName;
-        }
-
-        bool IsNightTime()
-        {
-            return gameSession.IsNightTime();
-        }
-
-        bool CanPlayNightSfx(AudioClip clip)
-        {
-            return IsNightTime() && clip != null;
-        }
-
-        bool CanPlayDaySfx(AudioClip clip)
-        {
-            return !IsNightTime() && clip != null;
-        }
-
-        public void OnHourChanged(bool handleMusic)
-        {
-            HandleSceneSound(handleMusic);
-
-            pickupDatabase.OnHourChangedCheckForReplenishablesToClear();
         }
     }
 }

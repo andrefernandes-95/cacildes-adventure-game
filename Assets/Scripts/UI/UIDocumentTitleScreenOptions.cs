@@ -34,6 +34,8 @@ namespace AF
             }, soundbank);
 
             viewComponent_GameSettings.SetupRefs();
+
+            root.Q<Button>("SaveGame").SetEnabled(false);
         }
 
         /// <summary>

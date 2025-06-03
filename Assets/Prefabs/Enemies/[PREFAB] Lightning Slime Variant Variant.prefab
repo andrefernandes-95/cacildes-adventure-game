@@ -146,7 +146,11 @@ MonoBehaviour:
   attackAnimationClip: {fileID: 0}
   attackAnimationName: Slime Lightning Cast
   comboClip: {fileID: 0}
+  comboClip2: {fileID: 0}
+  comboClip3: {fileID: 0}
   minimumHealthToUse: 65
+  dontUseBelowHalfHealth: 0
+  halfHealthThreshold: 0.5
   minimumDistanceToTarget: 0
   maximumDistanceToTarget: 15
   onAttack_Start:
@@ -201,6 +205,7 @@ MonoBehaviour:
     magic: 0
     lightning: 35
     darkness: 0
+    water: 0
     postureDamage: 20
     poiseDamage: 1
     pushForce: 0
@@ -209,9 +214,11 @@ MonoBehaviour:
     ignoreBlocking: 0
     canNotBeParried: 0
     damageType: 0
+  targetHitReaction: {fileID: 0}
   maxCooldown: 12
   frequency: 0.5
   animationSpeed: 1
+  hasHyperArmor: 0
   characterManager: {fileID: 5633616930665204195}
 --- !u!1 &4378046708459166490
 GameObject:
@@ -878,6 +885,7 @@ MonoBehaviour:
     magic: 0
     lightning: 100
     darkness: 0
+    water: 0
     postureDamage: 0
     poiseDamage: 0
     pushForce: 0
@@ -897,6 +905,8 @@ MonoBehaviour:
   onAnyCollisionEvent:
     m_PersistentCalls:
       m_Calls: []
+  collisionSound: {fileID: 0}
+  collisionSoundCooldown: 0.1
 --- !u!82 &4907730576871165328
 AudioSource:
   m_ObjectHideFlags: 0
@@ -1130,6 +1140,7 @@ MonoBehaviour:
     magic: 0
     lightning: 100
     darkness: 0
+    water: 0
     postureDamage: 0
     poiseDamage: 0
     pushForce: 0
@@ -1149,6 +1160,8 @@ MonoBehaviour:
   onAnyCollisionEvent:
     m_PersistentCalls:
       m_Calls: []
+  collisionSound: {fileID: 0}
+  collisionSoundCooldown: 0.1
 --- !u!82 &8885411619245229566
 AudioSource:
   m_ObjectHideFlags: 0
@@ -1541,6 +1554,7 @@ MonoBehaviour:
     magic: 0
     lightning: 10
     darkness: 0
+    water: 0
     postureDamage: 0
     poiseDamage: 0
     pushForce: 0
@@ -1718,6 +1732,7 @@ MonoBehaviour:
     magic: 0
     lightning: 100
     darkness: 0
+    water: 0
     postureDamage: 0
     poiseDamage: 0
     pushForce: 0
@@ -1737,6 +1752,8 @@ MonoBehaviour:
   onAnyCollisionEvent:
     m_PersistentCalls:
       m_Calls: []
+  collisionSound: {fileID: 0}
+  collisionSoundCooldown: 0.1
 --- !u!82 &572675555902254760
 AudioSource:
   m_ObjectHideFlags: 0
@@ -1975,6 +1992,7 @@ MonoBehaviour:
     magic: 0
     lightning: 100
     darkness: 0
+    water: 0
     postureDamage: 0
     poiseDamage: 0
     pushForce: 0
@@ -1994,6 +2012,8 @@ MonoBehaviour:
   onAnyCollisionEvent:
     m_PersistentCalls:
       m_Calls: []
+  collisionSound: {fileID: 0}
+  collisionSoundCooldown: 0.1
 --- !u!82 &4986670610555752396
 AudioSource:
   m_ObjectHideFlags: 0
@@ -2293,6 +2313,7 @@ MonoBehaviour:
     magic: 0
     lightning: 100
     darkness: 0
+    water: 0
     postureDamage: 0
     poiseDamage: 0
     pushForce: 0
@@ -2312,6 +2333,8 @@ MonoBehaviour:
   onAnyCollisionEvent:
     m_PersistentCalls:
       m_Calls: []
+  collisionSound: {fileID: 0}
+  collisionSoundCooldown: 0.1
 --- !u!82 &8101269172432002272
 AudioSource:
   m_ObjectHideFlags: 0
@@ -2659,28 +2682,44 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5430355682896081966, guid: 400b01cd0bb54b44aa9aa2639472fd05, type: 3}
       propertyPath: chaseActions.Array.size
-      value: 4
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 5430355682896081966, guid: 400b01cd0bb54b44aa9aa2639472fd05, type: 3}
       propertyPath: combatActions.Array.size
-      value: 11
+      value: 9
       objectReference: {fileID: 0}
+    - target: {fileID: 5430355682896081966, guid: 400b01cd0bb54b44aa9aa2639472fd05, type: 3}
+      propertyPath: 'chaseActions.Array.data[1]'
+      value: 
+      objectReference: {fileID: 1164581695740556402}
     - target: {fileID: 5430355682896081966, guid: 400b01cd0bb54b44aa9aa2639472fd05, type: 3}
       propertyPath: 'chaseActions.Array.data[2]'
       value: 
-      objectReference: {fileID: 1164581695740556402}
+      objectReference: {fileID: 285625745844603334}
     - target: {fileID: 5430355682896081966, guid: 400b01cd0bb54b44aa9aa2639472fd05, type: 3}
       propertyPath: 'chaseActions.Array.data[3]'
       value: 
       objectReference: {fileID: 285625745844603334}
     - target: {fileID: 5430355682896081966, guid: 400b01cd0bb54b44aa9aa2639472fd05, type: 3}
-      propertyPath: 'combatActions.Array.data[6]'
+      propertyPath: 'combatActions.Array.data[4]'
       value: 
       objectReference: {fileID: 1164581695740556402}
     - target: {fileID: 5430355682896081966, guid: 400b01cd0bb54b44aa9aa2639472fd05, type: 3}
-      propertyPath: 'combatActions.Array.data[7]'
+      propertyPath: 'combatActions.Array.data[5]'
       value: 
       objectReference: {fileID: 1164581695740556402}
+    - target: {fileID: 5430355682896081966, guid: 400b01cd0bb54b44aa9aa2639472fd05, type: 3}
+      propertyPath: 'combatActions.Array.data[6]'
+      value: 
+      objectReference: {fileID: 2808054763399784517}
+    - target: {fileID: 5430355682896081966, guid: 400b01cd0bb54b44aa9aa2639472fd05, type: 3}
+      propertyPath: 'combatActions.Array.data[7]'
+      value: 
+      objectReference: {fileID: 285625745844603334}
+    - target: {fileID: 5430355682896081966, guid: 400b01cd0bb54b44aa9aa2639472fd05, type: 3}
+      propertyPath: 'combatActions.Array.data[8]'
+      value: 
+      objectReference: {fileID: 285625745844603334}
     - target: {fileID: 5430355682896081966, guid: 400b01cd0bb54b44aa9aa2639472fd05, type: 3}
       propertyPath: 'combatActions.Array.data[9]'
       value: 
@@ -2969,6 +3008,17 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 7721739454990844359}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1014524146134086699}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e06cce5435ad29f4b9058523912df1d5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2808054763399784517 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5607289341695011202, guid: 400b01cd0bb54b44aa9aa2639472fd05, type: 3}
+  m_PrefabInstance: {fileID: 7721739454990844359}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e06cce5435ad29f4b9058523912df1d5, type: 3}

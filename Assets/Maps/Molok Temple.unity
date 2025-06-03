@@ -15,18 +15,18 @@ RenderSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 10
   m_Fog: 1
-  m_FogColor: {r: 1, g: 0.9119497, b: 0.8632076, a: 1}
+  m_FogColor: {r: 0.9925078, g: 0.9013635, b: 0.85079885, a: 1}
   m_FogMode: 3
   m_FogDensity: 0.03
   m_LinearFogStart: 0
   m_LinearFogEnd: 300
-  m_AmbientSkyColor: {r: 0.990566, g: 0.8469234, b: 0.6982007, a: 1}
+  m_AmbientSkyColor: {r: 0.9726938, g: 0.87783015, b: 0.75732034, a: 1}
   m_AmbientEquatorColor: {r: 0.22098611, g: 0.23556425, b: 0.24528301, a: 1}
   m_AmbientGroundColor: {r: 0.8301887, g: 0.8301887, b: 0.8301887, a: 1}
   m_AmbientIntensity: 1.27
   m_AmbientMode: 3
   m_SubtractiveShadowColor: {r: 1, g: 1, b: 1, a: 1}
-  m_SkyboxMaterial: {fileID: 2100000, guid: de5f2b03ab4ccfb47b64e3e6f53854c7, type: 2}
+  m_SkyboxMaterial: {fileID: 2100000, guid: 2bd8959f5fbd3644aa33af1a155fc147, type: 2}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -785,7 +785,7 @@ MonoBehaviour:
     frost: 0
     magic: 0
     lightning: 0
-    darkness: 130
+    darkness: 110
     water: 0
     postureDamage: 0
     poiseDamage: 0
@@ -1367,7 +1367,7 @@ MonoBehaviour:
     frost: 0
     magic: 0
     lightning: 0
-    darkness: 130
+    darkness: 90
     water: 0
     postureDamage: 0
     poiseDamage: 0
@@ -3138,7 +3138,7 @@ PrefabInstance:
       objectReference: {fileID: 21401432}
     - target: {fileID: 3567151806494655513, guid: 488ab4a9f277fc6488ea9b25b8742c5a, type: 3}
       propertyPath: maxHealth
-      value: 8000
+      value: 7000
       objectReference: {fileID: 0}
     - target: {fileID: 3930946373481683490, guid: 488ab4a9f277fc6488ea9b25b8742c5a, type: 3}
       propertyPath: canTakeDamage
@@ -3526,7 +3526,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9011330409589584732, guid: 488ab4a9f277fc6488ea9b25b8742c5a, type: 3}
       propertyPath: maxPoiseHits
-      value: 10
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 9012678051230012946, guid: 488ab4a9f277fc6488ea9b25b8742c5a, type: 3}
       propertyPath: lengthInSec
@@ -5744,7 +5744,7 @@ MonoBehaviour:
     frost: 0
     magic: 0
     lightning: 0
-    darkness: 130
+    darkness: 90
     water: 0
     postureDamage: 0
     poiseDamage: 0
@@ -8208,7 +8208,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   damage:
-    physical: 130
+    physical: 120
     fire: 0
     frost: 0
     magic: 0
@@ -11276,6 +11276,67 @@ MonoBehaviour:
   m_IgnoreFromBuild: 0
   m_ApplyToChildren: 1
   m_AffectedAgents: ffffffff
+--- !u!1 &630157781
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 630157782}
+  - component: {fileID: 630157783}
+  m_Layer: 0
+  m_Name: Disable Player Save
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &630157782
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 630157781}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1553041888}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &630157783
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 630157781}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c07ccdb5c7c59e0408167c1a7ce525d2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  eventToInvoke:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 791641252}
+        m_TargetAssemblyTypeName: AF.SaveManager, AF
+        m_MethodName: SetCanSave
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  waitBeforeInvoke: 0
+  comment: From this moment on, do not allow manual save in this map
 --- !u!1 &630655742
 GameObject:
   m_ObjectHideFlags: 0
@@ -12004,7 +12065,7 @@ MonoBehaviour:
     frost: 0
     magic: 0
     lightning: 0
-    darkness: 130
+    darkness: 90
     water: 0
     postureDamage: 0
     poiseDamage: 0
@@ -12759,7 +12820,7 @@ MonoBehaviour:
     frost: 0
     magic: 0
     lightning: 0
-    darkness: 130
+    darkness: 90
     water: 0
     postureDamage: 0
     poiseDamage: 0
@@ -13744,6 +13805,17 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &791641252 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7611835834280718335, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f40bc49debf9426691d02debbaf87d0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &791933222
 GameObject:
   m_ObjectHideFlags: 0
@@ -17175,7 +17247,7 @@ MonoBehaviour:
     frost: 0
     magic: 0
     lightning: 0
-    darkness: 130
+    darkness: 90
     water: 0
     postureDamage: 0
     poiseDamage: 0
@@ -17312,15 +17384,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2070925441746177912, guid: a1a802ecaf6775746bb2a929fb554ad8, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 4.342259
+      value: -0.318236
       objectReference: {fileID: 0}
     - target: {fileID: 2070925441746177912, guid: a1a802ecaf6775746bb2a929fb554ad8, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 4.379172
+      value: 3.437345
       objectReference: {fileID: 0}
     - target: {fileID: 2070925441746177912, guid: a1a802ecaf6775746bb2a929fb554ad8, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 82.57534
+      value: 18.677973
       objectReference: {fileID: 0}
     - target: {fileID: 2070925441746177912, guid: a1a802ecaf6775746bb2a929fb554ad8, type: 3}
       propertyPath: m_LocalRotation.w
@@ -20273,15 +20345,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1766681394354770373, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
       propertyPath: m_Color.b
-      value: 0.52250123
+      value: 0.9983541
       objectReference: {fileID: 0}
     - target: {fileID: 1766681394354770373, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
       propertyPath: m_Color.g
-      value: 0.52250123
+      value: 0.9983541
       objectReference: {fileID: 0}
     - target: {fileID: 1766681394354770373, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
       propertyPath: m_Color.r
-      value: 0.52250123
+      value: 0.9983541
       objectReference: {fileID: 0}
     - target: {fileID: 1766681394354770373, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
       propertyPath: m_Intensity
@@ -20397,19 +20469,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2324549934646057964, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.04907156
+      value: 0.068017095
       objectReference: {fileID: 0}
     - target: {fileID: 2324549934646057964, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.07202858
+      value: 0.054495957
       objectReference: {fileID: 0}
     - target: {fileID: 2324549934646057964, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.56089014
+      value: -0.7774384
       objectReference: {fileID: 0}
     - target: {fileID: 2324549934646057964, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.8232899
+      value: 0.6228912
       objectReference: {fileID: 0}
     - target: {fileID: 2341859143544152045, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
       propertyPath: m_LocalPosition.x
@@ -22137,15 +22209,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6129968653849713614, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 3.7281284
+      value: 1.8299947
       objectReference: {fileID: 0}
     - target: {fileID: 6129968653849713614, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 4.9474835
+      value: 4.102172
       objectReference: {fileID: 0}
     - target: {fileID: 6129968653849713614, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 75.26009
+      value: 12.415121
       objectReference: {fileID: 0}
     - target: {fileID: 6129968653849713614, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
       propertyPath: m_LocalRotation.w
@@ -22169,15 +22241,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6129968654122490714, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 5.6844926
+      value: 1.2128042
       objectReference: {fileID: 0}
     - target: {fileID: 6129968654122490714, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 5.300954
+      value: 3.5001411
       objectReference: {fileID: 0}
     - target: {fileID: 6129968654122490714, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 81.72029
+      value: 19.297802
       objectReference: {fileID: 0}
     - target: {fileID: 6129968654122490714, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
       propertyPath: m_LocalRotation.w
@@ -25689,31 +25761,31 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7698839811453428926, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 5.6844926
+      value: 1.2128042
       objectReference: {fileID: 0}
     - target: {fileID: 7698839811453428926, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 5.300954
+      value: 3.5001411
       objectReference: {fileID: 0}
     - target: {fileID: 7698839811453428926, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 81.72029
+      value: 19.297802
       objectReference: {fileID: 0}
     - target: {fileID: 7698839811453428926, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.26777664
+      value: -0.051869802
       objectReference: {fileID: 0}
     - target: {fileID: 7698839811453428926, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0.040318348
+      value: -0.0006989929
       objectReference: {fileID: 0}
     - target: {fileID: 7698839811453428926, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.95168185
+      value: -0.9980781
       objectReference: {fileID: 0}
     - target: {fileID: 7698839811453428926, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.14481655
+      value: 0.033898618
       objectReference: {fileID: 0}
     - target: {fileID: 7794282333733126108, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
       propertyPath: m_LocalPosition.y
@@ -27505,31 +27577,31 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9198782313407061788, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 4.075298
+      value: 1.8189427
       objectReference: {fileID: 0}
     - target: {fileID: 9198782313407061788, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2.799172
+      value: 1.8573449
       objectReference: {fileID: 0}
     - target: {fileID: 9198782313407061788, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 78.706696
+      value: 15.442208
       objectReference: {fileID: 0}
     - target: {fileID: 9198782313407061788, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.26777664
+      value: -0.051869802
       objectReference: {fileID: 0}
     - target: {fileID: 9198782313407061788, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0.040318348
+      value: -0.0006989929
       objectReference: {fileID: 0}
     - target: {fileID: 9198782313407061788, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.95168185
+      value: -0.9980781
       objectReference: {fileID: 0}
     - target: {fileID: 9198782313407061788, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.14481655
+      value: 0.033898618
       objectReference: {fileID: 0}
     - target: {fileID: 9198782313407061788, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -30060,7 +30132,7 @@ MonoBehaviour:
     frost: 0
     magic: 0
     lightning: 0
-    darkness: 130
+    darkness: 90
     water: 0
     postureDamage: 0
     poiseDamage: 0
@@ -32380,7 +32452,7 @@ MonoBehaviour:
     frost: 0
     magic: 0
     lightning: 0
-    darkness: 130
+    darkness: 90
     water: 0
     postureDamage: 0
     poiseDamage: 0
@@ -32998,7 +33070,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   damage:
-    physical: 160
+    physical: 140
     fire: 0
     frost: 0
     magic: 0
@@ -35697,7 +35769,7 @@ MonoBehaviour:
     frost: 0
     magic: 0
     lightning: 0
-    darkness: 130
+    darkness: 90
     water: 0
     postureDamage: 0
     poiseDamage: 0
@@ -36642,7 +36714,7 @@ MonoBehaviour:
     frost: 0
     magic: 0
     lightning: 0
-    darkness: 130
+    darkness: 90
     water: 0
     postureDamage: 0
     poiseDamage: 0
@@ -37805,6 +37877,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 756389322}
+  - {fileID: 630157782}
   - {fileID: 1082473214}
   - {fileID: 1067055672}
   - {fileID: 1898876858}
@@ -41628,7 +41701,7 @@ MonoBehaviour:
     frost: 0
     magic: 0
     lightning: 0
-    darkness: 130
+    darkness: 90
     water: 0
     postureDamage: 0
     poiseDamage: 0
@@ -43945,7 +44018,7 @@ MonoBehaviour:
     frost: 0
     magic: 0
     lightning: 0
-    darkness: 130
+    darkness: 90
     water: 0
     postureDamage: 0
     poiseDamage: 0
@@ -44895,7 +44968,7 @@ MonoBehaviour:
     frost: 0
     magic: 0
     lightning: 0
-    darkness: 130
+    darkness: 90
     water: 0
     postureDamage: 0
     poiseDamage: 0

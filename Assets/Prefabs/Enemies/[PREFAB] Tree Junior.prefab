@@ -51,6 +51,7 @@ MonoBehaviour:
   comboClip3: {fileID: 0}
   minimumHealthToUse: 100
   dontUseBelowHalfHealth: 0
+  halfHealthThreshold: 0.5
   minimumDistanceToTarget: 0
   maximumDistanceToTarget: 15
   onAttack_Start:
@@ -461,6 +462,7 @@ MonoBehaviour:
   comboClip3: {fileID: 0}
   minimumHealthToUse: 100
   dontUseBelowHalfHealth: 0
+  halfHealthThreshold: 0.5
   minimumDistanceToTarget: 0
   maximumDistanceToTarget: 15
   onAttack_Start:
@@ -683,6 +685,7 @@ MonoBehaviour:
   comboClip3: {fileID: 0}
   minimumHealthToUse: 100
   dontUseBelowHalfHealth: 0
+  halfHealthThreshold: 0.5
   minimumDistanceToTarget: 0
   maximumDistanceToTarget: 15
   onAttack_Start:
@@ -875,6 +878,9 @@ MonoBehaviour:
         m_CallState: 2
   idleState: {fileID: 7459296786416068688}
   shouldAwake: 0
+  exitAmbushCrossFade: 0.2
+  ambushIdle: Ambush - Idle
+  ambushExit: Ambush
 --- !u!82 &2949271656601449743
 AudioSource:
   m_ObjectHideFlags: 0
@@ -1580,6 +1586,7 @@ MonoBehaviour:
   comboClip3: {fileID: 0}
   minimumHealthToUse: 100
   dontUseBelowHalfHealth: 0
+  halfHealthThreshold: 0.5
   minimumDistanceToTarget: 0
   maximumDistanceToTarget: 15
   onAttack_Start:
@@ -1712,6 +1719,7 @@ MonoBehaviour:
   comboClip3: {fileID: 0}
   minimumHealthToUse: 100
   dontUseBelowHalfHealth: 0
+  halfHealthThreshold: 0.5
   minimumDistanceToTarget: 0
   maximumDistanceToTarget: 15
   onAttack_Start:
@@ -1906,6 +1914,7 @@ MonoBehaviour:
   comboClip3: {fileID: 0}
   minimumHealthToUse: 100
   dontUseBelowHalfHealth: 0
+  halfHealthThreshold: 0.5
   minimumDistanceToTarget: 0
   maximumDistanceToTarget: 15
   onAttack_Start:
@@ -2943,6 +2952,8 @@ MonoBehaviour:
   onAnyCollisionEvent:
     m_PersistentCalls:
       m_Calls: []
+  collisionSound: {fileID: 0}
+  collisionSoundCooldown: 0.1
 --- !u!1001 &938506697098044866
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5483,6 +5494,7 @@ MonoBehaviour:
   damageOnDodge: 0
   waitingForBackstab: 0
   hasFlatulence: 0
+  isTakingDamage: 0
 --- !u!114 &4106611744920418032
 MonoBehaviour:
   m_ObjectHideFlags: 0

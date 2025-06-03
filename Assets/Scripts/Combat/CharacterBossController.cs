@@ -134,11 +134,7 @@ namespace AF
 
             if (bossMusic != null && GetBGMManager() != null)
             {
-                if (GetBGMManager().IsPlayingMusicClip(bossMusic.name) == false)
-                {
-                    GetBGMManager().PlayMusic(bossMusic);
-                    GetBGMManager().isPlayingBossMusic = true;
-                }
+                GetBGMManager().PlayMainMusic(bossMusic);
             }
 
             if (characterManager.partnerOrder == 0)
@@ -177,10 +173,11 @@ namespace AF
             {
                 if (GetBGMManager() != null)
                 {
-                    GetBGMManager().isPlayingBossMusic = false;
+                    GetBGMManager().ClearMainMusic();
                 }
 
-                GetSceneSettings().HandleSceneSound(true);
+                // Resume map music after killing boss
+                GetSceneSettings().EvaluateDayNightMusic();
 
                 EventManager.EmitEvent(EventMessages.ON_BOSS_BATTLE_ENDS);
                 onBossDefeated?.Invoke();

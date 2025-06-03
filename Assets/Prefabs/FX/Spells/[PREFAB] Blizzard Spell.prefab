@@ -54,6 +54,9 @@ ParticleSystemRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -4779,6 +4782,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 542466d818c9a5e47aa8d28fefea8f18, type: 3}
+  m_Resource: {fileID: 8300000, guid: 542466d818c9a5e47aa8d28fefea8f18, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
@@ -4917,6 +4921,9 @@ ParticleSystemRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -9634,10 +9641,11 @@ MonoBehaviour:
   damage:
     physical: 0
     fire: 0
-    frost: 5
+    frost: 2
     magic: 0
     lightning: 0
     darkness: 0
+    water: 0
     postureDamage: 0
     poiseDamage: 0
     pushForce: 0
@@ -9645,14 +9653,22 @@ MonoBehaviour:
     statusEffects:
     - statusEffect: {fileID: 11400000, guid: ef352f6a23f0b8540a91440f73717882, type: 2}
       amountPerHit: 1
+    ignoreBlocking: 0
+    canNotBeParried: 0
+    damageType: 0
   damageOwner: {fileID: 0}
-  damageCooldown: 0.1
+  damageCooldown: 0.15
   onParticleDamage:
     m_PersistentCalls:
       m_Calls: []
+  doubleDamageOnNightTime: 0
+  gameSession: {fileID: 0}
+  healingAmount: -1
   onAnyCollisionEvent:
     m_PersistentCalls:
       m_Calls: []
+  collisionSound: {fileID: 0}
+  collisionSoundCooldown: 0.1
 --- !u!82 &821594644951367334
 AudioSource:
   m_ObjectHideFlags: 0
@@ -9664,6 +9680,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: e824522f939f7b0439c0d4408fa04072, type: 3}
+  m_Resource: {fileID: 8300000, guid: e824522f939f7b0439c0d4408fa04072, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1

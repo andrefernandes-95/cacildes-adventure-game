@@ -2,10 +2,11 @@ using AF.Events;
 using TigerForge;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Scripting;
 
 namespace AF.Triggers
 {
-
+    [Preserve]
     public class OnMonobehaviourEvents : MonoBehaviour
     {
         public UnityEvent onAwake;
@@ -16,6 +17,8 @@ namespace AF.Triggers
         private void Awake()
         {
             onAwake?.Invoke();
+
+            Debug.Log("OnMonobehaviourEvents - " + gameObject.name + " has run Awake()");
 
             EventManager.StartListening(EventMessages.ON_LEAVING_BONFIRE, () =>
             {

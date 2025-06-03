@@ -77,7 +77,8 @@ namespace AF
             }
             else if (entityToTeleport.TryGetComponent<CharacterManager>(out var characterManager))
             {
-                entityToTeleport.transform.position = desiredTransformDestination.position;
+                characterManager.agent.enabled = false;
+                characterManager.Teleport(desiredTransformDestination.position, Quaternion.identity);
             }
         }
     }

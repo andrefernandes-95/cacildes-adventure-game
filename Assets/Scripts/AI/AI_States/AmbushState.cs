@@ -29,6 +29,9 @@ namespace AF
         [Header("Options")]
         [SerializeField] float exitAmbushCrossFade = 0.2f;
 
+        [SerializeField] string ambushIdle = "Ambush [Skeleton] - Idle";
+        [SerializeField] string ambushExit = "Ambush [Skeleton]";
+
         private void Awake()
         {
             EventManager.StartListening(EventMessages.ON_LEAVING_BONFIRE, () =>
@@ -49,7 +52,7 @@ namespace AF
 
             characterManager.agent.speed = 0f;
 
-            characterManager.PlayBusyAnimationWithRootMotion("Ambush [Skeleton] - Idle");
+            characterManager.PlayBusyAnimationWithRootMotion(ambushIdle);
         }
 
         public override void OnStateExit(StateManager stateManager)
@@ -98,7 +101,7 @@ namespace AF
 
         public void PlayExitAmbush()
         {
-            characterManager.PlayCrossFadeBusyAnimationWithRootMotion("Ambush [Skeleton]", exitAmbushCrossFade);
+            characterManager.PlayCrossFadeBusyAnimationWithRootMotion(ambushExit, exitAmbushCrossFade);
         }
     }
 }

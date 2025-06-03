@@ -737,6 +737,11 @@ namespace AF.Shooting
 
         void HandleShootingArrowSideEffects(PlayerManager playerManager, Arrow arrowThatWasShot)
         {
+            if (arrowThatWasShot == null)
+            {
+                return;
+            }
+
             if (arrowThatWasShot.statusEffectsInflictedUponShootingArrow != null && arrowThatWasShot.statusEffectsInflictedUponShootingArrow.Length > 0)
             {
                 foreach (var statusEffectEntry in arrowThatWasShot.statusEffectsInflictedUponShootingArrow)

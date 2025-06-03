@@ -20,7 +20,8 @@ namespace AF
 
             if (playMapMusic)
             {
-                GetSceneSettings().HandleSceneSound(true);
+                GetBGMManager().ClearMainMusic();
+                GetSceneSettings().EvaluateDayNightMusic();
             }
             else if (bgm != null)
             {
@@ -31,6 +32,7 @@ namespace AF
                 GetBGMManager().StopMusic();
             }
         }
+
         BGMManager GetBGMManager()
         {
             if (_bgmManager == null)
@@ -40,6 +42,7 @@ namespace AF
 
             return _bgmManager;
         }
+
         SceneSettings GetSceneSettings()
         {
             if (_sceneSettings == null)
@@ -49,7 +52,5 @@ namespace AF
 
             return _sceneSettings;
         }
-
     }
-
 }

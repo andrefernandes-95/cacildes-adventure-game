@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -15,7 +16,7 @@ namespace AF
         public SaveManager saveManager;
         public StarterAssetsInputs starterAssetsInputs;
         public PlayerAppearance playerAppearance;
-
+        [SerializeField] PlayerManager playerManager;
         public GameSettings gameSettings;
 
         private void Awake()
@@ -54,6 +55,15 @@ namespace AF
             {
                 StartGame();
             }
+
+            StartCoroutine(MakePlayerSleep());
+        }
+
+        IEnumerator MakePlayerSleep()
+        {
+            yield return new WaitForEndOfFrame();
+
+            playerManager.PlayBusyAnimationWithRootMotion("Sleeping");
         }
 
         public void StartGame()
