@@ -40,7 +40,7 @@ namespace AF
 
         [Header("Flags")]
         public bool ignoreDamage = false;
-        [HideInInspector] public bool canTakeDamage = true;
+        public bool canTakeDamage = true;
         public bool damageOnDodge = false;
         public bool waitingForBackstab = false;
         public bool hasFlatulence = false;

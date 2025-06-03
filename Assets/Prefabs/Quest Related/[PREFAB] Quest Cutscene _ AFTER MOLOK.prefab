@@ -116,6 +116,9 @@ MonoBehaviour:
   animator: {fileID: 0}
   animationName: PostureBreak
   crossFadeTime: 0.1
+  usePlayerAnimator: 0
+  useBusyAnimation: 0
+  teleportPlayerToThisTransform: {fileID: 0}
 --- !u!114 &2287479551071772422
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -131,6 +134,9 @@ MonoBehaviour:
   animator: {fileID: 2606697058017946785}
   animationName: AI Humanoid - Backstabbed - Getup
   crossFadeTime: 0.1
+  usePlayerAnimator: 0
+  useBusyAnimation: 0
+  teleportPlayerToThisTransform: {fileID: 0}
 --- !u!114 &2055676351357717044
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -252,7 +258,7 @@ GameObject:
   - component: {fileID: 5239993915297857450}
   - component: {fileID: 4533520920577514591}
   m_Layer: 0
-  m_Name: Quest Dependant
+  m_Name: Orc Stone Not Completed
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -271,7 +277,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 5777602946182407418}
+  - {fileID: 8831250835391757026}
   m_Father: {fileID: 1460043823321346479}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &4533520920577514591
@@ -371,6 +377,9 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   onEnable:
+    m_PersistentCalls:
+      m_Calls: []
+  onPlayerLeaveBonfire:
     m_PersistentCalls:
       m_Calls: []
 --- !u!114 &728044665797414101
@@ -555,6 +564,9 @@ MonoBehaviour:
   animator: {fileID: 0}
   animationName: Cacildes Faint
   crossFadeTime: 0.01
+  usePlayerAnimator: 0
+  useBusyAnimation: 0
+  teleportPlayerToThisTransform: {fileID: 0}
 --- !u!114 &6957387883223509460
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -733,6 +745,56 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   desiredCamera: {fileID: 0}
   priority: 1
+--- !u!1 &7094116703368814987
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8831250835391757026}
+  - component: {fileID: 6877635723917445338}
+  m_Layer: 0
+  m_Name: Celebration In order Not Finished
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8831250835391757026
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7094116703368814987}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 5777602946182407418}
+  m_Father: {fileID: 5239993915297857450}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6877635723917445338
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7094116703368814987}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9221b9cbf6915f40900275df3d68d41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  questParent: {fileID: 11400000, guid: 8cd8aa047a4c20945ba09d140896d24c, type: 2}
+  questProgresses: ffffffff00000000
+  shouldBeWithinRange: 1
+  shouldBeOutsideRange: 0
+  listenForQuestChanges: 1
 --- !u!1 &8947331062825772118
 GameObject:
   m_ObjectHideFlags: 0
@@ -792,6 +854,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -872,7 +937,7 @@ Transform:
   - {fileID: 5929838206266315056}
   - {fileID: 7227955281219406552}
   - {fileID: 3527838164578324417}
-  m_Father: {fileID: 5239993915297857450}
+  m_Father: {fileID: 8831250835391757026}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1943959756147112523
 PrefabInstance:

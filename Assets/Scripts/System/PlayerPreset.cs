@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using AF.Companions;
+using AF.Flags;
 using AF.Inventory;
 using AYellowpaper.SerializedCollections;
 using UnityEditor;
@@ -89,6 +90,10 @@ namespace AF
         public CompanionID[] companions;
         public CompanionsDatabase companionsDatabase;
 
+        [Header("Flags")]
+        public FlagsDatabase flagsDatabase;
+        public Flag[] flags;
+
         public void LoadPlayerPreset()
         {
             LoadStats();
@@ -96,6 +101,7 @@ namespace AF
             LoadEquipment();
             LoadQuests();
             LoadCompanions();
+            LoadFlags();
         }
 
         void LoadStats()
@@ -201,6 +207,17 @@ namespace AF
                 foreach (var c in companions)
                 {
                     companionsDatabase.AddToParty(c.GetCompanionID());
+                }
+            }
+        }
+
+        void LoadFlags()
+        {
+            if (flags != null && flags.Length > 0)
+            {
+                foreach (var flag in flags)
+                {
+                    flagsDatabase.AddFlag(flag);
                 }
             }
         }

@@ -66,5 +66,7 @@ namespace AF.Animations
         public void ShowRifleWeapon();
         public void HideRifleWeapon();
 
+        public void OnBuffWeaponWithFire();
+
     }
 }

@@ -100,6 +100,8 @@ public class EquipmentDatabase : ScriptableObject
         armor = null;
         gauntlet = null;
         legwear = null;
+
+        isTwoHanding = false;
     }
     public void SwitchToNextWeapon()
     {

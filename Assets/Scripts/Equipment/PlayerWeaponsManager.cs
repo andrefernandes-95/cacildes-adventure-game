@@ -45,6 +45,9 @@ namespace AF.Equipment
         // "Not enough mana to use weapon special"
         public LocalizedString NotEnoughManaToUseWeaponSpecial;
 
+
+        public float DEFAULT_WEAPON_BUFF_DURATION = 120f;
+
         private void Awake()
         {
             statsBonusController = playerManager.statsBonusController;
@@ -364,15 +367,77 @@ namespace AF.Equipment
             if (currentWeaponInstance.characterWeaponBuffs.appliedBuff == CharacterWeaponBuffs.WeaponBuffName.FIRE)
             {
                 weaponDamage.fire += currentWeaponInstance.characterWeaponBuffs.weaponBuffs[CharacterWeaponBuffs.WeaponBuffName.FIRE].damageBonus;
+
+
+                if (currentWeaponInstance.characterWeaponBuffs.weaponBuffs[CharacterWeaponBuffs.WeaponBuffName.FIRE].statusEffect != null)
+                {
+                    StatusEffectEntry statusEffectToApply = new()
+                    {
+                        statusEffect = currentWeaponInstance.characterWeaponBuffs.weaponBuffs[CharacterWeaponBuffs.WeaponBuffName.FIRE].statusEffect,
+                        amountPerHit = currentWeaponInstance.characterWeaponBuffs.weaponBuffs[CharacterWeaponBuffs.WeaponBuffName.FIRE].statusEffectAmountToApply,
+                    };
+
+                    if (weaponDamage.statusEffects == null)
+                    {
+                        weaponDamage.statusEffects = new StatusEffectEntry[] {
+                        statusEffectToApply
+                    };
+                    }
+                    else
+                    {
+                        weaponDamage.statusEffects = weaponDamage.statusEffects.Append(statusEffectToApply).ToArray();
+                    }
+                }
             }
 
             if (currentWeaponInstance.characterWeaponBuffs.appliedBuff == CharacterWeaponBuffs.WeaponBuffName.FROST)
             {
                 weaponDamage.frost += currentWeaponInstance.characterWeaponBuffs.weaponBuffs[CharacterWeaponBuffs.WeaponBuffName.FROST].damageBonus;
+
+                if (currentWeaponInstance.characterWeaponBuffs.weaponBuffs[CharacterWeaponBuffs.WeaponBuffName.FROST].statusEffect != null)
+                {
+                    StatusEffectEntry statusEffectToApply = new()
+                    {
+                        statusEffect = currentWeaponInstance.characterWeaponBuffs.weaponBuffs[CharacterWeaponBuffs.WeaponBuffName.FROST].statusEffect,
+                        amountPerHit = currentWeaponInstance.characterWeaponBuffs.weaponBuffs[CharacterWeaponBuffs.WeaponBuffName.FROST].statusEffectAmountToApply,
+                    };
+
+                    if (weaponDamage.statusEffects == null)
+                    {
+                        weaponDamage.statusEffects = new StatusEffectEntry[] {
+                        statusEffectToApply
+                    };
+                    }
+                    else
+                    {
+                        weaponDamage.statusEffects = weaponDamage.statusEffects.Append(statusEffectToApply).ToArray();
+                    }
+                }
+
             }
 
             if (currentWeaponInstance.characterWeaponBuffs.appliedBuff == CharacterWeaponBuffs.WeaponBuffName.LIGHTNING)
             {
+                if (currentWeaponInstance.characterWeaponBuffs.weaponBuffs[CharacterWeaponBuffs.WeaponBuffName.LIGHTNING].statusEffect != null)
+                {
+                    StatusEffectEntry statusEffectToApply = new()
+                    {
+                        statusEffect = currentWeaponInstance.characterWeaponBuffs.weaponBuffs[CharacterWeaponBuffs.WeaponBuffName.LIGHTNING].statusEffect,
+                        amountPerHit = currentWeaponInstance.characterWeaponBuffs.weaponBuffs[CharacterWeaponBuffs.WeaponBuffName.LIGHTNING].statusEffectAmountToApply,
+                    };
+
+                    if (weaponDamage.statusEffects == null)
+                    {
+                        weaponDamage.statusEffects = new StatusEffectEntry[] {
+                        statusEffectToApply
+                    };
+                    }
+                    else
+                    {
+                        weaponDamage.statusEffects = weaponDamage.statusEffects.Append(statusEffectToApply).ToArray();
+                    }
+                }
+
                 weaponDamage.lightning += currentWeaponInstance.characterWeaponBuffs.weaponBuffs[CharacterWeaponBuffs.WeaponBuffName.LIGHTNING].damageBonus;
             }
 

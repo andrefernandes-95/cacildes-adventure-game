@@ -72,12 +72,17 @@ namespace AF.Combat
             }
 
             float currentHealthPercentage = characterManager.health.GetCurrentHealthPercentage();
-            if (
-                currentHealthPercentage <= 0
-                || currentHealthPercentage > minimumHealthToUse
-            )
+            if (minimumHealthToUse < 100)
             {
-                return false;
+                if (currentHealthPercentage <= 0)
+                {
+                    return false;
+                }
+
+                if (currentHealthPercentage > minimumHealthToUse)
+                {
+                    return false;
+                }
             }
 
             if (dontUseBelowHalfHealth && currentHealthPercentage < (halfHealthThreshold * 100f))

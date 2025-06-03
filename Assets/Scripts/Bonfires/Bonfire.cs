@@ -144,6 +144,7 @@ namespace AF.Bonfires
             GetUIDocumentBonfireMenu().SetCurrentBonfire(this);
             GetUIDocumentBonfireMenu().SetCurrentBonfire(this);
             GetUIDocumentBonfireMenu().gameObject.SetActive(true);
+            GetPlayerManager().uIDocumentPlayerHUDV2.HideHUD();
 
             EventManager.EmitEvent(EventMessages.ON_LEAVING_BONFIRE);
         }
@@ -161,6 +162,8 @@ namespace AF.Bonfires
             GetPlayerManager().PlayBusyHashedAnimationWithRootMotion(exitingBonfireHash);
 
             GetCursorManager().HideCursor();
+
+            GetPlayerManager().uIDocumentPlayerHUDV2.ShowHUD();
         }
 
         void SetPlayerLockState(bool isLocked)

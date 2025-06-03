@@ -25,6 +25,7 @@ namespace AF
 
         private List<string> errorMessagesToIgnore = new()
         {
+            "Object of type 'UnityEngine.Object' cannot be converted to type 'AF.Projectile'",
             "has no receiver! Are you missing a component?",
             "AnimationEvent has no function name specified!",
             "PhysX does not support concave Mesh Colliders with dynamic Rigidbody GameObjects.",
