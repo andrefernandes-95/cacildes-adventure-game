@@ -23,10 +23,7 @@ namespace AF.Equipment
 
         [Header("Current Weapon")]
         public CharacterWeaponHitbox currentWeaponInstance;
-        public ShieldInstance currentShieldInstance;
-
-        [Header("Dual Wielding")]
-        public CharacterWeaponHitbox leftWeaponInstance;
+        public CharacterWeaponHitbox currentShieldInstance;
 
         [Header("Database")]
         public EquipmentDatabase equipmentDatabase;
@@ -45,8 +42,11 @@ namespace AF.Equipment
         // "Not enough mana to use weapon special"
         public LocalizedString NotEnoughManaToUseWeaponSpecial;
 
-
         public float DEFAULT_WEAPON_BUFF_DURATION = 120f;
+
+        [Header("Transform References")]
+        [SerializeField] Transform rightHandGrip;
+        [SerializeField] Transform leftHandGrip;
 
         private void Awake()
         {
@@ -56,7 +56,7 @@ namespace AF.Equipment
                 EventMessages.ON_EQUIPMENT_CHANGED,
                 UpdateEquipment);
 
-            EventManager.StartListening(EventMessages.ON_TWO_HANDING_CHANGED, UpdateCurrentShield);
+            EventManager.StartListening(EventMessages.ON_TWO_HANDING_CHANGED, UpdateEquipment);
         }
 
         private void Start()
@@ -67,7 +67,7 @@ namespace AF.Equipment
         void UpdateEquipment()
         {
             UpdateCurrentWeapon();
-            UpdateCurrentShield();
+            UpdateCurrentLeftWeapon();
             UpdateCurrentArrows();
             UpdateCurrentSpells();
         }
@@ -87,7 +87,7 @@ namespace AF.Equipment
             rightFootHitbox?.DisableHitbox();
             leftHandHitbox?.DisableHitbox();
             rightHandHitbox?.DisableHitbox();
-            leftWeaponInstance?.DisableHitbox();
+            currentShieldInstance?.DisableHitbox();
         }
 
         void UpdateCurrentWeapon()
@@ -96,34 +96,54 @@ namespace AF.Equipment
 
             if (currentWeaponInstance != null)
             {
+                Destroy(currentWeaponInstance);
                 currentWeaponInstance = null;
             }
 
-            foreach (CharacterWeaponHitbox weaponHitbox in weaponInstances)
+            if (CurrentWeapon == null && rightHandGrip.childCount > 0)
             {
-                weaponHitbox?.DisableHitbox();
-                weaponHitbox?.gameObject.SetActive(false);
+                foreach (Transform child in rightHandGrip.transform)
+                {
+                    Destroy(child.gameObject);
+                }
             }
-
-            if (CurrentWeapon != null)
+            else if (CurrentWeapon is Weapon rightWeapon)
             {
-                var gameObjectWeapon = weaponInstances.FirstOrDefault(x => x.weapon.name == CurrentWeapon.name);
-                currentWeaponInstance = gameObjectWeapon;
-                currentWeaponInstance.gameObject.SetActive(true);
+                InstantiateWeapon(rightWeapon, true);
             }
 
             playerManager.UpdateAnimatorOverrideControllerClips();
 
-            // If we equipped a bow, we must hide any active shield
-            if (equipmentDatabase.IsRangeWeaponEquipped() || equipmentDatabase.IsStaffEquipped())
+            playerManager.statsBonusController.RecalculateEquipmentBonus();
+        }
+
+        void UpdateCurrentLeftWeapon()
+        {
+            var CurrentShield = (equipmentDatabase.IsRangeWeaponEquipped() || equipmentDatabase.isTwoHanding)
+                ? null : equipmentDatabase.GetCurrentLeftWeapon();
+
+            if (currentShieldInstance != null)
             {
-                UnassignShield();
+                Destroy(currentShieldInstance);
+
+                currentShieldInstance = null;
             }
-            // Otherwise, we need to check if we should activate a bow if we just switched from a bow to other weapon that might allow a shield
-            else
+
+            if (CurrentShield == null && leftHandGrip.childCount > 0)
             {
-                UpdateCurrentShield();
+                foreach (Transform child in leftHandGrip.transform)
+                {
+                    Destroy(child.gameObject);
+                }
             }
+            else if (CurrentShield is Weapon leftWeapon)
+            {
+                InstantiateWeapon(leftWeapon, false);
+            }
+
+
+            playerManager.UpdateAnimatorOverrideControllerClips();
+            statsBonusController.RecalculateEquipmentBonus();
         }
 
         void UpdateCurrentArrows()
@@ -146,37 +166,55 @@ namespace AF.Equipment
             UnassignShield();
         }
 
-        void UpdateCurrentShield()
+        void InstantiateWeapon(Weapon weapon, bool isRightHand)
         {
-            var CurrentShield = equipmentDatabase.GetCurrentShield();
+            string weaponName = weapon.name.Replace("(Clone)", "");
 
-            statsBonusController.RecalculateEquipmentBonus();
+            // Find weapon in the weapons list
+            var weaponPrefab = weaponInstances.FirstOrDefault(weaponInstance => weaponInstance.name == weaponName);
 
-            if (currentShieldInstance != null)
+            Transform grip = isRightHand ? rightHandGrip : leftHandGrip;
+
+            if (weaponPrefab != null)
             {
-                currentShieldInstance = null;
-            }
+                foreach (Transform child in grip.transform)
+                {
+                    Destroy(child.gameObject);
+                }
 
-            foreach (ShieldInstance shieldInstance in shieldInstances)
-            {
-                shieldInstance.gameObject.SetActive(false);
-                shieldInstance.shieldInTheBack.SetActive(false);
-            }
+                GameObject instantiatedWeapon = Instantiate(weaponPrefab, grip).gameObject;
+                CharacterWeaponHitbox instatiatedCharacterWeaponHitbox = instantiatedWeapon.GetComponent<CharacterWeaponHitbox>();
 
-            if (CurrentShield != null)
-            {
-                var gameObjectShield = shieldInstances.FirstOrDefault(x => x.shield.name == CurrentShield.name);
-                currentShieldInstance = gameObjectShield;
-                currentShieldInstance.gameObject.SetActive(true);
+                if (isRightHand)
+                {
+                    currentWeaponInstance = instatiatedCharacterWeaponHitbox;
+                }
+                else
+                {
+                    currentShieldInstance = instatiatedCharacterWeaponHitbox;
+                }
+
+                instantiatedWeapon.transform.localPosition = isRightHand ? weapon.rightHandPosition : weapon.leftHandPosition;
+                instantiatedWeapon.transform.localRotation = Quaternion.Euler(isRightHand ? weapon.rightHandRotation : weapon.leftHandRotation);
+
+                if (instatiatedCharacterWeaponHitbox.TryGetComponent<CharacterTwoHandRef>(out var characterTwoHandRef))
+                {
+                    characterTwoHandRef.SetOriginalPositionAndRotation(
+                       instantiatedWeapon.transform.localPosition,
+                       instantiatedWeapon.transform.localRotation
+                    );
+                }
+
+                instantiatedWeapon.SetActive(true);
             }
         }
 
         void UnassignShield()
         {
-            if (currentShieldInstance != null)
+            if (currentShieldInstance != null && currentShieldInstance is ShieldInstance shieldInstance)
             {
                 currentShieldInstance.gameObject.SetActive(false);
-                currentShieldInstance.shieldInTheBack.gameObject.SetActive(false);
+                shieldInstance.shieldInTheBack.gameObject.SetActive(false);
                 currentShieldInstance = null;
             }
         }
@@ -184,35 +222,21 @@ namespace AF.Equipment
         public void EquipWeapon(Weapon weaponToEquip, int slot)
         {
             equipmentDatabase.EquipWeapon(weaponToEquip, slot);
-
-            UpdateCurrentWeapon();
-
         }
 
         public void UnequipWeapon(int slot)
         {
             equipmentDatabase.UnequipWeapon(slot);
-
-            UpdateCurrentWeapon();
-
         }
 
-        public void EquipShield(Shield shieldToEquip, int slot)
+        public void EquipShield(Weapon shieldToEquip, int slot)
         {
             equipmentDatabase.EquipShield(shieldToEquip, slot);
-
-            UpdateCurrentShield();
-
-            playerManager.statsBonusController.RecalculateEquipmentBonus();
         }
 
         public void UnequipShield(int slot)
         {
             equipmentDatabase.UnequipShield(slot);
-
-            UpdateCurrentShield();
-
-            playerManager.statsBonusController.RecalculateEquipmentBonus();
         }
 
         public void ShowEquipment()
@@ -222,9 +246,9 @@ namespace AF.Equipment
                 currentWeaponInstance.ShowWeapon();
             }
 
-            if (currentShieldInstance != null)
+            if (currentShieldInstance != null && currentShieldInstance is ShieldInstance shieldInstance)
             {
-                currentShieldInstance.ResetStates();
+                shieldInstance.ResetStates();
             }
         }
 
@@ -235,25 +259,25 @@ namespace AF.Equipment
                 currentWeaponInstance.HideWeapon();
             }
 
-            if (currentShieldInstance != null)
+            if (currentShieldInstance != null && currentShieldInstance is ShieldInstance shieldInstance)
             {
-                currentShieldInstance.HideShield();
+                shieldInstance.HideShield();
             }
         }
 
         public void HideShield()
         {
-            if (currentShieldInstance != null)
+            if (currentShieldInstance != null && currentShieldInstance is ShieldInstance shieldInstance)
             {
-                currentShieldInstance.HideShield();
+                shieldInstance.HideShield();
             }
         }
 
         public void ShowShield()
         {
-            if (currentShieldInstance != null)
+            if (currentShieldInstance != null && currentShieldInstance is ShieldInstance shieldInstance)
             {
-                currentShieldInstance.ShowShield();
+                shieldInstance.ShowShield();
             }
         }
 
@@ -504,22 +528,6 @@ namespace AF.Equipment
             return weaponDamage;
         }
 
-        public void EquipLeftWeapon(CharacterWeaponHitbox leftWeaponGameObject)
-        {
-            leftWeaponInstance = leftWeaponGameObject;
-            leftWeaponInstance.gameObject.SetActive(true);
-        }
-
-        public void UnequipLeftWeapon()
-        {
-            if (leftWeaponInstance != null)
-            {
-                leftWeaponInstance.gameObject.SetActive(false);
-            }
-
-            leftWeaponInstance = null;
-        }
-
         public int GetCurrentBlockStaminaCost()
         {
             if (playerManager.playerWeaponsManager.currentShieldInstance == null)
@@ -527,42 +535,54 @@ namespace AF.Equipment
                 return playerManager.characterBlockController.unarmedStaminaCostPerBlock;
             }
 
-            return (int)playerManager.playerWeaponsManager.currentShieldInstance.shield.blockStaminaCost;
+            if (currentShieldInstance != null && currentShieldInstance is ShieldInstance shieldInstance)
+            {
+
+                return (int)shieldInstance.shield.blockStaminaCost;
+            }
+
+            return 0;
         }
 
         public Damage GetCurrentShieldDefenseAbsorption(Damage incomingDamage)
         {
+            ShieldInstance _currentShieldInstance = currentShieldInstance as ShieldInstance;
+
             if (equipmentDatabase.isTwoHanding && equipmentDatabase.GetCurrentWeapon() != null)
             {
                 incomingDamage.physical = (int)(incomingDamage.physical * equipmentDatabase.GetCurrentWeapon().blockAbsorption);
                 return incomingDamage;
             }
-            else if (currentShieldInstance == null || currentShieldInstance.shield == null)
+            else if (_currentShieldInstance == null || _currentShieldInstance.shield == null)
             {
                 incomingDamage.physical = (int)(incomingDamage.physical * playerManager.characterBlockController.unarmedDefenseAbsorption);
                 return incomingDamage;
             }
 
-            return currentShieldInstance.shield.FilterDamage(incomingDamage);
+            return _currentShieldInstance.shield.FilterDamage(incomingDamage);
         }
         public Damage GetCurrentShieldPassiveDamageFilter(Damage incomingDamage)
         {
-            if (currentShieldInstance == null || currentShieldInstance.shield == null)
+            ShieldInstance _currentShieldInstance = currentShieldInstance as ShieldInstance;
+
+            if (_currentShieldInstance == null || _currentShieldInstance.shield == null)
             {
                 return incomingDamage;
             }
 
-            return currentShieldInstance.shield.FilterPassiveDamage(incomingDamage);
+            return _currentShieldInstance.shield.FilterPassiveDamage(incomingDamage);
         }
 
         public void ApplyShieldDamageToAttacker(CharacterManager attacker)
         {
-            if (currentShieldInstance == null || currentShieldInstance.shield == null)
+            ShieldInstance _currentShieldInstance = currentShieldInstance as ShieldInstance;
+
+            if (_currentShieldInstance == null || _currentShieldInstance.shield == null)
             {
                 return;
             }
 
-            currentShieldInstance.shield.AttackShieldAttacker(attacker);
+            _currentShieldInstance.shield.AttackShieldAttacker(attacker);
         }
 
         public void HandleWeaponSpecial()

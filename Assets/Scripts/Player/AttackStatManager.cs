@@ -85,19 +85,29 @@ namespace AF
 
         public Damage GetAttackDamage()
         {
-            Damage damage = CalculateCurrentDamage();
+            // Single Weapon Use
+            Weapon attackingWeapon = null;
+            if (playerManager.playerCombatController.isAttackingWithLeftHand && equipmentDatabase.GetCurrentLeftWeapon() != null)
+            {
+                attackingWeapon = equipmentDatabase.GetCurrentLeftWeapon();
+                playerManager.playerCombatController.isAttackingWithLeftHand = false;
+            }
+            else
+            {
+                attackingWeapon = equipmentDatabase.GetCurrentWeapon();
+            }
 
+            Damage damage = CalculateCurrentDamage(attackingWeapon);
             damage = GetNextAttackBonusDamage(damage);
-
             return damage;
         }
 
-        Damage CalculateCurrentDamage()
+        Damage CalculateCurrentDamage(Weapon weapon)
         {
 
             int rageBonus = playerManager.rageManager.GetRageBonus();
 
-            Weapon weapon = equipmentDatabase.GetCurrentWeapon();
+
             if (weapon != null && playerManager.playerCombatController.isAttackingWithFoot == false)
             {
                 Damage weaponDamage = new(
@@ -248,7 +258,9 @@ namespace AF
                 playerBaseAttackValue = 0;
             }
 
-            return playerBaseAttackValue + weapon.GetWeaponAttack(this);
+            playerBaseAttackValue += weapon.GetWeaponAttack(this);
+
+            return playerBaseAttackValue;
         }
 
         public int GetTwoHandAttackBonus(Weapon weapon)

@@ -115,9 +115,9 @@ namespace AF.Stats
 
             foreach (var item in equipmentDatabase.shields)
             {
-                if (item != null && item.statusEffectCancellationRates != null && item.statusEffectCancellationRates.Length > 0)
+                if (item != null && item is Shield shield && shield.statusEffectCancellationRates != null && shield.statusEffectCancellationRates.Length > 0)
                 {
-                    EvaluateItemResistance(item.statusEffectCancellationRates);
+                    EvaluateItemResistance(shield.statusEffectCancellationRates);
                 }
             }
         }
@@ -145,9 +145,9 @@ namespace AF.Stats
             {
                 weightPenalty += equipmentDatabase.GetCurrentWeapon().speedPenalty;
             }
-            if (equipmentDatabase.GetCurrentShield() != null)
+            if (equipmentDatabase.GetCurrentLeftWeapon() != null)
             {
-                weightPenalty += equipmentDatabase.GetCurrentShield().speedPenalty;
+                weightPenalty += equipmentDatabase.GetCurrentLeftWeapon().speedPenalty;
             }
             if (equipmentDatabase.helmet != null)
             {
@@ -406,7 +406,7 @@ namespace AF.Stats
 
         void ApplyShieldAttributes()
         {
-            Shield currentShield = equipmentDatabase.GetCurrentShield();
+            Shield currentShield = equipmentDatabase.GetCurrentLeftWeapon() as Shield;
             if (currentShield != null)
             {
 

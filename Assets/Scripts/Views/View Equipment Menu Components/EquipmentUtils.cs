@@ -171,13 +171,13 @@ namespace AF
             // Adjust the weight penalty by the currently equipped item based on type.
             switch (itemToEquip)
             {
+                case Shield shield:
+                    currentWeightPenalty -= GetSpeedPenalty(equipmentDatabase.GetCurrentLeftWeapon());
+                    return Math.Max(0, currentWeightPenalty) + shield.speedPenalty;
+
                 case Weapon weapon:
                     currentWeightPenalty -= GetSpeedPenalty(equipmentDatabase.GetCurrentWeapon());
                     return Math.Max(0, currentWeightPenalty) + weapon.speedPenalty;
-
-                case Shield shield:
-                    currentWeightPenalty -= GetSpeedPenalty(equipmentDatabase.GetCurrentShield());
-                    return Math.Max(0, currentWeightPenalty) + shield.speedPenalty;
 
                 case Helmet helmet:
                     currentWeightPenalty -= GetSpeedPenalty(equipmentDatabase.helmet);

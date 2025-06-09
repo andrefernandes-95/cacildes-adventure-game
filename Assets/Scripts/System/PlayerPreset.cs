@@ -129,7 +129,14 @@ namespace AF
 
             foreach (var ownedItem in ownedItems)
             {
-                inventoryDatabase.AddItem(ownedItem.Key, ownedItem.Value.amount);
+                if (ownedItem.Key is Weapon wp)
+                {
+                    inventoryDatabase.AddWeapon(wp, ownedItem.Value.amount);
+                }
+                else
+                {
+                    inventoryDatabase.AddItem(ownedItem.Key, ownedItem.Value.amount);
+                }
             }
         }
 

@@ -119,6 +119,16 @@ namespace AF
                 return false;
             }
 
+            // If using two weapons, check if left weapon is not a shield
+            if (!equipmentDatabase.isTwoHanding)
+            {
+                Weapon leftWeapon = equipmentDatabase.GetCurrentLeftWeapon();
+                if (leftWeapon != null && leftWeapon is not Shield)
+                {
+                    return false;
+                }
+            }
+
             if (playerManager.IsBusy())
             {
                 return false;

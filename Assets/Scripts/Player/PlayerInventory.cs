@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+using System;
 using System.Linq;
 using AF.Inventory;
 using AF.Ladders;
@@ -98,6 +98,11 @@ namespace AF
                     // Special Weapon Found
                     LogAnalytic(AnalyticsUtils.OnBossWeaponAcquired(weapon.name));
                 }
+
+                HandleItemAchievements(item);
+                inventoryDatabase.AddWeapon(weapon, quantity);
+                uIDocumentPlayerHUDV2.UpdateEquipment();
+                return;
             }
             else if (item is Armor armor)
             {
@@ -109,9 +114,7 @@ namespace AF
             }
 
             HandleItemAchievements(item);
-
             inventoryDatabase.AddItem(item, quantity);
-
             uIDocumentPlayerHUDV2.UpdateEquipment();
         }
 
@@ -266,7 +269,7 @@ namespace AF
 
             if (currentConsumedItem.shouldNotRemoveOnUse == false)
             {
-                if (playerManager.statsBonusController.chanceToNotLoseItemUponConsumption && Random.Range(0f, 1f) > 0.8f)
+                if (playerManager.statsBonusController.chanceToNotLoseItemUponConsumption && UnityEngine.Random.Range(0f, 1f) > 0.8f)
                 {
                     notificationManager.ShowNotification(
                         LocalizationSettings.StringDatabase.GetLocalizedString("UIDocuments", "Consumable depleted"),

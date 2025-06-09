@@ -337,46 +337,44 @@ namespace AF
             var scrollView = this.root.Q<ScrollView>();
 
             int i = 0;
-            foreach (var itemEntry in GetUpgradeableWeapons())
+            foreach (Weapon weapon in inventoryDatabase.ownedWeapons.Where(weapon => weapon != null && weapon.canBeUpgraded))
             {
                 int currentIndex = i;
 
-                Weapon wp = itemEntry.Key as Weapon;
-
-                if (ShouldSkipUpgrade(wp, wp.level))
+                if (ShouldSkipUpgrade(weapon, weapon.level))
                 {
                     continue;
                 }
 
                 var scrollItem = this.recipeItem.CloneTree();
 
-                scrollItem.Q<IMGUIContainer>("ItemIcon").style.backgroundImage = new StyleBackground(wp.sprite);
-                scrollItem.Q<Label>("ItemName").text = GetWeaponName(wp);
+                scrollItem.Q<IMGUIContainer>("ItemIcon").style.backgroundImage = new StyleBackground(weapon.sprite);
+                scrollItem.Q<Label>("ItemName").text = GetWeaponName(weapon);
                 scrollItem.Q<Label>("ItemDescription").style.display = DisplayStyle.None;
 
                 var craftBtn = scrollItem.Q<Button>("CraftButtonItem");
                 var craftLabel = scrollItem.Q<Label>("CraftLabel");
                 craftLabel.text = GetCraftLabel();
 
-                craftBtn.style.opacity = CraftingUtils.CanImproveWeapon(inventoryDatabase, wp, playerStatsDatabase.gold) ? 1f : 0.25f;
+                craftBtn.style.opacity = CraftingUtils.CanImproveWeapon(inventoryDatabase, weapon, playerStatsDatabase.gold) ? 1f : 0.25f;
 
                 UIUtils.SetupButton(craftBtn, () =>
                 {
                     lastScrollElementIndex = currentIndex;
 
-                    if (!CraftingUtils.CanImproveWeapon(inventoryDatabase, wp, playerStatsDatabase.gold))
+                    if (!CraftingUtils.CanImproveWeapon(inventoryDatabase, weapon, playerStatsDatabase.gold))
                     {
                         HandleCraftError(LocalizationSettings.StringDatabase.GetLocalizedString("UIDocuments", "Missing ingredients!"));
                         return;
                     }
 
-                    HandleWeaponUpgrade(wp);
+                    HandleWeaponUpgrade(weapon);
 
                     DrawUI();
                 },
                 () =>
                 {
-                    ShowRequirements(wp);
+                    ShowRequirements(weapon);
                     scrollView.ScrollTo(craftBtn);
                 },
                 () => { },
@@ -443,10 +441,6 @@ namespace AF
             }
         }
 
-        Dictionary<Item, ItemAmount> GetUpgradeableWeapons()
-        {
-            return inventoryDatabase.ownedItems.Where(itemEntry => itemEntry.Key is Weapon wp && wp.canBeUpgraded).ToDictionary(item => item.Key, item => item.Value);
-        }
 
         bool ShouldSkipUpgrade(Weapon wp, int nextLevel)
         {
@@ -463,7 +457,6 @@ namespace AF
             playerManager.playerAchievementsManager.achievementForUpgradingFirstWeapon.AwardAchievement();
             soundbank.PlaySound(soundbank.craftSuccess);
             notificationManager.ShowNotification(LocalizationSettings.StringDatabase.GetLocalizedString("UIDocuments", "Weapon improved!"), wp.sprite);
-
 
             LogAnalytic(AnalyticsUtils.OnUIButtonClick("UpgradeWeapon"), new() {
                 { "weapon_upgraded", wp.name }

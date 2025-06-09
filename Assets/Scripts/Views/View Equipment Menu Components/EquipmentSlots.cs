@@ -190,7 +190,7 @@ namespace AF.UI.EquipmentMenu
 
         void AssignShieldButtonCallbacks()
         {
-            Dictionary<Button, Func<Shield>> buttonDictionary = new()
+            Dictionary<Button, Func<Weapon>> buttonDictionary = new()
             {
                 { secondaryWeaponButtonSlot1, () => equipmentDatabase.shields[0] },
                 { secondaryWeaponButtonSlot2, () => equipmentDatabase.shields[1] },

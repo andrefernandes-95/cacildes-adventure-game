@@ -131,11 +131,11 @@ namespace AF.UI.EquipmentMenu
 
             if (equipmentType == EquipmentType.WEAPON)
             {
-                PopulateScrollView<Weapon>(false, slotIndex);
+                PopulateWeapons(slotIndex, true);
             }
             else if (equipmentType == EquipmentType.SHIELD)
             {
-                PopulateScrollView<Shield>(false, slotIndex);
+                PopulateWeapons(slotIndex, false);
             }
             else if (equipmentType == EquipmentType.ARROW)
             {
@@ -204,6 +204,21 @@ namespace AF.UI.EquipmentMenu
 
             // Delay the focus until the next frame, required as a hack for now
             Invoke(nameof(GiveFocus), 0f);
+        }
+
+        bool IsWeaponEquipped(Item item, int slotIndex, bool isRightHandSlot)
+        {
+            if (item == null)
+            {
+                return false;
+            }
+
+            if (isRightHandSlot)
+            {
+                return equipmentDatabase.weapons[slotIndex] == item;
+            }
+
+            return equipmentDatabase.shields[slotIndex] == item;
         }
 
         bool IsItemEquipped(Item item, int slotIndex)
@@ -303,6 +318,151 @@ namespace AF.UI.EquipmentMenu
             }
 
             return true;
+        }
+
+        bool SkipWeapon(int slotIndex, Weapon weapon, bool isRightHandSlot)
+        {
+            List<Weapon> currentList = (isRightHandSlot ? equipmentDatabase.weapons : equipmentDatabase.shields).ToList();
+
+            // Don't skip if already equipped in the target slot
+            if (currentList[slotIndex] == weapon)
+                return false;
+
+            // Check all slots in both weapons and shields for duplicates, excluding the target slot
+            for (int i = 0; i < equipmentDatabase.weapons.Length; i++)
+            {
+                if (equipmentDatabase.weapons[i] == weapon)
+                    return true;
+            }
+
+            for (int i = 0; i < equipmentDatabase.shields.Length; i++)
+            {
+                if (equipmentDatabase.shields[i] == weapon)
+                    return true;
+            }
+
+            return false;
+        }
+
+        void PopulateWeapons(int slotIndex, bool isRightHandSlot)
+        {
+            this.itemsScrollView.Clear();
+
+            List<Weapon> ownedWeapons = inventoryDatabase.ownedWeapons;
+
+            for (int i = 0; i < ownedWeapons.Count; i++)
+            {
+                Weapon item = ownedWeapons[i];
+                if (item == null || SkipWeapon(slotIndex, item, isRightHandSlot))
+                {
+                    continue;
+                }
+
+                bool isEquipped = IsWeaponEquipped(item, slotIndex, isRightHandSlot);
+
+                var instance = itemButtonPrefab.CloneTree();
+                instance.Q<VisualElement>("Sprite").style.backgroundImage = new StyleBackground(item.sprite);
+
+                instance.Q<VisualElement>("CardSprite").style.display = DisplayStyle.None;
+
+                instance.Q<VisualElement>("Sprite").style.backgroundImage = new StyleBackground(item.sprite);
+                var itemName = instance.Q<Label>("ItemName");
+                var itemType = instance.Q<Label>("ItemType");
+                itemType.style.display = DisplayStyle.None;
+
+                itemName.text = item.GetName();
+
+                if (isEquipped)
+                {
+                    itemName.text += " " + LocalizationSettings.StringDatabase.GetLocalizedString("UIDocuments", "(Equipped)");
+                }
+
+                itemType.text = Utils.IsPortuguese() ? "Corpo a Corpo" : "Melee Weapon";
+                itemType.style.color = meleeWeaponTypeColor;
+
+                if (item.damage.weaponAttackType == WeaponAttackType.Range)
+                {
+                    itemType.text = Utils.IsPortuguese() ? "Longo Alcance" : "Ranged Weapon";
+                    itemType.style.color = rangeWeaponTypeColor;
+                }
+                else if (item.damage.weaponAttackType == WeaponAttackType.Staff)
+                {
+                    itemType.text = Utils.IsPortuguese() ? "Cajado Mágico" : "Magic Staff";
+                    itemType.style.color = magicWeaponTypeColor;
+                }
+
+                itemType.style.display = DisplayStyle.Flex;
+
+                var equipmentColorIndicator = GetEquipmentColorIndicator(item);
+                if (equipmentColorIndicator == Color.black)
+                {
+                    instance.Q<VisualElement>("Indicator").style.display = DisplayStyle.None;
+                }
+                else
+                {
+                    instance.Q<VisualElement>("Indicator").style.unityBackgroundImageTintColor = GetEquipmentColorIndicator(item);
+                    instance.Q<VisualElement>("Indicator").style.display = DisplayStyle.Flex;
+                }
+
+                var btn = instance.Q<Button>("EquipButton");
+
+                int index = i;
+                btn.clicked += () =>
+                {
+                    lastScrollElementIndex = index;
+
+                    soundbank.PlaySound(soundbank.uiEquip);
+
+                    bool ignoreRerender = false;
+
+                    if (!isEquipped)
+                    {
+                        if (!item.AreRequirementsMet(playerManager.statsBonusController))
+                        {
+                            notificationManager.ShowNotification(LocalizationSettings.StringDatabase.GetLocalizedString("UIDocuments", "Can't equip weapon. Requirements are not met."), notificationManager.systemError);
+                            ignoreRerender = true;
+                        }
+                        else
+                        {
+                            if (playerManager.statsBonusController.ignoreWeaponRequirements)
+                            {
+                                playerManager.statsBonusController.SetIgnoreNextWeaponToEquipRequirements(false);
+                            }
+
+                            if (isRightHandSlot)
+                            {
+                                playerManager.playerWeaponsManager.EquipWeapon(item, slotIndex);
+                            }
+                            else
+                            {
+                                playerManager.playerWeaponsManager.EquipShield(item, slotIndex);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (isRightHandSlot)
+                        {
+                            playerManager.playerWeaponsManager.UnequipWeapon(slotIndex);
+                        }
+                        else
+                        {
+                            playerManager.playerWeaponsManager.UnequipShield(slotIndex);
+                        }
+                    }
+
+                    if (!ignoreRerender)
+                    {
+                        ReturnToEquipmentSlots();
+                    }
+                };
+
+                SetupItemButton(instance, item);
+
+                this.itemsScrollView.Add(instance);
+            }
+
+            Invoke(nameof(GiveFocus), 0f);
         }
 
         void PopulateScrollView<T>(bool showOnlyKeyItems, int slotIndex) where T : Item
@@ -528,40 +688,7 @@ namespace AF.UI.EquipmentMenu
                     //PopulateScrollView<T>(showOnlyKeyItems, slotIndex);
                 };
 
-                void ShowTooltipAndStats(Item item)
-                {
-                    itemTooltip.gameObject.SetActive(true);
-                    itemTooltip.PrepareTooltipForItem(item);
-                    itemTooltip.DisplayTooltip(btn);
-
-                    playerStatsAndAttributesUI.DrawStats(item);
-                }
-
-                void HideTooltipAndClearStats()
-                {
-                    itemTooltip.gameObject.SetActive(false);
-                    playerStatsAndAttributesUI.DrawStats(null);
-                }
-
-                instance.RegisterCallback<MouseEnterEvent>(ev =>
-                {
-                    itemsScrollView.ScrollTo(instance);
-                    ShowTooltipAndStats(item.Key);
-                });
-                instance.RegisterCallback<FocusInEvent>(ev =>
-                {
-                    itemsScrollView.ScrollTo(instance);
-
-                    ShowTooltipAndStats(item.Key);
-                });
-                instance.RegisterCallback<MouseOutEvent>(ev =>
-                {
-                    HideTooltipAndClearStats();
-                });
-                instance.RegisterCallback<FocusOutEvent>(ev =>
-                {
-                    HideTooltipAndClearStats();
-                });
+                SetupItemButton(instance, item.Key);
 
                 instance.RegisterCallback<KeyDownEvent>(ev =>
                 {
@@ -586,6 +713,47 @@ namespace AF.UI.EquipmentMenu
 
             Invoke(nameof(GiveFocus), 0f);
         }
+
+
+        void SetupItemButton(TemplateContainer instance, Item item)
+        {
+            Button btn = instance.Q<Button>("EquipButton");
+            void ShowTooltipAndStats(Item item)
+            {
+                itemTooltip.gameObject.SetActive(true);
+                itemTooltip.PrepareTooltipForItem(item);
+                itemTooltip.DisplayTooltip(btn);
+
+                playerStatsAndAttributesUI.DrawStats(item);
+            }
+
+            void HideTooltipAndClearStats()
+            {
+                itemTooltip.gameObject.SetActive(false);
+                playerStatsAndAttributesUI.DrawStats(null);
+            }
+
+            instance.RegisterCallback<MouseEnterEvent>(ev =>
+            {
+                itemsScrollView.ScrollTo(instance);
+                ShowTooltipAndStats(item);
+            });
+            instance.RegisterCallback<FocusInEvent>(ev =>
+            {
+                itemsScrollView.ScrollTo(instance);
+
+                ShowTooltipAndStats(item);
+            });
+            instance.RegisterCallback<MouseOutEvent>(ev =>
+            {
+                HideTooltipAndClearStats();
+            });
+            instance.RegisterCallback<FocusOutEvent>(ev =>
+            {
+                HideTooltipAndClearStats();
+            });
+        }
+
 
         void GiveFocus()
         {

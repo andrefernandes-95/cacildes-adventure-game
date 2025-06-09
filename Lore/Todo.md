@@ -1,58 +1,43 @@
 
-1.6.2
+1.7.1
 
-DONE:
-Intro now delivers the King’s letter immediately. Chicken quest is optional; players can go straight to Cecily Town at the start.
+DONE
+- Simplify Music Code
+- Add Music UI to let user know which music is playing
+- Normalize audio
+- Add dual wielding
+- Save dual wielding
+- Upgrade and save multiple weapons
 
-Rethought the stone and Molok story with a stronger story and dialogue. Redesign some aspects of the Main Quest and the Forest Wanderers.
+RESOLVIDO:
+- Jogo fica laggado ao trocar de combat stance - otimizado código de updateanimator e chamadas por event messaging
+- Bug odachi duas maos com ataque pesado - causado por codigo de power sance
+- If dual wielding, spent double the stamina
+- Musica de boss n termina no maermindo voss fight
 
-Added poison barrel minigame to Lenny boss fight.
+IN DEV:
+- Simplify existing weapons
+- Increase stamina regen
+- If jump attack, enable both weapons
 
-Enhanced enemy sighting and added jumping ability for some enemies.
-
-Revamped following boss fights: Duo orcs, Balbino and Drogo - they have new attacks and increased difficulty.
-
-Bosses now counter backstabs more often—thanks to Peaches for highlighting this exploit.
-
-Made Kayro fight in Elven Village tougher; switched his weapons to shields. Tombstone Shield now drops here, while his previous spell is hidden in a chest.
-
-Increased difficulty of Celes and Molok boss fights; added Vael’Noor statue puzzle to aid Celes fight.
-
-Added two new main story endings and improved the epilogue.
-
-Overhauled Quest Journal with detailed objectives, character bios, and trivia. Multiple quest tracking now available.
-
-Added cutscene with camera pan on first entering Snailcliff.
-
-Fixed floating bees bug.
-
-Added note that a staff must be equipped for spells.
-
-Added collision to castle area to prevent falling off map (inspired by Peaches).
-
-Fixed weapon buffs not giving status effect buildups (fire resins are now causing burnt, frost now causes frostbite, etc)
-
-
-
-
-Magic Hammer too op
-Moonligh Spell not facing the right direction
-
-
-
+1.7.2
+- Replace cards with skill system
+- Magic should be cast with any weapon, staff only enhances it
+- Magic should be L2 button, dodge should be circle with sprint hold
 
 READY FOR DEV:
-
+- Add note to quest for Maerimond which is : Rewards - Unlock Boss Weapons
+- Add note to boss tokens which is: Talk to Altaire in Snailcliff to unlock boss weapons
+- Fix R key on gamepad
 - Review Music Code
-
+- Moonligh Spell not facing the right direction
 - Review weapon movesets
 - Review enemies
-
+- Tecla hotkey consumivel aparece como keyboard na steam deck
 - When swimming, do not take damage, instead build up drowning
 - Add more posture damage from parry
 - Add pillar sound to the last one
 - Fix pillar sounds in Arun garden
-
 - Add opening door sound to arun temple when fenlora is running towards the entrance
 - bee boss fight, the true bee doesnt go to the ground
 . Max Stamina values and health on level up screen look wrong
@@ -72,7 +57,6 @@ READY FOR DEV:
 - Improve Roberto boss fight
 - Captain drinking bottles always appear outside main quest near the orc cavern
 - Stamina Potion should increase max stamina for 60 seconds
-
 
 BACKLOG:
 - Adjust unarmed and weapon staminas

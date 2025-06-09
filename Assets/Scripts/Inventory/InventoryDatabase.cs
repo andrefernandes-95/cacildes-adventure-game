@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using AYellowpaper.SerializedCollections;
 using UnityEditor;
@@ -14,6 +16,7 @@ namespace AF.Inventory
         public SerializedDictionary<Item, ItemAmount> ownedItems = new();
 
         public SerializedDictionary<Item, ItemAmount> defaultItems = new();
+        public List<Weapon> ownedWeapons = new();
 
         [Header("Databases")]
         public EquipmentDatabase equipmentDatabase;
@@ -39,6 +42,7 @@ namespace AF.Inventory
         public void Clear()
         {
             ownedItems.Clear();
+            ownedWeapons.Clear();
         }
 
         public void SetDefaultItems()
@@ -79,7 +83,6 @@ namespace AF.Inventory
 
         public void AddItem(Item itemToAdd, int quantity)
         {
-
             if (HasItem(itemToAdd))
             {
                 ownedItems[itemToAdd].amount += quantity;
@@ -87,6 +90,17 @@ namespace AF.Inventory
             else
             {
                 ownedItems.Add(itemToAdd, new ItemAmount() { amount = quantity, usages = 0 });
+            }
+        }
+
+        public void AddWeapon(Weapon weaponToAdd, int quantity = 1)
+        {
+            for (int i = 0; i < quantity; i++)
+            {
+                Weapon weaponInstance = Instantiate(weaponToAdd);
+                weaponInstance.weaponID = Guid.NewGuid().ToString();
+
+                ownedWeapons.Add(weaponInstance);
             }
         }
 

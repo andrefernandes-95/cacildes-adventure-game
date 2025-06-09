@@ -50,11 +50,8 @@ namespace AF
 
         List<BoxCollider> ownColliders = new();
 
-
         // Useful for throwable weapon situation
         [HideInInspector] public bool shouldDisableHitboxOnStart = true;
-
-
 
         private void Awake()
         {

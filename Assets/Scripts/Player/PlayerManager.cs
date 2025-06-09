@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using AF.Animations;
 using AF.Equipment;
 using AF.Events;
@@ -164,52 +165,65 @@ namespace AF
             }
         }
 
+
+        void AddOrReplaceOverride(List<AnimationOverride> list, Dictionary<string, AnimationOverride> overrides)
+        {
+            if (list == null || list.Count == 0)
+                return;
+
+            foreach (var entry in list)
+            {
+                if (entry == null || string.IsNullOrEmpty(entry.animationName))
+                    continue;
+
+                overrides[entry.animationName] = entry; // Replace or add
+            }
+        }
+
         public void UpdateAnimatorOverrideControllerClips()
         {
             SetupAnimRefs();
 
             animatorOverrideController = new AnimatorOverrideController(animator.runtimeAnimatorController);
-
             var clipOverrides = new AnimationClipOverrides(animatorOverrideController.overridesCount);
             animatorOverrideController.GetOverrides(clipOverrides);
             animator.runtimeAnimatorController = defaultAnimatorController;
 
+            Dictionary<string, AnimationOverride> overrides = new();
+
+
             // Always apply unarmed first
-            if (oh_unarmedAnimationOverrides.Count > 0)
-            {
-                UpdateAnimationOverrides(animator, clipOverrides, oh_unarmedAnimationOverrides);
-            }
+            AddOrReplaceOverride(oh_unarmedAnimationOverrides, overrides);
 
             if (equipmentDatabase.isTwoHanding)
             {
-                if (th_unarmedAnimationOverrides != null && th_unarmedAnimationOverrides.Count > 0)
-                {
-                    UpdateAnimationOverrides(animator, clipOverrides, th_unarmedAnimationOverrides);
-                }
+                AddOrReplaceOverride(th_unarmedAnimationOverrides, overrides);
             }
 
+            // Apply right-hand weapon overrides
             Weapon currentWeapon = equipmentDatabase.GetCurrentWeapon();
             if (currentWeapon != null)
             {
-                if (currentWeapon.animationOverrides.Count > 0)
-                {
-                    UpdateAnimationOverrides(animator, clipOverrides, currentWeapon.animationOverrides);
-                }
+                AddOrReplaceOverride(currentWeapon.GetOneHandAnimations(), overrides);
 
                 if (equipmentDatabase.isTwoHanding)
                 {
-                    if (currentWeapon.twoHandOverrides != null && currentWeapon.twoHandOverrides.Count > 0)
-                    {
-                        List<AnimationOverride> animationOverrides = new();
-                        animationOverrides.AddRange(currentWeapon.twoHandOverrides);
-                        animationOverrides.AddRange(currentWeapon.blockOverrides);
-                        UpdateAnimationOverrides(animator, clipOverrides, animationOverrides);
-                    }
+                    AddOrReplaceOverride(currentWeapon.GetTwoHandAnimations(), overrides);
                 }
             }
+
+            // Apply left-hand weapon overrides if not two-handing
+            Weapon leftWeapon = equipmentDatabase.GetCurrentLeftWeapon();
+            if (leftWeapon != null && !equipmentDatabase.isTwoHanding)
+            {
+                AddOrReplaceOverride(leftWeapon.GetLeftHandAnimations(), overrides);
+            }
+
+            // Apply all collected overrides in one go
+            UpdateAnimationOverrides(animator, clipOverrides, overrides.Values.ToList());
         }
 
-        void UpdateAnimationOverrides(Animator animator, AnimationClipOverrides clipOverrides, System.Collections.Generic.List<AnimationOverride> clips)
+        void UpdateAnimationOverrides(Animator animator, AnimationClipOverrides clipOverrides, List<AnimationOverride> clips)
         {
             foreach (var animationOverride in clips)
             {

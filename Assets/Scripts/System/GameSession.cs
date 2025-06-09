@@ -102,4 +102,13 @@ public class GameSession : ScriptableObject
     {
         return timeOfDay >= 20 && timeOfDay <= 24 || timeOfDay >= 0 && timeOfDay < 6;
     }
+
+    /// <summary>
+    /// Unity Event
+    /// </summary>
+    /// <param name="gameState"></param>
+    public void SetGameState(GameState gameState)
+    {
+        this.gameState = gameState;
+    }
 }

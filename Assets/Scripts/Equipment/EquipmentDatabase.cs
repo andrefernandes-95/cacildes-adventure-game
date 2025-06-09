@@ -13,7 +13,7 @@ public class EquipmentDatabase : ScriptableObject
     [Header("Offensive Gear")]
     public Weapon[] weapons = new Weapon[3]; // Fixed size array for weapons
 
-    public Shield[] shields = new Shield[3]; // Fixed size array for shields
+    public Weapon[] shields = new Weapon[3]; // Fixed size array for shields
 
     public Arrow[] arrows = new Arrow[2];
 
@@ -141,7 +141,7 @@ public class EquipmentDatabase : ScriptableObject
         EventManager.EmitEvent(EventMessages.ON_SHIELD_EQUIPMENT_CHANGED);
     }
 
-    public void EquipShield(Shield shield, int slotIndex)
+    public void EquipShield(Weapon shield, int slotIndex)
     {
         shields[slotIndex] = shield;
         EventManager.EmitEvent(EventMessages.ON_EQUIPMENT_CHANGED);
@@ -296,7 +296,7 @@ public class EquipmentDatabase : ScriptableObject
         return weapons[currentWeaponIndex];
     }
 
-    public Shield GetCurrentShield()
+    public Weapon GetCurrentLeftWeapon()
     {
         return shields[currentShieldIndex];
     }
@@ -504,5 +504,20 @@ public class EquipmentDatabase : ScriptableObject
         }
 
         return false;
+    }
+
+    public bool CanPowerStance()
+    {
+        if (isTwoHanding)
+        {
+            return false;
+        }
+
+        if (weapons[currentWeaponIndex] == null || shields[currentShieldIndex] == null)
+        {
+            return false;
+        }
+
+        return weapons[currentWeaponIndex].weaponType == shields[currentShieldIndex].weaponType;
     }
 }

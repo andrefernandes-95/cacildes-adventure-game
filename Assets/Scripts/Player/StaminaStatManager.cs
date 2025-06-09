@@ -158,33 +158,79 @@ namespace AF
             return playerStatsDatabase.maxStamina + (int)Mathf.Ceil(endurance * playerStatsDatabase.levelMultiplierForStamina);
         }
 
-        public void DecreaseLightAttackStamina()
+        void DecreaseAttackStamina(bool isHeavyAttack, bool isAttackingWithLeftHand)
         {
-            DecreaseStamina(
-                equipmentDatabase.GetCurrentWeapon() != null
-                    ? equipmentDatabase.GetCurrentWeapon().GetLightAttackStaminaCost()
-                    : unarmedLightAttackStaminaCost);
-        }
-        public void DecreaseHeavyAttackStamina()
-        {
-            DecreaseStamina(
-                equipmentDatabase.GetCurrentWeapon() != null
-                    ? equipmentDatabase.GetCurrentWeapon().GetHeavyAttackStaminaCost()
-                    : GetUnarmedHeavyAttackStaminaCost());
+            int lightAttackStaminaCost = 0;
+
+            bool isDualWieldingAnHeavyAttack = isHeavyAttack && equipmentDatabase.CanPowerStance();
+            bool isDualWieldingALightAttack = isAttackingWithLeftHand && equipmentDatabase.CanPowerStance();
+            bool isDualWieldingAnAttack = isDualWieldingAnHeavyAttack || isDualWieldingALightAttack;
+
+            // Only take into account right hand if not attacking with left hand or we are dual wielding
+            if (!isAttackingWithLeftHand || isDualWieldingAnAttack)
+            {
+                lightAttackStaminaCost = isHeavyAttack ? GetUnarmedHeavyAttackStaminaCost() : unarmedLightAttackStaminaCost;
+                Weapon rightWeapon = equipmentDatabase.GetCurrentWeapon();
+                if (rightWeapon != null)
+                {
+                    lightAttackStaminaCost += isHeavyAttack ? rightWeapon.GetHeavyAttackStaminaCost() : rightWeapon.GetLightAttackStaminaCost();
+                }
+            }
+
+            // Only take into account left hand if attacking with left hand or we are dual wielding
+            if (isAttackingWithLeftHand || isDualWieldingAnAttack)
+            {
+                Weapon leftWeapon = equipmentDatabase.GetCurrentLeftWeapon();
+                if (leftWeapon != null)
+                {
+                    lightAttackStaminaCost += isHeavyAttack ? leftWeapon.GetHeavyAttackStaminaCost() : leftWeapon.GetLightAttackStaminaCost();
+                }
+            }
+
+            DecreaseStamina(lightAttackStaminaCost);
         }
 
-        public bool HasEnoughStaminaForLightAttack()
+        public void DecreaseLightAttackStamina(bool isAttackingWithLeftHand)
         {
-            var staminaCost = equipmentDatabase.GetCurrentWeapon() != null
+            DecreaseAttackStamina(false, isAttackingWithLeftHand);
+        }
+
+        public void DecreaseHeavyAttackStamina()
+        {
+            DecreaseAttackStamina(true, false);
+        }
+
+        public bool HasEnoughStaminaForLightAttack(bool isAttackingWithLeftHand)
+        {
+            int staminaCost = equipmentDatabase.GetCurrentWeapon() != null
                 ? equipmentDatabase.GetCurrentWeapon().GetLightAttackStaminaCost() : unarmedLightAttackStaminaCost;
+
+            bool isDualWieldingALightAttack = isAttackingWithLeftHand && equipmentDatabase.CanPowerStance();
+            if (isDualWieldingALightAttack)
+            {
+                Weapon leftWeapon = equipmentDatabase.GetCurrentLeftWeapon();
+                if (leftWeapon != null)
+                {
+                    staminaCost += leftWeapon.GetLightAttackStaminaCost();
+                }
+            }
 
             return HasEnoughStaminaForAction(staminaCost);
         }
 
         public bool HasEnoughStaminaForHeavyAttack()
         {
-            var staminaCost = equipmentDatabase.GetCurrentWeapon() != null
+            int staminaCost = equipmentDatabase.GetCurrentWeapon() != null
                 ? equipmentDatabase.GetCurrentWeapon().GetHeavyAttackStaminaCost() : GetUnarmedHeavyAttackStaminaCost();
+
+            if (equipmentDatabase.CanPowerStance())
+            {
+                Weapon leftWeapon = equipmentDatabase.GetCurrentLeftWeapon();
+                if (leftWeapon != null)
+                {
+                    staminaCost += leftWeapon.GetHeavyAttackStaminaCost();
+                }
+            }
 
             return HasEnoughStaminaForAction(staminaCost);
         }

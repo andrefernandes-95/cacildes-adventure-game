@@ -290,7 +290,7 @@ namespace AF.UI.EquipmentMenu
                 itemName += " +" + wp.level;
             }
 
-            tooltipItemName.text = item.GetName();
+            tooltipItemName.text = itemName;
             tooltipItemDescription.text = item.GetDescription();
 
             if (item is Weapon weapon)

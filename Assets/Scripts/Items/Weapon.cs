@@ -8,6 +8,7 @@ using AYellowpaper.SerializedCollections;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Localization.Settings;
+using EditorAttributes;
 
 namespace AF
 {
@@ -63,6 +64,7 @@ namespace AF
     [CreateAssetMenu(menuName = "Items / Weapon / New Weapon")]
     public class Weapon : Item
     {
+        public string weaponID;
 
         [Header("Attack")]
         public Damage damage;
@@ -86,7 +88,8 @@ namespace AF
         public int positiveReputationRequired = 0;
         public int negativeReputationRequired = 0;
 
-
+        [Header("Weapon Type")]
+        public WeaponType weaponType;
         [Header("Stamina")]
         public int staminaCostPerAttack = 30;
         public int GetLightAttackStaminaCost() => staminaCostPerAttack;
@@ -103,6 +106,9 @@ namespace AF
         public List<AnimationOverride> animationOverrides;
         [Tooltip("Optional")] public List<AnimationOverride> twoHandOverrides;
         [Tooltip("Optional")] public List<AnimationOverride> blockOverrides;
+
+        [Header("Optional - Animation Templates")]
+        public WeaponAnimation weaponAnimationData;
 
         [Header("Combos")]
         public int lightAttackCombos = 2;
@@ -145,6 +151,28 @@ namespace AF
         [Header("Staff Options")]
         public bool shouldRegenerateMana = false;
         public bool ignoreSpellsAnimationClips = false;
+
+
+        [Image("Assets/Synty/InterfaceFantasyWarriorHUD/Sprites/Icons_Map/ICON_FantasyWarrior_Map_ShopWeapons_01_Underlay.png", 64f, 64f)]
+        [Header("Right Hand Settings")]
+        public Vector3 rightHandPosition;
+        public Vector3 rightHandRotation;
+        [Image("Assets/Synty/InterfaceFantasyWarriorHUD/Sprites/Icons_Map/ICON_FantasyWarrior_Map_ShopWeapons_01_Underlay.png", 64f, 64f)]
+        [Header("Left Hand Settings")]
+        public Vector3 leftHandPosition;
+        public Vector3 leftHandRotation;
+
+        [Image("Assets/Graphics/Sprites/Icons/Two Handing Weapon.png", 64f, 64f)]
+        [Header("Two Handing Settings")]
+        public bool useTwoHandingTransform = true;
+        public Vector3 twoHandingPosition;
+        public Vector3 twoHandingRotation;
+
+        [Image("Assets/Synty/InterfaceFantasyWarriorHUD/Sprites/Icons_Status/ICON_FantasyWarrior_Status_Armour_01_Clean.png", 64f, 64f)]
+        [Header("Weapon Blocking Settings")]
+        public bool useCustomTwoHandingBlockTransforms = false;
+        public Vector3 th_BlockPosition;
+        public Vector3 th_BlockRotation;
 
 #if UNITY_EDITOR
         private void OnEnable()
@@ -409,6 +437,37 @@ namespace AF
         public bool IsCompatibleWithAmmo(Arrow arrow)
         {
             return arrow.projectileType == projectileType;
+        }
+
+        public List<AnimationOverride> GetOneHandAnimations()
+        {
+            if (weaponAnimationData != null)
+            {
+                return weaponAnimationData.GetOneHandAnimations();
+            }
+
+            return animationOverrides;
+        }
+
+        public List<AnimationOverride> GetLeftHandAnimations()
+        {
+            if (weaponAnimationData != null)
+            {
+                return weaponAnimationData.GetLeftHandAnimations();
+            }
+
+            return new();
+        }
+        public List<AnimationOverride> GetTwoHandAnimations()
+        {
+            if (weaponAnimationData != null)
+            {
+                return weaponAnimationData.GetTwoHandAnimations();
+            }
+
+            var animations = twoHandOverrides.ToList();
+            animations.AddRange(blockOverrides);
+            return animations;
         }
     }
 }

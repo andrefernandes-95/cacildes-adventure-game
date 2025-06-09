@@ -12,8 +12,14 @@ namespace AF
         public readonly string hashLightAttack2 = "Light Attack 2";
         public readonly string hashLightAttack3 = "Light Attack 3";
         public readonly string hashLightAttack4 = "Light Attack 4";
+        public readonly string hashLeftLightAttack1 = "Left Light Attack 1";
+        public readonly string hashLeftLightAttack2 = "Left Light Attack 2";
+        public readonly string hashPowerStanceAttack1 = "Power Stance Attack 1";
+        public readonly string hashPowerStanceAttack2 = "Power Stance Attack 2";
         public readonly string hashHeavyAttack1 = "Heavy Attack 1";
         public readonly string hashHeavyAttack2 = "Heavy Attack 2";
+        public readonly string hashHeavyPowerStanceAttack1 = "Heavy Power Stance Attack 1";
+        public readonly string hashHeavyPowerStanceAttack2 = "Heavy Power Stance Attack 2";
         public readonly int hashSpecialAttack = Animator.StringToHash("Special Attack");
         public readonly string hashJumpAttack = "Jump Attack";
 
@@ -24,6 +30,7 @@ namespace AF
         [Header("Flags")]
         public bool isCombatting = false;
         public bool isLightAttacking = false;
+        public bool isAttackingWithLeftHand = false;
 
         [Header("Components")]
         public PlayerManager playerManager;
@@ -61,9 +68,16 @@ namespace AF
         [SerializeField] int oh_unarmedHeavyAttackCombos = 2;
         [SerializeField] int th_unarmedHeavyAttackCombos = 2;
 
+        [Header("Components")]
+        [SerializeField] StarterAssetsInputs starterAssetsInputs;
+
         private void Start()
         {
             animator.SetFloat(SpeedMultiplierHash, 1f);
+
+            starterAssetsInputs.onLightAttackInput.AddListener(OnAttackWithRightWeapon);
+            starterAssetsInputs.onBlock_Start.AddListener(OnAttackWithLeftWeapon);
+            starterAssetsInputs.onHeavyAttackInput.AddListener(OnHeavyAttack);
         }
 
         public void ResetStates()
@@ -72,6 +86,7 @@ namespace AF
             isHeavyAttacking = false;
             isLightAttacking = false;
             isAttackingWithFoot = false;
+            isAttackingWithLeftHand = false;
             animator.SetFloat(SpeedMultiplierHash, 1f);
             canAttack = true;
         }
@@ -116,21 +131,60 @@ namespace AF
                     lightAttackComboIndex = 0;
                 }
 
+                string hashAttack = "";
                 if (lightAttackComboIndex == 0)
                 {
-                    playerManager.PlayCrossFadeBusyAnimationWithRootMotion(hashLightAttack1, crossFade);
+                    if (isAttackingWithLeftHand)
+                    {
+                        hashAttack = equipmentDatabase.CanPowerStance() ? hashPowerStanceAttack1 : hashLeftLightAttack1;
+                    }
+                    else
+                    {
+                        hashAttack = hashLightAttack1;
+                    }
                 }
                 else if (lightAttackComboIndex == 1)
                 {
-                    playerManager.PlayCrossFadeBusyAnimationWithRootMotion(hashLightAttack2, crossFade);
+                    if (isAttackingWithLeftHand)
+                    {
+                        hashAttack = equipmentDatabase.CanPowerStance() ? hashPowerStanceAttack2 : hashLeftLightAttack2;
+                    }
+                    else
+                    {
+                        hashAttack = hashLightAttack2;
+                    }
                 }
                 else if (lightAttackComboIndex == 2)
                 {
-                    playerManager.PlayCrossFadeBusyAnimationWithRootMotion(hashLightAttack3, crossFade);
+                    if (isAttackingWithLeftHand)
+                    {
+                        hashAttack = equipmentDatabase.CanPowerStance() ? hashPowerStanceAttack1 : hashLeftLightAttack1;
+                    }
+                    else
+                    {
+                        hashAttack = hashLightAttack3;
+                    }
                 }
                 else if (lightAttackComboIndex == 3)
                 {
-                    playerManager.PlayCrossFadeBusyAnimationWithRootMotion(hashLightAttack4, crossFade);
+                    if (isAttackingWithLeftHand)
+                    {
+                        hashAttack = equipmentDatabase.CanPowerStance() ? hashPowerStanceAttack2 : hashLeftLightAttack2;
+                    }
+                    else
+                    {
+                        hashAttack = hashLightAttack4;
+                    }
+                }
+
+                // If first attack, do not crossfade
+                if (lightAttackComboIndex == 0)
+                {
+                    playerManager.PlayBusyAnimationWithRootMotion(hashAttack);
+                }
+                else
+                {
+                    playerManager.PlayCrossFadeBusyAnimationWithRootMotion(hashAttack, crossFade);
                 }
 
                 HandleAttackSpeed();
@@ -141,7 +195,9 @@ namespace AF
             }
 
             lightAttackComboIndex++;
-            playerManager.staminaStatManager.DecreaseLightAttackStamina();
+
+            // Stamina
+            playerManager.staminaStatManager.DecreaseLightAttackStamina(isAttackingWithLeftHand);
 
             if (ResetLightAttackComboIndexCoroutine != null)
             {
@@ -227,22 +283,23 @@ namespace AF
             {
                 if (heavyAttackComboIndex == 0)
                 {
-                    playerManager.PlayCrossFadeBusyAnimationWithRootMotion(hashHeavyAttack1, crossFade);
+                    playerManager.PlayCrossFadeBusyAnimationWithRootMotion(
+                        equipmentDatabase.CanPowerStance() ? hashHeavyPowerStanceAttack1 : hashHeavyAttack1, crossFade);
                 }
                 else if (heavyAttackComboIndex == 1)
                 {
-                    playerManager.PlayCrossFadeBusyAnimationWithRootMotion(hashHeavyAttack2, crossFade);
+                    playerManager.PlayCrossFadeBusyAnimationWithRootMotion(
+                        equipmentDatabase.CanPowerStance() ? hashHeavyPowerStanceAttack2 : hashHeavyAttack2, crossFade);
                 }
             }
 
+            // Stamina
             playerManager.staminaStatManager.DecreaseHeavyAttackStamina();
 
             HandleAttackSpeed();
 
             heavyAttackComboIndex++;
         }
-
-
 
         int GetMaxHeavyCombo()
         {
@@ -257,7 +314,6 @@ namespace AF
 
             return maxCombo;
         }
-
 
         public bool CanLightAttack()
         {
@@ -276,7 +332,7 @@ namespace AF
                 return false;
             }
 
-            return playerManager.staminaStatManager.HasEnoughStaminaForLightAttack();
+            return playerManager.staminaStatManager.HasEnoughStaminaForLightAttack(isAttackingWithLeftHand);
         }
 
         public bool CanHeavyAttack()
@@ -373,6 +429,28 @@ namespace AF
         {
             canAttack = true;
             playerManager.thirdPersonController.canRotateCharacter = true;
+        }
+
+        void OnAttackWithRightWeapon()
+        {
+            isAttackingWithLeftHand = false;
+            OnLightAttack();
+        }
+
+        void OnAttackWithLeftWeapon()
+        {
+            // if has no left weapon
+            // or is shield
+            // or is two handing
+            // do not attack with left hand
+            Weapon leftWeapon = equipmentDatabase.GetCurrentLeftWeapon();
+            if (leftWeapon == null || leftWeapon is Shield || equipmentDatabase.isTwoHanding)
+            {
+                return;
+            }
+
+            isAttackingWithLeftHand = true;
+            OnLightAttack();
         }
     }
 }

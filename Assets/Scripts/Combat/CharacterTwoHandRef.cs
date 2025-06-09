@@ -19,17 +19,14 @@ namespace AF
         Vector3 originalPosition;
         Quaternion originalRotation;
 
-        [Header("Dual Wielding")]
-        public CharacterWeaponHitbox leftWeapon;
-
         [Header("Components")]
         public PlayerManager playerManager;
         public EquipmentDatabase equipmentDatabase;
 
-        private void Awake()
+        public void SetOriginalPositionAndRotation(Vector3 initialLocalPosition, Quaternion initialLocalRotation)
         {
-            this.originalPosition = transform.localPosition;
-            this.originalRotation = transform.localRotation;
+            this.originalPosition = initialLocalPosition;
+            this.originalRotation = initialLocalRotation;
         }
 
         private void OnEnable()
@@ -47,12 +44,6 @@ namespace AF
             playerManager.twoHandingController.onTwoHandingModeChanged -= EvaluateTwoHandingUpdate;
             playerManager.characterBlockController.onBlockChanged -= EvaluateTwoHandingUpdate;
             playerManager.characterBlockController.onBlockChanged -= UseBlockTransform;
-
-
-            if (leftWeapon != null)
-            {
-                playerManager.playerWeaponsManager.UnequipLeftWeapon();
-            }
         }
 
 
@@ -71,47 +62,41 @@ namespace AF
             }
 
             UseTwoHandTransform();
-            UseLeftWeapon();
         }
 
         public void UseOneHandTransform()
         {
             transform.SetLocalPositionAndRotation(originalPosition, originalRotation);
-
-            if (leftWeapon != null)
-            {
-                playerManager.playerWeaponsManager.UnequipLeftWeapon();
-            }
         }
 
         public void UseTwoHandTransform()
         {
-            if (useTwoHandingTransform == false)
+            Weapon currentWeapon = equipmentDatabase.GetCurrentWeapon();
+            if (currentWeapon == null || currentWeapon.useTwoHandingTransform == false)
             {
                 return;
             }
 
-            transform.localPosition = twoHandingPosition;
-            transform.localEulerAngles = twoHandingRotation;
+            transform.localPosition = currentWeapon.twoHandingPosition;
+            transform.localEulerAngles = currentWeapon.twoHandingRotation;
         }
 
         public void UseBlockTransform()
         {
-            if (equipmentDatabase.isTwoHanding == false || useCustomBlockRefs == false || playerManager.characterBlockController.isBlocking == false || equipmentDatabase.isUsingShield)
+            Weapon currentWeapon = equipmentDatabase.GetCurrentWeapon();
+
+            if (
+                equipmentDatabase.isTwoHanding == false ||
+                playerManager.characterBlockController.isBlocking == false ||
+                equipmentDatabase.isUsingShield ||
+                currentWeapon == null ||
+                currentWeapon.useCustomTwoHandingBlockTransforms == false)
             {
                 return;
             }
 
-            this.transform.localPosition = blockPosition;
-            this.transform.localEulerAngles = blockRotation;
-        }
-
-        public void UseLeftWeapon()
-        {
-            if (leftWeapon != null)
-            {
-                playerManager.playerWeaponsManager.EquipLeftWeapon(leftWeapon);
-            }
+            this.transform.localPosition = currentWeapon.th_BlockPosition;
+            this.transform.localEulerAngles = currentWeapon.th_BlockRotation;
         }
     }
 }

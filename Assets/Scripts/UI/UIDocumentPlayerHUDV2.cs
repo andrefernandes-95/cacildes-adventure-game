@@ -94,6 +94,10 @@ namespace AF
                 UpdateEquipment);
 
             EventManager.StartListening(
+                EventMessages.ON_TWO_HANDING_CHANGED,
+                UpdateEquipment);
+
+            EventManager.StartListening(
                 EventMessages.ON_QUEST_TRACKED,
                 UpdateQuestTracking);
 
@@ -277,13 +281,17 @@ namespace AF
                     : new StyleBackground(unequippedSpellSlot);
             }
 
-            shieldSlotContainer.style.backgroundImage = equipmentDatabase.GetCurrentShield() != null
-                ? new StyleBackground(equipmentDatabase.GetCurrentShield().sprite)
+            shieldSlotContainer.style.backgroundImage = equipmentDatabase.GetCurrentLeftWeapon() != null
+                ? new StyleBackground(equipmentDatabase.GetCurrentLeftWeapon().sprite)
                 : new StyleBackground(unequippedShieldSlot);
 
+            shieldSlotContainer.style.opacity =
+                (equipmentDatabase.IsRangeWeaponEquipped() || equipmentDatabase.isTwoHanding) ? .25f : 1;
+
+            /*
             shieldBlockedIcon.style.display = equipmentDatabase.IsRangeWeaponEquipped() || equipmentDatabase.IsStaffEquipped()
                 ? DisplayStyle.Flex
-                : DisplayStyle.None;
+                : DisplayStyle.None;*/
 
             weaponSlotContainer.style.backgroundImage = equipmentDatabase.GetCurrentWeapon() != null
                 ? new StyleBackground(equipmentDatabase.GetCurrentWeapon().sprite)

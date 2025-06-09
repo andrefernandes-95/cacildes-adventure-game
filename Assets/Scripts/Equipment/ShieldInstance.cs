@@ -5,7 +5,7 @@ using UnityEngine;
 namespace AF.Equipment
 {
 
-    public class ShieldInstance : MonoBehaviour
+    public class ShieldInstance : CharacterWeaponHitbox
     {
         [Header("Shield")]
         public Shield shield;
@@ -70,7 +70,7 @@ namespace AF.Equipment
 
         public void OnTwoHandingChanged()
         {
-            if (equipmentDatabase.GetCurrentShield() != shield)
+            if (equipmentDatabase.GetCurrentLeftWeapon() != shield)
             {
                 return;
             }

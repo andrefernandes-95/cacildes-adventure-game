@@ -190,7 +190,6 @@ namespace AF
 		public void OnHeavyAttack(InputValue value)
 		{
 			onHeavyAttackInput?.Invoke();
-
 		}
 
 		public void OnInteract(InputValue value)

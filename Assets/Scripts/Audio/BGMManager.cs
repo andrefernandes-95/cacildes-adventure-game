@@ -158,7 +158,14 @@ namespace AF.Music
             PlayMusic(mainMusic);
         }
 
-        public void ClearMainMusic() => mainMusic = null;
+        public void ClearMainMusic()
+        {
+            if (mainMusic != null)
+            {
+                mainMusic = null;
+                StopMusic();
+            }
+        }
 
         private void StopCoroutineSafe(ref Coroutine coroutine)
         {
