@@ -526,6 +526,7 @@ namespace AF
         void LoadPlayerInventory(QuickSaveReader quickSaveReader)
         {
             inventoryDatabase.ownedItems.Clear();
+            inventoryDatabase.ownedWeapons.Clear();
 
             quickSaveReader.TryRead("ownedItems", out SerializedDictionary<string, ItemAmount> ownedItems);
 

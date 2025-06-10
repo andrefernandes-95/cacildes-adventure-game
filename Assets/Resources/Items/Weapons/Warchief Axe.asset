@@ -48,6 +48,7 @@ MonoBehaviour:
       Value: 1
   notes: 
   location: 
+  weaponID: 
   damage:
     physical: 75
     fire: 0
@@ -72,6 +73,7 @@ MonoBehaviour:
   intelligenceRequired: 0
   positiveReputationRequired: 0
   negativeReputationRequired: 0
+  weaponType: {fileID: 11400000, guid: daf8767481113da43a40a690b1b23fb3, type: 2}
   staminaCostPerAttack: 30
   strengthScaling: 1
   dexterityScaling: 3
@@ -138,6 +140,10 @@ MonoBehaviour:
     animationClip: {fileID: -5963623502854497957, guid: 819b611452413ac4cbe14d8781ac0168, type: 3}
   - animationName: Cacildes - Parrying
     animationClip: {fileID: 7400000, guid: 118861ff34cce98438a904a278539d65, type: 2}
+  weaponAnimationData: {fileID: 11400000, guid: 69924c81fd540a64bbc4de8b8c674ba0, type: 2}
+  weaponRangeAnimation: {fileID: 0}
+  oh_weaponAnimationOverrides: []
+  th_weaponAnimationOverrides: []
   lightAttackCombos: 2
   heavyAttackCombos: 1
   th_lightAttackCombos: 2
@@ -145,7 +151,9 @@ MonoBehaviour:
   halveDamage: 0
   speedPenalty: 0.1
   oneHandAttackSpeedPenalty: 0.88
+  oh_HeavyAttackSpeedPenalty: 1
   twoHandAttackSpeedPenalty: 1
+  th_HeavyAttackSpeedPenalty: 1
   amountOfGoldReceivedPerHit: 0
   doubleCoinsUponKillingEnemies: 0
   doubleDamageDuringNightTime: 0
@@ -158,6 +166,18 @@ MonoBehaviour:
   blockAbsorption: 0.5
   shouldRegenerateMana: 0
   ignoreSpellsAnimationClips: 0
+  rightHandPosition: {x: 14.9, y: -2.8, z: -30.6}
+  rightHandRotation: {x: 170.217, y: -104.186, z: 76.091}
+  leftHandPosition: {x: 8.3, y: 8.9, z: -28.1}
+  leftHandRotation: {x: 162.406, y: -84.763, z: 111.537}
+  useTwoHandingTransform: 1
+  twoHandingPosition: {x: 17.7, y: 3, z: -27.7}
+  twoHandingRotation: {x: 172.976, y: -109.611, z: 85.516}
+  useCustomTwoHandingBlockTransforms: 0
+  th_BlockPosition: {x: 0, y: 0, z: 0}
+  th_BlockRotation: {x: 0, y: 0, z: 0}
+  aimingPosition: {x: 0, y: 0, z: 0}
+  aimingRotation: {x: 0, y: 0, z: 0}
   references:
     version: 2
     RefIds: []

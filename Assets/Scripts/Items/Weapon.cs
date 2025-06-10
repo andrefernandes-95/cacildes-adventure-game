@@ -109,6 +109,9 @@ namespace AF
 
         [Header("Optional - Animation Templates")]
         public WeaponAnimation weaponAnimationData;
+        public WeaponRangeAnimation weaponRangeAnimation;
+        [Tooltip("Optional")] public List<AnimationOverride> oh_weaponAnimationOverrides = new();
+        [Tooltip("Optional")] public List<AnimationOverride> th_weaponAnimationOverrides = new();
 
         [Header("Combos")]
         public int lightAttackCombos = 2;
@@ -126,7 +129,9 @@ namespace AF
         [Tooltip("Will be added as a negative speed to the animator when equipped")]
         public float speedPenalty = 0f;
         [Range(0.1f, 2f)] public float oneHandAttackSpeedPenalty = 1f;
+        [Range(0.1f, 2f)] public float oh_HeavyAttackSpeedPenalty = 1f;
         [Range(0.1f, 2f)] public float twoHandAttackSpeedPenalty = 1f;
+        [Range(0.1f, 2f)] public float th_HeavyAttackSpeedPenalty = 1f;
 
         [Header("Weapon Bonus")]
         public int amountOfGoldReceivedPerHit = 0;
@@ -173,6 +178,11 @@ namespace AF
         public bool useCustomTwoHandingBlockTransforms = false;
         public Vector3 th_BlockPosition;
         public Vector3 th_BlockRotation;
+
+        [Image("Assets/Synty/InterfaceFantasyWarriorHUD/Sprites/Icons_Inventory/ICON_FantasyWarrior_Inventory_Bows_01_Clean.png", 64f, 64f)]
+        [Header("Aiming Settings")]
+        public Vector3 aimingPosition;
+        public Vector3 aimingRotation;
 
 #if UNITY_EDITOR
         private void OnEnable()

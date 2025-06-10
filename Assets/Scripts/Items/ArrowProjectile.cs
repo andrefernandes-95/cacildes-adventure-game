@@ -55,7 +55,7 @@ namespace AF
             {
                 // Scale projectile based on current player stats
                 calculatedDamage = arrow.damage.Clone();
-                calculatedDamage.ScaleProjectile(playerManager.attackStatManager, playerManager.attackStatManager.equipmentDatabase.GetCurrentWeapon());
+                calculatedDamage.ScaleProjectile(playerManager.attackStatManager, playerManager.attackStatManager.equipmentDatabase.GetCurrentLeftWeapon());
             }
 
             rigidbody.AddForce(transform.forward * GetForwardVelocity(), forceMode);

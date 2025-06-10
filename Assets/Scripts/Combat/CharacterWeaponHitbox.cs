@@ -148,6 +148,12 @@ namespace AF
             if (other.TryGetComponent(out IDamageable damageable) && !damageReceiversHit.Contains(damageable))
             {
                 damageReceiversHit.Add(damageable);
+
+                if (playerManager != null)
+                {
+                    playerManager.attackStatManager.SetCurrentAttackingWeapon(weapon);
+                }
+
                 damageable.OnDamage(character, () =>
                 {
                     onDamageInflicted?.Invoke();

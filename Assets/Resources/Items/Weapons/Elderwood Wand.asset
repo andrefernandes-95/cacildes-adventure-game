@@ -46,7 +46,7 @@ MonoBehaviour:
     _serializedList: []
   notes: 
   location: 
-  weaponType: {fileID: 11400000, guid: 53db662de8f786b4aa64dbcb04672b74, type: 2}
+  weaponID: 
   damage:
     physical: 0
     fire: 0
@@ -134,8 +134,8 @@ MonoBehaviour:
   intelligenceRequired: 0
   positiveReputationRequired: 0
   negativeReputationRequired: 0
-  lightAttackStaminaCost: 15
-  heavyAttackStaminaCost: 35
+  weaponType: {fileID: 11400000, guid: 15bbc21c50ede9848ae0f245f922626b, type: 2}
+  staminaCostPerAttack: 30
   strengthScaling: 5
   dexterityScaling: 5
   intelligenceScaling: 1
@@ -159,12 +159,22 @@ MonoBehaviour:
     animationClip: {fileID: -6788666626592393668, guid: 070f436e306f8494098ffad26f83ac97, type: 3}
   twoHandOverrides: []
   blockOverrides: []
+  weaponAnimationData: {fileID: 11400000, guid: 9e1e04e6c4c268e4e88ea8f8ba3a49bd, type: 2}
+  weaponRangeAnimation: {fileID: 0}
+  oh_weaponAnimationOverrides: []
+  th_weaponAnimationOverrides:
+  - animationName: Cacildes - Idle
+    animationClip: {fileID: 7400000, guid: 43db24c9c88f89c49a7a88af21fe99af, type: 2}
   lightAttackCombos: 2
   heavyAttackCombos: 1
+  th_lightAttackCombos: 2
+  th_heavyAttackCombos: 1
   halveDamage: 0
   speedPenalty: 0
   oneHandAttackSpeedPenalty: 1
+  oh_HeavyAttackSpeedPenalty: 1
   twoHandAttackSpeedPenalty: 1
+  th_HeavyAttackSpeedPenalty: 1
   amountOfGoldReceivedPerHit: 0
   doubleCoinsUponKillingEnemies: 0
   doubleDamageDuringNightTime: 0
@@ -177,6 +187,18 @@ MonoBehaviour:
   blockAbsorption: 1
   shouldRegenerateMana: 1
   ignoreSpellsAnimationClips: 1
+  rightHandPosition: {x: 8, y: 3, z: 0.6}
+  rightHandRotation: {x: 188.761, y: -80.36499, z: 87.771}
+  leftHandPosition: {x: 10.4, y: -2.9, z: 0.1}
+  leftHandRotation: {x: 206.403, y: -106.201, z: 103.802}
+  useTwoHandingTransform: 1
+  twoHandingPosition: {x: 9.8, y: 4.8, z: -3.7}
+  twoHandingRotation: {x: 188.239, y: -115.568, z: 111.319}
+  useCustomTwoHandingBlockTransforms: 0
+  th_BlockPosition: {x: 0, y: 0, z: 0}
+  th_BlockRotation: {x: 0, y: 0, z: 0}
+  aimingPosition: {x: 0, y: 0, z: 0}
+  aimingRotation: {x: 0, y: 0, z: 0}
   references:
     version: 2
     RefIds: []

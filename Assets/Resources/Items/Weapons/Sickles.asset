@@ -46,6 +46,7 @@ MonoBehaviour:
     _serializedList: []
   notes: 
   location: 
+  weaponID: 
   damage:
     physical: 65
     fire: 0
@@ -187,6 +188,7 @@ MonoBehaviour:
   intelligenceRequired: 0
   positiveReputationRequired: 0
   negativeReputationRequired: 0
+  weaponType: {fileID: 11400000, guid: 6296fdee95985a3429577522e0e5297a, type: 2}
   staminaCostPerAttack: 30
   strengthScaling: 3
   dexterityScaling: 0
@@ -249,14 +251,20 @@ MonoBehaviour:
     animationClip: {fileID: -5963623502854497957, guid: 819b611452413ac4cbe14d8781ac0168, type: 3}
   - animationName: Cacildes - Parrying
     animationClip: {fileID: 7400000, guid: 118861ff34cce98438a904a278539d65, type: 2}
+  weaponAnimationData: {fileID: 11400000, guid: 5852f09c44b81a348a468d0446d65bda, type: 2}
+  weaponRangeAnimation: {fileID: 0}
+  oh_weaponAnimationOverrides: []
+  th_weaponAnimationOverrides: []
   lightAttackCombos: 2
-  heavyAttackCombos: 1
+  heavyAttackCombos: 2
   th_lightAttackCombos: 2
   th_heavyAttackCombos: 1
   halveDamage: 1
   speedPenalty: 0
-  oneHandAttackSpeedPenalty: 1.3
-  twoHandAttackSpeedPenalty: 1
+  oneHandAttackSpeedPenalty: 1.1
+  oh_HeavyAttackSpeedPenalty: 1.1
+  twoHandAttackSpeedPenalty: 1.1
+  th_HeavyAttackSpeedPenalty: 1.1
   amountOfGoldReceivedPerHit: 1
   doubleCoinsUponKillingEnemies: 0
   doubleDamageDuringNightTime: 0
@@ -269,6 +277,18 @@ MonoBehaviour:
   blockAbsorption: 0.8
   shouldRegenerateMana: 0
   ignoreSpellsAnimationClips: 0
+  rightHandPosition: {x: 6.5, y: 6, z: 1}
+  rightHandRotation: {x: 184.6, y: -479.6, z: 68.032}
+  leftHandPosition: {x: 7.1, y: -5, z: 1.4}
+  leftHandRotation: {x: 155.627, y: -470.78, z: 116.17}
+  useTwoHandingTransform: 1
+  twoHandingPosition: {x: 7.6, y: 4.8, z: 3.3}
+  twoHandingRotation: {x: 189.706, y: -469.165, z: 75.421}
+  useCustomTwoHandingBlockTransforms: 0
+  th_BlockPosition: {x: 0, y: 0, z: 0}
+  th_BlockRotation: {x: 0, y: 0, z: 0}
+  aimingPosition: {x: 0, y: 0, z: 0}
+  aimingRotation: {x: 0, y: 0, z: 0}
   references:
     version: 2
     RefIds: []

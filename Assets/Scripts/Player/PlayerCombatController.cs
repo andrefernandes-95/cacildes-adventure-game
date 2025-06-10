@@ -71,6 +71,10 @@ namespace AF
         [Header("Components")]
         [SerializeField] StarterAssetsInputs starterAssetsInputs;
 
+        float currentAttackSpeed = 1f;
+
+        bool isComboing = false;
+
         private void Start()
         {
             animator.SetFloat(SpeedMultiplierHash, 1f);
@@ -178,8 +182,9 @@ namespace AF
                 }
 
                 // If first attack, do not crossfade
-                if (lightAttackComboIndex == 0)
+                if (lightAttackComboIndex == 0 && !isComboing)
                 {
+                    isComboing = true;
                     playerManager.PlayBusyAnimationWithRootMotion(hashAttack);
                 }
                 else
@@ -222,25 +227,31 @@ namespace AF
 
         IEnumerator _ResetLightAttackComboIndex()
         {
-            yield return new WaitForSeconds(maxIdleCombo);
+            float extraTime = currentAttackSpeed > 0 ? (1 / currentAttackSpeed) : 1;
+
+            yield return new WaitForSeconds(maxIdleCombo * extraTime);
             lightAttackComboIndex = 0;
+            isComboing = false;
         }
 
         void HandleAttackSpeed()
         {
+            currentAttackSpeed = 1f;
+
             Weapon currentWeapon = equipmentDatabase.GetCurrentWeapon();
-            if (equipmentDatabase.isTwoHanding == false && currentWeapon != null && currentWeapon.oneHandAttackSpeedPenalty != 1)
+            if (currentWeapon != null)
             {
-                animator.SetFloat(SpeedMultiplierHash, currentWeapon.oneHandAttackSpeedPenalty);
+                if (equipmentDatabase.isTwoHanding)
+                {
+                    currentAttackSpeed = isHeavyAttacking ? currentWeapon.th_HeavyAttackSpeedPenalty : currentWeapon.twoHandAttackSpeedPenalty;
+                }
+                else
+                {
+                    currentAttackSpeed = isHeavyAttacking ? currentWeapon.oh_HeavyAttackSpeedPenalty : currentWeapon.oneHandAttackSpeedPenalty;
+                }
             }
-            else if (equipmentDatabase.isTwoHanding && currentWeapon != null && currentWeapon.twoHandAttackSpeedPenalty != 1)
-            {
-                animator.SetFloat(SpeedMultiplierHash, currentWeapon.twoHandAttackSpeedPenalty);
-            }
-            else
-            {
-                animator.SetFloat(SpeedMultiplierHash, 1f);
-            }
+
+            animator.SetFloat(SpeedMultiplierHash, currentAttackSpeed);
         }
 
         void HandleJumpAttack()
@@ -267,8 +278,10 @@ namespace AF
             isLightAttacking = false;
             isHeavyAttacking = true;
 
-            playerManager.playerWeaponsManager.HideShield();
-
+            if (!equipmentDatabase.CanPowerStance())
+            {
+                playerManager.playerWeaponsManager.HideShield();
+            }
 
             if (heavyAttackComboIndex > GetMaxHeavyCombo())
             {
@@ -327,7 +340,7 @@ namespace AF
                 return false;
             }
 
-            if (equipmentDatabase.IsStaffEquipped() || equipmentDatabase.IsRangeWeaponEquipped())
+            if (equipmentDatabase.IsStaffEquipped())
             {
                 return false;
             }
@@ -444,7 +457,11 @@ namespace AF
             // or is two handing
             // do not attack with left hand
             Weapon leftWeapon = equipmentDatabase.GetCurrentLeftWeapon();
-            if (leftWeapon == null || leftWeapon is Shield || equipmentDatabase.isTwoHanding)
+            if (
+                leftWeapon == null
+                || leftWeapon is Shield // Dont attack with shields on left hand, we will block instead
+                || leftWeapon.damage.weaponAttackType == WeaponAttackType.Range // Dont attack with range weapons on left hand, we will let playerShooter handle it instead
+                || equipmentDatabase.isTwoHanding)
             {
                 return;
             }

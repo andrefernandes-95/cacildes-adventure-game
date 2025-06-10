@@ -100,14 +100,15 @@ namespace AF.Equipment
                 currentWeaponInstance = null;
             }
 
-            if (CurrentWeapon == null && rightHandGrip.childCount > 0)
+            if (rightHandGrip.childCount > 0)
             {
                 foreach (Transform child in rightHandGrip.transform)
                 {
                     Destroy(child.gameObject);
                 }
             }
-            else if (CurrentWeapon is Weapon rightWeapon)
+
+            if (CurrentWeapon is Weapon rightWeapon)
             {
                 InstantiateWeapon(rightWeapon, true);
             }
@@ -119,8 +120,7 @@ namespace AF.Equipment
 
         void UpdateCurrentLeftWeapon()
         {
-            var CurrentShield = (equipmentDatabase.IsRangeWeaponEquipped() || equipmentDatabase.isTwoHanding)
-                ? null : equipmentDatabase.GetCurrentLeftWeapon();
+            var CurrentShield = equipmentDatabase.isTwoHanding ? null : equipmentDatabase.GetCurrentLeftWeapon();
 
             if (currentShieldInstance != null)
             {
@@ -129,18 +129,18 @@ namespace AF.Equipment
                 currentShieldInstance = null;
             }
 
-            if (CurrentShield == null && leftHandGrip.childCount > 0)
+            if (leftHandGrip.childCount > 0)
             {
                 foreach (Transform child in leftHandGrip.transform)
                 {
                     Destroy(child.gameObject);
                 }
             }
-            else if (CurrentShield is Weapon leftWeapon)
+
+            if (CurrentShield is Weapon leftWeapon)
             {
                 InstantiateWeapon(leftWeapon, false);
             }
-
 
             playerManager.UpdateAnimatorOverrideControllerClips();
             statsBonusController.RecalculateEquipmentBonus();
@@ -241,14 +241,15 @@ namespace AF.Equipment
 
         public void ShowEquipment()
         {
-            if (currentWeaponInstance != null)
-            {
-                currentWeaponInstance.ShowWeapon();
-            }
+            ShowRightWeapon();
 
             if (currentShieldInstance != null && currentShieldInstance is ShieldInstance shieldInstance)
             {
                 shieldInstance.ResetStates();
+            }
+            if (currentShieldInstance != null && currentShieldInstance is CharacterWeaponHitbox characterWeaponHitbox)
+            {
+                characterWeaponHitbox.ShowWeapon();
             }
         }
 
@@ -259,25 +260,70 @@ namespace AF.Equipment
                 currentWeaponInstance.HideWeapon();
             }
 
-            if (currentShieldInstance != null && currentShieldInstance is ShieldInstance shieldInstance)
+            if (currentShieldInstance != null)
             {
-                shieldInstance.HideShield();
+                if (currentShieldInstance is ShieldInstance shieldInstance)
+                {
+                    shieldInstance.HideShield();
+                }
+
+                if (currentShieldInstance is CharacterWeaponHitbox characterWeaponHitbox)
+                {
+                    characterWeaponHitbox.HideWeapon();
+                }
+            }
+        }
+
+        public void HideRightWeapon()
+        {
+            if (currentWeaponInstance != null)
+            {
+                currentWeaponInstance.HideWeapon();
+            }
+        }
+        public void ShowRightWeapon()
+        {
+            if (playerManager.playerShootingManager.isAiming)
+            {
+                return;
+            }
+
+            if (currentWeaponInstance != null)
+            {
+                currentWeaponInstance.ShowWeapon();
             }
         }
 
         public void HideShield()
         {
-            if (currentShieldInstance != null && currentShieldInstance is ShieldInstance shieldInstance)
+            if (currentShieldInstance != null)
             {
-                shieldInstance.HideShield();
+                if (currentShieldInstance is ShieldInstance shieldInstance)
+                {
+                    shieldInstance.HideShield();
+                }
+
+                if (currentShieldInstance is CharacterWeaponHitbox characterWeaponHitbox)
+                {
+                    characterWeaponHitbox.HideWeapon();
+                }
             }
+
         }
 
         public void ShowShield()
         {
-            if (currentShieldInstance != null && currentShieldInstance is ShieldInstance shieldInstance)
+            if (currentShieldInstance != null)
             {
-                shieldInstance.ShowShield();
+                if (currentShieldInstance is ShieldInstance shieldInstance)
+                {
+                    shieldInstance.ShowShield();
+                }
+
+                if (currentShieldInstance is CharacterWeaponHitbox characterWeaponHitbox)
+                {
+                    characterWeaponHitbox.ShowWeapon();
+                }
             }
         }
 
@@ -615,6 +661,36 @@ namespace AF.Equipment
         public void ThrowWeapon()
         {
 
+        }
+
+        public void UpdateRangeWeaponTransformToIdle()
+        {
+            Weapon leftWeapon = equipmentDatabase.GetCurrentLeftWeapon();
+            if (leftWeapon == null || leftWeapon.damage.weaponAttackType != WeaponAttackType.Range)
+            {
+                return;
+            }
+
+            if (currentShieldInstance != null)
+            {
+                currentShieldInstance.transform.localPosition = leftWeapon.leftHandPosition;
+                currentShieldInstance.transform.localEulerAngles = leftWeapon.leftHandRotation;
+            }
+        }
+
+        public void UpdateRangeWeaponTransformToAim()
+        {
+            Weapon leftWeapon = equipmentDatabase.GetCurrentLeftWeapon();
+            if (leftWeapon == null || leftWeapon.damage.weaponAttackType != WeaponAttackType.Range)
+            {
+                return;
+            }
+
+            if (currentShieldInstance != null)
+            {
+                currentShieldInstance.transform.localPosition = leftWeapon.aimingPosition;
+                currentShieldInstance.transform.localEulerAngles = leftWeapon.aimingRotation;
+            }
         }
 
     }

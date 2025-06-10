@@ -217,6 +217,25 @@ namespace AF
             if (leftWeapon != null && !equipmentDatabase.isTwoHanding)
             {
                 AddOrReplaceOverride(leftWeapon.GetLeftHandAnimations(), overrides);
+
+                // If left weapons is a range weapon, override the animations for shooting
+                if (leftWeapon.weaponRangeAnimation != null)
+                {
+                    AddOrReplaceOverride(leftWeapon.weaponRangeAnimation.GetAnimations(), overrides);
+                }
+            }
+
+            // Lastly, check for any additional weapon animation overrides that have the highest priority
+            if (currentWeapon != null)
+            {
+                if (equipmentDatabase.isTwoHanding && currentWeapon.th_weaponAnimationOverrides.Count > 0)
+                {
+                    AddOrReplaceOverride(currentWeapon.th_weaponAnimationOverrides, overrides);
+                }
+                else if (currentWeapon.oh_weaponAnimationOverrides.Count > 0)
+                {
+                    AddOrReplaceOverride(currentWeapon.oh_weaponAnimationOverrides, overrides);
+                }
             }
 
             // Apply all collected overrides in one go

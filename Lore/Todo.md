@@ -19,13 +19,22 @@ IN DEV:
 - Simplify existing weapons
 - Increase stamina regen
 - If jump attack, enable both weapons
+- Bug: Heavy attack not working for Golden Lance (check)
 
 1.7.2
 - Replace cards with skill system
 - Magic should be cast with any weapon, staff only enhances it
 - Magic should be L2 button, dodge should be circle with sprint hold
 
+1.7.3
+- Replace iron shards with upgrade shards with levels
+- Refactor weapon levelling
+
 READY FOR DEV:
+- Add quest started popup
+- Elven bow should be offered by Fenlora in the epilogue
+- Add category to received items popup
+- Make item popups pop up animation
 - Add note to quest for Maerimond which is : Rewards - Unlock Boss Weapons
 - Add note to boss tokens which is: Talk to Altaire in Snailcliff to unlock boss weapons
 - Fix R key on gamepad

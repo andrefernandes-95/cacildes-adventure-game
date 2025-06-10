@@ -48,7 +48,7 @@ MonoBehaviour:
       Value: 1
   notes: 
   location: 
-  weaponType: {fileID: 11400000, guid: 7add2007967d3c74bb9ab80552d419d1, type: 2}
+  weaponID: 
   damage:
     physical: 80
     fire: 0
@@ -178,8 +178,8 @@ MonoBehaviour:
   intelligenceRequired: 0
   positiveReputationRequired: 0
   negativeReputationRequired: 0
-  lightAttackStaminaCost: 25
-  heavyAttackStaminaCost: 55
+  weaponType: {fileID: 11400000, guid: 282113821e9fca743a9d8edf59e8a1ea, type: 2}
+  staminaCostPerAttack: 30
   strengthScaling: 2
   dexterityScaling: 0
   intelligenceScaling: 5
@@ -201,12 +201,20 @@ MonoBehaviour:
     animationClip: {fileID: 7400000, guid: dd6094a0713bc0c478c7ba6b2053913f, type: 3}
   twoHandOverrides: []
   blockOverrides: []
+  weaponAnimationData: {fileID: 0}
+  weaponRangeAnimation: {fileID: 11400000, guid: 96ceebaca90e0c341a86762eb73c12d0, type: 2}
+  oh_weaponAnimationOverrides: []
+  th_weaponAnimationOverrides: []
   lightAttackCombos: 2
   heavyAttackCombos: 1
+  th_lightAttackCombos: 2
+  th_heavyAttackCombos: 1
   halveDamage: 0
   speedPenalty: 0.015
   oneHandAttackSpeedPenalty: 1
+  oh_HeavyAttackSpeedPenalty: 1
   twoHandAttackSpeedPenalty: 1
+  th_HeavyAttackSpeedPenalty: 1
   amountOfGoldReceivedPerHit: 0
   doubleCoinsUponKillingEnemies: 0
   doubleDamageDuringNightTime: 0
@@ -219,6 +227,18 @@ MonoBehaviour:
   blockAbsorption: 1
   shouldRegenerateMana: 0
   ignoreSpellsAnimationClips: 0
+  rightHandPosition: {x: 0, y: 0, z: 0}
+  rightHandRotation: {x: 0, y: 0, z: 0}
+  leftHandPosition: {x: 10.4, y: -5.5, z: -8.9}
+  leftHandRotation: {x: 174.21, y: -22.66299, z: 116.281}
+  useTwoHandingTransform: 1
+  twoHandingPosition: {x: 0, y: 0, z: 0}
+  twoHandingRotation: {x: 0, y: 0, z: 0}
+  useCustomTwoHandingBlockTransforms: 0
+  th_BlockPosition: {x: 0, y: 0, z: 0}
+  th_BlockRotation: {x: 0, y: 0, z: 0}
+  aimingPosition: {x: -22.3, y: 19.6, z: 31.6}
+  aimingRotation: {x: 30.797, y: -213.672, z: 156.662}
   references:
     version: 2
     RefIds: []

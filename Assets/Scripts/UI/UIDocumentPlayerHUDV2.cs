@@ -285,8 +285,7 @@ namespace AF
                 ? new StyleBackground(equipmentDatabase.GetCurrentLeftWeapon().sprite)
                 : new StyleBackground(unequippedShieldSlot);
 
-            shieldSlotContainer.style.opacity =
-                (equipmentDatabase.IsRangeWeaponEquipped() || equipmentDatabase.isTwoHanding) ? .25f : 1;
+            shieldSlotContainer.style.opacity = equipmentDatabase.isTwoHanding ? .25f : 1;
 
             /*
             shieldBlockedIcon.style.display = equipmentDatabase.IsRangeWeaponEquipped() || equipmentDatabase.IsStaffEquipped()

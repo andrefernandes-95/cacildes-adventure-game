@@ -320,12 +320,12 @@ public class EquipmentDatabase : ScriptableObject
 
     public bool IsRangeWeaponEquipped()
     {
-        return GetCurrentWeapon() != null && GetCurrentWeapon().damage.weaponAttackType == WeaponAttackType.Range;
+        return GetCurrentLeftWeapon() != null && GetCurrentLeftWeapon().damage.weaponAttackType == WeaponAttackType.Range;
     }
 
     public bool IsRangeWeaponEquippedOnAnySlot()
     {
-        return weapons.Any(wp => wp != null && wp.damage.weaponAttackType == WeaponAttackType.Range);
+        return shields.Any(wp => wp != null && wp.damage.weaponAttackType == WeaponAttackType.Range);
     }
 
     public bool IsStaffEquipped()

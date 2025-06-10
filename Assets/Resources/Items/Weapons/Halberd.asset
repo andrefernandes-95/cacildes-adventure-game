@@ -46,6 +46,7 @@ MonoBehaviour:
     _serializedList: []
   notes: 
   location: 
+  weaponID: 
   damage:
     physical: 60
     fire: 0
@@ -175,6 +176,7 @@ MonoBehaviour:
   intelligenceRequired: 0
   positiveReputationRequired: 0
   negativeReputationRequired: 0
+  weaponType: {fileID: 11400000, guid: eb2ed9d52f43be8459ff078bbede65da, type: 2}
   staminaCostPerAttack: 30
   strengthScaling: 3
   dexterityScaling: 2
@@ -233,6 +235,16 @@ MonoBehaviour:
     animationClip: {fileID: -5963623502854497957, guid: 819b611452413ac4cbe14d8781ac0168, type: 3}
   - animationName: Cacildes - Parrying
     animationClip: {fileID: 7400000, guid: 118861ff34cce98438a904a278539d65, type: 2}
+  weaponAnimationData: {fileID: 11400000, guid: 7b52f34d6eeb13c4b9c53a6ed70e339b, type: 2}
+  weaponRangeAnimation: {fileID: 0}
+  oh_weaponAnimationOverrides:
+  - animationName: Cacildes - Light Attack - 2
+    animationClip: {fileID: -4804081194103361636, guid: 18729f7c30134cc4198d48f99815fd2c, type: 3}
+  - animationName: Cacildes - Left Light Attack - 2
+    animationClip: {fileID: 6319920127755484014, guid: 18729f7c30134cc4198d48f99815fd2c, type: 3}
+  th_weaponAnimationOverrides:
+  - animationName: Cacildes - Heavy Attack - 1
+    animationClip: {fileID: -4291578044166202585, guid: 04f8979bf6396d04eb7b407127cb581e, type: 3}
   lightAttackCombos: 2
   heavyAttackCombos: 1
   th_lightAttackCombos: 2
@@ -240,7 +252,9 @@ MonoBehaviour:
   halveDamage: 0
   speedPenalty: 0.01
   oneHandAttackSpeedPenalty: 0.9
+  oh_HeavyAttackSpeedPenalty: 1
   twoHandAttackSpeedPenalty: 0.9
+  th_HeavyAttackSpeedPenalty: 1
   amountOfGoldReceivedPerHit: 0
   doubleCoinsUponKillingEnemies: 0
   doubleDamageDuringNightTime: 0
@@ -253,6 +267,18 @@ MonoBehaviour:
   blockAbsorption: 0.6
   shouldRegenerateMana: 0
   ignoreSpellsAnimationClips: 0
+  rightHandPosition: {x: 14.4, y: 4.2, z: -22.8}
+  rightHandRotation: {x: 165.596, y: -279.038, z: 270.079}
+  leftHandPosition: {x: 11, y: -4.7, z: -1}
+  leftHandRotation: {x: 217.259, y: -278.966, z: 251.991}
+  useTwoHandingTransform: 1
+  twoHandingPosition: {x: 18.6, y: 3, z: -19}
+  twoHandingRotation: {x: 158.985, y: -293.43, z: 271.469}
+  useCustomTwoHandingBlockTransforms: 1
+  th_BlockPosition: {x: 9.6, y: 2.5, z: 10.2}
+  th_BlockRotation: {x: 159.439, y: -278.633, z: 259.391}
+  aimingPosition: {x: 0, y: 0, z: 0}
+  aimingRotation: {x: 0, y: 0, z: 0}
   references:
     version: 2
     RefIds: []

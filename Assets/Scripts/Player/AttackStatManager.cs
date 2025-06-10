@@ -46,6 +46,7 @@ namespace AF
         [Header("Components")]
         public PlayerManager playerManager;
 
+        Weapon currentAttackingWeapon;
 
         public enum AttackSource
         {
@@ -85,19 +86,7 @@ namespace AF
 
         public Damage GetAttackDamage()
         {
-            // Single Weapon Use
-            Weapon attackingWeapon = null;
-            if (playerManager.playerCombatController.isAttackingWithLeftHand && equipmentDatabase.GetCurrentLeftWeapon() != null)
-            {
-                attackingWeapon = equipmentDatabase.GetCurrentLeftWeapon();
-                playerManager.playerCombatController.isAttackingWithLeftHand = false;
-            }
-            else
-            {
-                attackingWeapon = equipmentDatabase.GetCurrentWeapon();
-            }
-
-            Damage damage = CalculateCurrentDamage(attackingWeapon);
+            Damage damage = CalculateCurrentDamage(currentAttackingWeapon);
             damage = GetNextAttackBonusDamage(damage);
             return damage;
         }
@@ -485,6 +474,11 @@ namespace AF
             }
 
             return damage;
+        }
+
+        public void SetCurrentAttackingWeapon(Weapon weapon)
+        {
+            this.currentAttackingWeapon = weapon;
         }
 
     }

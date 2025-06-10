@@ -48,6 +48,7 @@ MonoBehaviour:
       Value: 1
   notes: 
   location: 
+  weaponID: 
   damage:
     physical: 0
     fire: 90
@@ -78,6 +79,7 @@ MonoBehaviour:
   intelligenceRequired: 6
   positiveReputationRequired: 0
   negativeReputationRequired: 0
+  weaponType: {fileID: 11400000, guid: 464aa2e9d1e43614da59b378db0bbbb2, type: 2}
   staminaCostPerAttack: 30
   strengthScaling: 1
   dexterityScaling: 3
@@ -140,6 +142,14 @@ MonoBehaviour:
     animationClip: {fileID: -5963623502854497957, guid: 819b611452413ac4cbe14d8781ac0168, type: 3}
   - animationName: Cacildes - Parrying
     animationClip: {fileID: 7400000, guid: 118861ff34cce98438a904a278539d65, type: 2}
+  weaponAnimationData: {fileID: 11400000, guid: b7ff96c0ffb92424794c02b98238d856, type: 2}
+  weaponRangeAnimation: {fileID: 0}
+  oh_weaponAnimationOverrides:
+  - animationName: Cacildes - Heavy Attack - 1
+    animationClip: {fileID: 7400000, guid: 78b261b45bae9214199a34127b1a84a5, type: 2}
+  th_weaponAnimationOverrides:
+  - animationName: Cacildes - Heavy Attack - 1
+    animationClip: {fileID: 2820805099142574241, guid: 580436901498ca748afff5490a9b5046, type: 3}
   lightAttackCombos: 2
   heavyAttackCombos: 1
   th_lightAttackCombos: 2
@@ -147,7 +157,9 @@ MonoBehaviour:
   halveDamage: 0
   speedPenalty: 0.035
   oneHandAttackSpeedPenalty: 0.89
+  oh_HeavyAttackSpeedPenalty: 1
   twoHandAttackSpeedPenalty: 0.9
+  th_HeavyAttackSpeedPenalty: 1
   amountOfGoldReceivedPerHit: 0
   doubleCoinsUponKillingEnemies: 0
   doubleDamageDuringNightTime: 0
@@ -160,6 +172,18 @@ MonoBehaviour:
   blockAbsorption: 0.7
   shouldRegenerateMana: 0
   ignoreSpellsAnimationClips: 0
+  rightHandPosition: {x: 9.1, y: 3, z: 3}
+  rightHandRotation: {x: 172.352, y: -102.082, z: 95.348}
+  leftHandPosition: {x: 8.5, y: -2.5, z: 3.5}
+  leftHandRotation: {x: 355.468, y: -101.151, z: 83.4}
+  useTwoHandingTransform: 1
+  twoHandingPosition: {x: 9.1, y: 3, z: 3}
+  twoHandingRotation: {x: 172.823, y: -114.141, z: 93.846}
+  useCustomTwoHandingBlockTransforms: 1
+  th_BlockPosition: {x: 9.7, y: 4.5, z: 2.1}
+  th_BlockRotation: {x: 301.167, y: 146.761, z: -166.135}
+  aimingPosition: {x: 0, y: 0, z: 0}
+  aimingRotation: {x: 0, y: 0, z: 0}
   references:
     version: 2
     RefIds: []

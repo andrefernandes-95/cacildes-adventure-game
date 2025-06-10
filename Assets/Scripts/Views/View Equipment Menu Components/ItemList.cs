@@ -322,6 +322,12 @@ namespace AF.UI.EquipmentMenu
 
         bool SkipWeapon(int slotIndex, Weapon weapon, bool isRightHandSlot)
         {
+            // Dont allow equipping bows on right hand
+            if (isRightHandSlot && weapon != null && weapon.damage.weaponAttackType == WeaponAttackType.Range)
+            {
+                return true;
+            }
+
             List<Weapon> currentList = (isRightHandSlot ? equipmentDatabase.weapons : equipmentDatabase.shields).ToList();
 
             // Don't skip if already equipped in the target slot

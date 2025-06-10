@@ -43,7 +43,6 @@ namespace AF.Shooting
         public Transform playerFeetRef;
         public Transform playerShootingHandRef;
 
-
         [Header("Flags")]
         public bool isAiming = false;
         public bool isShooting = false;
@@ -76,6 +75,30 @@ namespace AF.Shooting
         [SerializeField] AudioSource audioSource;
         [SerializeField] AudioClip drawArrowSfx;
 
+        [Header("Debug")]
+        [SerializeField] bool ignoreBowWeaponTransforms = false;
+
+        void Awake()
+        {
+            // Allow shooting with left mouse key if locked on
+            GetPlayerManager().starterAssetsInputs.onBlock_Start.AddListener(() =>
+            {
+                if (GetPlayerManager().lockOnManager.isLockedOn)
+                {
+                    OnFireInput();
+                }
+            });
+
+            // Or allow shooting with right mouse key if aiming
+            GetPlayerManager().starterAssetsInputs.onLightAttackInput.AddListener(() =>
+            {
+                if (isAiming)
+                {
+                    OnFireInput();
+                }
+            });
+        }
+
         public void ResetStates()
         {
             isShooting = false;
@@ -96,7 +119,7 @@ namespace AF.Shooting
 
         bool IsRangeWeaponCompatibleWithProjectile()
         {
-            Weapon currentRangeWeapon = equipmentDatabase.GetCurrentWeapon();
+            Weapon currentRangeWeapon = equipmentDatabase.GetCurrentLeftWeapon();
             Arrow arrow = equipmentDatabase.GetCurrentArrow();
 
             if (currentRangeWeapon == null || arrow == null)
@@ -254,17 +277,40 @@ namespace AF.Shooting
         {
             GetPlayerManager().animator.SetBool(hashIsAiming, true);
 
-            cinemachine3RdPersonFollow.CameraDistance = equipmentDatabase.GetCurrentWeapon().projectileType == boltProjectileType
+            cinemachine3RdPersonFollow.CameraDistance = equipmentDatabase.GetCurrentLeftWeapon().projectileType == boltProjectileType
                 ? crossbowAimCameraDistance : bowAimCameraDistance;
 
             onBowAim_Begin?.Invoke();
 
-            ShowArrowPlaceholder();
+            SetupEquipmentForAimingBegin();
         }
+
+        void SetupEquipmentForAimingBegin()
+        {
+            ShowArrowPlaceholder();
+            GetPlayerManager().playerWeaponsManager.HideRightWeapon();
+
+            if (!ignoreBowWeaponTransforms)
+            {
+                GetPlayerManager().playerWeaponsManager.UpdateRangeWeaponTransformToAim();
+            }
+        }
+
+        void SetupEquipmentForAimingEnd()
+        {
+            GetPlayerManager().projectileSpawner.HideArrowPlaceholders();
+            GetPlayerManager().playerWeaponsManager.ShowRightWeapon();
+
+            if (!ignoreBowWeaponTransforms)
+            {
+                GetPlayerManager().playerWeaponsManager.UpdateRangeWeaponTransformToIdle();
+            }
+        }
+
 
         void ShowArrowPlaceholder()
         {
-            if (equipmentDatabase.GetCurrentArrow() != null)
+            if (equipmentDatabase.GetCurrentArrow() != null && isAiming)
             {
                 GetPlayerManager().projectileSpawner.ShowArrowPlaceholder(equipmentDatabase.GetCurrentArrow());
 
@@ -288,8 +334,7 @@ namespace AF.Shooting
             GetPlayerManager().thirdPersonController.rotateWithCamera = false;
             GetPlayerManager().animator.SetBool(hashIsAiming, false);
             GetPlayerManager().thirdPersonController.virtualCamera.gameObject.SetActive(true);
-
-            GetPlayerManager().projectileSpawner.HideArrowPlaceholders();
+            SetupEquipmentForAimingEnd();
         }
 
         private void Update()
@@ -299,7 +344,7 @@ namespace AF.Shooting
 
         public void ShootBow(Arrow arrow, Transform origin, Transform lockOnTarget)
         {
-            ShowArrowPlaceholder();
+            SetupEquipmentForAimingBegin();
 
             if (equipmentDatabase.IsRangeWeaponEquipped())
             {
@@ -638,11 +683,26 @@ namespace AF.Shooting
                 return false;
             }
 
+            if (GetPlayerManager().lockOnManager.isLockedOn)
+            {
+                return false;
+            }
+
+            if (equipmentDatabase.isTwoHanding)
+            {
+                return false;
+            }
+
             return equipmentDatabase.IsRangeWeaponEquipped() || equipmentDatabase.IsStaffEquipped();
         }
 
         public override bool CanShoot()
         {
+            if (equipmentDatabase.isTwoHanding)
+            {
+                return false;
+            }
+
             if (playerStatsDatabase.currentStamina < minimumStaminaToShoot)
             {
                 return false;
@@ -714,7 +774,7 @@ namespace AF.Shooting
         {
             if (isAiming && equipmentDatabase.IsRangeWeaponEquipped())
             {
-                ShowArrowPlaceholder();
+                SetupEquipmentForAimingBegin();
             }
 
             hasAimShotCooldown = false;
@@ -727,7 +787,7 @@ namespace AF.Shooting
                 return false;
             }
 
-            if (equipmentDatabase.GetCurrentWeapon() != null && equipmentDatabase.GetCurrentWeapon().projectileType == bulletProjectileType)
+            if (equipmentDatabase.GetCurrentLeftWeapon() != null && equipmentDatabase.GetCurrentLeftWeapon().projectileType == bulletProjectileType)
             {
                 return false;
             }

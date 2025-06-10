@@ -70,7 +70,7 @@ namespace AF.Inventory
         {
             if (arrowPlaceholderInstances.ContainsKey(arrow))
             {
-                if (playerManager.equipmentDatabase.GetCurrentWeapon() != null && playerManager.equipmentDatabase.GetCurrentWeapon().IsCompatibleWithAmmo(arrow))
+                if (playerManager.equipmentDatabase.GetCurrentLeftWeapon() != null && playerManager.equipmentDatabase.GetCurrentLeftWeapon().IsCompatibleWithAmmo(arrow))
                 {
                     arrowPlaceholderInstances[arrow].SetActive(true);
                 }

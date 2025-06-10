@@ -48,6 +48,7 @@ MonoBehaviour:
       Value: 1
   notes: 
   location: 
+  weaponID: 
   damage:
     physical: 100
     fire: 60
@@ -74,6 +75,7 @@ MonoBehaviour:
   intelligenceRequired: 8
   positiveReputationRequired: 0
   negativeReputationRequired: 0
+  weaponType: {fileID: 11400000, guid: daf8767481113da43a40a690b1b23fb3, type: 2}
   staminaCostPerAttack: 30
   strengthScaling: 2
   dexterityScaling: 3
@@ -134,6 +136,12 @@ MonoBehaviour:
     animationClip: {fileID: -5963623502854497957, guid: 819b611452413ac4cbe14d8781ac0168, type: 3}
   - animationName: Cacildes - Parrying
     animationClip: {fileID: 7400000, guid: 118861ff34cce98438a904a278539d65, type: 2}
+  weaponAnimationData: {fileID: 11400000, guid: 69924c81fd540a64bbc4de8b8c674ba0, type: 2}
+  weaponRangeAnimation: {fileID: 0}
+  oh_weaponAnimationOverrides: []
+  th_weaponAnimationOverrides:
+  - animationName: Cacildes - Heavy Attack - 1
+    animationClip: {fileID: 9067093048684652814, guid: 7ab91d5c43897f0468e920b148d5b957, type: 3}
   lightAttackCombos: 2
   heavyAttackCombos: 1
   th_lightAttackCombos: 2
@@ -141,7 +149,9 @@ MonoBehaviour:
   halveDamage: 0
   speedPenalty: 0.1
   oneHandAttackSpeedPenalty: 1
+  oh_HeavyAttackSpeedPenalty: 1
   twoHandAttackSpeedPenalty: 0.9
+  th_HeavyAttackSpeedPenalty: 0.8
   amountOfGoldReceivedPerHit: 0
   doubleCoinsUponKillingEnemies: 0
   doubleDamageDuringNightTime: 0
@@ -154,6 +164,18 @@ MonoBehaviour:
   blockAbsorption: 0.35
   shouldRegenerateMana: 0
   ignoreSpellsAnimationClips: 0
+  rightHandPosition: {x: 8.3, y: 2.1, z: 1.5}
+  rightHandRotation: {x: 179.116, y: -105.929, z: 91.851}
+  leftHandPosition: {x: 8.9, y: -4.2, z: 1.7}
+  leftHandRotation: {x: 175.791, y: -105.536, z: 88.594}
+  useTwoHandingTransform: 1
+  twoHandingPosition: {x: 0, y: 0, z: 0}
+  twoHandingRotation: {x: 0, y: 0, z: 0}
+  useCustomTwoHandingBlockTransforms: 0
+  th_BlockPosition: {x: 0, y: 0, z: 0}
+  th_BlockRotation: {x: 0, y: 0, z: 0}
+  aimingPosition: {x: 0, y: 0, z: 0}
+  aimingRotation: {x: 0, y: 0, z: 0}
   references:
     version: 2
     RefIds: []

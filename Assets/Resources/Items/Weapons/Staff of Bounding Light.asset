@@ -46,7 +46,7 @@ MonoBehaviour:
     _serializedList: []
   notes: 
   location: 
-  weaponType: {fileID: 11400000, guid: 7add2007967d3c74bb9ab80552d419d1, type: 2}
+  weaponID: 
   damage:
     physical: 0
     fire: 0
@@ -142,8 +142,8 @@ MonoBehaviour:
   intelligenceRequired: 20
   positiveReputationRequired: 10
   negativeReputationRequired: 0
-  lightAttackStaminaCost: 25
-  heavyAttackStaminaCost: 55
+  weaponType: {fileID: 11400000, guid: 15bbc21c50ede9848ae0f245f922626b, type: 2}
+  staminaCostPerAttack: 30
   strengthScaling: 5
   dexterityScaling: 5
   intelligenceScaling: 1
@@ -169,12 +169,20 @@ MonoBehaviour:
     animationClip: {fileID: 7400000, guid: c446ed76b80fe064a9e70d0555a6d27f, type: 3}
   twoHandOverrides: []
   blockOverrides: []
+  weaponAnimationData: {fileID: 11400000, guid: 9e1e04e6c4c268e4e88ea8f8ba3a49bd, type: 2}
+  weaponRangeAnimation: {fileID: 0}
+  oh_weaponAnimationOverrides: []
+  th_weaponAnimationOverrides: []
   lightAttackCombos: 2
   heavyAttackCombos: 1
+  th_lightAttackCombos: 2
+  th_heavyAttackCombos: 1
   halveDamage: 0
   speedPenalty: 0.035
   oneHandAttackSpeedPenalty: 1
+  oh_HeavyAttackSpeedPenalty: 1
   twoHandAttackSpeedPenalty: 1
+  th_HeavyAttackSpeedPenalty: 1
   amountOfGoldReceivedPerHit: 0
   doubleCoinsUponKillingEnemies: 0
   doubleDamageDuringNightTime: 0
@@ -187,6 +195,18 @@ MonoBehaviour:
   blockAbsorption: 0.8
   shouldRegenerateMana: 0
   ignoreSpellsAnimationClips: 0
+  rightHandPosition: {x: 11.1, y: 2.3, z: 1.5}
+  rightHandRotation: {x: 202.861, y: -86.27399, z: 76.497}
+  leftHandPosition: {x: 9.8, y: -3.7, z: 0.2}
+  leftHandRotation: {x: 214.254, y: -265.724, z: 242.06}
+  useTwoHandingTransform: 1
+  twoHandingPosition: {x: 7.1, y: 2.2, z: 1.6}
+  twoHandingRotation: {x: 355.195, y: -468.777, z: 435.226}
+  useCustomTwoHandingBlockTransforms: 0
+  th_BlockPosition: {x: 0, y: 0, z: 0}
+  th_BlockRotation: {x: 0, y: 0, z: 0}
+  aimingPosition: {x: 0, y: 0, z: 0}
+  aimingRotation: {x: 0, y: 0, z: 0}
   references:
     version: 2
     RefIds: []

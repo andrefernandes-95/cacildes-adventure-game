@@ -47,7 +47,7 @@ namespace AF.Inventory
 
         public void SetDefaultItems()
         {
-            ownedItems.Clear();
+            Clear();
 
             foreach (var defaultItem in defaultItems)
             {
