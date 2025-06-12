@@ -343,9 +343,16 @@ namespace AF
             return baseMagicDamage;
         }
 
-        public Damage GetWeaponDamage()
+        public Damage GetWeaponDamage(AttackStatManager attackStatManager)
         {
-            return CalculateValue(this.level);
+            Damage baseDamage = CalculateValue(this.level);
+
+            if (!AreRequirementsMet(attackStatManager.playerManager.statsBonusController))
+            {
+                baseDamage.ScaleDamage(.1f);
+            }
+
+            return baseDamage;
         }
 
         public bool CanBeUpgradedFurther()
@@ -415,9 +422,32 @@ namespace AF
 
         public string DrawRequirements(StatsBonusController statsBonusController)
         {
-            string text = AreRequirementsMet(statsBonusController)
-                ? LocalizationSettings.StringDatabase.GetLocalizedString("UIDocuments", "Requirements met: ")
-                : LocalizationSettings.StringDatabase.GetLocalizedString("UIDocuments", "Requirements not met: ");
+            bool areRequirementsMet = AreRequirementsMet(statsBonusController);
+
+            string text = "";
+            if (areRequirementsMet)
+            {
+                if (Utils.IsPortuguese())
+                {
+                    text = "Requisitos Cumpridos:\n";
+                }
+                else
+                {
+                    text = "Requirements met:\n";
+                }
+            }
+            else
+            {
+                if (Utils.IsPortuguese())
+                {
+                    text = "Requisitos em falta. Arma não causará dano eficiente!\n";
+                }
+                else
+                {
+                    text = "Requirements not met! Weapon won't deal efficient damage!\n";
+                }
+            }
+
 
             if (strengthRequired != 0)
             {

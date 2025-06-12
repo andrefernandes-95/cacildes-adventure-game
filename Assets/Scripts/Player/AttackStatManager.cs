@@ -91,7 +91,7 @@ namespace AF
             return damage;
         }
 
-        Damage CalculateCurrentDamage(Weapon weapon)
+        public Damage CalculateCurrentDamage(Weapon weapon)
         {
 
             int rageBonus = playerManager.rageManager.GetRageBonus();
@@ -121,6 +121,11 @@ namespace AF
                 if (rageBonus > 0)
                 {
                     weaponDamage.damageType = DamageType.ENRAGED;
+                }
+
+                if (!weapon.AreRequirementsMet(playerManager.statsBonusController))
+                {
+                    weaponDamage.ScaleDamage(.1f);
                 }
 
                 return playerManager.playerWeaponsManager.GetBuffedDamage(weaponDamage);

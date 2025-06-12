@@ -59,6 +59,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -144,6 +147,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -218,8 +224,12 @@ MonoBehaviour:
   onDamageInflicted:
     m_PersistentCalls:
       m_Calls: []
+  onWeaponSpecial:
+    m_PersistentCalls:
+      m_Calls: []
   characterTwoHandRef: {fileID: 0}
   characterWeaponBuffs: {fileID: 0}
+  shouldDisableHitboxOnStart: 1
 --- !u!1 &1951857172195744730
 GameObject:
   m_ObjectHideFlags: 0
@@ -267,7 +277,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attackAnimationClip: {fileID: 7400000, guid: 1bc67c801096faa4fb65870d715a2fc4, type: 3}
   attackAnimationName: 
+  comboClip: {fileID: 0}
+  comboClip2: {fileID: 0}
+  comboClip3: {fileID: 0}
   minimumHealthToUse: 100
+  dontUseBelowHalfHealth: 0
+  halfHealthThreshold: 0.5
   minimumDistanceToTarget: 0
   maximumDistanceToTarget: 15
   onAttack_Start:
@@ -310,14 +325,20 @@ MonoBehaviour:
     magic: 0
     lightning: 0
     darkness: 0
+    water: 0
     postureDamage: 10
     poiseDamage: 1
     pushForce: 0
     weaponAttackType: 2
     statusEffects: []
+    ignoreBlocking: 0
+    canNotBeParried: 0
+    damageType: 0
+  targetHitReaction: {fileID: 0}
   maxCooldown: 13
   frequency: 0.5
   animationSpeed: 1
+  hasHyperArmor: 0
   characterManager: {fileID: 7381340480962493717}
 --- !u!1 &2448628496237037697
 GameObject:
@@ -366,7 +387,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attackAnimationClip: {fileID: 7400000, guid: d02986e3ef9384b4d93a17e1751f4ad0, type: 3}
   attackAnimationName: 
+  comboClip: {fileID: 0}
+  comboClip2: {fileID: 0}
+  comboClip3: {fileID: 0}
   minimumHealthToUse: 100
+  dontUseBelowHalfHealth: 0
+  halfHealthThreshold: 0.5
   minimumDistanceToTarget: 0
   maximumDistanceToTarget: 15
   onAttack_Start:
@@ -409,14 +435,20 @@ MonoBehaviour:
     magic: 0
     lightning: 0
     darkness: 0
+    water: 0
     postureDamage: 10
     poiseDamage: 1
     pushForce: 0
     weaponAttackType: 2
     statusEffects: []
+    ignoreBlocking: 0
+    canNotBeParried: 0
+    damageType: 0
+  targetHitReaction: {fileID: 0}
   maxCooldown: 18
   frequency: 0.5
   animationSpeed: 1
+  hasHyperArmor: 0
   characterManager: {fileID: 7381340480962493717}
 --- !u!1 &3033884251711704275
 GameObject:
@@ -468,6 +500,9 @@ TrailRenderer:
   m_ReflectionProbeUsage: 0
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -623,6 +658,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -697,8 +735,12 @@ MonoBehaviour:
   onDamageInflicted:
     m_PersistentCalls:
       m_Calls: []
+  onWeaponSpecial:
+    m_PersistentCalls:
+      m_Calls: []
   characterTwoHandRef: {fileID: 0}
   characterWeaponBuffs: {fileID: 0}
+  shouldDisableHitboxOnStart: 1
 --- !u!1 &4644265299007443184
 GameObject:
   m_ObjectHideFlags: 0
@@ -833,6 +875,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -1004,6 +1049,9 @@ TrailRenderer:
   m_ReflectionProbeUsage: 0
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -1158,6 +1206,9 @@ TrailRenderer:
   m_ReflectionProbeUsage: 0
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -1308,7 +1359,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attackAnimationClip: {fileID: 0}
   attackAnimationName: Firing Arrow
+  comboClip: {fileID: 0}
+  comboClip2: {fileID: 0}
+  comboClip3: {fileID: 0}
   minimumHealthToUse: 100
+  dontUseBelowHalfHealth: 0
+  halfHealthThreshold: 0.5
   minimumDistanceToTarget: 5
   maximumDistanceToTarget: 15
   onAttack_Start:
@@ -1399,14 +1455,20 @@ MonoBehaviour:
     magic: 0
     lightning: 0
     darkness: 0
+    water: 0
     postureDamage: 20
     poiseDamage: 1
     pushForce: 0
     weaponAttackType: 1
     statusEffects: []
+    ignoreBlocking: 0
+    canNotBeParried: 0
+    damageType: 0
+  targetHitReaction: {fileID: 0}
   maxCooldown: 10
   frequency: 0.5
   animationSpeed: 1
+  hasHyperArmor: 0
   characterManager: {fileID: 7381340480962493717}
 --- !u!1001 &113104476957918481
 PrefabInstance:
@@ -1812,11 +1874,15 @@ MonoBehaviour:
     magic: 120
     lightning: 0
     darkness: 0
+    water: 0
     postureDamage: 35
     poiseDamage: 0
     pushForce: 0
     weaponAttackType: 0
     statusEffects: []
+    ignoreBlocking: 0
+    canNotBeParried: 0
+    damageType: 0
   damageOwner: {fileID: 7381340480962493717}
   damageCooldown: 1
   onParticleDamage:
@@ -1846,9 +1912,14 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  doubleDamageOnNightTime: 0
+  gameSession: {fileID: 0}
+  healingAmount: -1
   onAnyCollisionEvent:
     m_PersistentCalls:
       m_Calls: []
+  collisionSound: {fileID: 0}
+  collisionSoundCooldown: 0.1
 --- !u!82 &2130731568678749495
 AudioSource:
   m_ObjectHideFlags: 0
@@ -1860,6 +1931,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: f46fcf711141ce847a8c80654238b29e, type: 3}
+  m_Resource: {fileID: 8300000, guid: f46fcf711141ce847a8c80654238b29e, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -2137,6 +2209,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: fca8d66d7419dd242899ec4c24a5ea8c, type: 3}
+  m_Resource: {fileID: 8300000, guid: fca8d66d7419dd242899ec4c24a5ea8c, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -2242,19 +2315,28 @@ MonoBehaviour:
     magic: 0
     lightning: 0
     darkness: 0
+    water: 0
     postureDamage: 0
     poiseDamage: 0
     pushForce: 0
     weaponAttackType: 0
     statusEffects: []
+    ignoreBlocking: 0
+    canNotBeParried: 0
+    damageType: 0
   damageOwner: {fileID: 7381340480962493717}
   damageCooldown: 1
   onParticleDamage:
     m_PersistentCalls:
       m_Calls: []
+  doubleDamageOnNightTime: 0
+  gameSession: {fileID: 0}
+  healingAmount: -1
   onAnyCollisionEvent:
     m_PersistentCalls:
       m_Calls: []
+  collisionSound: {fileID: 0}
+  collisionSoundCooldown: 0.1
 --- !u!4 &2484369764549102792 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4980513494377442, guid: 9611df09c312972469be124a7e439716, type: 3}
@@ -2699,11 +2781,15 @@ MonoBehaviour:
     magic: 120
     lightning: 0
     darkness: 0
+    water: 0
     postureDamage: 35
     poiseDamage: 0
     pushForce: 0
     weaponAttackType: 0
     statusEffects: []
+    ignoreBlocking: 0
+    canNotBeParried: 0
+    damageType: 0
   damageOwner: {fileID: 7381340480962493717}
   damageCooldown: 1
   onParticleDamage:
@@ -2733,9 +2819,14 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  doubleDamageOnNightTime: 0
+  gameSession: {fileID: 0}
+  healingAmount: -1
   onAnyCollisionEvent:
     m_PersistentCalls:
       m_Calls: []
+  collisionSound: {fileID: 0}
+  collisionSoundCooldown: 0.1
 --- !u!82 &1925392462824919300
 AudioSource:
   m_ObjectHideFlags: 0
@@ -2747,6 +2838,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: f46fcf711141ce847a8c80654238b29e, type: 3}
+  m_Resource: {fileID: 8300000, guid: f46fcf711141ce847a8c80654238b29e, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -3159,6 +3251,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: fca8d66d7419dd242899ec4c24a5ea8c, type: 3}
+  m_Resource: {fileID: 8300000, guid: fca8d66d7419dd242899ec4c24a5ea8c, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -3264,19 +3357,28 @@ MonoBehaviour:
     magic: 0
     lightning: 0
     darkness: 0
+    water: 0
     postureDamage: 0
     poiseDamage: 0
     pushForce: 0
     weaponAttackType: 0
     statusEffects: []
+    ignoreBlocking: 0
+    canNotBeParried: 0
+    damageType: 0
   damageOwner: {fileID: 7381340480962493717}
   damageCooldown: 1
   onParticleDamage:
     m_PersistentCalls:
       m_Calls: []
+  doubleDamageOnNightTime: 0
+  gameSession: {fileID: 0}
+  healingAmount: -1
   onAnyCollisionEvent:
     m_PersistentCalls:
       m_Calls: []
+  collisionSound: {fileID: 0}
+  collisionSoundCooldown: 0.1
 --- !u!198 &4229377480226589430 stripped
 ParticleSystem:
   m_CorrespondingSourceObject: {fileID: 198432596029768808, guid: 9611df09c312972469be124a7e439716, type: 3}
@@ -3646,8 +3748,12 @@ MonoBehaviour:
   onDamageInflicted:
     m_PersistentCalls:
       m_Calls: []
+  onWeaponSpecial:
+    m_PersistentCalls:
+      m_Calls: []
   characterTwoHandRef: {fileID: 0}
   characterWeaponBuffs: {fileID: 0}
+  shouldDisableHitboxOnStart: 1
 --- !u!4 &6025165913397764097 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4924022943716490, guid: 65f514a6efccbc0489fd5896f6da61f5, type: 3}
@@ -3862,7 +3968,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 367355848938220758, guid: 663a2247e56e8454fbccdd591ace33b8, type: 3}
       propertyPath: lootTable._serializedList.Array.size
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 367355848938220758, guid: 663a2247e56e8454fbccdd591ace33b8, type: 3}
       propertyPath: lootTable._serializedList.Array.data[0].Key
@@ -3870,6 +3976,10 @@ PrefabInstance:
       objectReference: {fileID: 11400000, guid: b1921c4d3dffa5042b9796684feb0942, type: 2}
     - target: {fileID: 367355848938220758, guid: 663a2247e56e8454fbccdd591ace33b8, type: 3}
       propertyPath: lootTable._serializedList.Array.data[1].Key
+      value: 
+      objectReference: {fileID: 11400000, guid: ce8ab772debdeb14eacee55593232643, type: 2}
+    - target: {fileID: 367355848938220758, guid: 663a2247e56e8454fbccdd591ace33b8, type: 3}
+      propertyPath: lootTable._serializedList.Array.data[2].Key
       value: 
       objectReference: {fileID: 11400000, guid: 972d348c035257f4282fc9a4bfda91ee, type: 2}
     - target: {fileID: 367355848938220758, guid: 663a2247e56e8454fbccdd591ace33b8, type: 3}
@@ -3879,6 +3989,14 @@ PrefabInstance:
     - target: {fileID: 367355848938220758, guid: 663a2247e56e8454fbccdd591ace33b8, type: 3}
       propertyPath: lootTable._serializedList.Array.data[0].Value.chanceToGet
       value: 85
+      objectReference: {fileID: 0}
+    - target: {fileID: 367355848938220758, guid: 663a2247e56e8454fbccdd591ace33b8, type: 3}
+      propertyPath: lootTable._serializedList.Array.data[1].Value.chanceToGet
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 367355848938220758, guid: 663a2247e56e8454fbccdd591ace33b8, type: 3}
+      propertyPath: lootTable._serializedList.Array.data[2].Value.chanceToGet
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 397369336033479459, guid: 663a2247e56e8454fbccdd591ace33b8, type: 3}
       propertyPath: m_Avatar
@@ -4901,8 +5019,12 @@ MonoBehaviour:
   onDamageInflicted:
     m_PersistentCalls:
       m_Calls: []
+  onWeaponSpecial:
+    m_PersistentCalls:
+      m_Calls: []
   characterTwoHandRef: {fileID: 0}
   characterWeaponBuffs: {fileID: 0}
+  shouldDisableHitboxOnStart: 1
 --- !u!65 &6780580696678480259
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -5062,8 +5184,12 @@ MonoBehaviour:
   onDamageInflicted:
     m_PersistentCalls:
       m_Calls: []
+  onWeaponSpecial:
+    m_PersistentCalls:
+      m_Calls: []
   characterTwoHandRef: {fileID: 0}
   characterWeaponBuffs: {fileID: 0}
+  shouldDisableHitboxOnStart: 1
 --- !u!4 &7151584601142762860 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 424854, guid: 04355395e22dfe046a9cacf61b90d732, type: 3}
@@ -5388,19 +5514,28 @@ MonoBehaviour:
     magic: 100
     lightning: 0
     darkness: 0
+    water: 0
     postureDamage: 35
     poiseDamage: 5
     pushForce: 0
     weaponAttackType: 0
     statusEffects: []
+    ignoreBlocking: 0
+    canNotBeParried: 0
+    damageType: 0
   damageOwner: {fileID: 7381340480962493717}
   damageCooldown: 1
   onParticleDamage:
     m_PersistentCalls:
       m_Calls: []
+  doubleDamageOnNightTime: 0
+  gameSession: {fileID: 0}
+  healingAmount: -1
   onAnyCollisionEvent:
     m_PersistentCalls:
       m_Calls: []
+  collisionSound: {fileID: 0}
+  collisionSoundCooldown: 0.1
 --- !u!82 &6044620482894886786
 AudioSource:
   m_ObjectHideFlags: 0
@@ -5412,6 +5547,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 7603028f5b2751c41b31ca11c765d6c1, type: 3}
+  m_Resource: {fileID: 8300000, guid: 7603028f5b2751c41b31ca11c765d6c1, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1

@@ -25,6 +25,7 @@ namespace AF
 
 		public UnityEvent onDodgeInput;
 		public UnityEvent onLightAttackInput;
+		public bool dodge;
 
 		public bool block;
 		public UnityEvent onBlock_Start;
@@ -63,6 +64,9 @@ namespace AF
 		[Header("Day Night")]
 		public UnityEvent onAdvanceOneHour;
 		public UnityEvent onGoBackOneHour;
+
+		// Abilities
+		[HideInInspector] public UnityEvent onUseAbility;
 
 		[Header("System")]
 		public GameSettings gameSettings;
@@ -119,21 +123,12 @@ namespace AF
 
 		public void OnSprint(InputValue value)
 		{
-			sprint = value.isPressed;
 		}
 
 		public void OnToggleWalk(InputValue value)
 		{
 			toggleWalk = !toggleWalk;
 
-		}
-
-		public void OnDodge(InputValue value)
-		{
-			if (value.isPressed)
-			{
-				onDodgeInput?.Invoke();
-			}
 		}
 
 		public void OnMenu(InputValue value)
@@ -364,6 +359,14 @@ namespace AF
 			}
 
 			onMainMenuUnequipSlot?.Invoke();
+		}
+
+		public void OnUseAbility(InputValue inputValue)
+		{
+			if (inputValue.isPressed)
+			{
+				onUseAbility?.Invoke();
+			}
 		}
 
 		public bool IsPS4Controller()

@@ -80,23 +80,37 @@ namespace AF.Shooting
 
         void Awake()
         {
-            // Allow shooting with left mouse key if locked on
+            // Only allow shooting with left button key with bow if locked on
             GetPlayerManager().starterAssetsInputs.onBlock_Start.AddListener(() =>
             {
-                if (GetPlayerManager().lockOnManager.isLockedOn)
+                if (GetPlayerManager().lockOnManager.isLockedOn && equipmentDatabase.IsRangeWeaponEquipped())
                 {
-                    OnFireInput();
+                    OnFireBowInput();
                 }
             });
 
-            // Or allow shooting with right mouse key if aiming
+            // Or allow shooting with right mouse key if aiming bow or directly shoot if using a staff on the primary weapon
             GetPlayerManager().starterAssetsInputs.onLightAttackInput.AddListener(() =>
             {
+                // Only allow shooting with bow if aiming, or if using magic staff
                 if (isAiming)
                 {
-                    OnFireInput();
+                    if (equipmentDatabase.IsStaffEquipped() && !equipmentDatabase.IsRangeWeaponEquipped())
+                    {
+                        OnFireSpellInput();
+                    }
+                    else if (equipmentDatabase.IsRangeWeaponEquipped())
+                    {
+                        OnFireBowInput();
+                    }
+                }
+                else if (equipmentDatabase.IsStaffEquipped())
+                {
+                    OnFireSpellInput();
                 }
             });
+
+            GetPlayerManager().starterAssetsInputs.onUseAbility.AddListener(OnUseAbilityInput);
         }
 
         public void ResetStates()
@@ -182,11 +196,13 @@ namespace AF.Shooting
         /// <summary>
         /// Unity Event
         /// </summary>
-        public void OnFireInput()
+        public void OnFireBowInput()
         {
             if (CanShoot())
             {
-                if (equipmentDatabase.IsRangeWeaponEquipped() && equipmentDatabase.HasEnoughCurrentArrows())
+                if (
+                    equipmentDatabase.IsRangeWeaponEquipped()
+                    && equipmentDatabase.HasEnoughCurrentArrows())
                 {
                     if (!IsRangeWeaponCompatibleWithProjectile())
                     {
@@ -200,9 +216,15 @@ namespace AF.Shooting
 
                     ShootBow(equipmentDatabase.GetCurrentArrow(), transform, lockOnManager.nearestLockOnTarget?.transform);
                     uIDocumentPlayerHUDV2.UpdateEquipment();
-                    return;
                 }
+            }
+        }
 
+
+        public void OnFireSpellInput()
+        {
+            if (CanShoot())
+            {
                 PlayerManager playerManager = GetPlayerManager();
 
                 if (
@@ -210,7 +232,7 @@ namespace AF.Shooting
                    && equipmentDatabase.GetCurrentSpell() != null
                    && playerManager.manaManager.HasEnoughManaForSpell(equipmentDatabase.GetCurrentSpell()))
                 {
-                    playerManager.manaManager.DecreaseMana(equipmentDatabase.GetCurrentSpell().costPerCast);
+                    playerManager.manaManager.DecreaseMana(equipmentDatabase.GetCurrentSpell().manaCostPerCast);
 
                     HandleSpellCastAnimationOverrides();
 
@@ -346,11 +368,6 @@ namespace AF.Shooting
         {
             SetupEquipmentForAimingBegin();
 
-            if (equipmentDatabase.IsRangeWeaponEquipped())
-            {
-                achievementOnShootingBowForFirstTime.AwardAchievement();
-            }
-
             if (equipmentDatabase.GetCurrentArrow().loseUponFiring)
             {
                 inventoryDatabase.RemoveItem(arrow, 1);
@@ -359,6 +376,20 @@ namespace AF.Shooting
             GetPlayerManager().staminaStatManager.DecreaseStamina(minimumStaminaToShoot);
 
             FireProjectile(arrow.arrowProjectile.gameObject, lockOnTarget, null);
+
+            if (equipmentDatabase.IsRangeWeaponEquipped())
+            {
+                achievementOnShootingBowForFirstTime.AwardAchievement();
+
+                if (isAiming)
+                {
+                    characterBaseManager.PlayBusyHashedAnimation(hashFireBow);
+                }
+                else
+                {
+                    characterBaseManager.PlayBusyHashedAnimation(hashFireBowLockedOn);
+                }
+            }
         }
 
 
@@ -368,7 +399,6 @@ namespace AF.Shooting
         public override void CastSpell()
         {
             ShootSpell(equipmentDatabase.GetCurrentSpell(), lockOnManager.nearestLockOnTarget?.transform);
-
             OnShoot();
         }
 
@@ -398,18 +428,6 @@ namespace AF.Shooting
                 var rotation = lockOnTarget.transform.position - characterBaseManager.transform.position;
                 rotation.y = 0;
                 characterBaseManager.transform.rotation = Quaternion.LookRotation(rotation);
-            }
-
-            if (equipmentDatabase.IsRangeWeaponEquipped())
-            {
-                if (isAiming)
-                {
-                    characterBaseManager.PlayBusyHashedAnimation(hashFireBow);
-                }
-                else
-                {
-                    characterBaseManager.PlayBusyHashedAnimation(hashFireBowLockedOn);
-                }
             }
 
             queuedProjectile = projectile;
@@ -728,10 +746,14 @@ namespace AF.Shooting
                 return false;
             }
 
-            // If not ranged weapons equipped, dont allow shooting
-            if (
-                !equipmentDatabase.IsRangeWeaponEquipped()
-                && !equipmentDatabase.IsStaffEquipped())
+            // If range weapon is equipped but has no ammo, do not allow shooting
+            if (equipmentDatabase.IsRangeWeaponEquipped() && !equipmentDatabase.HasEnoughCurrentArrows())
+            {
+                return false;
+            }
+
+            // If no range nor magic is equipped
+            if (!equipmentDatabase.IsRangeWeaponEquipped() && !equipmentDatabase.IsStaffEquipped())
             {
                 return false;
             }
@@ -811,6 +833,16 @@ namespace AF.Shooting
             }
         }
 
+        void OnUseAbilityInput()
+        {
+            if (equipmentDatabase.GetCurrentSpell() is Spell spell)
+            {
+                if (spell.HasAbility())
+                {
+                    Ability ability = Instantiate(spell.ability);
+                    ability.OnPrepare(GetPlayerManager());
+                }
+            }
+        }
     }
-
 }

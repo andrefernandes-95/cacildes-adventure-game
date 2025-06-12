@@ -1198,7 +1198,7 @@ namespace AF.UI.EquipmentMenu
             {
                 CreateTooltip(statusEffectsSprite, Color.white, spell.GetShortDescription());
             }
-            if (spell.costPerCast > 0)
+            if (spell.manaCostPerCast > 0)
             {
 
                 CreateTooltip(
@@ -1206,7 +1206,7 @@ namespace AF.UI.EquipmentMenu
                     Color.white,
                     String.Format(
                         manaPointsRequiredToCast.GetLocalizedString(),
-                        spell.costPerCast
+                        spell.manaCostPerCast
                 ));
 
             }

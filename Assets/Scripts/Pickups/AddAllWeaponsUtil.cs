@@ -11,7 +11,7 @@ namespace AF
 
         public void OnAddAllWeapons()
         {
-            Weapon[] weapons = Resources.LoadAll<Weapon>("Items/Weapons");
+            Weapon[] weapons = Resources.LoadAll<Weapon>("Items");
             foreach (var weapon in weapons)
             {
                 playerInventory.AddItem(weapon, defaultQuantity);

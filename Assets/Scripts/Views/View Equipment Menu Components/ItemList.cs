@@ -423,26 +423,19 @@ namespace AF.UI.EquipmentMenu
 
                     if (!isEquipped)
                     {
-                        if (!item.AreRequirementsMet(playerManager.statsBonusController))
+
+                        if (playerManager.statsBonusController.ignoreWeaponRequirements)
                         {
-                            notificationManager.ShowNotification(LocalizationSettings.StringDatabase.GetLocalizedString("UIDocuments", "Can't equip weapon. Requirements are not met."), notificationManager.systemError);
-                            ignoreRerender = true;
+                            playerManager.statsBonusController.SetIgnoreNextWeaponToEquipRequirements(false);
+                        }
+
+                        if (isRightHandSlot)
+                        {
+                            playerManager.playerWeaponsManager.EquipWeapon(item, slotIndex);
                         }
                         else
                         {
-                            if (playerManager.statsBonusController.ignoreWeaponRequirements)
-                            {
-                                playerManager.statsBonusController.SetIgnoreNextWeaponToEquipRequirements(false);
-                            }
-
-                            if (isRightHandSlot)
-                            {
-                                playerManager.playerWeaponsManager.EquipWeapon(item, slotIndex);
-                            }
-                            else
-                            {
-                                playerManager.playerWeaponsManager.EquipShield(item, slotIndex);
-                            }
+                            playerManager.playerWeaponsManager.EquipShield(item, slotIndex);
                         }
                     }
                     else
@@ -558,20 +551,7 @@ namespace AF.UI.EquipmentMenu
                     {
                         if (!isEquipped)
                         {
-                            if (!weapon.AreRequirementsMet(playerManager.statsBonusController))
-                            {
-                                notificationManager.ShowNotification(LocalizationSettings.StringDatabase.GetLocalizedString("UIDocuments", "Can't equip weapon. Requirements are not met."), notificationManager.systemError);
-                                ignoreRerender = true;
-                            }
-                            else
-                            {
-                                if (playerManager.statsBonusController.ignoreWeaponRequirements)
-                                {
-                                    playerManager.statsBonusController.SetIgnoreNextWeaponToEquipRequirements(false);
-                                }
-
-                                playerManager.playerWeaponsManager.EquipWeapon(weapon, slotIndex);
-                            }
+                            playerManager.playerWeaponsManager.EquipWeapon(weapon, slotIndex);
                         }
                         else
                         {

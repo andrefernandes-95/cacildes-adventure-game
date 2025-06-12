@@ -52,6 +52,7 @@ namespace AF
         public ExecutionerManager executionerManager;
         public UIDocumentPlayerHUDV2 uIDocumentPlayerHUDV2;
         public UIDocumentAlert uIDocumentAlert;
+        public PlayerAbilityManager playerAbilityManager;
 
         [Header("Databases")]
         public PlayerStatsDatabase playerStatsDatabase;
@@ -118,6 +119,8 @@ namespace AF
             playerBlockController.ResetStates();
 
             attackStatManager.ResetStates();
+
+            playerAbilityManager.ResetStates();
         }
 
         public override Damage GetAttackDamage()

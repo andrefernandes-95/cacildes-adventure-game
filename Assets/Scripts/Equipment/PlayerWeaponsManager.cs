@@ -171,7 +171,14 @@ namespace AF.Equipment
             string weaponName = weapon.name.Replace("(Clone)", "");
 
             // Find weapon in the weapons list
-            var weaponPrefab = weaponInstances.FirstOrDefault(weaponInstance => weaponInstance.name == weaponName);
+            var weaponPrefab = weapon is Shield
+                    ? null
+                    : weaponInstances.FirstOrDefault(weaponInstance => weaponInstance.name == weaponName);
+
+            if (weaponPrefab == null)
+            {
+                weaponPrefab = shieldInstances.FirstOrDefault(shieldInstance => shieldInstance.name == weaponName);
+            }
 
             Transform grip = isRightHand ? rightHandGrip : leftHandGrip;
 
@@ -203,6 +210,11 @@ namespace AF.Equipment
                        instantiatedWeapon.transform.localPosition,
                        instantiatedWeapon.transform.localRotation
                     );
+                }
+
+                if (instatiatedCharacterWeaponHitbox.TryGetComponent<ShieldInstance>(out var shieldInstance))
+                {
+                    shieldInstance.shouldHide = false;
                 }
 
                 instantiatedWeapon.SetActive(true);

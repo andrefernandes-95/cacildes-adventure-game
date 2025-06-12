@@ -161,7 +161,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attackAnimationClip: {fileID: 6733422321397836080, guid: 2357d3c7907b21a4ca15ef2f86fba340, type: 3}
   attackAnimationName: 
+  comboClip: {fileID: 0}
+  comboClip2: {fileID: 0}
+  comboClip3: {fileID: 0}
   minimumHealthToUse: 100
+  dontUseBelowHalfHealth: 0
+  halfHealthThreshold: 0.5
   minimumDistanceToTarget: 0
   maximumDistanceToTarget: 15
   onAttack_Start:
@@ -204,6 +209,7 @@ MonoBehaviour:
     magic: 0
     lightning: 0
     darkness: 0
+    water: 0
     postureDamage: 25
     poiseDamage: 1
     pushForce: 0
@@ -211,9 +217,12 @@ MonoBehaviour:
     statusEffects: []
     ignoreBlocking: 0
     canNotBeParried: 0
+    damageType: 0
+  targetHitReaction: {fileID: 0}
   maxCooldown: 5
   frequency: 0.5
   animationSpeed: 1
+  hasHyperArmor: 0
   characterManager: {fileID: 1681473260980213452}
 --- !u!1 &1175475406794349390
 GameObject:
@@ -412,7 +421,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attackAnimationClip: {fileID: 5885020851004065422, guid: 9c24eb7f06b9e17488449aa30c8ab079, type: 3}
   attackAnimationName: 
+  comboClip: {fileID: 0}
+  comboClip2: {fileID: 0}
+  comboClip3: {fileID: 0}
   minimumHealthToUse: 45
+  dontUseBelowHalfHealth: 0
+  halfHealthThreshold: 0.5
   minimumDistanceToTarget: 0
   maximumDistanceToTarget: 15
   onAttack_Start:
@@ -455,6 +469,7 @@ MonoBehaviour:
     magic: 0
     lightning: 0
     darkness: 0
+    water: 0
     postureDamage: 25
     poiseDamage: 5
     pushForce: 0
@@ -462,9 +477,12 @@ MonoBehaviour:
     statusEffects: []
     ignoreBlocking: 0
     canNotBeParried: 0
+    damageType: 0
+  targetHitReaction: {fileID: 0}
   maxCooldown: 25
   frequency: 0.5
   animationSpeed: 1
+  hasHyperArmor: 0
   characterManager: {fileID: 1681473260980213452}
 --- !u!1 &5123494731882758216
 GameObject:
@@ -548,7 +566,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attackAnimationClip: {fileID: 813172151462287439, guid: 9c24eb7f06b9e17488449aa30c8ab079, type: 3}
   attackAnimationName: 
+  comboClip: {fileID: 0}
+  comboClip2: {fileID: 0}
+  comboClip3: {fileID: 0}
   minimumHealthToUse: 100
+  dontUseBelowHalfHealth: 0
+  halfHealthThreshold: 0.5
   minimumDistanceToTarget: 0
   maximumDistanceToTarget: 15
   onAttack_Start:
@@ -591,6 +614,7 @@ MonoBehaviour:
     magic: 0
     lightning: 0
     darkness: 0
+    water: 0
     postureDamage: 25
     poiseDamage: 1
     pushForce: 0
@@ -598,9 +622,12 @@ MonoBehaviour:
     statusEffects: []
     ignoreBlocking: 0
     canNotBeParried: 0
+    damageType: 0
+  targetHitReaction: {fileID: 0}
   maxCooldown: 5
   frequency: 0.5
   animationSpeed: 1
+  hasHyperArmor: 0
   characterManager: {fileID: 1681473260980213452}
 --- !u!1 &6898416220764291034
 GameObject:
@@ -925,7 +952,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attackAnimationClip: {fileID: -6417464931197693917, guid: a5f6f25e65242dd4e85b5690b7d51b1a, type: 3}
   attackAnimationName: 
+  comboClip: {fileID: 0}
+  comboClip2: {fileID: 0}
+  comboClip3: {fileID: 0}
   minimumHealthToUse: 100
+  dontUseBelowHalfHealth: 0
+  halfHealthThreshold: 0.5
   minimumDistanceToTarget: 0
   maximumDistanceToTarget: 15
   onAttack_Start:
@@ -968,6 +1000,7 @@ MonoBehaviour:
     magic: 0
     lightning: 0
     darkness: 0
+    water: 0
     postureDamage: 25
     poiseDamage: 1
     pushForce: 0
@@ -975,9 +1008,12 @@ MonoBehaviour:
     statusEffects: []
     ignoreBlocking: 0
     canNotBeParried: 0
+    damageType: 0
+  targetHitReaction: {fileID: 0}
   maxCooldown: 5
   frequency: 0.5
   animationSpeed: 1
+  hasHyperArmor: 0
   characterManager: {fileID: 1681473260980213452}
 --- !u!1 &8934079800152380156
 GameObject:
@@ -1577,6 +1613,70 @@ PrefabInstance:
     - target: {fileID: 6594326711843849330, guid: ecfe061d7a2433b4da43fd85ff2ab392, type: 3}
       propertyPath: baseGold
       value: 700
+      objectReference: {fileID: 0}
+    - target: {fileID: 6594326711843849330, guid: ecfe061d7a2433b4da43fd85ff2ab392, type: 3}
+      propertyPath: lootTable._serializedList.Array.size
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 6594326711843849330, guid: ecfe061d7a2433b4da43fd85ff2ab392, type: 3}
+      propertyPath: lootTable._serializedList.Array.data[1].Key
+      value: 
+      objectReference: {fileID: 11400000, guid: 3ed5404c02775b74fb5b57abe1ff59db, type: 2}
+    - target: {fileID: 6594326711843849330, guid: ecfe061d7a2433b4da43fd85ff2ab392, type: 3}
+      propertyPath: lootTable._serializedList.Array.data[2].Key
+      value: 
+      objectReference: {fileID: 11400000, guid: 841710729145f2c47874311360e56003, type: 2}
+    - target: {fileID: 6594326711843849330, guid: ecfe061d7a2433b4da43fd85ff2ab392, type: 3}
+      propertyPath: lootTable._serializedList.Array.data[3].Key
+      value: 
+      objectReference: {fileID: 11400000, guid: 4c517d264a1608848917e01c30c9badd, type: 2}
+    - target: {fileID: 6594326711843849330, guid: ecfe061d7a2433b4da43fd85ff2ab392, type: 3}
+      propertyPath: lootTable._serializedList.Array.data[4].Key
+      value: 
+      objectReference: {fileID: 11400000, guid: c66f982e0ac4c9d4abd5ebde477a2db6, type: 2}
+    - target: {fileID: 6594326711843849330, guid: ecfe061d7a2433b4da43fd85ff2ab392, type: 3}
+      propertyPath: lootTable._serializedList.Array.data[5].Key
+      value: 
+      objectReference: {fileID: 11400000, guid: c7b80243804cf224b8611d62555c750b, type: 2}
+    - target: {fileID: 6594326711843849330, guid: ecfe061d7a2433b4da43fd85ff2ab392, type: 3}
+      propertyPath: lootTable._serializedList.Array.data[6].Key
+      value: 
+      objectReference: {fileID: 11400000, guid: 34940eb18dba32d49aba149541710d2f, type: 2}
+    - target: {fileID: 6594326711843849330, guid: ecfe061d7a2433b4da43fd85ff2ab392, type: 3}
+      propertyPath: lootTable._serializedList.Array.data[7].Key
+      value: 
+      objectReference: {fileID: 11400000, guid: 426a77e7d2d618246a0655dd861c740e, type: 2}
+    - target: {fileID: 6594326711843849330, guid: ecfe061d7a2433b4da43fd85ff2ab392, type: 3}
+      propertyPath: lootTable._serializedList.Array.data[8].Key
+      value: 
+      objectReference: {fileID: 11400000, guid: ca65e72867c01c54e96e909b73e5aef9, type: 2}
+    - target: {fileID: 6594326711843849330, guid: ecfe061d7a2433b4da43fd85ff2ab392, type: 3}
+      propertyPath: lootTable._serializedList.Array.data[6].Value.amount
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6594326711843849330, guid: ecfe061d7a2433b4da43fd85ff2ab392, type: 3}
+      propertyPath: lootTable._serializedList.Array.data[7].Value.amount
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 6594326711843849330, guid: ecfe061d7a2433b4da43fd85ff2ab392, type: 3}
+      propertyPath: lootTable._serializedList.Array.data[1].Value.chanceToGet
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 6594326711843849330, guid: ecfe061d7a2433b4da43fd85ff2ab392, type: 3}
+      propertyPath: lootTable._serializedList.Array.data[2].Value.chanceToGet
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 6594326711843849330, guid: ecfe061d7a2433b4da43fd85ff2ab392, type: 3}
+      propertyPath: lootTable._serializedList.Array.data[6].Value.chanceToGet
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 6594326711843849330, guid: ecfe061d7a2433b4da43fd85ff2ab392, type: 3}
+      propertyPath: lootTable._serializedList.Array.data[7].Value.chanceToGet
+      value: 35
+      objectReference: {fileID: 0}
+    - target: {fileID: 6594326711843849330, guid: ecfe061d7a2433b4da43fd85ff2ab392, type: 3}
+      propertyPath: lootTable._serializedList.Array.data[8].Value.chanceToGet
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 6646092568729378850, guid: ecfe061d7a2433b4da43fd85ff2ab392, type: 3}
       propertyPath: animatorSpeed

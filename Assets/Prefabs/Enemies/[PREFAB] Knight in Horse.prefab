@@ -172,6 +172,7 @@ MonoBehaviour:
       m_Calls: []
   characterTwoHandRef: {fileID: 0}
   characterWeaponBuffs: {fileID: 0}
+  shouldDisableHitboxOnStart: 1
 --- !u!114 &6885517074593422674
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -356,6 +357,7 @@ MonoBehaviour:
       m_Calls: []
   characterTwoHandRef: {fileID: 0}
   characterWeaponBuffs: {fileID: 0}
+  shouldDisableHitboxOnStart: 1
 --- !u!114 &1418571353696480101
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -572,7 +574,11 @@ MonoBehaviour:
   attackAnimationClip: {fileID: 7400000, guid: 8e50355c57a788c4e88e8315f776b330, type: 3}
   attackAnimationName: 
   comboClip: {fileID: 0}
+  comboClip2: {fileID: 0}
+  comboClip3: {fileID: 0}
   minimumHealthToUse: 100
+  dontUseBelowHalfHealth: 0
+  halfHealthThreshold: 0.5
   minimumDistanceToTarget: 0
   maximumDistanceToTarget: 15
   onAttack_Start:
@@ -627,6 +633,7 @@ MonoBehaviour:
     magic: 0
     lightning: 0
     darkness: 0
+    water: 0
     postureDamage: 35
     poiseDamage: 3
     pushForce: 0
@@ -636,9 +643,12 @@ MonoBehaviour:
       amountPerHit: 15
     ignoreBlocking: 0
     canNotBeParried: 0
+    damageType: 0
+  targetHitReaction: {fileID: 0}
   maxCooldown: 8
   frequency: 0.5
   animationSpeed: 1
+  hasHyperArmor: 0
   characterManager: {fileID: 3761702883840361587}
 --- !u!1 &6180600538832603535
 GameObject:
@@ -737,6 +747,7 @@ MonoBehaviour:
       m_Calls: []
   characterTwoHandRef: {fileID: 0}
   characterWeaponBuffs: {fileID: 0}
+  shouldDisableHitboxOnStart: 1
 --- !u!114 &120771183437672704
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -796,7 +807,11 @@ MonoBehaviour:
   attackAnimationClip: {fileID: 7400000, guid: 91175ff854849c1428199edc65f1ed98, type: 3}
   attackAnimationName: 
   comboClip: {fileID: 0}
+  comboClip2: {fileID: 0}
+  comboClip3: {fileID: 0}
   minimumHealthToUse: 100
+  dontUseBelowHalfHealth: 0
+  halfHealthThreshold: 0.5
   minimumDistanceToTarget: 0
   maximumDistanceToTarget: 15
   onAttack_Start:
@@ -839,6 +854,7 @@ MonoBehaviour:
     magic: 0
     lightning: 0
     darkness: 0
+    water: 0
     postureDamage: 35
     poiseDamage: 3
     pushForce: 0
@@ -846,9 +862,12 @@ MonoBehaviour:
     statusEffects: []
     ignoreBlocking: 0
     canNotBeParried: 0
+    damageType: 0
+  targetHitReaction: {fileID: 0}
   maxCooldown: 11
   frequency: 0.5
   animationSpeed: 1
+  hasHyperArmor: 0
   characterManager: {fileID: 3761702883840361587}
 --- !u!1 &8144277913184545767
 GameObject:
@@ -897,7 +916,11 @@ MonoBehaviour:
   attackAnimationClip: {fileID: 7400000, guid: 580a272087bd98d4ebee4aa1cf9aab77, type: 3}
   attackAnimationName: 
   comboClip: {fileID: 0}
+  comboClip2: {fileID: 0}
+  comboClip3: {fileID: 0}
   minimumHealthToUse: 100
+  dontUseBelowHalfHealth: 0
+  halfHealthThreshold: 0.5
   minimumDistanceToTarget: 0
   maximumDistanceToTarget: 15
   onAttack_Start:
@@ -952,6 +975,7 @@ MonoBehaviour:
     magic: 0
     lightning: 0
     darkness: 0
+    water: 0
     postureDamage: 35
     poiseDamage: 3
     pushForce: 0
@@ -961,9 +985,12 @@ MonoBehaviour:
       amountPerHit: 15
     ignoreBlocking: 0
     canNotBeParried: 0
+    damageType: 0
+  targetHitReaction: {fileID: 0}
   maxCooldown: 8
   frequency: 0.5
   animationSpeed: 1
+  hasHyperArmor: 0
   characterManager: {fileID: 3761702883840361587}
 --- !u!1001 &1916966063523846282
 PrefabInstance:
@@ -1470,6 +1497,7 @@ MonoBehaviour:
       m_Calls: []
   characterTwoHandRef: {fileID: 0}
   characterWeaponBuffs: {fileID: 0}
+  shouldDisableHitboxOnStart: 1
 --- !u!65 &5673570662669266273
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1977,7 +2005,7 @@ PrefabInstance:
     - target: {fileID: 4760304326939606693, guid: 1b1f95a788e638a4f9f798b1c4546a0f, type: 3}
       propertyPath: lootTable._serializedList.Array.data[0].Key
       value: 
-      objectReference: {fileID: 11400000, guid: e14655cbc3c2cac458542ab7a249b1c6, type: 2}
+      objectReference: {fileID: 11400000, guid: 994c38efccab9a34486c6e4faad4b565, type: 2}
     - target: {fileID: 4760304326939606693, guid: 1b1f95a788e638a4f9f798b1c4546a0f, type: 3}
       propertyPath: lootTable._serializedList.Array.data[1].Key
       value: 
@@ -2008,7 +2036,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4760304326939606693, guid: 1b1f95a788e638a4f9f798b1c4546a0f, type: 3}
       propertyPath: lootTable._serializedList.Array.data[0].Value.chanceToGet
-      value: 100
+      value: 18
       objectReference: {fileID: 0}
     - target: {fileID: 4760304326939606693, guid: 1b1f95a788e638a4f9f798b1c4546a0f, type: 3}
       propertyPath: lootTable._serializedList.Array.data[1].Value.chanceToGet

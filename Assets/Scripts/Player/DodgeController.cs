@@ -33,6 +33,11 @@ namespace AF
         [Header("Unity Events")]
         public UnityEvent onDodge;
 
+        private void Awake()
+        {
+            playerManager.starterAssetsInputs.onDodgeInput.AddListener(OnDodgeInput);
+        }
+
         public void ResetStates()
         {
             isDodging = false;

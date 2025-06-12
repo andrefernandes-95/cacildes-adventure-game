@@ -140,8 +140,7 @@ namespace AF.Health
                 this.pushForce += playerReputation > 0 ? (playerReputation * 0.1f) : 0;
             }
 
-            Damage weaponDamage = currentWeapon.GetWeaponDamage();
-
+            Damage weaponDamage = currentWeapon.GetWeaponDamage(attackStatManager);
 
             if (weaponDamage.statusEffects != null && weaponDamage.statusEffects.Length > 0)
             {

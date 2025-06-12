@@ -46,7 +46,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attackAnimationClip: {fileID: 7400000, guid: e550e30a1b0df2c46b6fa4724955402f, type: 3}
   attackAnimationName: 
+  comboClip: {fileID: 0}
+  comboClip2: {fileID: 0}
+  comboClip3: {fileID: 0}
   minimumHealthToUse: 100
+  dontUseBelowHalfHealth: 0
+  halfHealthThreshold: 0.5
   minimumDistanceToTarget: 0
   maximumDistanceToTarget: 15
   onAttack_Start:
@@ -88,11 +93,21 @@ MonoBehaviour:
     frost: 0
     magic: 0
     lightning: 0
+    darkness: 0
+    water: 0
     postureDamage: 10
     poiseDamage: 1
+    pushForce: 0
     weaponAttackType: 0
+    statusEffects: []
+    ignoreBlocking: 0
+    canNotBeParried: 0
+    damageType: 0
+  targetHitReaction: {fileID: 0}
   maxCooldown: 10
   frequency: 0.35
+  animationSpeed: 1
+  hasHyperArmor: 0
   characterManager: {fileID: 217850842703514756}
 --- !u!1 &2386526863453919841
 GameObject:
@@ -140,7 +155,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attackAnimationClip: {fileID: 7400000, guid: a5f724ae6aa0f494bbbe6cae63cedc2f, type: 3}
   attackAnimationName: 
+  comboClip: {fileID: 0}
+  comboClip2: {fileID: 0}
+  comboClip3: {fileID: 0}
   minimumHealthToUse: 40
+  dontUseBelowHalfHealth: 0
+  halfHealthThreshold: 0.5
   minimumDistanceToTarget: 0
   maximumDistanceToTarget: 15
   onAttack_Start:
@@ -182,11 +202,21 @@ MonoBehaviour:
     frost: 0
     magic: 0
     lightning: 0
+    darkness: 0
+    water: 0
     postureDamage: 15
     poiseDamage: 1
+    pushForce: 0
     weaponAttackType: 0
+    statusEffects: []
+    ignoreBlocking: 0
+    canNotBeParried: 0
+    damageType: 0
+  targetHitReaction: {fileID: 0}
   maxCooldown: 15
   frequency: 0.4
+  animationSpeed: 1
+  hasHyperArmor: 0
   characterManager: {fileID: 217850842703514756}
 --- !u!1 &2550499763393749620
 GameObject:
@@ -234,7 +264,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attackAnimationClip: {fileID: 7400000, guid: 7fdf22ea023b4ec4caa287678de28029, type: 3}
   attackAnimationName: 
+  comboClip: {fileID: 0}
+  comboClip2: {fileID: 0}
+  comboClip3: {fileID: 0}
   minimumHealthToUse: 40
+  dontUseBelowHalfHealth: 0
+  halfHealthThreshold: 0.5
   minimumDistanceToTarget: 0
   maximumDistanceToTarget: 15
   onAttack_Start:
@@ -276,11 +311,21 @@ MonoBehaviour:
     frost: 0
     magic: 0
     lightning: 0
+    darkness: 0
+    water: 0
     postureDamage: 15
     poiseDamage: 1
+    pushForce: 0
     weaponAttackType: 0
+    statusEffects: []
+    ignoreBlocking: 0
+    canNotBeParried: 0
+    damageType: 0
+  targetHitReaction: {fileID: 0}
   maxCooldown: 12
   frequency: 0.4
+  animationSpeed: 1
+  hasHyperArmor: 0
   characterManager: {fileID: 217850842703514756}
 --- !u!1 &3198008350601967517
 GameObject:
@@ -354,6 +399,9 @@ TrailRenderer:
   m_ReflectionProbeUsage: 0
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -495,7 +543,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attackAnimationClip: {fileID: 7400000, guid: 475796453e56ae447b098689c94bcfb5, type: 3}
   attackAnimationName: 
+  comboClip: {fileID: 0}
+  comboClip2: {fileID: 0}
+  comboClip3: {fileID: 0}
   minimumHealthToUse: 100
+  dontUseBelowHalfHealth: 0
+  halfHealthThreshold: 0.5
   minimumDistanceToTarget: 0
   maximumDistanceToTarget: 15
   onAttack_Start:
@@ -537,11 +590,21 @@ MonoBehaviour:
     frost: 0
     magic: 0
     lightning: 0
+    darkness: 0
+    water: 0
     postureDamage: 10
     poiseDamage: 1
+    pushForce: 0
     weaponAttackType: 0
+    statusEffects: []
+    ignoreBlocking: 0
+    canNotBeParried: 0
+    damageType: 0
+  targetHitReaction: {fileID: 0}
   maxCooldown: 10
   frequency: 0.35
+  animationSpeed: 1
+  hasHyperArmor: 0
   characterManager: {fileID: 217850842703514756}
 --- !u!1 &7926564632737205854
 GameObject:
@@ -589,7 +652,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attackAnimationClip: {fileID: 7400000, guid: 5006accdf7574a1449b2cca3d5f50c5b, type: 2}
   attackAnimationName: 
+  comboClip: {fileID: 0}
+  comboClip2: {fileID: 0}
+  comboClip3: {fileID: 0}
   minimumHealthToUse: 65
+  dontUseBelowHalfHealth: 0
+  halfHealthThreshold: 0.5
   minimumDistanceToTarget: 0
   maximumDistanceToTarget: 15
   onAttack_Start:
@@ -631,11 +699,21 @@ MonoBehaviour:
     frost: 0
     magic: 0
     lightning: 0
+    darkness: 0
+    water: 0
     postureDamage: 15
     poiseDamage: 1
+    pushForce: 0
     weaponAttackType: 0
+    statusEffects: []
+    ignoreBlocking: 0
+    canNotBeParried: 0
+    damageType: 0
+  targetHitReaction: {fileID: 0}
   maxCooldown: 12
   frequency: 0.4
+  animationSpeed: 1
+  hasHyperArmor: 0
   characterManager: {fileID: 217850842703514756}
 --- !u!1 &8228346122967141300
 GameObject:
@@ -683,7 +761,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attackAnimationClip: {fileID: 7400000, guid: 134c8fdfc8403274389b8e06e2397bb6, type: 3}
   attackAnimationName: 
+  comboClip: {fileID: 0}
+  comboClip2: {fileID: 0}
+  comboClip3: {fileID: 0}
   minimumHealthToUse: 100
+  dontUseBelowHalfHealth: 0
+  halfHealthThreshold: 0.5
   minimumDistanceToTarget: 0
   maximumDistanceToTarget: 15
   onAttack_Start:
@@ -725,11 +808,21 @@ MonoBehaviour:
     frost: 0
     magic: 0
     lightning: 0
+    darkness: 0
+    water: 0
     postureDamage: 10
     poiseDamage: 1
+    pushForce: 0
     weaponAttackType: 0
+    statusEffects: []
+    ignoreBlocking: 0
+    canNotBeParried: 0
+    damageType: 0
+  targetHitReaction: {fileID: 0}
   maxCooldown: 10
   frequency: 0.35
+  animationSpeed: 1
+  hasHyperArmor: 0
   characterManager: {fileID: 217850842703514756}
 --- !u!1 &9046930007842195096
 GameObject:
@@ -803,6 +896,9 @@ TrailRenderer:
   m_ReflectionProbeUsage: 0
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -1020,7 +1116,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2331984330916286163, guid: 0dc023b7099ec0d4382589bad3b1d108, type: 3}
       propertyPath: lootTable._serializedList.Array.size
-      value: 4
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 2331984330916286163, guid: 0dc023b7099ec0d4382589bad3b1d108, type: 3}
       propertyPath: lootTable._serializedList.Array.data[0].Key
@@ -1029,7 +1125,7 @@ PrefabInstance:
     - target: {fileID: 2331984330916286163, guid: 0dc023b7099ec0d4382589bad3b1d108, type: 3}
       propertyPath: lootTable._serializedList.Array.data[1].Key
       value: 
-      objectReference: {fileID: 11400000, guid: 01c8fe91b1ac5d84a893659551f50e6a, type: 2}
+      objectReference: {fileID: 11400000, guid: c155e7491389387469d0d2236b4595e6, type: 2}
     - target: {fileID: 2331984330916286163, guid: 0dc023b7099ec0d4382589bad3b1d108, type: 3}
       propertyPath: lootTable._serializedList.Array.data[2].Key
       value: 
@@ -1048,7 +1144,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2331984330916286163, guid: 0dc023b7099ec0d4382589bad3b1d108, type: 3}
       propertyPath: lootTable._serializedList.Array.data[1].Value.amount
-      value: 3
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2331984330916286163, guid: 0dc023b7099ec0d4382589bad3b1d108, type: 3}
       propertyPath: lootTable._serializedList.Array.data[2].Value.amount
@@ -1064,7 +1160,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2331984330916286163, guid: 0dc023b7099ec0d4382589bad3b1d108, type: 3}
       propertyPath: lootTable._serializedList.Array.data[1].Value.chanceToGet
-      value: 35
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 2331984330916286163, guid: 0dc023b7099ec0d4382589bad3b1d108, type: 3}
       propertyPath: lootTable._serializedList.Array.data[2].Value.chanceToGet
@@ -1526,7 +1622,6 @@ MonoBehaviour:
   weapon: {fileID: 0}
   trailRenderer: {fileID: 2720060859136446859}
   character: {fileID: 217850842703514756}
-  soundbank: {fileID: 0}
   tagsToIgnore: []
   swingSfx: {fileID: 8300000, guid: 02ab88e7eae1f8c479d91a9753d24446, type: 3}
   hitSfx: {fileID: 8300000, guid: 597dbbb49dcb4834d8230f7846dc61f5, type: 3}
@@ -1537,6 +1632,15 @@ MonoBehaviour:
   onCloseHitbox:
     m_PersistentCalls:
       m_Calls: []
+  onDamageInflicted:
+    m_PersistentCalls:
+      m_Calls: []
+  onWeaponSpecial:
+    m_PersistentCalls:
+      m_Calls: []
+  characterTwoHandRef: {fileID: 0}
+  characterWeaponBuffs: {fileID: 0}
+  shouldDisableHitboxOnStart: 1
 --- !u!1001 &5178810944967788302
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1661,7 +1765,6 @@ MonoBehaviour:
   weapon: {fileID: 0}
   trailRenderer: {fileID: 1130266265160045575}
   character: {fileID: 217850842703514756}
-  soundbank: {fileID: 0}
   tagsToIgnore: []
   swingSfx: {fileID: 8300000, guid: 02ab88e7eae1f8c479d91a9753d24446, type: 3}
   hitSfx: {fileID: 8300000, guid: 597dbbb49dcb4834d8230f7846dc61f5, type: 3}
@@ -1672,3 +1775,12 @@ MonoBehaviour:
   onCloseHitbox:
     m_PersistentCalls:
       m_Calls: []
+  onDamageInflicted:
+    m_PersistentCalls:
+      m_Calls: []
+  onWeaponSpecial:
+    m_PersistentCalls:
+      m_Calls: []
+  characterTwoHandRef: {fileID: 0}
+  characterWeaponBuffs: {fileID: 0}
+  shouldDisableHitboxOnStart: 1

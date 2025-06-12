@@ -15,12 +15,12 @@ RenderSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 10
   m_Fog: 1
-  m_FogColor: {r: 0.36385056, g: 0.72709274, b: 0.75421214, a: 1}
+  m_FogColor: {r: 0.44240808, g: 0.9430935, b: 0.9602867, a: 1}
   m_FogMode: 3
   m_FogDensity: 0.03
   m_LinearFogStart: 0
   m_LinearFogEnd: 300
-  m_AmbientSkyColor: {r: 0.5195495, g: 0.49446267, b: 0.5096474, a: 1}
+  m_AmbientSkyColor: {r: 0.47348484, g: 0.43362352, b: 0.46124488, a: 1}
   m_AmbientEquatorColor: {r: 0.22098611, g: 0.23556425, b: 0.24528301, a: 1}
   m_AmbientGroundColor: {r: 0.8301887, g: 0.8301887, b: 0.8301887, a: 1}
   m_AmbientIntensity: 0.79
@@ -38,12 +38,12 @@ RenderSettings:
   m_ReflectionIntensity: 0.197
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 0.197}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
-  serializedVersion: 12
+  serializedVersion: 13
+  m_BakeOnSceneLoad: 0
   m_GISettings:
     serializedVersion: 2
     m_BounceScale: 1
@@ -2256,6 +2256,7 @@ MonoBehaviour:
   comboClip3: {fileID: 0}
   minimumHealthToUse: 100
   dontUseBelowHalfHealth: 0
+  halfHealthThreshold: 0.5
   minimumDistanceToTarget: 0
   maximumDistanceToTarget: 15
   onAttack_Start:
@@ -2310,6 +2311,7 @@ MonoBehaviour:
     magic: 0
     lightning: 0
     darkness: 0
+    water: 0
     postureDamage: 0
     poiseDamage: 0
     pushForce: 0
@@ -2318,9 +2320,11 @@ MonoBehaviour:
     ignoreBlocking: 0
     canNotBeParried: 0
     damageType: 0
+  targetHitReaction: {fileID: 0}
   maxCooldown: 11
   frequency: 0.35
   animationSpeed: 1
+  hasHyperArmor: 0
   characterManager: {fileID: 2092140631}
 --- !u!1001 &243389438
 PrefabInstance:
@@ -3071,6 +3075,7 @@ MonoBehaviour:
   comboClip3: {fileID: 0}
   minimumHealthToUse: 49
   dontUseBelowHalfHealth: 0
+  halfHealthThreshold: 0.5
   minimumDistanceToTarget: 0
   maximumDistanceToTarget: 15
   onAttack_Start:
@@ -3113,6 +3118,7 @@ MonoBehaviour:
     magic: 0
     lightning: 0
     darkness: 0
+    water: 0
     postureDamage: 35
     poiseDamage: 5
     pushForce: 0
@@ -3121,9 +3127,11 @@ MonoBehaviour:
     ignoreBlocking: 0
     canNotBeParried: 0
     damageType: 0
+  targetHitReaction: {fileID: 0}
   maxCooldown: 8
   frequency: 0.5
   animationSpeed: 0.85
+  hasHyperArmor: 0
   characterManager: {fileID: 2092140631}
 --- !u!1001 &377198191
 PrefabInstance:
@@ -3578,6 +3586,7 @@ MonoBehaviour:
   comboClip3: {fileID: 0}
   minimumHealthToUse: 100
   dontUseBelowHalfHealth: 1
+  halfHealthThreshold: 0.5
   minimumDistanceToTarget: 0
   maximumDistanceToTarget: 15
   onAttack_Start:
@@ -3620,6 +3629,7 @@ MonoBehaviour:
     magic: 0
     lightning: 0
     darkness: 0
+    water: 0
     postureDamage: 10
     poiseDamage: 1
     pushForce: 0
@@ -3628,9 +3638,11 @@ MonoBehaviour:
     ignoreBlocking: 0
     canNotBeParried: 0
     damageType: 0
+  targetHitReaction: {fileID: 0}
   maxCooldown: 6
   frequency: 0.5
   animationSpeed: 1
+  hasHyperArmor: 0
   characterManager: {fileID: 2092140631}
 --- !u!1 &403924697 stripped
 GameObject:
@@ -3898,6 +3910,7 @@ MonoBehaviour:
   comboClip3: {fileID: 0}
   minimumHealthToUse: 100
   dontUseBelowHalfHealth: 0
+  halfHealthThreshold: 0.5
   minimumDistanceToTarget: 0
   maximumDistanceToTarget: 15
   onAttack_Start:
@@ -3952,6 +3965,7 @@ MonoBehaviour:
     magic: 0
     lightning: 0
     darkness: 0
+    water: 0
     postureDamage: 0
     poiseDamage: 0
     pushForce: 0
@@ -3960,9 +3974,11 @@ MonoBehaviour:
     ignoreBlocking: 0
     canNotBeParried: 0
     damageType: 0
+  targetHitReaction: {fileID: 0}
   maxCooldown: 11
   frequency: 0.35
   animationSpeed: 1
+  hasHyperArmor: 0
   characterManager: {fileID: 2092140631}
 --- !u!1 &456332316
 GameObject:
@@ -4038,6 +4054,50 @@ MonoBehaviour:
     _prefab: Assets/Prefabs/System/-- Core --.prefab
   - _gameObject: {fileID: 1080867504}
     _prefab: Assets/Prefabs/System/-- Core --.prefab
+  - _gameObject: {fileID: 1080867504}
+    _prefab: Assets/Prefabs/System/-- Core --.prefab
+  - _gameObject: {fileID: 1080867504}
+    _prefab: Assets/Prefabs/System/-- Core --.prefab
+  - _gameObject: {fileID: 1080867504}
+    _prefab: Assets/Prefabs/System/-- Core --.prefab
+  - _gameObject: {fileID: 1080867504}
+    _prefab: Assets/Prefabs/System/-- Core --.prefab
+  - _gameObject: {fileID: 1080867504}
+    _prefab: Assets/Prefabs/System/-- Core --.prefab
+  - _gameObject: {fileID: 1080867504}
+    _prefab: Assets/Prefabs/System/-- Core --.prefab
+  - _gameObject: {fileID: 1080867504}
+    _prefab: Assets/Prefabs/System/-- Core --.prefab
+  - _gameObject: {fileID: 1080867504}
+    _prefab: Assets/Prefabs/System/-- Core --.prefab
+  - _gameObject: {fileID: 1080867504}
+    _prefab: Assets/Prefabs/System/-- Core --.prefab
+  - _gameObject: {fileID: 1080867504}
+    _prefab: Assets/Prefabs/System/-- Core --.prefab
+  - _gameObject: {fileID: 1080867504}
+    _prefab: Assets/Prefabs/System/-- Core --.prefab
+  - _gameObject: {fileID: 1080867504}
+    _prefab: Assets/Prefabs/System/-- Core --.prefab
+  - _gameObject: {fileID: 1080867504}
+    _prefab: Assets/Prefabs/System/-- Core --.prefab
+  - _gameObject: {fileID: 1080867504}
+    _prefab: Assets/Prefabs/System/-- Core --.prefab
+  - _gameObject: {fileID: 1080867504}
+    _prefab: Assets/Prefabs/System/-- Core --.prefab
+  - _gameObject: {fileID: 1080867504}
+    _prefab: Assets/Prefabs/System/-- Core --.prefab
+  - _gameObject: {fileID: 1080867504}
+    _prefab: Assets/Prefabs/System/-- Core --.prefab
+  - _gameObject: {fileID: 1080867504}
+    _prefab: Assets/Prefabs/System/-- Core --.prefab
+  - _gameObject: {fileID: 1080867504}
+    _prefab: Assets/Prefabs/System/-- Core --.prefab
+  - _gameObject: {fileID: 1080867504}
+    _prefab: Assets/Prefabs/System/-- Core --.prefab
+  - _gameObject: {fileID: 1080867504}
+    _prefab: Assets/Prefabs/System/-- Core --.prefab
+  - _gameObject: {fileID: 1080867504}
+    _prefab: Assets/Prefabs/System/-- Core --.prefab
   - _gameObject: {fileID: 1080867503}
     _prefab: Assets/Prefabs/Characters/Cacildes Graphics.prefab
   - _gameObject: {fileID: 1080867503}
@@ -4051,6 +4111,8 @@ MonoBehaviour:
   - _gameObject: {fileID: 503732870}
     _prefab: Assets/_Asset Store/PolygonFantasyHeroCharacters/Prefabs/Weapons/SM_Wep_Shield_Buckler_01.prefab
   - _gameObject: {fileID: 503732869}
+    _prefab: Assets/_Asset Store/PolygonFantasyHeroCharacters/Prefabs/Weapons/SM_Wep_Shield_Buckler_01.prefab
+  - _gameObject: {fileID: 1684407668}
     _prefab: Assets/_Asset Store/PolygonFantasyHeroCharacters/Prefabs/Weapons/SM_Wep_Shield_Buckler_01.prefab
   - _gameObject: {fileID: 503732868}
     _prefab: Assets/_Asset Store/PolygonFantasyHeroCharacters/Prefabs/Weapons/SM_Wep_Shield_Buckler_01.prefab
@@ -4068,45 +4130,87 @@ MonoBehaviour:
     _prefab: Assets/_Asset Store/PolygonFantasyKingdom/Prefabs/Weapons/SM_Wep_Dagger_05.prefab
   - _gameObject: {fileID: 1080867504}
     _prefab: Assets/Prefabs/System/-- Core --.prefab
+  - _gameObject: {fileID: 1684407667}
+    _prefab: Assets/_Asset Store/PolygonFantasyKingdom/Prefabs/Weapons/SM_Wep_Dagger_05.prefab
+  - _gameObject: {fileID: 1080867504}
+    _prefab: Assets/Prefabs/System/-- Core --.prefab
+  - _gameObject: {fileID: 1684407666}
+    _prefab: Assets/_Asset Store/PolygonFantasyKingdom/Prefabs/Weapons/SM_Wep_Dagger_05.prefab
+  - _gameObject: {fileID: 1080867504}
+    _prefab: Assets/Prefabs/System/-- Core --.prefab
+  - _gameObject: {fileID: 1684407665}
+    _prefab: Assets/_Asset Store/PolygonFantasyKingdom/Prefabs/Weapons/SM_Wep_Dagger_05.prefab
+  - _gameObject: {fileID: 1080867504}
+    _prefab: Assets/Prefabs/System/-- Core --.prefab
   - _gameObject: {fileID: 1080867503}
     _prefab: Assets/Prefabs/Characters/Cacildes Graphics.prefab
-  - _gameObject: {fileID: 2031585959}
-    _prefab: Assets/_Asset Store/PolygonFantasyHeroCharacters/Prefabs/Weapons/SM_Wep_Shield_Buckler_01.prefab
-  - _gameObject: {fileID: 503732884}
-    _prefab: Assets/_Asset Store/PolygonFantasyHeroCharacters/Prefabs/Weapons/SM_Wep_Shield_Buckler_01.prefab
-  - _gameObject: {fileID: 503732883}
-    _prefab: Assets/_Asset Store/PolygonFantasyHeroCharacters/Prefabs/Weapons/SM_Wep_Shield_Buckler_01.prefab
-  - _gameObject: {fileID: 503732882}
-    _prefab: Assets/_Asset Store/PolygonFantasyHeroCharacters/Prefabs/Weapons/SM_Wep_Shield_Buckler_01.prefab
-  - _gameObject: {fileID: 503732881}
-    _prefab: Assets/_Asset Store/PolygonFantasyHeroCharacters/Prefabs/Weapons/SM_Wep_Shield_Buckler_01.prefab
   - _gameObject: {fileID: 503732880}
     _prefab: Assets/_Asset Store/PolygonFantasyHeroCharacters/Prefabs/Weapons/SM_Wep_Shield_Buckler_01.prefab
-  - _gameObject: {fileID: 503732879}
+  - _gameObject: {fileID: 1080867504}
+    _prefab: Assets/Prefabs/System/-- Core --.prefab
+  - _gameObject: {fileID: 1684407664}
     _prefab: Assets/_Asset Store/PolygonFantasyHeroCharacters/Prefabs/Weapons/SM_Wep_Shield_Buckler_01.prefab
-  - _gameObject: {fileID: 503732878}
+  - _gameObject: {fileID: 1080867504}
+    _prefab: Assets/Prefabs/System/-- Core --.prefab
+  - _gameObject: {fileID: 1684407663}
     _prefab: Assets/_Asset Store/PolygonFantasyHeroCharacters/Prefabs/Weapons/SM_Wep_Shield_Buckler_01.prefab
-  - _gameObject: {fileID: 503732872}
+  - _gameObject: {fileID: 1080867504}
+    _prefab: Assets/Prefabs/System/-- Core --.prefab
+  - _gameObject: {fileID: 1684407662}
     _prefab: Assets/_Asset Store/PolygonFantasyHeroCharacters/Prefabs/Weapons/SM_Wep_Shield_Buckler_01.prefab
-  - _gameObject: {fileID: 503732877}
+  - _gameObject: {fileID: 1080867504}
+    _prefab: Assets/Prefabs/System/-- Core --.prefab
+  - _gameObject: {fileID: 1684407661}
     _prefab: Assets/_Asset Store/PolygonFantasyHeroCharacters/Prefabs/Weapons/SM_Wep_Shield_Buckler_01.prefab
+  - _gameObject: {fileID: 1080867504}
+    _prefab: Assets/Prefabs/System/-- Core --.prefab
+  - _gameObject: {fileID: 1684407660}
+    _prefab: Assets/_Asset Store/PolygonFantasyHeroCharacters/Prefabs/Weapons/SM_Wep_Shield_Buckler_01.prefab
+  - _gameObject: {fileID: 1080867504}
+    _prefab: Assets/Prefabs/System/-- Core --.prefab
+  - _gameObject: {fileID: 1684407659}
+    _prefab: Assets/_Asset Store/PolygonFantasyHeroCharacters/Prefabs/Weapons/SM_Wep_Shield_Buckler_01.prefab
+  - _gameObject: {fileID: 1080867504}
+    _prefab: Assets/Prefabs/System/-- Core --.prefab
+  - _gameObject: {fileID: 1684407658}
+    _prefab: Assets/_Asset Store/PolygonFantasyHeroCharacters/Prefabs/Weapons/SM_Wep_Shield_Buckler_01.prefab
+  - _gameObject: {fileID: 1080867504}
+    _prefab: Assets/Prefabs/System/-- Core --.prefab
+  - _gameObject: {fileID: 1684407657}
+    _prefab: Assets/_Asset Store/PolygonFantasyHeroCharacters/Prefabs/Weapons/SM_Wep_Shield_Buckler_01.prefab
+  - _gameObject: {fileID: 1080867504}
+    _prefab: Assets/Prefabs/System/-- Core --.prefab
+  - _gameObject: {fileID: 1684407656}
+    _prefab: Assets/_Asset Store/PolygonFantasyHeroCharacters/Prefabs/Weapons/SM_Wep_Shield_Buckler_01.prefab
+  - _gameObject: {fileID: 1080867504}
+    _prefab: Assets/Prefabs/System/-- Core --.prefab
+  - _gameObject: {fileID: 1684407655}
+    _prefab: Assets/_Asset Store/PolygonFantasyHeroCharacters/Prefabs/Weapons/SM_Wep_Shield_Buckler_01.prefab
+  - _gameObject: {fileID: 1080867504}
+    _prefab: Assets/Prefabs/System/-- Core --.prefab
   - _gameObject: {fileID: 2031585958}
     _prefab: Assets/_Asset Store/PolygonFantasyKingdom/Prefabs/Weapons/SM_Prop_Bow_Rigged_01.prefab
   - _gameObject: {fileID: 815023560}
     _prefab: Assets/_Asset Store/PolygonFantasyKingdom/Models/SM_Prop_Crossbow_01.fbx
+  - _gameObject: {fileID: 1684407654}
+    _prefab: Assets/_Asset Store/PolygonFantasyKingdom/Models/SM_Prop_Crossbow_01.fbx
   - _gameObject: {fileID: 503732876}
     _prefab: Assets/_Asset Store/PolygonFantasyKingdom/Prefabs/Weapons/SM_Prop_Bow_Rigged_01.prefab
-  - _gameObject: {fileID: 503732875}
-    _prefab: Assets/_Asset Store/Animations - Blink/FreeRPGWeapons/Bow/Bow.fbx
+  - _gameObject: {fileID: 1684407653}
+    _prefab: Assets/_Asset Store/PolygonFantasyKingdom/Prefabs/Weapons/SM_Prop_Bow_Rigged_02.prefab
   - _gameObject: {fileID: 503732874}
     _prefab: Assets/_Asset Store/PolygonFantasyKingdom/Prefabs/Weapons/SM_Prop_Bow_Rigged_01.prefab
   - _gameObject: {fileID: 503732873}
     _prefab: Assets/_Asset Store/Animations - Grruzam Archer Animation/Modeling/Unity_Grruzam_BaseModeling_Bow.FBX
+  - _gameObject: {fileID: 1684407652}
+    _prefab: Assets/PolygonElvenRealm/Prefabs/Weapons/SM_Wep_Bow_01.prefab
   - _gameObject: {fileID: 2031585957}
     _prefab: Assets/_Asset Store/PolygonParticleFX/Prefabs/[PREFAB] FX Parry.prefab
   - _gameObject: {fileID: 2031585956}
     _prefab: Assets/_Asset Store/PolygonParticleFX/Prefabs/[PREFAB] Wooden Shield
       Block.prefab
+  - _gameObject: {fileID: 1080867504}
+    _prefab: Assets/Prefabs/System/-- Core --.prefab
   - _gameObject: {fileID: 1080867503}
     _prefab: Assets/Prefabs/Characters/Cacildes Graphics.prefab
   - _gameObject: {fileID: 1080867503}
@@ -4154,6 +4258,28 @@ MonoBehaviour:
   - _gameObject: {fileID: 503732896}
     _prefab: Assets/_Asset Store/PolygonParticleFX/Prefabs/FX_Poison_Green_01.prefab
   - _gameObject: {fileID: 503732894}
+    _prefab: Assets/_Asset Store/PolygonParticleFX/Prefabs/FX_Poison_Green_01.prefab
+  - _gameObject: {fileID: 1080867504}
+    _prefab: Assets/Prefabs/System/-- Core --.prefab
+  - _gameObject: {fileID: 1684407651}
+    _prefab: Assets/_Asset Store/PolygonDungeon/Prefabs/Weapons/SM_Wep_HandAxe_01.prefab
+  - _gameObject: {fileID: 1080867504}
+    _prefab: Assets/Prefabs/System/-- Core --.prefab
+  - _gameObject: {fileID: 1684407650}
+    _prefab: Assets/_Asset Store/PolygonNature/FX/FX_Prefabs/Fire_Small_FX.prefab
+  - _gameObject: {fileID: 1684407649}
+    _prefab: Assets/_Asset Store/PolygonNature/FX/FX_Prefabs/Fire_Small_FX.prefab
+  - _gameObject: {fileID: 1684407648}
+    _prefab: Assets/_Asset Store/PolygonParticleFX/Prefabs/FX_LightningStrike_01.prefab
+  - _gameObject: {fileID: 1684407647}
+    _prefab: Assets/_Asset Store/PolygonNature/FX/FX_Prefabs/Fire_Small_FX.prefab
+  - _gameObject: {fileID: 1684407646}
+    _prefab: Assets/_Asset Store/PolygonNature/FX/FX_Prefabs/Fire_Small_FX.prefab
+  - _gameObject: {fileID: 1684407645}
+    _prefab: Assets/_Asset Store/PolygonParticleFX/Prefabs/FX_Poison_Green_01.prefab
+  - _gameObject: {fileID: 1684407644}
+    _prefab: Assets/_Asset Store/PolygonParticleFX/Prefabs/FX_Poison_Green_01.prefab
+  - _gameObject: {fileID: 1684407643}
     _prefab: Assets/_Asset Store/PolygonParticleFX/Prefabs/FX_Poison_Green_01.prefab
   - _gameObject: {fileID: 1080867504}
     _prefab: Assets/Prefabs/System/-- Core --.prefab
@@ -4277,6 +4403,54 @@ MonoBehaviour:
     _prefab: Assets/Prefabs/System/-- Core --.prefab
   - _gameObject: {fileID: 1080867504}
     _prefab: Assets/Prefabs/System/-- Core --.prefab
+  - _gameObject: {fileID: 1684407642}
+    _prefab: Assets/_Asset Store/PolygonDungeon/Prefabs/Weapons/SM_Wep_HandAxe_01.prefab
+  - _gameObject: {fileID: 1080867504}
+    _prefab: Assets/Prefabs/System/-- Core --.prefab
+  - _gameObject: {fileID: 1684407641}
+    _prefab: Assets/_Asset Store/PolygonNature/FX/FX_Prefabs/Fire_Small_FX.prefab
+  - _gameObject: {fileID: 1684407640}
+    _prefab: Assets/_Asset Store/PolygonNature/FX/FX_Prefabs/Fire_Small_FX.prefab
+  - _gameObject: {fileID: 1684407639}
+    _prefab: Assets/_Asset Store/PolygonParticleFX/Prefabs/FX_LightningStrike_01.prefab
+  - _gameObject: {fileID: 1684407638}
+    _prefab: Assets/_Asset Store/PolygonNature/FX/FX_Prefabs/Fire_Small_FX.prefab
+  - _gameObject: {fileID: 1684407637}
+    _prefab: Assets/_Asset Store/PolygonNature/FX/FX_Prefabs/Fire_Small_FX.prefab
+  - _gameObject: {fileID: 1684407636}
+    _prefab: Assets/_Asset Store/PolygonParticleFX/Prefabs/FX_Poison_Green_01.prefab
+  - _gameObject: {fileID: 1684407635}
+    _prefab: Assets/_Asset Store/PolygonParticleFX/Prefabs/FX_Poison_Green_01.prefab
+  - _gameObject: {fileID: 1684407634}
+    _prefab: Assets/_Asset Store/PolygonParticleFX/Prefabs/FX_Poison_Green_01.prefab
+  - _gameObject: {fileID: 1080867504}
+    _prefab: Assets/Prefabs/System/-- Core --.prefab
+  - _gameObject: {fileID: 1080867504}
+    _prefab: Assets/Prefabs/System/-- Core --.prefab
+  - _gameObject: {fileID: 1684407633}
+    _prefab: Assets/_Asset Store/PolygonDungeon/Prefabs/Weapons/SM_Wep_HandAxe_01.prefab
+  - _gameObject: {fileID: 1080867504}
+    _prefab: Assets/Prefabs/System/-- Core --.prefab
+  - _gameObject: {fileID: 1684407632}
+    _prefab: Assets/_Asset Store/PolygonNature/FX/FX_Prefabs/Fire_Small_FX.prefab
+  - _gameObject: {fileID: 1684407631}
+    _prefab: Assets/_Asset Store/PolygonNature/FX/FX_Prefabs/Fire_Small_FX.prefab
+  - _gameObject: {fileID: 1684407630}
+    _prefab: Assets/_Asset Store/PolygonParticleFX/Prefabs/FX_LightningStrike_01.prefab
+  - _gameObject: {fileID: 1684407629}
+    _prefab: Assets/_Asset Store/PolygonNature/FX/FX_Prefabs/Fire_Small_FX.prefab
+  - _gameObject: {fileID: 1684407628}
+    _prefab: Assets/_Asset Store/PolygonNature/FX/FX_Prefabs/Fire_Small_FX.prefab
+  - _gameObject: {fileID: 1684407627}
+    _prefab: Assets/_Asset Store/PolygonParticleFX/Prefabs/FX_Poison_Green_01.prefab
+  - _gameObject: {fileID: 1684407626}
+    _prefab: Assets/_Asset Store/PolygonParticleFX/Prefabs/FX_Poison_Green_01.prefab
+  - _gameObject: {fileID: 1684407625}
+    _prefab: Assets/_Asset Store/PolygonParticleFX/Prefabs/FX_Poison_Green_01.prefab
+  - _gameObject: {fileID: 1080867504}
+    _prefab: Assets/Prefabs/System/-- Core --.prefab
+  - _gameObject: {fileID: 1080867504}
+    _prefab: Assets/Prefabs/System/-- Core --.prefab
   - _gameObject: {fileID: 414427994}
     _prefab: Assets/_Asset Store/PolygonDungeon/Prefabs/Weapons/SM_Wep_HandAxe_01.prefab
   - _gameObject: {fileID: 1080867504}
@@ -4303,7 +4477,47 @@ MonoBehaviour:
     _prefab: Assets/Prefabs/System/-- Core --.prefab
   - _gameObject: {fileID: 1080867504}
     _prefab: Assets/Prefabs/System/-- Core --.prefab
+  - _gameObject: {fileID: 1684407624}
+    _prefab: Assets/_Asset Store/PolygonDungeon/Prefabs/Weapons/SM_Wep_HandAxe_01.prefab
+  - _gameObject: {fileID: 1080867504}
+    _prefab: Assets/Prefabs/System/-- Core --.prefab
+  - _gameObject: {fileID: 1684407623}
+    _prefab: Assets/_Asset Store/PolygonNature/FX/FX_Prefabs/Fire_Small_FX.prefab
+  - _gameObject: {fileID: 1684407622}
+    _prefab: Assets/_Asset Store/PolygonNature/FX/FX_Prefabs/Fire_Small_FX.prefab
+  - _gameObject: {fileID: 1684407621}
+    _prefab: Assets/_Asset Store/PolygonParticleFX/Prefabs/FX_LightningStrike_01.prefab
+  - _gameObject: {fileID: 1684407620}
+    _prefab: Assets/_Asset Store/PolygonNature/FX/FX_Prefabs/Fire_Small_FX.prefab
+  - _gameObject: {fileID: 1684407619}
+    _prefab: Assets/_Asset Store/PolygonNature/FX/FX_Prefabs/Fire_Small_FX.prefab
+  - _gameObject: {fileID: 1684407618}
+    _prefab: Assets/_Asset Store/PolygonParticleFX/Prefabs/FX_Poison_Green_01.prefab
+  - _gameObject: {fileID: 1684407617}
+    _prefab: Assets/_Asset Store/PolygonParticleFX/Prefabs/FX_Poison_Green_01.prefab
+  - _gameObject: {fileID: 1684407616}
+    _prefab: Assets/_Asset Store/PolygonParticleFX/Prefabs/FX_Poison_Green_01.prefab
+  - _gameObject: {fileID: 1080867504}
+    _prefab: Assets/Prefabs/System/-- Core --.prefab
+  - _gameObject: {fileID: 1080867504}
+    _prefab: Assets/Prefabs/System/-- Core --.prefab
   - _gameObject: {fileID: 2031585954}
+    _prefab: Assets/_Asset Store/PolygonFantasyHeroCharacters/Prefabs/Weapons/SM_Wep_Staff_02.prefab
+  - _gameObject: {fileID: 1080867504}
+    _prefab: Assets/Prefabs/System/-- Core --.prefab
+  - _gameObject: {fileID: 1684407615}
+    _prefab: Assets/_Asset Store/PolygonFantasyHeroCharacters/Prefabs/Weapons/SM_Wep_Staff_02.prefab
+  - _gameObject: {fileID: 1080867504}
+    _prefab: Assets/Prefabs/System/-- Core --.prefab
+  - _gameObject: {fileID: 1684407614}
+    _prefab: Assets/_Asset Store/PolygonFantasyHeroCharacters/Prefabs/Weapons/SM_Wep_Staff_02.prefab
+  - _gameObject: {fileID: 1080867504}
+    _prefab: Assets/Prefabs/System/-- Core --.prefab
+  - _gameObject: {fileID: 1684407613}
+    _prefab: Assets/_Asset Store/PolygonFantasyHeroCharacters/Prefabs/Weapons/SM_Wep_Staff_02.prefab
+  - _gameObject: {fileID: 1080867504}
+    _prefab: Assets/Prefabs/System/-- Core --.prefab
+  - _gameObject: {fileID: 1684407612}
     _prefab: Assets/_Asset Store/PolygonFantasyHeroCharacters/Prefabs/Weapons/SM_Wep_Staff_02.prefab
   - _gameObject: {fileID: 1080867504}
     _prefab: Assets/Prefabs/System/-- Core --.prefab
@@ -4397,6 +4611,26 @@ MonoBehaviour:
     _prefab: Assets/_Asset Store/PolygonParticleFX/Prefabs/FX_Poison_Green_01.prefab
   - _gameObject: {fileID: 1717729597}
     _prefab: Assets/_Asset Store/PolygonParticleFX/Prefabs/FX_Poison_Green_01.prefab
+  - _gameObject: {fileID: 1684407611}
+    _prefab: Assets/_Asset Store/PolygonFantasyHeroCharacters/Prefabs/Weapons/SM_Wep_Sword_01.prefab
+  - _gameObject: {fileID: 1080867504}
+    _prefab: Assets/Prefabs/System/-- Core --.prefab
+  - _gameObject: {fileID: 1684407610}
+    _prefab: Assets/_Asset Store/PolygonNature/FX/FX_Prefabs/Fire_Small_FX.prefab
+  - _gameObject: {fileID: 1684407609}
+    _prefab: Assets/_Asset Store/PolygonNature/FX/FX_Prefabs/Fire_Small_FX.prefab
+  - _gameObject: {fileID: 1684407608}
+    _prefab: Assets/_Asset Store/PolygonNature/FX/FX_Prefabs/Fire_Small_FX.prefab
+  - _gameObject: {fileID: 1684407607}
+    _prefab: Assets/_Asset Store/PolygonNature/FX/FX_Prefabs/Fire_Small_FX.prefab
+  - _gameObject: {fileID: 1684407606}
+    _prefab: Assets/_Asset Store/PolygonParticleFX/Prefabs/FX_LightningStrike_01.prefab
+  - _gameObject: {fileID: 1684407605}
+    _prefab: Assets/_Asset Store/PolygonParticleFX/Prefabs/FX_Poison_Green_01.prefab
+  - _gameObject: {fileID: 1684407604}
+    _prefab: Assets/_Asset Store/PolygonParticleFX/Prefabs/FX_Poison_Green_01.prefab
+  - _gameObject: {fileID: 1684407603}
+    _prefab: Assets/_Asset Store/PolygonParticleFX/Prefabs/FX_Poison_Green_01.prefab
   - _gameObject: {fileID: 57191419}
     _prefab: Assets/_Asset Store/PolygonFantasyHeroCharacters/Prefabs/Weapons/SM_Wep_Sword_01.prefab
   - _gameObject: {fileID: 1080867504}
@@ -4463,6 +4697,34 @@ MonoBehaviour:
     _prefab: Assets/Prefabs/System/-- Core --.prefab
   - _gameObject: {fileID: 1080867504}
     _prefab: Assets/Prefabs/System/-- Core --.prefab
+  - _gameObject: {fileID: 1684407602}
+    _prefab: Assets/_Asset Store/PolygonFantasyHeroCharacters/Prefabs/Weapons/SM_Wep_Sword_01.prefab
+  - _gameObject: {fileID: 1080867504}
+    _prefab: Assets/Prefabs/System/-- Core --.prefab
+  - _gameObject: {fileID: 1080867504}
+    _prefab: Assets/Prefabs/System/-- Core --.prefab
+  - _gameObject: {fileID: 1684407601}
+    _prefab: Assets/_Asset Store/PolygonFantasyHeroCharacters/Prefabs/Weapons/SM_Wep_Sword_01.prefab
+  - _gameObject: {fileID: 1080867504}
+    _prefab: Assets/Prefabs/System/-- Core --.prefab
+  - _gameObject: {fileID: 1080867504}
+    _prefab: Assets/Prefabs/System/-- Core --.prefab
+  - _gameObject: {fileID: 1684407600}
+    _prefab: Assets/_Asset Store/PolygonNature/FX/FX_Prefabs/Fire_Small_FX.prefab
+  - _gameObject: {fileID: 1684407599}
+    _prefab: Assets/_Asset Store/PolygonNature/FX/FX_Prefabs/Fire_Small_FX.prefab
+  - _gameObject: {fileID: 1684407598}
+    _prefab: Assets/_Asset Store/PolygonNature/FX/FX_Prefabs/Fire_Small_FX.prefab
+  - _gameObject: {fileID: 1684407597}
+    _prefab: Assets/_Asset Store/PolygonNature/FX/FX_Prefabs/Fire_Small_FX.prefab
+  - _gameObject: {fileID: 1684407596}
+    _prefab: Assets/_Asset Store/PolygonParticleFX/Prefabs/FX_LightningStrike_01.prefab
+  - _gameObject: {fileID: 1684407595}
+    _prefab: Assets/_Asset Store/PolygonParticleFX/Prefabs/FX_Poison_Green_01.prefab
+  - _gameObject: {fileID: 1684407594}
+    _prefab: Assets/_Asset Store/PolygonParticleFX/Prefabs/FX_Poison_Green_01.prefab
+  - _gameObject: {fileID: 1684407593}
+    _prefab: Assets/_Asset Store/PolygonParticleFX/Prefabs/FX_Poison_Green_01.prefab
   - _gameObject: {fileID: 1164675601}
     _prefab: Assets/_Asset Store/PolygonFantasyHeroCharacters/Prefabs/Weapons/SM_Wep_Sword_01.prefab
   - _gameObject: {fileID: 1080867504}
@@ -4484,6 +4746,28 @@ MonoBehaviour:
   - _gameObject: {fileID: 1164675594}
     _prefab: Assets/_Asset Store/PolygonParticleFX/Prefabs/FX_Poison_Green_01.prefab
   - _gameObject: {fileID: 1164675593}
+    _prefab: Assets/_Asset Store/PolygonParticleFX/Prefabs/FX_Poison_Green_01.prefab
+  - _gameObject: {fileID: 1684407592}
+    _prefab: Assets/_Asset Store/PolygonFantasyHeroCharacters/Prefabs/Weapons/SM_Wep_Sword_01.prefab
+  - _gameObject: {fileID: 1080867504}
+    _prefab: Assets/Prefabs/System/-- Core --.prefab
+  - _gameObject: {fileID: 1080867504}
+    _prefab: Assets/Prefabs/System/-- Core --.prefab
+  - _gameObject: {fileID: 1684407591}
+    _prefab: Assets/_Asset Store/PolygonNature/FX/FX_Prefabs/Fire_Small_FX.prefab
+  - _gameObject: {fileID: 1684407590}
+    _prefab: Assets/_Asset Store/PolygonNature/FX/FX_Prefabs/Fire_Small_FX.prefab
+  - _gameObject: {fileID: 1684407589}
+    _prefab: Assets/_Asset Store/PolygonNature/FX/FX_Prefabs/Fire_Small_FX.prefab
+  - _gameObject: {fileID: 1684407588}
+    _prefab: Assets/_Asset Store/PolygonNature/FX/FX_Prefabs/Fire_Small_FX.prefab
+  - _gameObject: {fileID: 1684407587}
+    _prefab: Assets/_Asset Store/PolygonParticleFX/Prefabs/FX_LightningStrike_01.prefab
+  - _gameObject: {fileID: 1684407586}
+    _prefab: Assets/_Asset Store/PolygonParticleFX/Prefabs/FX_Poison_Green_01.prefab
+  - _gameObject: {fileID: 1684407585}
+    _prefab: Assets/_Asset Store/PolygonParticleFX/Prefabs/FX_Poison_Green_01.prefab
+  - _gameObject: {fileID: 1684407584}
     _prefab: Assets/_Asset Store/PolygonParticleFX/Prefabs/FX_Poison_Green_01.prefab
   - _gameObject: {fileID: 1866246767}
     _prefab: Assets/_Asset Store/PolygonFantasyHeroCharacters/Prefabs/Weapons/SM_Wep_Sword_01.prefab
@@ -4557,6 +4841,26 @@ MonoBehaviour:
     _prefab: Assets/_Asset Store/PolygonParticleFX/Prefabs/FX_Poison_Green_01.prefab
   - _gameObject: {fileID: 1717729583}
     _prefab: Assets/_Asset Store/PolygonParticleFX/Prefabs/FX_Poison_Green_01.prefab
+  - _gameObject: {fileID: 1684407583}
+    _prefab: Assets/_Asset Store/PolygonSamurai/Prefabs/Weapons/SM_Wep_Odachi_01.prefab
+  - _gameObject: {fileID: 1684407582}
+    _prefab: Assets/_Asset Store/PolygonNature/FX/FX_Prefabs/Fire_Small_FX.prefab
+  - _gameObject: {fileID: 1684407581}
+    _prefab: Assets/_Asset Store/PolygonNature/FX/FX_Prefabs/Fire_Small_FX.prefab
+  - _gameObject: {fileID: 1080867504}
+    _prefab: Assets/Prefabs/System/-- Core --.prefab
+  - _gameObject: {fileID: 1684407580}
+    _prefab: Assets/_Asset Store/PolygonParticleFX/Prefabs/FX_LightningStrike_01.prefab
+  - _gameObject: {fileID: 1684407579}
+    _prefab: Assets/_Asset Store/PolygonNature/FX/FX_Prefabs/Fire_Small_FX.prefab
+  - _gameObject: {fileID: 1684407578}
+    _prefab: Assets/_Asset Store/PolygonNature/FX/FX_Prefabs/Fire_Small_FX.prefab
+  - _gameObject: {fileID: 1684407577}
+    _prefab: Assets/_Asset Store/PolygonParticleFX/Prefabs/FX_Poison_Green_01.prefab
+  - _gameObject: {fileID: 1684407576}
+    _prefab: Assets/_Asset Store/PolygonParticleFX/Prefabs/FX_Poison_Green_01.prefab
+  - _gameObject: {fileID: 1684407575}
+    _prefab: Assets/_Asset Store/PolygonParticleFX/Prefabs/FX_Poison_Green_01.prefab
   - _gameObject: {fileID: 1537706028}
     _prefab: Assets/_Asset Store/PolygonFantasyKingdom/Prefabs/Weapons/SM_Wep_Dagger_05.prefab
   - _gameObject: {fileID: 1080867504}
@@ -4576,6 +4880,94 @@ MonoBehaviour:
   - _gameObject: {fileID: 1320853100}
     _prefab: Assets/_Asset Store/PolygonParticleFX/Prefabs/FX_Poison_Green_01.prefab
   - _gameObject: {fileID: 817313784}
+    _prefab: Assets/_Asset Store/PolygonParticleFX/Prefabs/FX_Poison_Green_01.prefab
+  - _gameObject: {fileID: 1684407574}
+    _prefab: Assets/_Asset Store/PolygonFantasyKingdom/Prefabs/Weapons/SM_Wep_Dagger_05.prefab
+  - _gameObject: {fileID: 1080867504}
+    _prefab: Assets/Prefabs/System/-- Core --.prefab
+  - _gameObject: {fileID: 1684407573}
+    _prefab: Assets/_Asset Store/PolygonFantasyKingdom/Prefabs/Weapons/SM_Wep_Dagger_05.prefab
+  - _gameObject: {fileID: 1080867504}
+    _prefab: Assets/Prefabs/System/-- Core --.prefab
+  - _gameObject: {fileID: 1684407572}
+    _prefab: Assets/_Asset Store/PolygonFantasyKingdom/Prefabs/Weapons/SM_Wep_Dagger_05.prefab
+  - _gameObject: {fileID: 1080867504}
+    _prefab: Assets/Prefabs/System/-- Core --.prefab
+  - _gameObject: {fileID: 1684407571}
+    _prefab: Assets/_Asset Store/PolygonNature/FX/FX_Prefabs/Fire_Small_FX.prefab
+  - _gameObject: {fileID: 1684407570}
+    _prefab: Assets/_Asset Store/PolygonNature/FX/FX_Prefabs/Fire_Small_FX.prefab
+  - _gameObject: {fileID: 1684407569}
+    _prefab: Assets/_Asset Store/PolygonNature/FX/FX_Prefabs/Fire_Small_FX.prefab
+  - _gameObject: {fileID: 1684407568}
+    _prefab: Assets/_Asset Store/PolygonParticleFX/Prefabs/FX_LightningStrike_01.prefab
+  - _gameObject: {fileID: 1684407567}
+    _prefab: Assets/_Asset Store/PolygonNature/FX/FX_Prefabs/Fire_Small_FX.prefab
+  - _gameObject: {fileID: 1684407566}
+    _prefab: Assets/_Asset Store/PolygonParticleFX/Prefabs/FX_Poison_Green_01.prefab
+  - _gameObject: {fileID: 1684407565}
+    _prefab: Assets/_Asset Store/PolygonParticleFX/Prefabs/FX_Poison_Green_01.prefab
+  - _gameObject: {fileID: 1684407564}
+    _prefab: Assets/_Asset Store/PolygonParticleFX/Prefabs/FX_Poison_Green_01.prefab
+  - _gameObject: {fileID: 1684407563}
+    _prefab: Assets/_Asset Store/PolygonFantasyKingdom/Prefabs/Weapons/SM_Wep_Dagger_05.prefab
+  - _gameObject: {fileID: 1080867504}
+    _prefab: Assets/Prefabs/System/-- Core --.prefab
+  - _gameObject: {fileID: 1684407562}
+    _prefab: Assets/_Asset Store/PolygonNature/FX/FX_Prefabs/Fire_Small_FX.prefab
+  - _gameObject: {fileID: 1684407561}
+    _prefab: Assets/_Asset Store/PolygonNature/FX/FX_Prefabs/Fire_Small_FX.prefab
+  - _gameObject: {fileID: 1684407560}
+    _prefab: Assets/_Asset Store/PolygonNature/FX/FX_Prefabs/Fire_Small_FX.prefab
+  - _gameObject: {fileID: 1684407559}
+    _prefab: Assets/_Asset Store/PolygonParticleFX/Prefabs/FX_LightningStrike_01.prefab
+  - _gameObject: {fileID: 1684407558}
+    _prefab: Assets/_Asset Store/PolygonNature/FX/FX_Prefabs/Fire_Small_FX.prefab
+  - _gameObject: {fileID: 1684407557}
+    _prefab: Assets/_Asset Store/PolygonParticleFX/Prefabs/FX_Poison_Green_01.prefab
+  - _gameObject: {fileID: 1684407556}
+    _prefab: Assets/_Asset Store/PolygonParticleFX/Prefabs/FX_Poison_Green_01.prefab
+  - _gameObject: {fileID: 1684407555}
+    _prefab: Assets/_Asset Store/PolygonParticleFX/Prefabs/FX_Poison_Green_01.prefab
+  - _gameObject: {fileID: 1684407554}
+    _prefab: Assets/_Asset Store/PolygonFantasyKingdom/Prefabs/Weapons/SM_Wep_Dagger_05.prefab
+  - _gameObject: {fileID: 1080867504}
+    _prefab: Assets/Prefabs/System/-- Core --.prefab
+  - _gameObject: {fileID: 1684407553}
+    _prefab: Assets/_Asset Store/PolygonNature/FX/FX_Prefabs/Fire_Small_FX.prefab
+  - _gameObject: {fileID: 1684407552}
+    _prefab: Assets/_Asset Store/PolygonNature/FX/FX_Prefabs/Fire_Small_FX.prefab
+  - _gameObject: {fileID: 1684407551}
+    _prefab: Assets/_Asset Store/PolygonNature/FX/FX_Prefabs/Fire_Small_FX.prefab
+  - _gameObject: {fileID: 1684407550}
+    _prefab: Assets/_Asset Store/PolygonParticleFX/Prefabs/FX_LightningStrike_01.prefab
+  - _gameObject: {fileID: 1684407549}
+    _prefab: Assets/_Asset Store/PolygonNature/FX/FX_Prefabs/Fire_Small_FX.prefab
+  - _gameObject: {fileID: 1684407548}
+    _prefab: Assets/_Asset Store/PolygonParticleFX/Prefabs/FX_Poison_Green_01.prefab
+  - _gameObject: {fileID: 1684407547}
+    _prefab: Assets/_Asset Store/PolygonParticleFX/Prefabs/FX_Poison_Green_01.prefab
+  - _gameObject: {fileID: 1684407546}
+    _prefab: Assets/_Asset Store/PolygonParticleFX/Prefabs/FX_Poison_Green_01.prefab
+  - _gameObject: {fileID: 1684407545}
+    _prefab: Assets/_Asset Store/PolygonFantasyKingdom/Prefabs/Weapons/SM_Wep_Dagger_05.prefab
+  - _gameObject: {fileID: 1080867504}
+    _prefab: Assets/Prefabs/System/-- Core --.prefab
+  - _gameObject: {fileID: 1684407544}
+    _prefab: Assets/_Asset Store/PolygonNature/FX/FX_Prefabs/Fire_Small_FX.prefab
+  - _gameObject: {fileID: 1684407543}
+    _prefab: Assets/_Asset Store/PolygonNature/FX/FX_Prefabs/Fire_Small_FX.prefab
+  - _gameObject: {fileID: 1684407542}
+    _prefab: Assets/_Asset Store/PolygonNature/FX/FX_Prefabs/Fire_Small_FX.prefab
+  - _gameObject: {fileID: 1684407541}
+    _prefab: Assets/_Asset Store/PolygonParticleFX/Prefabs/FX_LightningStrike_01.prefab
+  - _gameObject: {fileID: 1684407540}
+    _prefab: Assets/_Asset Store/PolygonNature/FX/FX_Prefabs/Fire_Small_FX.prefab
+  - _gameObject: {fileID: 1684407539}
+    _prefab: Assets/_Asset Store/PolygonParticleFX/Prefabs/FX_Poison_Green_01.prefab
+  - _gameObject: {fileID: 1684407538}
+    _prefab: Assets/_Asset Store/PolygonParticleFX/Prefabs/FX_Poison_Green_01.prefab
+  - _gameObject: {fileID: 1684407537}
     _prefab: Assets/_Asset Store/PolygonParticleFX/Prefabs/FX_Poison_Green_01.prefab
   - _gameObject: {fileID: 1080867504}
     _prefab: Assets/Prefabs/System/-- Core --.prefab
@@ -4605,8 +4997,40 @@ MonoBehaviour:
     _prefab: Assets/_Asset Store/PolygonFantasyKingdom/Prefabs/Items/Meat Roll.prefab
   - _gameObject: {fileID: 1080867504}
     _prefab: Assets/Prefabs/System/-- Core --.prefab
+  - _gameObject: {fileID: 1684407536}
+    _prefab: Assets/Prefabs/Projectiles/Player Arrows/[PREFAB] Steel Arrow.prefab
+  - _gameObject: {fileID: 1684407535}
+    _prefab: Assets/Prefabs/Projectiles/Player Arrows/[PREFAB] Iron Arrow - Base.prefab
+  - _gameObject: {fileID: 1684407534}
+    _prefab: Assets/Prefabs/Projectiles/Player Arrows/[PREFAB] Fire Arrow.prefab
+  - _gameObject: {fileID: 1684407533}
+    _prefab: Assets/_Asset Store/PolygonParticleFX/Prefabs/FX_Trail_Exhaust_01.prefab
+  - _gameObject: {fileID: 1684407532}
+    _prefab: Assets/Prefabs/Projectiles/Player Arrows/Arrow Flames VFX.prefab
+  - _gameObject: {fileID: 1684407531}
+    _prefab: Assets/Prefabs/Projectiles/[PREFAB] Steel Bolt.prefab
+  - _gameObject: {fileID: 1684407530}
+    _prefab: Assets/Prefabs/Projectiles/Player Arrows/[PREFAB] Poison Arrow.prefab
+  - _gameObject: {fileID: 1684407529}
+    _prefab: Assets/_Asset Store/PolygonParticleFX/Prefabs/FX_Trail_Exhaust_01.prefab
+  - _gameObject: {fileID: 1684407528}
+    _prefab: Assets/Prefabs/Projectiles/Player Arrows/Arrow Flames VFX.prefab
+  - _gameObject: {fileID: 1684407527}
+    _prefab: Assets/Prefabs/Projectiles/Player Arrows/[PREFAB] Blood Soaked Arrow.prefab
+  - _gameObject: {fileID: 1684407526}
+    _prefab: Assets/_Asset Store/PolygonParticleFX/Prefabs/FX_Trail_Exhaust_01.prefab
+  - _gameObject: {fileID: 1684407525}
+    _prefab: Assets/Prefabs/Projectiles/Player Arrows/Arrow Flames VFX.prefab
+  - _gameObject: {fileID: 1684407524}
+    _prefab: Assets/Prefabs/Projectiles/Player Arrows/[PREFAB] Triple Arrows.prefab
+  - _gameObject: {fileID: 1684407523}
+    _prefab: Assets/Prefabs/Projectiles/Player Arrows/[PREFAB] Steel Arrow.prefab
+  - _gameObject: {fileID: 1684407522}
+    _prefab: Assets/Prefabs/Projectiles/Player Arrows/[PREFAB] Steel Arrow.prefab
   - _gameObject: {fileID: 530813348}
     _prefab: Assets/_Asset Store/PolygonFantasyRivals/Prefabs/FX/BloodSplat_FX.prefab
+  - _gameObject: {fileID: 1080867504}
+    _prefab: Assets/Prefabs/System/-- Core --.prefab
   - _gameObject: {fileID: 1080867497}
     _prefab: Assets/_Asset Store/PolygonParticleFX/Prefabs/FX_BloodSplat_01.prefab
   - _gameObject: {fileID: 2074459129}
@@ -4627,6 +5051,8 @@ MonoBehaviour:
     _prefab: Assets/_Asset Store/PolygonDungeonRealms/Prefabs/FX/FX_Candle_Flame_01.prefab
   - _gameObject: {fileID: 1080867504}
     _prefab: Assets/Prefabs/System/-- Core --.prefab
+  - _gameObject: {fileID: 1684407521}
+    _prefab: Assets/_Asset Store/PolygonDungeonRealms/Prefabs/Characters/BR_Attachmnets/SM_Chr_Attach_Dwarf_Bandana_01.prefab
   - _gameObject: {fileID: 1099281280}
     _prefab: Assets/_Asset Store/PolygonDungeonRealms/Prefabs/Characters/BR_Attachmnets/SM_Chr_Attach_Dwarf_Bandana_01.prefab
   - _gameObject: {fileID: 1080867503}
@@ -4651,6 +5077,8 @@ MonoBehaviour:
     _prefab: Assets/Prefabs/FX/Footsteps/[PREFAB] Wood Variant.prefab
   - _gameObject: {fileID: 2031585961}
     _prefab: Assets/Prefabs/FX/Footsteps/[PREFAB] Grass Footstep.prefab
+  - _gameObject: {fileID: 1684407520}
+    _prefab: Assets/Prefabs/FX/Footsteps/[PREFAB] Sand Footstep.prefab
   - _gameObject: {fileID: 1080867503}
     _prefab: Assets/Prefabs/Characters/Cacildes Graphics.prefab
   - _gameObject: {fileID: 1080867503}
@@ -4665,6 +5093,8 @@ MonoBehaviour:
     _prefab: Assets/Prefabs/FX/Footsteps/[PREFAB] Wood Variant.prefab
   - _gameObject: {fileID: 2031585970}
     _prefab: Assets/Prefabs/FX/Footsteps/[PREFAB] Grass Footstep.prefab
+  - _gameObject: {fileID: 1684407519}
+    _prefab: Assets/Prefabs/FX/Footsteps/[PREFAB] Sand Footstep.prefab
   - _gameObject: {fileID: 1080867504}
     _prefab: Assets/Prefabs/System/-- Core --.prefab
   - _gameObject: {fileID: 1560696081}
@@ -4691,6 +5121,8 @@ MonoBehaviour:
     _prefab: Assets/_Asset Store/PolygonParticleFX/Prefabs/FX_BloodSplat_01.prefab
   - _gameObject: {fileID: 2031585945}
     _prefab: Assets/_Asset Store/PolygonParticleFX/Prefabs/FX_Heal_01.prefab
+  - _gameObject: {fileID: 1684407518}
+    _prefab: Assets/_Asset Store/PolygonParticleFX/Prefabs/FX_Heal_01.prefab
   - _gameObject: {fileID: 299911309}
     _prefab: Assets/_Asset Store/PolygonParticleFX/Prefabs/FX_Explosion_Body_01.prefab
   - _gameObject: {fileID: 503732862}
@@ -4707,9 +5139,26 @@ MonoBehaviour:
     _prefab: Assets/Prefabs/System/-- Core --.prefab
   - _gameObject: {fileID: 20079799}
     _prefab: Assets/_Asset Store/PolygonParticleFX/Prefabs/FX_Impact_Metal_01.prefab
+  - _gameObject: {fileID: 1684407517}
+    _prefab: Assets/_Asset Store/PolygonParticleFX/Prefabs/FX_WaterRipple_01.prefab
+  - _gameObject: {fileID: 1684407516}
+    _prefab: Assets/Maps/Water Swim FX.prefab
+  - _gameObject: {fileID: 1684407515}
+    _prefab: Assets/_Asset Store/PolygonNatureBiomes/PNB_Tropical_Jungle/FX/FX_Prefabs/FX_Waterfall_Impact_01.prefab
+  - _gameObject: {fileID: 1080867504}
+    _prefab: Assets/Prefabs/System/-- Core --.prefab
+  - _gameObject: {fileID: 1684407514}
+    _prefab: Assets/_Asset Store/VFX - MagicArsenal/Effects/Prefabs/SphereBlast/LightSphereBlast.prefab
+  - _gameObject: {fileID: 1684407513}
+    _prefab: Assets/_Asset Store/VFX - MagicArsenal/Effects/Prefabs/Shields/Shield
+      Sphere/LightShield.prefab
   - _gameObject: {fileID: 1164675590}
     _prefab: Assets/_Asset Store/VFX - Magic Effects by Hovl Studio/Magic effects
       pack/Prefabs/Hits and explosions/Explosion.prefab
+  - _gameObject: {fileID: 1684407512}
+    _prefab: Assets/_Asset Store/PolygonParticleFX/Prefabs/FX_Impact_Dirt_01.prefab
+  - _gameObject: {fileID: 1684407511}
+    _prefab: Assets/_Asset Store/VFX - MagicArsenal/Effects/Prefabs/Cleave/FireCleave.prefab
   - _gameObject: {fileID: 345143849}
     _prefab: Assets/Scripts/ThirdPersonController/Prefabs/PlayerFollowCamera.prefab
   - _gameObject: {fileID: 2031585972}
@@ -4720,6 +5169,17 @@ MonoBehaviour:
     _prefab: Assets/Prefabs/System/-- Core --.prefab
   - _gameObject: {fileID: 1080867498}
     _prefab: Assets/Scripts/ThirdPersonController/Prefabs/PlayerFollowCamera.prefab
+  - _gameObject: {fileID: 1684407510}
+    _prefab: Assets/_Asset Store/PolygonParticleFX/Prefabs/FX_Impact_Wood_01.prefab
+  - _gameObject: {fileID: 1684407509}
+    _prefab: Assets/_Asset Store/PolygonParticleFX/Prefabs/FX_Impact_Wood_01.prefab
+  - _gameObject: {fileID: 1684407508}
+    _prefab: Assets/_Asset Store/PolygonParticleFX/Prefabs/Weapon Metallic Impact
+      FX.prefab
+  - _gameObject: {fileID: 1684407507}
+    _prefab: Assets/_Asset Store/VFX -  Magic by POLYMORPHFX/MiGHTYFX/MagicSpellsFXPack/Prefabs/FX/FXEnvironment/FX_Leaves_01.prefab
+  - _gameObject: {fileID: 1684407506}
+    _prefab: Assets/_Asset Store/PolygonParticleFX/Prefabs/FX_Impact_Water_01.prefab
   - _gameObject: {fileID: 68417819}
     _prefab: Assets/Scripts/ThirdPersonController/Prefabs/PlayerFollowCamera.prefab
   - _gameObject: {fileID: 515338252}
@@ -5083,6 +5543,10 @@ MonoBehaviour:
     _prefab: Assets/Prefabs/FX/Footsteps/[PREFAB] Wood Variant.prefab
   - _gameObject: {fileID: 2092140623}
     _prefab: Assets/Prefabs/FX/Footsteps/[PREFAB] Water Footstep.prefab
+  - _gameObject: {fileID: 1422237732}
+    _prefab: Assets/_Asset Store/VFX -  Magic by POLYMORPHFX/MiGHTYFX/MagicSpellsFXPack/Prefabs/FX/FXSpells/FX_Shadow_Impact.prefab
+  - _gameObject: {fileID: 1422237731}
+    _prefab: Assets/_Asset Store/VFX -  Magic by POLYMORPHFX/MiGHTYFX/MagicSpellsFXPack/Prefabs/FX/FXSpells/FX_Shadow_Impact.prefab
   - _gameObject: {fileID: 2092140616}
     _prefab: Assets/_Asset Store/PolygonParticleFX/Prefabs/FX_ Poison.prefab
   - _gameObject: {fileID: 2092140615}
@@ -5097,6 +5561,9 @@ MonoBehaviour:
     _prefab: Assets/_Asset Store/PolygonParticleFX/Prefabs/FX_LightningStrike_01.prefab
   - _gameObject: {fileID: 2092140611}
     _prefab: Assets/_Asset Store/VFX -  Magic by POLYMORPHFX/MiGHTYFX/MagicSpellsFXPack/Prefabs/FX/FXSpells/FX_Heal_Light.prefab
+  - _gameObject: {fileID: 1422237730}
+    _prefab: Assets/_Asset Store/VFX - Magic Effects by Hovl Studio/Magic effects
+      pack/Prefabs/Character auras/Debuff.prefab
   - _gameObject: {fileID: 2092140607}
     _prefab: Assets/Prefabs/Quest Related/BOSS_ SAMURAI.prefab
 --- !u!4 &456332318
@@ -5501,11 +5968,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 5747335008888219831, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
   m_PrefabInstance: {fileID: 1080867496}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &503732872 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7949081435421842079, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
-  m_PrefabInstance: {fileID: 1080867496}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &503732873 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3123085936720497609, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
@@ -5516,54 +5978,14 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 5439468004409407972, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
   m_PrefabInstance: {fileID: 1080867496}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &503732875 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5952304653118370447, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
-  m_PrefabInstance: {fileID: 1080867496}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &503732876 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5701474811379481590, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
   m_PrefabInstance: {fileID: 1080867496}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &503732877 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 9161571846728694363, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
-  m_PrefabInstance: {fileID: 1080867496}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &503732878 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8521473729771912948, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
-  m_PrefabInstance: {fileID: 1080867496}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &503732879 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8236289208073216110, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
-  m_PrefabInstance: {fileID: 1080867496}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &503732880 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2997431438620260550, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
-  m_PrefabInstance: {fileID: 1080867496}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &503732881 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6659264816767749318, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
-  m_PrefabInstance: {fileID: 1080867496}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &503732882 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1536825720331333254, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
-  m_PrefabInstance: {fileID: 1080867496}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &503732883 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5102427884324423823, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
-  m_PrefabInstance: {fileID: 1080867496}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &503732884 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6234951999365092875, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
   m_PrefabInstance: {fileID: 1080867496}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &503732885 stripped
@@ -5842,6 +6264,7 @@ MonoBehaviour:
   comboClip3: {fileID: 0}
   minimumHealthToUse: 49
   dontUseBelowHalfHealth: 0
+  halfHealthThreshold: 0.5
   minimumDistanceToTarget: 0
   maximumDistanceToTarget: 15
   onAttack_Start:
@@ -5884,6 +6307,7 @@ MonoBehaviour:
     magic: 0
     lightning: 0
     darkness: 0
+    water: 0
     postureDamage: 35
     poiseDamage: 5
     pushForce: 0
@@ -5892,9 +6316,11 @@ MonoBehaviour:
     ignoreBlocking: 0
     canNotBeParried: 0
     damageType: 0
+  targetHitReaction: {fileID: 0}
   maxCooldown: 8
   frequency: 0.5
   animationSpeed: 0.85
+  hasHyperArmor: 0
   characterManager: {fileID: 2092140631}
 --- !u!1 &511532825
 GameObject:
@@ -5932,6 +6358,7 @@ MonoBehaviour:
   comboClip3: {fileID: 0}
   minimumHealthToUse: 49
   dontUseBelowHalfHealth: 0
+  halfHealthThreshold: 0.5
   minimumDistanceToTarget: 0
   maximumDistanceToTarget: 15
   onAttack_Start:
@@ -5974,6 +6401,7 @@ MonoBehaviour:
     magic: 0
     lightning: 0
     darkness: 0
+    water: 0
     postureDamage: 35
     poiseDamage: 5
     pushForce: 0
@@ -5982,9 +6410,11 @@ MonoBehaviour:
     ignoreBlocking: 0
     canNotBeParried: 0
     damageType: 0
+  targetHitReaction: {fileID: 0}
   maxCooldown: 8
   frequency: 0.5
   animationSpeed: 0.85
+  hasHyperArmor: 0
   characterManager: {fileID: 2092140631}
 --- !u!4 &511532827
 Transform:
@@ -7058,6 +7488,7 @@ MonoBehaviour:
   comboClip3: {fileID: 0}
   minimumHealthToUse: 49
   dontUseBelowHalfHealth: 0
+  halfHealthThreshold: 0.5
   minimumDistanceToTarget: 0
   maximumDistanceToTarget: 15
   onAttack_Start:
@@ -7100,6 +7531,7 @@ MonoBehaviour:
     magic: 0
     lightning: 0
     darkness: 0
+    water: 0
     postureDamage: 35
     poiseDamage: 5
     pushForce: 0
@@ -7108,9 +7540,11 @@ MonoBehaviour:
     ignoreBlocking: 0
     canNotBeParried: 0
     damageType: 0
+  targetHitReaction: {fileID: 0}
   maxCooldown: 8
   frequency: 0.5
   animationSpeed: 0.85
+  hasHyperArmor: 0
   characterManager: {fileID: 2092140631}
 --- !u!1 &605698615
 GameObject:
@@ -7727,6 +8161,7 @@ MonoBehaviour:
   comboClip3: {fileID: 7400000, guid: 1ba3c4c0058327f4d91c952f981e1317, type: 3}
   minimumHealthToUse: 49
   dontUseBelowHalfHealth: 0
+  halfHealthThreshold: 0.5
   minimumDistanceToTarget: 0
   maximumDistanceToTarget: 15
   onAttack_Start:
@@ -7769,6 +8204,7 @@ MonoBehaviour:
     magic: 0
     lightning: 0
     darkness: 0
+    water: 0
     postureDamage: 35
     poiseDamage: 5
     pushForce: 0
@@ -7777,9 +8213,11 @@ MonoBehaviour:
     ignoreBlocking: 0
     canNotBeParried: 0
     damageType: 0
+  targetHitReaction: {fileID: 0}
   maxCooldown: 8
   frequency: 0.5
   animationSpeed: 0.85
+  hasHyperArmor: 0
   characterManager: {fileID: 2092140631}
 --- !u!1 &662741449
 GameObject:
@@ -8764,6 +9202,7 @@ MonoBehaviour:
   comboClip3: {fileID: 0}
   minimumHealthToUse: 49
   dontUseBelowHalfHealth: 0
+  halfHealthThreshold: 0.5
   minimumDistanceToTarget: 0
   maximumDistanceToTarget: 15
   onAttack_Start:
@@ -8806,6 +9245,7 @@ MonoBehaviour:
     magic: 0
     lightning: 0
     darkness: 0
+    water: 0
     postureDamage: 35
     poiseDamage: 5
     pushForce: 0
@@ -8814,9 +9254,11 @@ MonoBehaviour:
     ignoreBlocking: 0
     canNotBeParried: 0
     damageType: 0
+  targetHitReaction: {fileID: 0}
   maxCooldown: 8
   frequency: 0.5
   animationSpeed: 0.85
+  hasHyperArmor: 0
   characterManager: {fileID: 2092140631}
 --- !u!1001 &788727687
 PrefabInstance:
@@ -10678,6 +11120,7 @@ MonoBehaviour:
   comboClip3: {fileID: 0}
   minimumHealthToUse: 49
   dontUseBelowHalfHealth: 0
+  halfHealthThreshold: 0.5
   minimumDistanceToTarget: 0
   maximumDistanceToTarget: 15
   onAttack_Start:
@@ -10720,6 +11163,7 @@ MonoBehaviour:
     magic: 0
     lightning: 0
     darkness: 0
+    water: 0
     postureDamage: 35
     poiseDamage: 5
     pushForce: 0
@@ -10728,9 +11172,11 @@ MonoBehaviour:
     ignoreBlocking: 0
     canNotBeParried: 0
     damageType: 0
+  targetHitReaction: {fileID: 0}
   maxCooldown: 8
   frequency: 0.5
   animationSpeed: 0.85
+  hasHyperArmor: 0
   characterManager: {fileID: 2092140631}
 --- !u!1001 &1005316007
 PrefabInstance:
@@ -11415,15 +11861,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1766681394354770373, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
       propertyPath: m_Color.b
-      value: 0.6567669
+      value: 0.42032674
       objectReference: {fileID: 0}
     - target: {fileID: 1766681394354770373, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
       propertyPath: m_Color.g
-      value: 0.6567669
+      value: 0.42032674
       objectReference: {fileID: 0}
     - target: {fileID: 1766681394354770373, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
       propertyPath: m_Color.r
-      value: 0.6567669
+      value: 0.42032674
       objectReference: {fileID: 0}
     - target: {fileID: 1766681394354770373, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
       propertyPath: m_Intensity
@@ -11455,19 +11901,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2324549934646057964, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.060617715
+      value: 0.018124996
       objectReference: {fileID: 0}
     - target: {fileID: 2324549934646057964, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.06262289
+      value: 0.085250326
       objectReference: {fileID: 0}
     - target: {fileID: 2324549934646057964, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.69286317
+      value: -0.2071695
       objectReference: {fileID: 0}
     - target: {fileID: 2324549934646057964, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.7157824
+      value: 0.97441506
       objectReference: {fileID: 0}
     - target: {fileID: 2496147688403883988, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
       propertyPath: m_LocalPosition.x
@@ -12855,15 +13301,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6129968653849713614, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 113.44816
+      value: 107.23352
       objectReference: {fileID: 0}
     - target: {fileID: 6129968653849713614, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 20.165508
+      value: 19.144133
       objectReference: {fileID: 0}
     - target: {fileID: 6129968653849713614, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 65.287506
+      value: 76.748604
       objectReference: {fileID: 0}
     - target: {fileID: 6129968653849713614, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
       propertyPath: m_LocalRotation.w
@@ -12887,15 +13333,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6129968654122490714, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 109.41458
+      value: 103.781
       objectReference: {fileID: 0}
     - target: {fileID: 6129968654122490714, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 20.620876
+      value: 18.889194
       objectReference: {fileID: 0}
     - target: {fileID: 6129968654122490714, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 68.51736
+      value: 77.68785
       objectReference: {fileID: 0}
     - target: {fileID: 6129968654122490714, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
       propertyPath: m_LocalRotation.w
@@ -16255,31 +16701,31 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7698839811453428926, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 109.41458
+      value: 103.781
       objectReference: {fileID: 0}
     - target: {fileID: 7698839811453428926, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 20.620876
+      value: 18.889194
       objectReference: {fileID: 0}
     - target: {fileID: 7698839811453428926, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 68.51736
+      value: 77.68785
       objectReference: {fileID: 0}
     - target: {fileID: 7698839811453428926, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.6616869
+      value: 0.8616486
       objectReference: {fileID: 0}
     - target: {fileID: 7698839811453428926, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0.095018774
+      value: 0.06341024
       objectReference: {fileID: 0}
     - target: {fileID: 7698839811453428926, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.7361481
+      value: 0.5021643
       objectReference: {fileID: 0}
     - target: {fileID: 7698839811453428926, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.105961494
+      value: -0.03703831
       objectReference: {fileID: 0}
     - target: {fileID: 8120705543911752509, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
       propertyPath: m_LocalPosition.x
@@ -17735,31 +18181,31 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9198782313407061788, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 112.8599
+      value: 106.94662
       objectReference: {fileID: 0}
     - target: {fileID: 9198782313407061788, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 18.150585
+      value: 16.9184
       objectReference: {fileID: 0}
     - target: {fileID: 9198782313407061788, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 68.35105
+      value: 79.71143
       objectReference: {fileID: 0}
     - target: {fileID: 9198782313407061788, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.6616869
+      value: 0.8616486
       objectReference: {fileID: 0}
     - target: {fileID: 9198782313407061788, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0.095018774
+      value: 0.06341024
       objectReference: {fileID: 0}
     - target: {fileID: 9198782313407061788, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.7361481
+      value: 0.5021643
       objectReference: {fileID: 0}
     - target: {fileID: 9198782313407061788, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.105961494
+      value: -0.03703831
       objectReference: {fileID: 0}
     - target: {fileID: 9198782313407061788, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -17963,6 +18409,7 @@ MonoBehaviour:
   comboClip3: {fileID: 0}
   minimumHealthToUse: 49
   dontUseBelowHalfHealth: 0
+  halfHealthThreshold: 0.5
   minimumDistanceToTarget: 0
   maximumDistanceToTarget: 15
   onAttack_Start:
@@ -18005,6 +18452,7 @@ MonoBehaviour:
     magic: 0
     lightning: 0
     darkness: 0
+    water: 0
     postureDamage: 35
     poiseDamage: 5
     pushForce: 0
@@ -18013,9 +18461,11 @@ MonoBehaviour:
     ignoreBlocking: 0
     canNotBeParried: 0
     damageType: 0
+  targetHitReaction: {fileID: 0}
   maxCooldown: 8
   frequency: 0.5
   animationSpeed: 0.85
+  hasHyperArmor: 0
   characterManager: {fileID: 2092140631}
 --- !u!1001 &1111138315
 PrefabInstance:
@@ -19383,11 +19833,9 @@ MonoBehaviour:
   onWeaponSpecial:
     m_PersistentCalls:
       m_Calls: []
-  onEnvironmentCollision:
-    m_PersistentCalls:
-      m_Calls: []
   characterTwoHandRef: {fileID: 0}
   characterWeaponBuffs: {fileID: 0}
+  shouldDisableHitboxOnStart: 1
 --- !u!82 &1243485913
 AudioSource:
   m_ObjectHideFlags: 0
@@ -19754,6 +20202,7 @@ MonoBehaviour:
   comboClip3: {fileID: 0}
   minimumHealthToUse: 49
   dontUseBelowHalfHealth: 0
+  halfHealthThreshold: 0.5
   minimumDistanceToTarget: 0
   maximumDistanceToTarget: 15
   onAttack_Start:
@@ -19796,6 +20245,7 @@ MonoBehaviour:
     magic: 0
     lightning: 0
     darkness: 0
+    water: 0
     postureDamage: 35
     poiseDamage: 5
     pushForce: 0
@@ -19804,9 +20254,11 @@ MonoBehaviour:
     ignoreBlocking: 0
     canNotBeParried: 0
     damageType: 0
+  targetHitReaction: {fileID: 0}
   maxCooldown: 8
   frequency: 0.5
   animationSpeed: 0.85
+  hasHyperArmor: 0
   characterManager: {fileID: 2092140631}
 --- !u!1 &1317728112 stripped
 GameObject:
@@ -20292,6 +20744,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a5ac11cc976e418e8d13136b07e1f52, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_SerializedVersion: 0
   m_AgentTypeID: 0
   m_CollectObjects: 0
   m_Size: {x: 10, y: 10, z: 10}
@@ -20465,6 +20918,7 @@ MonoBehaviour:
   comboClip3: {fileID: 0}
   minimumHealthToUse: 100
   dontUseBelowHalfHealth: 1
+  halfHealthThreshold: 0.5
   minimumDistanceToTarget: 0
   maximumDistanceToTarget: 15
   onAttack_Start:
@@ -20507,6 +20961,7 @@ MonoBehaviour:
     magic: 0
     lightning: 0
     darkness: 0
+    water: 0
     postureDamage: 10
     poiseDamage: 1
     pushForce: 0
@@ -20515,9 +20970,11 @@ MonoBehaviour:
     ignoreBlocking: 0
     canNotBeParried: 0
     damageType: 0
+  targetHitReaction: {fileID: 0}
   maxCooldown: 6
   frequency: 0.5
   animationSpeed: 1
+  hasHyperArmor: 0
   characterManager: {fileID: 2092140631}
 --- !u!1 &1400819241 stripped
 GameObject:
@@ -20724,6 +21181,21 @@ Transform:
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5097737175421485837, guid: 0dd1835ff8f956e4791567ebc64f7272, type: 3}
   m_PrefabInstance: {fileID: 1416879962}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1422237730 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5670557401861053151, guid: 7ce16dfd2f6a0c443be844ede1c7e6b9, type: 3}
+  m_PrefabInstance: {fileID: 2092140606}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1422237731 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6364688507383773388, guid: 7ce16dfd2f6a0c443be844ede1c7e6b9, type: 3}
+  m_PrefabInstance: {fileID: 2092140606}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1422237732 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4517794701725888960, guid: 7ce16dfd2f6a0c443be844ede1c7e6b9, type: 3}
+  m_PrefabInstance: {fileID: 2092140606}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1425374913
 PrefabInstance:
@@ -21865,6 +22337,7 @@ MonoBehaviour:
   comboClip3: {fileID: 0}
   minimumHealthToUse: 49
   dontUseBelowHalfHealth: 0
+  halfHealthThreshold: 0.5
   minimumDistanceToTarget: 0
   maximumDistanceToTarget: 15
   onAttack_Start:
@@ -21907,6 +22380,7 @@ MonoBehaviour:
     magic: 0
     lightning: 0
     darkness: 0
+    water: 0
     postureDamage: 35
     poiseDamage: 5
     pushForce: 0
@@ -21915,9 +22389,11 @@ MonoBehaviour:
     ignoreBlocking: 0
     canNotBeParried: 0
     damageType: 0
+  targetHitReaction: {fileID: 0}
   maxCooldown: 8
   frequency: 0.5
   animationSpeed: 0.85
+  hasHyperArmor: 0
   characterManager: {fileID: 2092140631}
 --- !u!1001 &1523832839
 PrefabInstance:
@@ -22188,6 +22664,7 @@ MonoBehaviour:
   comboClip3: {fileID: 0}
   minimumHealthToUse: 49
   dontUseBelowHalfHealth: 0
+  halfHealthThreshold: 0.5
   minimumDistanceToTarget: 0
   maximumDistanceToTarget: 15
   onAttack_Start:
@@ -22230,6 +22707,7 @@ MonoBehaviour:
     magic: 0
     lightning: 0
     darkness: 0
+    water: 0
     postureDamage: 35
     poiseDamage: 5
     pushForce: 0
@@ -22238,9 +22716,11 @@ MonoBehaviour:
     ignoreBlocking: 0
     canNotBeParried: 0
     damageType: 0
+  targetHitReaction: {fileID: 0}
   maxCooldown: 8
   frequency: 0.5
   animationSpeed: 0.85
+  hasHyperArmor: 0
   characterManager: {fileID: 2092140631}
 --- !u!1 &1537706027 stripped
 GameObject:
@@ -23237,6 +23717,7 @@ MonoBehaviour:
   comboClip3: {fileID: 0}
   minimumHealthToUse: 100
   dontUseBelowHalfHealth: 1
+  halfHealthThreshold: 0.5
   minimumDistanceToTarget: 0
   maximumDistanceToTarget: 15
   onAttack_Start:
@@ -23279,6 +23760,7 @@ MonoBehaviour:
     magic: 0
     lightning: 0
     darkness: 0
+    water: 0
     postureDamage: 45
     poiseDamage: 1
     pushForce: 0
@@ -23287,9 +23769,11 @@ MonoBehaviour:
     ignoreBlocking: 0
     canNotBeParried: 0
     damageType: 0
+  targetHitReaction: {fileID: 0}
   maxCooldown: 12
   frequency: 0.5
   animationSpeed: 1
+  hasHyperArmor: 0
   characterManager: {fileID: 2092140631}
 --- !u!4 &1659893183
 Transform:
@@ -23617,6 +24101,821 @@ Transform:
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6609481716783912975, guid: dafb0867a1ee55145bb0e2f47f964aca, type: 3}
   m_PrefabInstance: {fileID: 1682116527}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407506 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 791524678669179384, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407507 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 362085827893414801, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407508 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5760525212527613741, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407509 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1544046336241786279, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407510 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4935529151988707057, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407511 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8472722596014256267, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407512 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1372350243821509313, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407513 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1760724592889951902, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407514 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5881739932886614462, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407515 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7681930272195659874, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407516 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7539920124102858931, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407517 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5457291268785167773, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407518 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6122351392062214327, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407519 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7403513747404746428, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407520 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8046624260150932526, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407521 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6899484182715863182, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407522 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5948712283693638965, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407523 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4438012626714551521, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407524 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6841656537680260801, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407525 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1094610074345156696, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407526 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3477487770654026642, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407527 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5209603571596555144, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407528 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3527445061817179307, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407529 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1118671974732695393, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407530 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8613394119364435835, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407531 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5522519806338006904, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407532 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 689742096631942730, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407533 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3954202716117423488, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407534 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5687650508288232858, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407535 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7732499336557785430, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407536 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 384003521267943975, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407537 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2004012059676120837, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407538 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5842175637769675905, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407539 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 173595918932352759, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407540 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6384448088074614839, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407541 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7255208335364274218, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407542 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6538180339662900134, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407543 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5870535636063693039, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407544 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 9035478168065632660, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407545 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1039603799525399091, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407546 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3770459450262560608, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407547 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5823402928827493114, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407548 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2408929021356972640, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407549 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3748974147653412159, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407550 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4178651946514122533, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407551 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8952865859379366486, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407552 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6059719381753959397, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407553 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1033901274316268119, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407554 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5814551106804372310, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407555 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4283677051659671820, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407556 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5232974721446794208, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407557 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6185432445567832793, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407558 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8831177143509581507, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407559 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1750972376753105633, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407560 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3119828171766974893, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407561 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6378582311148947627, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407562 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6596179820580639749, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407563 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 799110487965903921, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407564 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8024345752505721379, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407565 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 9021477786881386350, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407566 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3453006310007329006, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407567 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 9028602235774981468, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407568 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 728427340406131401, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407569 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6686300055481040297, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407570 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8222036976906174967, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407571 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2380123567087095240, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407572 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3733313441293793659, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407573 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 9185553840661580192, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407574 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4948071505849678269, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407575 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4800837179756166097, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407576 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4951044202660796102, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407577 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7890924016959932058, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407578 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8017409551355275033, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407579 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3468969934408775526, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407580 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4671662877221335409, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407581 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1472379651909905773, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407582 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5460513193618955829, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407583 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2388718765134306496, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407584 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5592412571403138925, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407585 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5117356150968510969, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407586 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3853941324674954998, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407587 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7555838266653419409, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407588 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4674639446406112573, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407589 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3731622910355362046, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407590 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8886338975507720684, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407591 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8341682280779961411, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407592 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 16062637102245526, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407593 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2687070088039229933, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407594 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 203808249536865864, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407595 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5702013736406045305, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407596 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1715323184541390814, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407597 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1973325593236402274, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407598 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 299150149691212674, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407599 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8495274738758898829, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407600 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3534272079975600114, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407601 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1350658730186451812, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407602 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4306176768037222742, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407603 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7767737416048656584, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407604 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2493186945445259188, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407605 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8580111041230421916, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407606 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 240388499668929396, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407607 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3708086579787635298, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407608 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1555646421469788871, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407609 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4036644051708281112, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407610 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7548301050260234260, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407611 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5281139942991242437, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407612 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1895203499698379591, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407613 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3542218709564819902, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407614 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5933558794681859418, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407615 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6670229713186434128, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407616 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3434244071994249430, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407617 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5618209637081918854, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407618 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 640234663574865098, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407619 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5693637290538061804, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407620 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4261442037085161471, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407621 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7263568932229121417, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407622 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7251653354229764386, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407623 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4824310375420196824, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407624 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5375109101416556603, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407625 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8534222784745533995, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407626 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3297533625124190881, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407627 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3165944701203308164, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407628 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4362281355584128565, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407629 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7004333221591366562, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407630 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7459123569425680793, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407631 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5684539339139751931, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407632 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7404371821698975011, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407633 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4002932004237389136, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407634 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2051054506894334870, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407635 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1628999681331241436, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407636 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5528450795891808126, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407637 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8669794964685955332, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407638 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1865199086036907869, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407639 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5221289287361117436, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407640 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5484235162999039327, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407641 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4001037579441577766, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407642 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3526936065000720413, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407643 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7312194254572697940, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407644 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8160948428762748410, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407645 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5540547189854816289, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407646 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4958965774222328102, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407647 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4547304463960351042, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407648 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3386240504188829408, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407649 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 9057687063439505363, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407650 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3290061024813828046, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407651 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3840009511822358867, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407652 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2528279965887083957, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407653 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1751363027654832376, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407654 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7188575710155988486, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407655 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2173673823395816288, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407656 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6777654926659171760, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407657 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4252299992441281321, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407658 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 9143820014296886743, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407659 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4024930864893668465, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407660 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 9168031345290897693, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407661 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7811764993697354407, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407662 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1993965164951596308, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407663 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5362272969008960243, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407664 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1323456380386167913, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407665 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6232616395182428509, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407666 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1457106625938690162, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407667 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7490395466334316390, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1684407668 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1947310337903534550, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
+  m_PrefabInstance: {fileID: 1080867496}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1690754112
 PrefabInstance:
@@ -26572,11 +27871,6 @@ GameObject:
 --- !u!1 &2031585958 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2424525927224254211, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
-  m_PrefabInstance: {fileID: 1080867496}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &2031585959 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1838327347001812288, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
   m_PrefabInstance: {fileID: 1080867496}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &2031585960 stripped

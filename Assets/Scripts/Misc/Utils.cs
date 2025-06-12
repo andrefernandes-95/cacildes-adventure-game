@@ -239,5 +239,17 @@ namespace AF
                 new Vector2(0.5f, 0.5f) // Pivot at the center
             );
         }
+
+
+        public static AudioSource CreateAudioSource(GameObject gameObject, AudioClip clip)
+        {
+            AudioSource audioSource = gameObject.AddComponent<AudioSource>();
+            audioSource.playOnAwake = false;
+            audioSource.spatialBlend = 1f;
+            audioSource.minDistance = 0.5f;
+            audioSource.maxDistance = 2f;
+            audioSource.clip = clip;
+            return audioSource;
+        }
     }
 }

@@ -46,7 +46,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1111605574083133567, guid: c395e5cd1afb2bd40b1eddb9910790fe, type: 3}
       propertyPath: lootTable._serializedList.Array.size
-      value: 6
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 1111605574083133567, guid: c395e5cd1afb2bd40b1eddb9910790fe, type: 3}
       propertyPath: lootTable._serializedList.Array.data[0].Key
@@ -55,21 +55,25 @@ PrefabInstance:
     - target: {fileID: 1111605574083133567, guid: c395e5cd1afb2bd40b1eddb9910790fe, type: 3}
       propertyPath: lootTable._serializedList.Array.data[1].Key
       value: 
-      objectReference: {fileID: 11400000, guid: 841710729145f2c47874311360e56003, type: 2}
+      objectReference: {fileID: 11400000, guid: f4fecb9969e254143ac7492d9003fe8f, type: 2}
     - target: {fileID: 1111605574083133567, guid: c395e5cd1afb2bd40b1eddb9910790fe, type: 3}
       propertyPath: lootTable._serializedList.Array.data[2].Key
       value: 
-      objectReference: {fileID: 11400000, guid: c66f982e0ac4c9d4abd5ebde477a2db6, type: 2}
+      objectReference: {fileID: 11400000, guid: 841710729145f2c47874311360e56003, type: 2}
     - target: {fileID: 1111605574083133567, guid: c395e5cd1afb2bd40b1eddb9910790fe, type: 3}
       propertyPath: lootTable._serializedList.Array.data[3].Key
       value: 
-      objectReference: {fileID: 11400000, guid: 6b633c563d0208a4280ed21dfe83ca31, type: 2}
+      objectReference: {fileID: 11400000, guid: c66f982e0ac4c9d4abd5ebde477a2db6, type: 2}
     - target: {fileID: 1111605574083133567, guid: c395e5cd1afb2bd40b1eddb9910790fe, type: 3}
       propertyPath: lootTable._serializedList.Array.data[4].Key
       value: 
-      objectReference: {fileID: 11400000, guid: 9b360136c25dd6448b5bfccab54bb647, type: 2}
+      objectReference: {fileID: 11400000, guid: 6b633c563d0208a4280ed21dfe83ca31, type: 2}
     - target: {fileID: 1111605574083133567, guid: c395e5cd1afb2bd40b1eddb9910790fe, type: 3}
       propertyPath: lootTable._serializedList.Array.data[5].Key
+      value: 
+      objectReference: {fileID: 11400000, guid: 9b360136c25dd6448b5bfccab54bb647, type: 2}
+    - target: {fileID: 1111605574083133567, guid: c395e5cd1afb2bd40b1eddb9910790fe, type: 3}
+      propertyPath: lootTable._serializedList.Array.data[6].Key
       value: 
       objectReference: {fileID: 11400000, guid: a6ce8505d6a30a64dbab4d9c2f6bd140, type: 2}
     - target: {fileID: 1111605574083133567, guid: c395e5cd1afb2bd40b1eddb9910790fe, type: 3}
@@ -85,12 +89,16 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1111605574083133567, guid: c395e5cd1afb2bd40b1eddb9910790fe, type: 3}
+      propertyPath: lootTable._serializedList.Array.data[6].Value.amount
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1111605574083133567, guid: c395e5cd1afb2bd40b1eddb9910790fe, type: 3}
       propertyPath: lootTable._serializedList.Array.data[0].Value.chanceToGet
       value: 99
       objectReference: {fileID: 0}
     - target: {fileID: 1111605574083133567, guid: c395e5cd1afb2bd40b1eddb9910790fe, type: 3}
       propertyPath: lootTable._serializedList.Array.data[1].Value.chanceToGet
-      value: 22
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 1111605574083133567, guid: c395e5cd1afb2bd40b1eddb9910790fe, type: 3}
       propertyPath: lootTable._serializedList.Array.data[2].Value.chanceToGet
@@ -98,14 +106,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1111605574083133567, guid: c395e5cd1afb2bd40b1eddb9910790fe, type: 3}
       propertyPath: lootTable._serializedList.Array.data[3].Value.chanceToGet
-      value: 15
+      value: 22
       objectReference: {fileID: 0}
     - target: {fileID: 1111605574083133567, guid: c395e5cd1afb2bd40b1eddb9910790fe, type: 3}
       propertyPath: lootTable._serializedList.Array.data[4].Value.chanceToGet
-      value: 25
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 1111605574083133567, guid: c395e5cd1afb2bd40b1eddb9910790fe, type: 3}
       propertyPath: lootTable._serializedList.Array.data[5].Value.chanceToGet
+      value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 1111605574083133567, guid: c395e5cd1afb2bd40b1eddb9910790fe, type: 3}
+      propertyPath: lootTable._serializedList.Array.data[6].Value.chanceToGet
       value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 1335974536498934782, guid: c395e5cd1afb2bd40b1eddb9910790fe, type: 3}
@@ -1446,6 +1458,8 @@ MonoBehaviour:
   onAnyCollisionEvent:
     m_PersistentCalls:
       m_Calls: []
+  collisionSound: {fileID: 0}
+  collisionSoundCooldown: 0.1
 --- !u!82 &8467115323913409235
 AudioSource:
   m_ObjectHideFlags: 0

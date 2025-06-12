@@ -1,4 +1,5 @@
 using AF.Stats;
+using EditorAttributes;
 using UnityEngine;
 using UnityEngine.Localization.Settings;
 
@@ -7,10 +8,8 @@ namespace AF
     [CreateAssetMenu(menuName = "Items / Spell / New Spell")]
     public class Spell : Item
     {
-
         public GameObject projectile;
-
-        public float costPerCast = 20;
+        public float manaCostPerCast = 20;
 
         [Header("Animations")]
         public AnimationClip castAnimationOverride;
@@ -36,6 +35,9 @@ namespace AF
         public int positiveReputationRequired = 0;
         public int negativeReputationRequired = 0;
 
+        [Header("Actions")]
+        [HelpBox("If true, will use the new action system")]
+        public Ability ability;
 
         public string GetFormattedAppliedStatusEffects()
         {
@@ -96,5 +98,9 @@ namespace AF
             }
             return text.TrimEnd();
         }
+
+        public bool HasAbility() => ability != null;
+
+
     }
 }

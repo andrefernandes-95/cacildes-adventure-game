@@ -328,5 +328,15 @@ namespace AF.Animations
             playerManager.playerWeaponsManager.ApplyWeaponBuffToWeapon(CharacterWeaponBuffs.WeaponBuffName
             .FIRE, playerManager.playerWeaponsManager.DEFAULT_WEAPON_BUFF_DURATION);
         }
+
+        public void OnPrepareAbility()
+        {
+            playerManager.playerAbilityManager.OnPrepareAbility();
+        }
+
+        public void OnUseAbility()
+        {
+            playerManager.playerAbilityManager.OnUseAbility();
+        }
     }
 }

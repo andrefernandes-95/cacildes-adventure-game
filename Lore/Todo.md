@@ -3,23 +3,23 @@
 
 DONE
 - Simplify Music Code
-- Add Music UI to let user know which music is playing
-- Normalize audio
 - Add dual wielding
 - Save dual wielding
 - Upgrade and save multiple weapons
-
-RESOLVIDO:
-- Jogo fica laggado ao trocar de combat stance - otimizado código de updateanimator e chamadas por event messaging
-- Bug odachi duas maos com ataque pesado - causado por codigo de power sance
-- If dual wielding, spent double the stamina
-- Musica de boss n termina no maermindo voss fight
+- Ignore Weapon Requirements
 
 IN DEV:
+- Dark Souls Messaging System with hash spatial messaging
+- Proper Arena System with weapons awarded at the end
 - Simplify existing weapons
 - Increase stamina regen
 - If jump attack, enable both weapons
 - Bug: Heavy attack not working for Golden Lance (check)
+- Add Music UI to let user know which music is playing
+- Normalize audio
+- mark chicken quest as tracked
+
+- Mom should reward player with another shield or weapon after bear encounter, to reward him
 
 1.7.2
 - Replace cards with skill system
@@ -31,6 +31,7 @@ IN DEV:
 - Refactor weapon levelling
 
 READY FOR DEV:
+- Skills as scriptable objects
 - Add quest started popup
 - Elven bow should be offered by Fenlora in the epilogue
 - Add category to received items popup
@@ -66,6 +67,7 @@ READY FOR DEV:
 - Improve Roberto boss fight
 - Captain drinking bottles always appear outside main quest near the orc cavern
 - Stamina Potion should increase max stamina for 60 seconds
+- Powerstance ring
 
 BACKLOG:
 - Adjust unarmed and weapon staminas

@@ -36,6 +36,8 @@ namespace AF
         public CharacterAbstractBlockController characterBlockController;
         public DamageReceiver damageReceiver;
         public CharacterPushController characterPushController;
+        public CharacterTransformHelper characterTransformHelper;
+
         public abstract void ResetStates();
 
         public bool IsBusy()

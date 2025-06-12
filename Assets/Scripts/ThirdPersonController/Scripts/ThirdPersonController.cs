@@ -1,8 +1,5 @@
 ﻿using UnityEngine;
 using UnityEngine.InputSystem;
-
-using AF.Stats;
-using AF.Shooting;
 using AF.Ladders;
 using AF.Health;
 using UnityEngine.Events;
