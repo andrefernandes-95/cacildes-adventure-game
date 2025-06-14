@@ -1,4 +1,6 @@
 using System.Collections;
+using AF.Events;
+using TigerForge;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
@@ -50,7 +52,7 @@ namespace AF
 
                 StartCoroutine(SelectKeyBinding("Sprint", label, (bindingPayload) =>
                 {
-                    gameSettings.SetSprintOverrideBindingPayload(bindingPayload);
+                    gameSettings.sprintBinding = bindingPayload;
                 }, () =>
                 {
                     gameControls.UpdateInputsHUD();
@@ -63,7 +65,7 @@ namespace AF
 
                 StartCoroutine(SelectKeyBinding("Jump", label, (bindingPayload) =>
                 {
-                    gameSettings.SetJumpOverrideBindingPayload(bindingPayload);
+                    gameSettings.jumpBinding = bindingPayload;
                 }, () =>
                 {
                     gameControls.UpdateInputsHUD();
@@ -77,7 +79,7 @@ namespace AF
 
                 StartCoroutine(SelectKeyBinding("Dodge", label, (bindingPayload) =>
                 {
-                    gameSettings.SetDodgeOverrideBindingPayload(bindingPayload);
+                    gameSettings.dodgeBinding = bindingPayload;
                 }, () =>
                 {
                     gameControls.UpdateInputsHUD();
@@ -91,7 +93,7 @@ namespace AF
 
                 StartCoroutine(SelectKeyBinding("ToggleHands", label, (bindingPayload) =>
                 {
-                    gameSettings.SetTwoHandModeOverrideBindingPayload(bindingPayload);
+                    gameSettings.toggleCombatStanceBinding = bindingPayload;
                 }, () =>
                 {
                     gameControls.UpdateInputsHUD();
@@ -103,7 +105,7 @@ namespace AF
                 string label = Utils.IsPortuguese() ? "Redifinir Ataque Pesado" : "Rebinding Heavy Attack";
                 StartCoroutine(SelectKeyBinding("HeavyAttack", label, (bindingPayload) =>
                 {
-                    gameSettings.SetTwoHandModeOverrideBindingPayload(bindingPayload);
+                    gameSettings.heavyAttackBinding = bindingPayload;
                 }, () =>
                 {
                     gameControls.UpdateInputsHUD();
@@ -125,6 +127,7 @@ namespace AF
 
             pressAnyKeyModal.style.display = DisplayStyle.None;
             onFinish?.Invoke();
+            EventManager.EmitEvent(EventMessages.ON_INPUT_BINDINGS_CHANGED);
         }
     }
 }

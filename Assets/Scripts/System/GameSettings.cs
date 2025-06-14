@@ -10,7 +10,6 @@ using UnityEngine.Localization.SmartFormat.Extensions;
 public class GameSettings : ScriptableObject
 {
     public bool developerModeActive = false;
-
     public bool hasInitializedSettings = false;
 
     public float minimumCameraDistanceToPlayer = 0;
@@ -30,16 +29,19 @@ public class GameSettings : ScriptableObject
     public readonly string CAMERA_DISTANCE_KEY = "cameraDistance";
     public readonly string INVERT_Y_AXIS_KEY = "invertYAxis";
 
-    public readonly string JUMP_OVERRIDE_BINDING_PAYLOAD_KEY = "JUMP_OVERRIDE_BINDING_PAYLOAD_KEY";
-    public readonly string DODGE_OVERRIDE_BINDING_PAYLOAD_KEY = "DODGE_OVERRIDE_BINDING_PAYLOAD_KEY";
-    public readonly string HEAVY_ATTACK_OVERRIDE_BINDING_PAYLOAD_KEY = "HEAVY_ATTACK_OVERRIDE_BINDING_PAYLOAD_KEY";
-    public readonly string TWO_HAND_MODE_OVERRIDE_BINDING_PAYLOAD_KEY = "TWO_HAND_MODE_OVERRIDE_BINDING_PAYLOAD_KEY";
-    public readonly string SPRINT_OVERRIDE_BINDING_PAYLOAD_KEY = "SPRINT_OVERRIDE_BINDING_PAYLOAD_KEY";
+    [Header("Custom Bindings")]
+    public string jumpBinding = "";
+    public string dodgeBinding = "";
+    public string sprintBinding = "";
+    public string toggleCombatStanceBinding = "";
+    public string heavyAttackBinding = "";
+    public string useAbilityBinding = "";
 
-    public string characterName;
     public readonly string PLAYER_NAME_KEY = "PLAYER_NAME";
     public readonly string defaultPlayerName = "Cacildes";
     public readonly string HIDE_PLAYER_HUD_KEY = "HIDE_PLAYER_HUD_KEY";
+
+    [HideInInspector] public string SAVE_FILES_FOLDER = "GamePreferences";
 
 
 #if UNITY_EDITOR
@@ -117,26 +119,39 @@ public class GameSettings : ScriptableObject
         SetGameQuality(2);
         SetCameraSensitivity(1f);
         SetMusicVolume(1f);
-        SetJumpOverrideBindingPayload("");
-        SetDodgeOverrideBindingPayload("");
-        SetHeavyAttackOverrideBindingPayload("");
-        SetTwoHandModeOverrideBindingPayload("");
-        SetSprintOverrideBindingPayload("");
+        ResetKeyBindings();
         SetInvertYAxis(false);
 
-        EventManager.EmitEvent(EventMessages.ON_USE_CUSTOM_INPUT_CHANGED);
+        EventManager.EmitEvent(EventMessages.ON_INPUT_BINDINGS_CHANGED);
     }
 
-    public void LoadSettings(StarterAssetsInputs starterAssetsInputs)
+    void ResetKeyBindings()
+    {
+        jumpBinding = "";
+        dodgeBinding = "";
+        sprintBinding = "";
+        toggleCombatStanceBinding = "";
+        heavyAttackBinding = "";
+        useAbilityBinding = "";
+    }
+
+    public void LoadSettings()
     {
         if (hasInitializedSettings)
         {
             return;
         }
 
+        // Load from file
+        GameSettingsUtils.LoadPreferences(this);
+
         hasInitializedSettings = true;
         SetGameQuality(GetGraphicsQuality());
-        SetInputOverrides(starterAssetsInputs);
+    }
+
+    public void SaveSettings()
+    {
+        GameSettingsUtils.SavePreferences(this);
     }
 
     public void SetGameQuality(int newValue)
@@ -233,83 +248,4 @@ public class GameSettings : ScriptableObject
         return PlayerPrefs.HasKey(MUSIC_VOLUME_KEY) ? PlayerPrefs.GetFloat(MUSIC_VOLUME_KEY) : 1f;
     }
 
-    void SetInputOverrides(StarterAssetsInputs starterAssetsInputs)
-    {
-        if (string.IsNullOrEmpty(GetJumpOverrideBindingPayload()) == false)
-        {
-            starterAssetsInputs.ApplyBindingOverride("Jump", GetJumpOverrideBindingPayload());
-        }
-
-        if (string.IsNullOrEmpty(GetDodgeOverrideBindingPayload()) == false)
-        {
-            starterAssetsInputs.ApplyBindingOverride("Dodge", GetDodgeOverrideBindingPayload());
-        }
-
-        if (string.IsNullOrEmpty(GetHeavyAttackOverrideBindingPayload()) == false)
-        {
-            starterAssetsInputs.ApplyBindingOverride("HeavyAttack", GetHeavyAttackOverrideBindingPayload());
-        }
-
-        if (string.IsNullOrEmpty(GetTwoHandModeOverrideBindingPayload()) == false)
-        {
-            starterAssetsInputs.ApplyBindingOverride("Tab", GetTwoHandModeOverrideBindingPayload());
-        }
-
-        if (string.IsNullOrEmpty(GetSprintOverrideBindingPayload()) == false)
-        {
-            starterAssetsInputs.ApplyBindingOverride("Sprint", GetSprintOverrideBindingPayload());
-        }
-
-        EventManager.EmitEvent(EventMessages.ON_USE_CUSTOM_INPUT_CHANGED);
-    }
-
-    public string GetJumpOverrideBindingPayload()
-    {
-        return PlayerPrefs.HasKey(JUMP_OVERRIDE_BINDING_PAYLOAD_KEY) ? PlayerPrefs.GetString(JUMP_OVERRIDE_BINDING_PAYLOAD_KEY) : "";
-    }
-
-    public void SetJumpOverrideBindingPayload(string newValue)
-    {
-        PlayerPrefs.SetString(JUMP_OVERRIDE_BINDING_PAYLOAD_KEY, newValue);
-    }
-
-    public string GetDodgeOverrideBindingPayload()
-    {
-        return PlayerPrefs.HasKey(DODGE_OVERRIDE_BINDING_PAYLOAD_KEY) ? PlayerPrefs.GetString(DODGE_OVERRIDE_BINDING_PAYLOAD_KEY) : "";
-    }
-
-    public void SetDodgeOverrideBindingPayload(string newValue)
-    {
-        PlayerPrefs.SetString(DODGE_OVERRIDE_BINDING_PAYLOAD_KEY, newValue);
-    }
-
-    public string GetHeavyAttackOverrideBindingPayload()
-    {
-        return PlayerPrefs.HasKey(HEAVY_ATTACK_OVERRIDE_BINDING_PAYLOAD_KEY) ? PlayerPrefs.GetString(HEAVY_ATTACK_OVERRIDE_BINDING_PAYLOAD_KEY) : "";
-    }
-
-    public void SetHeavyAttackOverrideBindingPayload(string newValue)
-    {
-        PlayerPrefs.SetString(HEAVY_ATTACK_OVERRIDE_BINDING_PAYLOAD_KEY, newValue);
-    }
-
-    public string GetTwoHandModeOverrideBindingPayload()
-    {
-        return PlayerPrefs.HasKey(TWO_HAND_MODE_OVERRIDE_BINDING_PAYLOAD_KEY) ? PlayerPrefs.GetString(TWO_HAND_MODE_OVERRIDE_BINDING_PAYLOAD_KEY) : "";
-    }
-
-    public void SetTwoHandModeOverrideBindingPayload(string newValue)
-    {
-        PlayerPrefs.SetString(TWO_HAND_MODE_OVERRIDE_BINDING_PAYLOAD_KEY, newValue);
-    }
-
-    public string GetSprintOverrideBindingPayload()
-    {
-        return PlayerPrefs.HasKey(SPRINT_OVERRIDE_BINDING_PAYLOAD_KEY) ? PlayerPrefs.GetString(SPRINT_OVERRIDE_BINDING_PAYLOAD_KEY) : "";
-    }
-
-    public void SetSprintOverrideBindingPayload(string newValue)
-    {
-        PlayerPrefs.SetString(SPRINT_OVERRIDE_BINDING_PAYLOAD_KEY, newValue);
-    }
 }

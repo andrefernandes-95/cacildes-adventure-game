@@ -60,7 +60,7 @@ namespace AF
 
         void Awake()
         {
-            EventManager.StartListening(EventMessages.ON_USE_CUSTOM_INPUT_CHANGED, UpdateInputsHUD);
+            EventManager.StartListening(EventMessages.ON_INPUT_BINDINGS_CHANGED, UpdateInputsHUD);
         }
 
         void OnEnable()
@@ -178,27 +178,27 @@ namespace AF
         {
             UpdateInputLabel("Dodge",
                 Utils.IsPortuguese() ? "Esquivar" : "Dodge",
-                gameSettings.GetDodgeOverrideBindingPayload(),
+                gameSettings.dodgeBinding,
                 "Dodge");
 
             UpdateInputLabel("Jump",
                 Utils.IsPortuguese() ? "Pular" : "Jump",
-                gameSettings.GetJumpOverrideBindingPayload(),
+                gameSettings.jumpBinding,
                 "Jump");
 
             UpdateInputLabel("ToggleHands",
                 Utils.IsPortuguese() ? "Alternar Mãos" : "Toggle Hands",
-                gameSettings.GetTwoHandModeOverrideBindingPayload(),
+                gameSettings.toggleCombatStanceBinding,
                 "Tab");
 
             UpdateInputLabel("HeavyAttack",
                 Utils.IsPortuguese() ? "Ataque Pesado" : "Heavy Attack",
-                gameSettings.GetHeavyAttackOverrideBindingPayload(),
+                gameSettings.heavyAttackBinding,
                 "HeavyAttack");
 
             UpdateInputLabel("Sprint",
                 Utils.IsPortuguese() ? "Correr" : "Sprint",
-                gameSettings.GetSprintOverrideBindingPayload(),
+                gameSettings.sprintBinding,
                 "Sprint");
         }
 

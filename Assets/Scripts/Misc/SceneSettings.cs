@@ -65,7 +65,7 @@ namespace AF
                 sceneName = SceneManager.GetActiveScene().name;
             }
 
-            gameSettings.LoadSettings(starterAssetsInputs);
+            gameSettings.LoadSettings();
         }
 
         private void Start()

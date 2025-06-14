@@ -25,7 +25,6 @@ namespace AF
 
 		public UnityEvent onDodgeInput;
 		public UnityEvent onLightAttackInput;
-		public bool dodge;
 
 		public bool block;
 		public UnityEvent onBlock_Start;
@@ -79,12 +78,77 @@ namespace AF
 		[Header("Components")]
 		public EquipmentSlots equipmentSlots;
 
+		[SerializeField] InputActionAsset inputActions;
+
+
 		private void Awake()
 		{
 			EventManager.StartListening(EventMessages.ON_CAMERA_SENSITIVITY_CHANGED, UpdateScaleVector);
 			EventManager.StartListening(EventMessages.ON_INVERT_Y_AXIS, UpdateScaleVector);
+			EventManager.StartListening(EventMessages.ON_INPUT_BINDINGS_CHANGED, Refresh);
 
 			UpdateScaleVector();
+		}
+
+		void Refresh()
+		{
+			gameObject.SetActive(false);
+			gameObject.SetActive(true);
+		}
+
+		void OnEnable()
+		{
+			var actionMap = inputActions.FindActionMap("Player", true);
+
+			// Apply Custom Bindings
+			HandleCustomBindings(actionMap);
+
+			var sprintAction = actionMap.FindAction("Sprint", true);
+			sprintAction.performed += OnSprintPerformed;
+			sprintAction.canceled += OnSprintCanceled;
+			sprintAction.Enable();
+
+			var dodgeAction = actionMap.FindAction("Dodge", true);
+			dodgeAction.performed += OnDodgePerformed;
+			dodgeAction.Enable();
+		}
+
+		void OnDisable()
+		{
+			var actionMap = inputActions.FindActionMap("Player", true);
+
+			var sprintAction = actionMap.FindAction("Sprint", true);
+			sprintAction.performed -= OnSprintPerformed;
+			sprintAction.canceled -= OnSprintCanceled;
+			sprintAction.Disable();
+
+			var dodgeAction = actionMap.FindAction("Dodge", true);
+			dodgeAction.performed -= OnDodgePerformed;
+			dodgeAction.Disable();
+		}
+
+		void OnSprintPerformed(InputAction.CallbackContext context)
+		{
+			if (context.performed)
+			{
+				sprint = true;
+			}
+		}
+
+		void OnSprintCanceled(InputAction.CallbackContext context)
+		{
+			if (context.canceled)
+			{
+				sprint = false;
+			}
+		}
+
+		void OnDodgePerformed(InputAction.CallbackContext context)
+		{
+			if (context.performed)
+			{
+				onDodgeInput?.Invoke();
+			}
 		}
 
 		private void UpdateScaleVector()
@@ -314,7 +378,7 @@ namespace AF
 				return rebindingOperation.completed;
 			});
 
-			onRebindSuccessfull.Invoke(rebindingOperation.action.SaveBindingOverridesAsJson());
+			onRebindSuccessfull.Invoke(rebindingOperation.action.bindings[0].overridePath);
 
 			rebindingOperation.Dispose();
 			inputAction.Enable();
@@ -341,14 +405,17 @@ namespace AF
 
 		public void ApplyBindingOverride(string actionName, string overridePayload)
 		{
-			InputAction inputAction = playerInput
-				.actions
-				.FindAction(actionName);
-
-			if (inputAction != null)
+			try
 			{
-				inputAction.LoadBindingOverridesFromJson(overridePayload);
+				playerInput.actions[actionName].ApplyBindingOverride(overridePayload);
 			}
+			catch (System.Exception e)
+			{
+				Debug.LogError($"Failed to apply override for {actionName}: {e.Message}");
+				return;
+			}
+
+			Debug.Log($"Applied override for {actionName}: {overridePayload}");
 		}
 
 		public void OnMainMenuUnequipSlot()
@@ -387,6 +454,70 @@ namespace AF
 		public bool IsGamepad()
 		{
 			return playerInput.currentControlScheme == "Gamepad";
+		}
+
+		void HandleCustomBindings(InputActionMap actionMap)
+		{
+			InputAction sprintAction = actionMap.FindAction("Sprint", true);
+			if (!string.IsNullOrEmpty(gameSettings.sprintBinding))
+			{
+				sprintAction.ApplyBindingOverride(gameSettings.sprintBinding);
+			}
+			else
+			{
+				sprintAction.RemoveAllBindingOverrides();
+			}
+
+			InputAction dodgeAction = actionMap.FindAction("Dodge", true);
+			if (!string.IsNullOrEmpty(gameSettings.dodgeBinding))
+			{
+				dodgeAction.ApplyBindingOverride(gameSettings.dodgeBinding);
+			}
+			else
+			{
+				dodgeAction.RemoveAllBindingOverrides();
+			}
+
+
+			InputAction jumpAction = actionMap.FindAction("Jump", true);
+			if (!string.IsNullOrEmpty(gameSettings.jumpBinding))
+			{
+				jumpAction.ApplyBindingOverride(gameSettings.jumpBinding);
+			}
+			else
+			{
+				jumpAction.RemoveAllBindingOverrides();
+			}
+
+			InputAction useAbility = actionMap.FindAction("UseAbility", true);
+			if (!string.IsNullOrEmpty(gameSettings.useAbilityBinding))
+			{
+				useAbility.ApplyBindingOverride(gameSettings.useAbilityBinding);
+			}
+			else
+			{
+				useAbility.RemoveAllBindingOverrides();
+			}
+
+			InputAction toggleCombatStance = actionMap.FindAction("Tab", true);
+			if (!string.IsNullOrEmpty(gameSettings.toggleCombatStanceBinding))
+			{
+				toggleCombatStance.ApplyBindingOverride(gameSettings.toggleCombatStanceBinding);
+			}
+			else
+			{
+				toggleCombatStance.RemoveAllBindingOverrides();
+			}
+
+			InputAction heavyAttack = actionMap.FindAction("HeavyAttack", true);
+			if (!string.IsNullOrEmpty(gameSettings.heavyAttackBinding))
+			{
+				heavyAttack.ApplyBindingOverride(gameSettings.toggleCombatStanceBinding);
+			}
+			else
+			{
+				heavyAttack.RemoveAllBindingOverrides();
+			}
 		}
 	}
 }
