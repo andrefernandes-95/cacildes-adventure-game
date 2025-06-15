@@ -55,11 +55,11 @@ namespace AF.Inventory
 
                 if (defaultItem.Key is Armor armor)
                 {
-                    equipmentDatabase.EquipArmor(armor);
+                    equipmentDatabase.EquipArmor(armor, false);
                 }
                 else if (defaultItem.Key is Legwear legwear)
                 {
-                    equipmentDatabase.EquipLegwear(legwear);
+                    equipmentDatabase.EquipLegwear(legwear, false);
                 }
             }
         }

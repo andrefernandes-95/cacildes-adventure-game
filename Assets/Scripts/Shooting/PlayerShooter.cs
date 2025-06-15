@@ -110,7 +110,7 @@ namespace AF.Shooting
                 }
             });
 
-            GetPlayerManager().starterAssetsInputs.onUseAbility.AddListener(OnUseAbilityInput);
+            GetPlayerManager().starterAssetsInputs.onChargeAbilityStart.AddListener(OnUseAbilityInput);
         }
 
         public void ResetStates()
@@ -839,8 +839,7 @@ namespace AF.Shooting
             {
                 if (spell.HasAbility())
                 {
-                    Ability ability = Instantiate(spell.ability);
-                    ability.OnPrepare(GetPlayerManager());
+                    GetPlayerManager().playerAbilityManager.QueueAbility(spell.ability);
                 }
             }
         }

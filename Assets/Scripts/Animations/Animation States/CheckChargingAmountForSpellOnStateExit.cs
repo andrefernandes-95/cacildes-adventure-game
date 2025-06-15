@@ -20,7 +20,7 @@ namespace AF
         {
             if (playerManager != null)
             {
-                playerManager.playerAbilityManager.chargingAbilityAmount = Mathf.Clamp01(stateInfo.normalizedTime);
+                playerManager.playerAbilityManager.chargingAbilityAmount = stateInfo.normalizedTime;
             }
         }
     }

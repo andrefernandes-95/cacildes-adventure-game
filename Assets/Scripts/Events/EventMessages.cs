@@ -15,6 +15,7 @@ namespace AF.Events
         public static readonly string ON_BOSS_BATTLE_ENDS = "ON_BOSS_BATTLE_ENDS";
 
         // Quests
+        public static readonly string ON_QUEST_ADDED = "ON_QUEST_ADDED";
         public static readonly string ON_QUEST_TRACKED = "ON_QUEST_TRACKED";
         public static readonly string ON_QUESTS_PROGRESS_CHANGED = "ON_QUESTS_PROGRESS_CHANGED";
 

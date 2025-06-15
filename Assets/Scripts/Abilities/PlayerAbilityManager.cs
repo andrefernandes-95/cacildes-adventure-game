@@ -10,7 +10,7 @@ namespace AF
 
         void Awake()
         {
-            playerManager.starterAssetsInputs.onUseAbility.AddListener(ChargeAbility);
+            playerManager.starterAssetsInputs.onChargeAbilityEnd.AddListener(EndChargeAbility);
         }
 
         public void ResetStates()
@@ -30,6 +30,8 @@ namespace AF
 
         public override void OnUseAbility()
         {
+            EndChargeAbility();
+
             if (currentAbility != null)
             {
                 currentAbility.OnUse(playerManager);
@@ -43,17 +45,27 @@ namespace AF
             // Clean up charging spells if we were interrupted before
             if (chargingAbilityFX != null)
             {
-                Destroy(chargingAbilityFX);
+                if (chargingAbilityFX.TryGetComponent(out ParticleSystem particleSystem))
+                {
+                    particleSystem.Stop();
+                }
+
+                Destroy(chargingAbilityFX, 5f);
+
                 chargingAbilityFX = null;
             }
         }
 
-        void ChargeAbility()
+        void EndChargeAbility()
         {
-            if (currentAbility != null)
-            {
-                playerManager.animator.SetBool("isCharging", true);
-            }
+            playerManager.animator.SetBool("isCharging", false);
+        }
+
+        public void QueueAbility(Ability ability)
+        {
+            Ability clonedAbility = Instantiate(ability);
+            clonedAbility.OnPrepare(playerManager);
+            playerManager.animator.SetBool("isCharging", true);
         }
     }
 }

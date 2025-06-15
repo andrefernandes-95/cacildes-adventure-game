@@ -65,7 +65,8 @@ namespace AF
 		public UnityEvent onGoBackOneHour;
 
 		// Abilities
-		[HideInInspector] public UnityEvent onUseAbility;
+		[HideInInspector] public UnityEvent onChargeAbilityStart;
+		[HideInInspector] public UnityEvent onChargeAbilityEnd;
 
 		[Header("System")]
 		public GameSettings gameSettings;
@@ -111,6 +112,11 @@ namespace AF
 			var dodgeAction = actionMap.FindAction("Dodge", true);
 			dodgeAction.performed += OnDodgePerformed;
 			dodgeAction.Enable();
+
+			var useAbilityAction = actionMap.FindAction("UseAbility", true);
+			useAbilityAction.performed += OnUseAbilityPerformed;
+			useAbilityAction.canceled += OnUseAbilityCancelled;
+			useAbilityAction.Enable();
 		}
 
 		void OnDisable()
@@ -125,6 +131,11 @@ namespace AF
 			var dodgeAction = actionMap.FindAction("Dodge", true);
 			dodgeAction.performed -= OnDodgePerformed;
 			dodgeAction.Disable();
+
+			var useAbilityAction = actionMap.FindAction("UseAbility", true);
+			useAbilityAction.performed -= OnUseAbilityPerformed;
+			useAbilityAction.canceled -= OnUseAbilityCancelled;
+			useAbilityAction.Disable();
 		}
 
 		void OnSprintPerformed(InputAction.CallbackContext context)
@@ -148,6 +159,23 @@ namespace AF
 			if (context.performed)
 			{
 				onDodgeInput?.Invoke();
+			}
+		}
+
+
+		void OnUseAbilityPerformed(InputAction.CallbackContext context)
+		{
+			if (context.performed)
+			{
+				onChargeAbilityStart?.Invoke();
+			}
+		}
+
+		void OnUseAbilityCancelled(InputAction.CallbackContext context)
+		{
+			if (context.canceled)
+			{
+				onChargeAbilityEnd?.Invoke();
 			}
 		}
 
@@ -426,14 +454,6 @@ namespace AF
 			}
 
 			onMainMenuUnequipSlot?.Invoke();
-		}
-
-		public void OnUseAbility(InputValue inputValue)
-		{
-			if (inputValue.isPressed)
-			{
-				onUseAbility?.Invoke();
-			}
 		}
 
 		public bool IsPS4Controller()

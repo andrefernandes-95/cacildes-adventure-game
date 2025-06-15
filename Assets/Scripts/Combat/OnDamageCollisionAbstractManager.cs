@@ -20,6 +20,7 @@ namespace AF
 
         [Header("Events")]
         public UnityEvent onParticleDamage;
+        [HideInInspector] public UnityEvent onColliding = new UnityEvent();
 
         [Header("Nighttime Options")]
         public bool doubleDamageOnNightTime = false;
@@ -94,6 +95,8 @@ namespace AF
             }
 
             onParticleDamage?.Invoke();
+
+            onColliding?.Invoke();
 
             if (ResetDamageReceiversCoroutine != null)
             {

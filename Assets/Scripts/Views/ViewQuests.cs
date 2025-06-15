@@ -64,6 +64,11 @@ namespace AF
                 StartCoroutine(FocusOnFirstQuestListButton());
             }, soundbank);
 
+            UIUtils.SetupButton(root.Q<Button>("TrackQuest"), () =>
+            {
+                OnTryToTrackQuest();
+            }, soundbank);
+
             starterAssetsInputs.onMainMenuUnequipSlot.AddListener(OnTryToTrackQuest);
         }
 
@@ -185,6 +190,25 @@ namespace AF
             root.Q<Toggle>("QuestCompleted").value = selectedQuest.IsCompleted();
             root.Q<Label>("QuestDescription").text = selectedQuest.questDescription.IsEmpty ? "" : selectedQuest.questDescription.GetLocalizedString();
             root.Q<VisualElement>("TrackQuestImage").style.display = selectedQuest.IsTracked() ? DisplayStyle.Flex : DisplayStyle.None;
+
+            var trackQuestLabel = root.Q<Button>("TrackQuest").Q<Label>();
+            var trackIcon = root.Q<Button>("TrackQuest").Q<VisualElement>("Track");
+            var untrackIcon = root.Q<Button>("TrackQuest").Q<VisualElement>("Untrack");
+
+            trackIcon.style.display = DisplayStyle.None;
+            untrackIcon.style.display = DisplayStyle.None;
+
+            if (selectedQuest.IsTracked())
+            {
+                untrackIcon.style.display = DisplayStyle.Flex;
+                trackQuestLabel.text = !Utils.IsPortuguese() ? "Untrack Quest" : "Desafixar Missão";
+            }
+            else
+            {
+                trackIcon.style.display = DisplayStyle.Flex;
+                trackQuestLabel.text = !Utils.IsPortuguese() ? "Track Quest" : "Afixar Missão";
+            }
+
 
             HandleTabs();
 

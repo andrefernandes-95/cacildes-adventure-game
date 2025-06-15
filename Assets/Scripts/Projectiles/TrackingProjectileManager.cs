@@ -71,8 +71,7 @@ namespace AF
 
             if (Vector3.Distance(transform.position, destination) <= arrivalThreshold || t >= 1f)
             {
-                InstantiateDestructibleFX();
-                Destroy(gameObject);
+                OnColliding();
             }
         }
 
@@ -91,6 +90,12 @@ namespace AF
                 AudioSource audioSource = Utils.CreateAudioSource(instance, explosionSfx);
                 audioSource.Play();
             }
+        }
+
+        public void OnColliding()
+        {
+            InstantiateDestructibleFX();
+            Destroy(gameObject);
         }
     }
 }

@@ -52,7 +52,7 @@ namespace AF
             target = playerManager.lockOnManager.nearestLockOnTarget != null
                 ? playerManager.lockOnManager.nearestLockOnTarget.transform : null;
 
-            ReleaseSpellGameObject(new string[] { "Enemy" });
+            ReleaseSpellGameObject(playerManager, new string[] { "Enemy" });
         }
 
         public override void OnUse(CharacterManager characterManager)
@@ -79,7 +79,7 @@ namespace AF
             return instance;
         }
 
-        void ReleaseSpellGameObject(string[] tagsToDetect)
+        void ReleaseSpellGameObject(CharacterBaseManager damageOwner, string[] tagsToDetect)
         {
             GameObject instance = Instantiate(releaseSpellFX, origin.transform.position + origin.transform.up, Quaternion.identity);
             instance.transform.parent = null;
@@ -90,6 +90,7 @@ namespace AF
             OnDamageTriggerManager onDamageTriggerManager = instance.AddComponent<OnDamageTriggerManager>();
             onDamageTriggerManager.damage = damage;
             onDamageTriggerManager.tagsToDetect = tagsToDetect;
+            onDamageTriggerManager.damageOwner = damageOwner;
 
             SphereCollider sphereCollider = instance.AddComponent<SphereCollider>();
             sphereCollider.isTrigger = true;
@@ -119,6 +120,9 @@ namespace AF
             }
 
             trackingProjectile.Initialize(origin.position);
+
+            // If hit something, destroy projectile
+            onDamageTriggerManager.onColliding.AddListener(trackingProjectile.OnColliding);
 
         }
     }

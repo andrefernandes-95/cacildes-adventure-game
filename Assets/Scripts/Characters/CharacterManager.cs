@@ -17,6 +17,10 @@ namespace AF
 {
     public class CharacterManager : CharacterBaseManager
     {
+
+        [Header("Combatant Info")]
+        public Combatant combatant;
+
         public CompanionID companionID;
         public CharacterCombatController characterCombatController;
         public TargetManager targetManager;

@@ -1133,9 +1133,6 @@ AnimatorStateMachine:
   - {fileID: 8956540835160726722}
   m_EntryTransitions: []
   m_StateMachineTransitions:
-  - first: {fileID: -4148446754667898457}
-    second:
-    - {fileID: -2669188524205299385}
   - first: {fileID: 5909345303041326137}
     second:
     - {fileID: -3539553486155427523}
@@ -1144,6 +1141,9 @@ AnimatorStateMachine:
   - first: {fileID: -2808743948394783116}
     second:
     - {fileID: 6287003028331780124}
+  - first: {fileID: -4148446754667898457}
+    second:
+    - {fileID: -2669188524205299385}
   m_StateMachineBehaviours: []
   m_AnyStatePosition: {x: -260, y: -110, z: 0}
   m_EntryPosition: {x: 540, y: 390, z: 0}
@@ -2395,16 +2395,19 @@ AnimatorStateTransition:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: 
-  m_Conditions: []
+  m_Conditions:
+  - m_ConditionMode: 1
+    m_ConditionEvent: isCharging
+    m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 4743199878303154334}
   m_Solo: 0
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
-  m_TransitionDuration: 0.25
+  m_TransitionDuration: 0
   m_TransitionOffset: 0
-  m_ExitTime: 0.75
+  m_ExitTime: 1
   m_HasExitTime: 1
   m_HasFixedDuration: 1
   m_InterruptionSource: 0
@@ -3004,7 +3007,7 @@ AnimatorController:
     m_DefaultInt: 0
     m_DefaultBool: 0
     m_Controller: {fileID: 9100000}
-  - m_Name: IsChargingAbility
+  - m_Name: isCharging
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
@@ -4993,7 +4996,7 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 2
-    m_ConditionEvent: IsChargingAbility
+    m_ConditionEvent: isCharging
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 5025649293391849731}
@@ -5001,7 +5004,7 @@ AnimatorStateTransition:
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
-  m_TransitionDuration: 0.25
+  m_TransitionDuration: 0.1
   m_TransitionOffset: 0
   m_ExitTime: 0.75
   m_HasExitTime: 0

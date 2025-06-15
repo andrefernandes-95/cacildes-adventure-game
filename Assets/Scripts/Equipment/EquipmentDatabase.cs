@@ -243,10 +243,14 @@ public class EquipmentDatabase : ScriptableObject
         EventManager.EmitEvent(EventMessages.ON_EQUIPMENT_CHANGED);
     }
 
-    public void EquipArmor(Armor equip)
+    public void EquipArmor(Armor equip, bool emitEvent = true)
     {
         armor = equip;
-        EventManager.EmitEvent(EventMessages.ON_EQUIPMENT_CHANGED);
+
+        if (emitEvent)
+        {
+            EventManager.EmitEvent(EventMessages.ON_EQUIPMENT_CHANGED);
+        }
     }
 
     public void UnequipArmor()
@@ -267,10 +271,14 @@ public class EquipmentDatabase : ScriptableObject
         EventManager.EmitEvent(EventMessages.ON_EQUIPMENT_CHANGED);
     }
 
-    public void EquipLegwear(Legwear equip)
+    public void EquipLegwear(Legwear equip, bool emitEvent = true)
     {
         legwear = equip;
-        EventManager.EmitEvent(EventMessages.ON_EQUIPMENT_CHANGED);
+
+        if (emitEvent)
+        {
+            EventManager.EmitEvent(EventMessages.ON_EQUIPMENT_CHANGED);
+        }
     }
 
     public void UnequipLegwear()

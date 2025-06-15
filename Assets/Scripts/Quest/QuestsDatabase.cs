@@ -91,6 +91,7 @@ namespace AF
             if (questParent != null && !questsReceived.Contains(questParent))
             {
                 this.questsReceived.Add(questParent);
+                EventManager.EmitEventData(EventMessages.ON_QUEST_ADDED, questParent);
             }
         }
 
