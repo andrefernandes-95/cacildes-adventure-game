@@ -10,6 +10,8 @@ namespace AF
         [Header("Info")]
         public LocalizedString combatantName;
 
+        public bool isHumanoid = true;
+
         [Header("Attributes")]
         public int maximumHealth = 500;
         public int maximumPosture = 100;

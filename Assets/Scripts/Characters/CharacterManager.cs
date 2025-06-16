@@ -84,7 +84,6 @@ namespace AF
 
             animatorOverrideController = new AnimatorOverrideController(animator.runtimeAnimatorController);
             animator.runtimeAnimatorController = animatorOverrideController;
-
         }
 
         private void Start()
@@ -95,7 +94,7 @@ namespace AF
         public override void ResetStates()
         {
             isCuttingDistanceToTarget = false;
-            animator.applyRootMotion = false;
+            animator.applyRootMotion = true;
             isBusy = false;
 
             characterPosture.ResetStates();
@@ -136,33 +135,12 @@ namespace AF
 
             if (animator.applyRootMotion)
             {
-                Quaternion rootMotionRotation = animator.deltaRotation;
-                transform.rotation *= rootMotionRotation;
+                // Apply animator's root rotation
+                transform.rotation *= animator.deltaRotation;
 
-                // Extract root motion position and rotation from the Animator
-                Vector3 rootMotionPosition = animator.deltaPosition + new Vector3(0.0f, -9, 0.0f) * Time.deltaTime;
+                // Apply root motion position and gravity
+                Vector3 rootMotionPosition = animator.deltaPosition + Physics.gravity * Time.deltaTime;
 
-
-                if (isCuttingDistanceToTarget && targetManager.currentTarget != null)
-                {
-                    agent.updatePosition = false;
-
-                    // Move the character towards the target based on root motion and glide speed
-                    Vector3 targetPosition = targetManager.currentTarget.transform.position;
-                    Vector3 directionToTarget = (targetPosition - transform.position).normalized;
-
-                    if (Vector3.Distance(agent.transform.position, targetPosition) >= agent.stoppingDistance)
-                    {
-                        rootMotionPosition += directionToTarget * cutDistanceToTargetSpeed * Time.deltaTime;
-                    }
-                }
-                else
-                {
-                    agent.updatePosition = true;
-                    agent.Warp(characterController.transform.position);
-                }
-
-                // Apply root motion to the NavMesh Agent
                 if (characterController.enabled)
                 {
                     characterController.Move(rootMotionPosition);
@@ -229,8 +207,6 @@ namespace AF
                 return;
             }
 
-            agent.speed = 0f;
-
             targetManager.ClearTarget();
 
             if (health is CharacterHealth characterHealth)
@@ -241,7 +217,6 @@ namespace AF
                 {
                     if (shouldReturnToInitialPositionOnRevive)
                     {
-                        agent.Warp(initialPosition);
                         characterController.enabled = false;
                         transform.SetPositionAndRotation(initialPosition, initialRotation);
                         characterController.enabled = true;
@@ -279,8 +254,6 @@ namespace AF
                 characterController.enabled = false;
                 agent.enabled = false;
                 transform.position = hit.position;
-                agent.nextPosition = hit.position;
-                agent.enabled = true;
                 characterController.enabled = true;
             }
         }
@@ -292,10 +265,7 @@ namespace AF
             if (IsValidPosition(hit.position))
             {
                 characterController.enabled = false;
-                agent.enabled = false;
                 transform.position = hit.position;
-                agent.nextPosition = hit.position;
-                agent.enabled = true;
                 characterController.enabled = true;
             }
         }
@@ -303,11 +273,8 @@ namespace AF
         public void Teleport(Vector3 desiredPosition, Quaternion desiredRotation)
         {
             characterController.enabled = false;
-            agent.enabled = false;
             transform.position = desiredPosition;
             transform.rotation = desiredRotation;
-            agent.nextPosition = desiredPosition;
-            agent.enabled = true;
             characterController.enabled = true;
         }
 
@@ -318,9 +285,55 @@ namespace AF
                    !float.IsNaN(position.x) && !float.IsNaN(position.y) && !float.IsNaN(position.z);
         }
 
-        internal IEnumerable<CharacterManager> Where(Func<object, object> value)
+
+
+        public void SetAgentDestination(Vector3 targetPosition)
         {
-            throw new NotImplementedException();
+            if (!agent.enabled)
+            {
+                return;
+            }
+
+            NavMeshPath navMeshPath = new();
+            agent.CalculatePath(targetPosition, navMeshPath);
+            agent.SetPath(navMeshPath);
+        }
+
+        public void RotateTowardsTargetAgent()
+        {
+            transform.rotation = agent.transform.rotation;
+        }
+
+        public void RotateTowardsTargetAgentDestination()
+        {
+            Vector3 lookDirection = agent.destination - agent.transform.position;
+            lookDirection.y = 0;
+            transform.rotation = Quaternion.LookRotation(lookDirection);
+        }
+
+        public void SetSpeed(float speed)
+        {
+            animator.SetFloat("Speed", Mathf.Clamp01(speed));
+        }
+
+        public float GetAngleOfCurrentTarget()
+        {
+            if (targetManager.currentTarget == null)
+            {
+                return 0;
+            }
+
+            Vector3 directionToTarget = targetManager.currentTarget.transform.position - transform.position;
+
+            float viewableAngle = Vector3.Angle(transform.forward, directionToTarget);
+            Vector3 cross = Vector3.Cross(transform.forward, directionToTarget);
+
+            if (cross.y < 0)
+            {
+                viewableAngle = -viewableAngle;
+            }
+
+            return viewableAngle;
         }
     }
 }

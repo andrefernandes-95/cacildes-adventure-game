@@ -48,8 +48,7 @@ namespace AF
                 return this;
             }
 
-            characterManager.agent.speed = fleeSpeed;
-            characterManager.agent.SetDestination(fleeDestination);
+            characterManager.SetAgentDestination(fleeDestination);
 
             if (ShouldReturnToOtherState())
             {

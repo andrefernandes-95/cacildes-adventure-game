@@ -26,6 +26,8 @@ namespace AF
         {
             onStateEnter?.Invoke();
 
+            characterManager.SetSpeed(0f);
+
             if (characterManager.targetManager.currentTarget != null)
             {
                 RotateTowardsTarget(characterManager.targetManager.currentTarget.transform);
@@ -38,11 +40,6 @@ namespace AF
 
         public override State Tick(StateManager stateManager)
         {
-            if (!characterManager.isCuttingDistanceToTarget)
-            {
-                characterManager.agent.speed = 0f;
-            }
-
             if (characterManager.IsBusy())
             {
                 return this;

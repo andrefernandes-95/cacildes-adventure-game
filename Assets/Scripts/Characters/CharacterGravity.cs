@@ -94,8 +94,7 @@ namespace AF
 
             characterManager.animator.SetBool("isGrounded", characterManager.characterController.isGrounded);
 
-            if (!characterManager.characterController.enabled ||
-                (characterManager.characterController.isGrounded && characterManager.agent.enabled))
+            if (!characterManager.characterController.enabled)
             {
                 return;
             }

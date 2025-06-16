@@ -72,11 +72,7 @@ namespace AF
         public override void OnStateEnter(StateManager stateManager)
         {
             onStateEnter?.Invoke();
-
-            if (!chooseRandomWaypoint && characterManager.agent.enabled)
-            {
-                characterManager.agent.ResetPath();
-            }
+            DecideNextWaypoint();
         }
 
         public override void OnStateExit(StateManager stateManager)
@@ -86,46 +82,39 @@ namespace AF
 
         bool ShouldDecideNextWaypoint()
         {
-            if (!characterManager.agent.enabled)
+            if (isWaitingOnWaypoint)
             {
                 return false;
             }
 
-            return characterManager.agent.remainingDistance <= characterManager.agent.stoppingDistance && characterManager.agent.pathPending == false;
+            return characterManager.agent.remainingDistance <= characterManager.agent.stoppingDistance;
         }
 
         public override State Tick(StateManager stateManager)
         {
-            if (!isWaitingOnWaypoint)
-            {
-                characterManager.agent.speed = characterManager.patrolSpeed;
-            }
-
+            characterManager.RotateTowardsTargetAgent();
             onStateUpdate?.Invoke();
 
             // Check if the agent has reached its current destination
             if (ShouldDecideNextWaypoint())
             {
-                if (waitOnWaypoints <= 0)
-                {
-                    // The agent has reached its current waypoint
-                    SetNextWaypoint();
-                }
-                else if (!isWaitingOnWaypoint)
-                {
-                    isWaitingOnWaypoint = true;
-                    characterManager.agent.speed = 0f;
-
-                    if (waitCoroutine != null)
-                    {
-                        StopCoroutine(waitCoroutine);
-                    }
-
-                    waitCoroutine = StartCoroutine(Wait());
-                }
+                DecideNextWaypoint();
             }
 
             return this;
+        }
+
+        void DecideNextWaypoint()
+        {
+            isWaitingOnWaypoint = true;
+            characterManager.SetSpeed(0f);
+
+            if (waitCoroutine != null)
+            {
+                StopCoroutine(waitCoroutine);
+            }
+
+            waitCoroutine = StartCoroutine(Wait());
         }
 
         public void SetNextWaypoint()
@@ -142,11 +131,11 @@ namespace AF
         {
             if (chooseRandomWaypoint)
             {
-                characterManager.agent.destination = GetRandomPointOnNavMesh();
+                characterManager.SetAgentDestination(GetRandomPointOnNavMesh());
             }
             else if (characterManager.agent.enabled && waypoints.Count > 0)
             {
-                characterManager.agent.destination = waypoints[currentWaypointIndex];
+                characterManager.SetAgentDestination(waypoints[currentWaypointIndex]);
             }
             else
             {
@@ -160,8 +149,9 @@ namespace AF
             yield return new WaitForSeconds(waitOnWaypoints);
             onWaitOnWaypoint_End?.Invoke();
 
-            isWaitingOnWaypoint = false;
+            characterManager.SetSpeed(0.5f);
             SetNextWaypoint();
+            isWaitingOnWaypoint = false;
         }
 
         Vector3 GetRandomPointOnNavMesh()

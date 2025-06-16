@@ -45,27 +45,11 @@ namespace AF
         public override void OnStateEnter(StateManager stateManager)
         {
             currentIntervalBetweenChaseActions = 0f;
-
-            if (!characterManager.agent.enabled)
-            {
-                characterManager.agent.enabled = true;
-            }
-
-            characterManager.agent.speed = characterManager.chaseSpeed;
-            characterManager.agent.ResetPath();
             onStateEnter?.Invoke();
         }
 
         public override void OnStateExit(StateManager stateManager)
         {
-        }
-
-        void UpdatePosition()
-        {
-            if (characterManager.agent.enabled)
-            {
-                characterManager.agent.SetDestination(characterManager.targetManager.currentTarget.transform.position);
-            }
         }
 
         public override State Tick(StateManager stateManager)
@@ -81,16 +65,6 @@ namespace AF
                 return this;
             }
 
-            if (!characterManager.isCuttingDistanceToTarget)
-            {
-                characterManager.agent.speed = characterManager.chaseSpeed;
-            }
-
-            // If grounded again, re-enable agent
-            if (!characterManager.agent.enabled && characterManager.characterController.isGrounded)
-            {
-                characterManager.agent.enabled = true;
-            }
             if (characterManager.targetManager.currentTarget != null)
             {
                 // If Target Is Dead, Stop Chasing
@@ -100,7 +74,12 @@ namespace AF
                     return patrolOrIdleState;
                 }
 
-                UpdatePosition();
+
+                characterManager.SetAgentDestination(characterManager.targetManager.currentTarget.transform.position);
+
+                PivotTowardsTarget();
+
+                characterManager.SetSpeed(1f);
 
                 float distanceToTarget = Vector3.Distance(characterManager.transform.position, characterManager.targetManager.currentTarget.transform.position);
 
@@ -138,12 +117,8 @@ namespace AF
 
         State FollowPlayer()
         {
-            if (!characterManager.agent.enabled)
-            {
-                characterManager.agent.enabled = true;
-            }
-
-            characterManager.agent.SetDestination(playerManager.transform.position);
+            characterManager.SetAgentDestination(playerManager.transform.position);
+            characterManager.SetSpeed(1f);
 
             float distanceToTarget = Vector3.Distance(characterManager.transform.position, playerManager.transform.position);
 
@@ -183,12 +158,35 @@ namespace AF
 
         void PerformJumpTowardsTarget()
         {
-            if (characterManager.agent.enabled)
-            {
-                characterManager.agent.enabled = false;
-            }
-
             characterManager.characterGravity.shouldJumpToTarget = true;
         }
+
+        void PivotTowardsTarget()
+        {
+            if (characterManager.isBusy)
+            {
+                return;
+            }
+
+            if (characterManager.combatant != null && characterManager.combatant.isHumanoid)
+            {
+                float angleOfCurrentTarget = characterManager.GetAngleOfCurrentTarget();
+
+                if (angleOfCurrentTarget >= 146 && angleOfCurrentTarget <= 180)
+                {
+                    characterManager.PlayBusyAnimationWithRootMotion("Turn_Right_180");
+                    return;
+                }
+
+                if (angleOfCurrentTarget <= -146 && angleOfCurrentTarget >= -180)
+                {
+                    characterManager.PlayBusyAnimationWithRootMotion("Turn_Left_180");
+                    return;
+                }
+            }
+
+            characterManager.RotateTowardsTargetAgentDestination();
+        }
+
     }
 }

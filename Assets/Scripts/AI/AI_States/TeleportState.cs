@@ -33,9 +33,6 @@ namespace AF
 
         public override void OnStateEnter(StateManager stateManager)
         {
-            characterManager.agent.ResetPath();
-            characterManager.agent.speed = 0f;
-
             onStateEnter?.Invoke();
 
 
@@ -62,7 +59,7 @@ namespace AF
                 ? Camera.main.transform.position + Camera.main.transform.forward * -2f
                 : RandomNavmeshPoint(GetPlayerManager().transform.position, maximumTeleportRadiusFromTarget, -1, minimumTeleportRadiusFromTarget);
 
-            characterManager.agent.Warp(randomPoint);
+            // characterManager.agent.Warp(randomPoint);
 
             Vector3 lookRot = randomPoint - characterManager.transform.position;
             lookRot.y = 0;

@@ -88,15 +88,6 @@ namespace AF.Animations
                 characterManager.animator.SetFloat(speedParameter, 0f);
                 return;
             }
-
-            if (overrideChaseSpeed >= 0 && characterManager.agent.speed > 0)
-            {
-                characterManager.animator.SetFloat(speedParameter, overrideChaseSpeed);
-            }
-            else
-            {
-                characterManager.animator.SetFloat(speedParameter, Mathf.Clamp01(characterManager.agent.speed / characterManager.chaseSpeed));
-            }
         }
 
         public void OnLeftFootstep()
