@@ -1,3 +1,10 @@
+
+Character Poise
+- Simplify Logic of isbroken, too many side effects
+
+
+Ability should consume stamina and mana
+
 1.7.1
 
 DONE

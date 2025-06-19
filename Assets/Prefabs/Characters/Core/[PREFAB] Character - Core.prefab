@@ -32006,6 +32006,7 @@ Transform:
   - {fileID: 8110631032321427979}
   - {fileID: 883532779664569791}
   - {fileID: 4398951916886473866}
+  - {fileID: 2770193117295050020}
   m_Father: {fileID: 6242450190264014007}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2621631975807239129
@@ -34909,21 +34910,10 @@ MonoBehaviour:
   maxTimeBeforeResettingPoise: 15
   onPoiseDamagedEvent:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1759811369383153655}
-        m_TargetAssemblyTypeName: AF.CharacterManager, AF
-        m_MethodName: PlayBusyAnimationWithRootMotion
-        m_Mode: 5
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: TakingDamage
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   maxPoiseHits: 5
   hasHyperArmor: 0
+  angleHitFrom: 0
 --- !u!1 &3700532747592145204
 GameObject:
   m_ObjectHideFlags: 0
@@ -37897,7 +37887,7 @@ MonoBehaviour:
   animatorOverrideController: {fileID: 0}
   patrolSpeed: 2
   chaseSpeed: 4.5
-  cutDistanceToTargetSpeed: 12
+  cutDistanceToTargetSpeed: 2
   rotationSpeed: 6
   isCuttingDistanceToTarget: 0
   canRevive: 1
@@ -47243,6 +47233,57 @@ SkinnedMeshRenderer:
     m_Center: {x: -17.311317, y: -3.5769114, z: -0.0000038146973}
     m_Extent: {x: 15.496268, y: 14.661327, z: 13.268421}
   m_DirtyAABB: 0
+--- !u!1 &5092111341852406318
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2770193117295050020}
+  - component: {fileID: 8701266370095907941}
+  m_Layer: 22
+  m_Name: Jump State
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2770193117295050020
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5092111341852406318}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 904049696184886649}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8701266370095907941
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5092111341852406318}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8321117547cec9428e582659935df3e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  characterManager: {fileID: 1759811369383153655}
+  chaseState: {fileID: 5808430219227864090}
+  onStateEnter:
+    m_PersistentCalls:
+      m_Calls: []
+  minimumHeightDistance: 0.5
+  maxJumpCooldown: 3
 --- !u!1 &5096080073923502155
 GameObject:
   m_ObjectHideFlags: 0
@@ -58241,6 +58282,7 @@ MonoBehaviour:
   maxChaseDistance: 25
   patrolOrIdleState: {fileID: 7832381503350813450}
   combatState: {fileID: 3145882535741932148}
+  jumpState: {fileID: 8701266370095907941}
   onStateEnter:
     m_PersistentCalls:
       m_Calls:
@@ -58263,8 +58305,6 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   maxIntervalBetweenDecidingChaseActions: 5
-  canJumpToReachTarget: 0
-  minimumDistanceToJump: 4
   companionsDatabase: {fileID: 0}
 --- !u!1 &6330269721485861177
 GameObject:
@@ -84017,13 +84057,12 @@ MonoBehaviour:
   characterManager: {fileID: 1759811369383153655}
   ignoreGravity: 0
   _verticalVelocity: 0
-  JumpHeight: 3
-  JumpHeightBonus: 0
+  JumpHeight: 7
   Gravity: -15
   JumpTimeout: 0.5
   FallTimeout: 0.15
   shouldJumpToTarget: 0
-  jumpTowardsTargetSpeed: 25
+  jumpTowardsTargetSpeed: 3
 --- !u!1 &8919674591871552269
 GameObject:
   m_ObjectHideFlags: 0

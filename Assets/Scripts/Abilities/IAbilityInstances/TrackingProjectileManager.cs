@@ -1,9 +1,14 @@
 namespace AF
 {
     using UnityEngine;
+    using UnityEngine.Events;
 
-    public class TrackingProjectile : MonoBehaviour
+    public class TrackingProjectile : MonoBehaviour, IAbilityInstance
     {
+        [Header("Spawn Position")]
+        [SerializeField] Vector3 upOffset = Vector3.zero;
+        [SerializeField] Vector3 targetUpOffset = Vector3.zero;
+
         [Tooltip("Time in seconds for the projectile to reach the target.")]
         public float travelDuration = 1.5f;
 
@@ -16,18 +21,16 @@ namespace AF
         [Tooltip("Destroy when close to destination.")]
         public float arrivalThreshold = 0.1f;
 
-        [Header("FX")]
-        public GameObject explosionFx;
-
-        [Header("SFX")]
-        public AudioClip explosionSfx;
-
         private Vector3 startPoint;
         private Vector3 controlPoint;
-        public Vector3 destination;
+        public Transform homingDestination;
+        Vector3 fallbackDestination;
 
         private float elapsedTime = 0f;
         private bool initialized = false;
+
+        [Header("Events")]
+        [SerializeField] UnityEvent onColliding;
 
         public void Initialize(Vector3 start, float arcOverride = -1f)
         {
@@ -35,7 +38,7 @@ namespace AF
 
             float height = arcOverride >= 0 ? arcOverride : arcHeight;
 
-            Vector3 midPoint = (start + destination) / 2f;
+            Vector3 midPoint = (start + GetDestinationPosition()) / 2f;
             controlPoint = midPoint + Vector3.up * height;
 
             initialized = true;
@@ -51,14 +54,14 @@ namespace AF
             // Bezier interpolation
             Vector3 currentPos = Mathf.Pow(1 - t, 2) * startPoint +
                                  2 * (1 - t) * t * controlPoint +
-                                 Mathf.Pow(t, 2) * destination;
+                                 Mathf.Pow(t, 2) * GetDestinationPosition();
 
             if (rotateTowardTarget && t < 1f)
             {
                 float nextT = Mathf.Clamp01(t + 0.02f);
                 Vector3 nextPos = Mathf.Pow(1 - nextT, 2) * startPoint +
                                   2 * (1 - nextT) * nextT * controlPoint +
-                                  Mathf.Pow(nextT, 2) * destination;
+                                  Mathf.Pow(nextT, 2) * GetDestinationPosition();
 
                 Vector3 forward = (nextPos - currentPos).normalized;
                 if (forward != Vector3.zero)
@@ -69,33 +72,34 @@ namespace AF
 
             transform.position = currentPos;
 
-            if (Vector3.Distance(transform.position, destination) <= arrivalThreshold || t >= 1f)
+            if (Vector3.Distance(transform.position, GetDestinationPosition()) <= arrivalThreshold || t >= 1f)
             {
                 OnColliding();
             }
         }
 
-        void InstantiateDestructibleFX()
-        {
-            if (explosionFx == null) return;
-
-            GameObject instance = Instantiate(explosionFx, transform.position, Quaternion.identity);
-            instance.transform.parent = null;
-
-            DestroyableParticle destroyableParticle = instance.AddComponent<DestroyableParticle>();
-            destroyableParticle.destroyAfter = 5;
-
-            if (explosionSfx != null)
-            {
-                AudioSource audioSource = Utils.CreateAudioSource(instance, explosionSfx);
-                audioSource.Play();
-            }
-        }
 
         public void OnColliding()
         {
-            InstantiateDestructibleFX();
+            onColliding?.Invoke();
             Destroy(gameObject);
+        }
+
+        public void CastAbility(CharacterBaseManager caster, CharacterBaseManager target)
+        {
+            this.homingDestination = target != null ? target.transform : null;
+            this.fallbackDestination = caster.transform.position + caster.transform.forward * 20f;
+            Initialize(caster.transform.position + upOffset);
+        }
+
+        Vector3 GetDestinationPosition()
+        {
+            if (homingDestination != null)
+            {
+                return homingDestination.position + targetUpOffset;
+            }
+
+            return fallbackDestination; // Arbitrary forward target
         }
     }
 }

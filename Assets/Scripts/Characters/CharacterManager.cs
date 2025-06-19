@@ -9,8 +9,6 @@ using UnityEngine;
 using UnityEngine.Events;
 using AF.Companions;
 using UnityEngine.AI;
-using System.Collections.Generic;
-using System;
 
 
 namespace AF
@@ -40,9 +38,12 @@ namespace AF
         [Header("Settings")]
         public float patrolSpeed = 2f;
         public float chaseSpeed = 4.5f;
-        public float cutDistanceToTargetSpeed = 12f;
         public float rotationSpeed = 6f;
-        [HideInInspector] public bool isCuttingDistanceToTarget = false;
+
+        [Header("Cutting Distance To Target")]
+        public float cutDistanceToTargetSpeed = 2;
+        public float cutDistanceRotationSpeedMultiplier = 2f;
+        public bool isCuttingDistanceToTarget = false;
 
         [Header("Settings")]
         public bool canRevive = true;
@@ -125,12 +126,9 @@ namespace AF
 
         private void OnAnimatorMove()
         {
-            if ((faceTarget || alwaysFaceTarget) && targetManager?.currentTarget != null)
+            if (faceTarget || alwaysFaceTarget)
             {
-                var lookPos = targetManager.currentTarget.transform.position - transform.position;
-                lookPos.y = 0;
-                var lookRotation = Quaternion.LookRotation(lookPos);
-                transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * rotationSpeed);
+                RotateTowardsTarget();
             }
 
             if (animator.applyRootMotion)
@@ -143,8 +141,30 @@ namespace AF
 
                 if (characterController.enabled)
                 {
+                    HandleCuttingDistance(ref rootMotionPosition);
+
                     characterController.Move(rootMotionPosition);
                 }
+            }
+        }
+
+        void HandleCuttingDistance(ref Vector3 rootMotionPosition)
+        {
+            if (!isCuttingDistanceToTarget)
+            {
+                return;
+            }
+
+            float distanceToTarget = Vector3.Distance(targetManager.currentTarget.transform.position, transform.position);
+
+            if (distanceToTarget >= agent.stoppingDistance)
+            {
+                rootMotionPosition *= cutDistanceToTargetSpeed;
+            }
+
+            if (distanceToTarget >= 0)
+            {
+                RotateTowardsTarget();
             }
         }
 
@@ -304,11 +324,22 @@ namespace AF
             transform.rotation = agent.transform.rotation;
         }
 
-        public void RotateTowardsTargetAgentDestination()
+        public void RotateTowardsTarget()
         {
-            Vector3 lookDirection = agent.destination - agent.transform.position;
+            if (targetManager.currentTarget == null)
+            {
+                return;
+            }
+
+            Vector3 lookDirection = targetManager.currentTarget.transform.position - transform.position;
             lookDirection.y = 0;
-            transform.rotation = Quaternion.LookRotation(lookDirection);
+
+            float speed = rotationSpeed;
+            if (isCuttingDistanceToTarget)
+            {
+                speed *= cutDistanceRotationSpeedMultiplier;
+            }
+            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(lookDirection), Time.deltaTime * speed);
         }
 
         public void SetSpeed(float speed)

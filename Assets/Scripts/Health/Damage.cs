@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.Localization.Settings;
 
 namespace AF.Health
@@ -41,6 +42,19 @@ namespace AF.Health
         public bool canNotBeParried = false;
         public DamageType damageType = DamageType.NORMAL;
 
+        [Header("Scaling")]
+        public Scaling strengthScaling = Scaling.E;
+        public Scaling dexterityScaling = Scaling.E;
+        public Scaling intelligenceScaling = Scaling.E;
+
+        public const float SCALING_LEVEL_MULTIPLIER = 3.25f;
+        public const float S = 2.4f;
+        public const float A = 2;
+        public const float B = 1.6f;
+        public const float C = 1.2f;
+        public const float D = 0.8f;
+        public const float E = 0.4f;
+
         public Damage()
         {
         }
@@ -82,7 +96,7 @@ namespace AF.Health
             return physical + fire + frost + magic + lightning + darkness + water;
         }
 
-        public void ScaleDamage(float multiplier)
+        public void Multiply(float multiplier)
         {
             this.physical = (int)(this.physical * multiplier);
             this.fire = (int)(this.fire * multiplier);
@@ -239,5 +253,85 @@ namespace AF.Health
             return newDamage;
         }
 
+        public void ScaleWithStats(int STR, int DEX, int INT)
+        {
+            // Apply bonus damage based on scaling and stats
+            int bonusFromSTR = GetBonusFromStrength(STR);
+            int bonusFromDEX = GetBonusFromDexterity(DEX);
+            int bonusFromINT = GetBonusFromIntelligence(INT);
+
+            if (this.physical > 0)
+            {
+                this.physical += bonusFromSTR + bonusFromDEX;
+            }
+            if (this.magic > 0)
+            {
+                this.magic += bonusFromINT;
+            }
+            if (this.fire > 0)
+            {
+                this.fire += bonusFromINT;
+            }
+            if (this.frost > 0)
+            {
+                this.frost += bonusFromINT;
+            }
+            if (this.lightning > 0)
+            {
+                this.lightning += bonusFromINT;
+            }
+            if (this.darkness > 0)
+            {
+                this.darkness += bonusFromINT;
+            }
+            if (this.water > 0)
+            {
+                this.water += bonusFromINT;
+            }
+        }
+
+        public int GetBonusFromStrength(int STR)
+        {
+            return (int)(STR * SCALING_LEVEL_MULTIPLIER * GetStrengthScaling());
+        }
+
+        public int GetBonusFromDexterity(int DEX)
+        {
+            return (int)(DEX * SCALING_LEVEL_MULTIPLIER * GetDexterityScaling());
+        }
+
+        public int GetBonusFromIntelligence(int INT)
+        {
+            return (int)(INT * SCALING_LEVEL_MULTIPLIER * GetIntelligenceScaling());
+        }
+
+        float GetStrengthScaling()
+        {
+            return GetScalingMultiplier(strengthScaling);
+        }
+
+        float GetDexterityScaling()
+        {
+            return GetScalingMultiplier(dexterityScaling);
+        }
+
+        float GetIntelligenceScaling()
+        {
+            return GetScalingMultiplier(intelligenceScaling);
+        }
+
+        float GetScalingMultiplier(Scaling scaling)
+        {
+            return scaling switch
+            {
+                Scaling.S => S,
+                Scaling.A => A,
+                Scaling.B => B,
+                Scaling.C => C,
+                Scaling.D => D,
+                Scaling.E => E,
+                _ => 1f
+            };
+        }
     }
 }

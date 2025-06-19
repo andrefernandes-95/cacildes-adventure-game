@@ -98,11 +98,15 @@ namespace AF
 
             if (GetCurrentStaminaPercentage() <= 25)
             {
-                value *= 1.75f;
+                value *= 2.5f;
             }
             else if (GetCurrentStaminaPercentage() <= 50)
             {
-                value *= 1.25f;
+                value *= 2f;
+            }
+            else if (GetCurrentStaminaPercentage() <= 75)
+            {
+                value *= 1.5f;
             }
 
             return value;
@@ -111,7 +115,6 @@ namespace AF
         void HandleStaminaRegen()
         {
             var finalRegenerationRate = GetStaminaRegenerationRate();
-
 
             if (playerManager.characterBlockController.isBlocking)
             {

@@ -18,6 +18,7 @@ namespace AF
             currentAbility = null;
             CleanupChargingAbilitySpell();
             playerManager.animator.SetBool("isCharging", false);
+            chargingAbilityAmount = 0f;
         }
 
         public override void OnPrepareAbility()
@@ -45,12 +46,22 @@ namespace AF
             // Clean up charging spells if we were interrupted before
             if (chargingAbilityFX != null)
             {
-                if (chargingAbilityFX.TryGetComponent(out ParticleSystem particleSystem))
+                foreach (ParticleSystem ps in Utils.CollectComponentsFromGameObject<ParticleSystem>(chargingAbilityFX))
                 {
-                    particleSystem.Stop();
+                    if (ps != null)
+                    {
+                        ps.Stop();
+                    }
+                }
+                foreach (AudioSource audioSource in Utils.CollectComponentsFromGameObject<AudioSource>(chargingAbilityFX))
+                {
+                    if (audioSource != null)
+                    {
+                        audioSource.Stop();
+                    }
                 }
 
-                Destroy(chargingAbilityFX, 5f);
+                Destroy(chargingAbilityFX, 2f);
 
                 chargingAbilityFX = null;
             }
@@ -63,9 +74,26 @@ namespace AF
 
         public void QueueAbility(Ability ability)
         {
-            Ability clonedAbility = Instantiate(ability);
-            clonedAbility.OnPrepare(playerManager);
+            ability.OnPrepare(playerManager);
             playerManager.animator.SetBool("isCharging", true);
         }
+
+        public float GetChargingAmountMultiplier()
+        {
+            if (chargingAbilityAmount <= 0.25f)
+            {
+                return 1f;
+            }
+
+            float chargingAbilityMultiplier = 1 + chargingAbilityAmount * chargingAbilityMultiplierBonus;
+
+            if (chargingAbilityAmount >= 1f)
+            {
+                chargingAbilityMultiplier *= chargingAbilityMultiplierBonusForFullCharge;
+            }
+
+            return chargingAbilityMultiplier;
+        }
+
     }
 }

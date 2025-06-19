@@ -1,6 +1,5 @@
 using AF.Companions;
 using UnityEngine;
-using UnityEngine.AI;
 using UnityEngine.Events;
 
 namespace AF
@@ -16,6 +15,7 @@ namespace AF
         [Header("States")]
         public State patrolOrIdleState;
         public CombatState combatState;
+        [SerializeField] JumpState jumpState;
 
         [Header("Events")]
         public UnityEvent onStateEnter;
@@ -25,10 +25,6 @@ namespace AF
         [Header("Chase Actions Settings")]
         public float maxIntervalBetweenDecidingChaseActions = 5f;
         float currentIntervalBetweenChaseActions = 0f;
-
-        [Header("Jump Actions")]
-        [SerializeField] bool canJumpToReachTarget = false;
-        [SerializeField] float minimumDistanceToJump = 4f;
 
         [Header("Companion Settings")]
         PlayerManager playerManager;
@@ -59,10 +55,9 @@ namespace AF
                 return this;
             }
 
-            if (ShouldJumpTowardsTarget())
+            if (jumpState != null && jumpState.ShouldJumpTowardsTarget())
             {
-                PerformJumpTowardsTarget();
-                return this;
+                return jumpState;
             }
 
             if (characterManager.targetManager.currentTarget != null)
@@ -73,7 +68,6 @@ namespace AF
                     characterManager.targetManager.ClearTarget();
                     return patrolOrIdleState;
                 }
-
 
                 characterManager.SetAgentDestination(characterManager.targetManager.currentTarget.transform.position);
 
@@ -134,33 +128,6 @@ namespace AF
             return this;
         }
 
-        bool ShouldJumpTowardsTarget()
-        {
-            if (!canJumpToReachTarget || characterManager.characterGravity == null)
-            {
-                return false;
-            }
-
-            if (characterManager == null || characterManager.targetManager.currentTarget == null)
-            {
-                return false;
-            }
-
-            float verticalDifference = characterManager.targetManager.currentTarget.transform.position.y - characterManager.transform.position.y;
-
-            if (Vector3.Distance(characterManager.targetManager.currentTarget.transform.position, characterManager.transform.position) > maxChaseDistance)
-            {
-                return false;
-            }
-
-            return Mathf.Abs(verticalDifference) > 1.5f && characterManager.characterController.isGrounded;
-        }
-
-        void PerformJumpTowardsTarget()
-        {
-            characterManager.characterGravity.shouldJumpToTarget = true;
-        }
-
         void PivotTowardsTarget()
         {
             if (characterManager.isBusy)
@@ -185,7 +152,7 @@ namespace AF
                 }
             }
 
-            characterManager.RotateTowardsTargetAgentDestination();
+            characterManager.RotateTowardsTarget();
         }
 
     }

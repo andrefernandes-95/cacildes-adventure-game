@@ -8,10 +8,13 @@ namespace AF
 
         [Header("Charging Ability")]
         public float chargingAbilityAmount = 0f;
+        public float chargingAbilityMultiplierBonus = 1f;
+        public float chargingAbilityMultiplierBonusForFullCharge = 1.5f;
 
         public void PrepareAbility(Ability ability)
         {
             this.currentAbility = ability;
+            chargingAbilityAmount = 0f;
         }
 
         /// <summary>

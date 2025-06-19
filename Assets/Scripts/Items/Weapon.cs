@@ -349,7 +349,7 @@ namespace AF
 
             if (!AreRequirementsMet(attackStatManager.playerManager.statsBonusController))
             {
-                baseDamage.ScaleDamage(.1f);
+                baseDamage.Multiply(.1f);
             }
 
             return baseDamage;

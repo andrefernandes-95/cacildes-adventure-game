@@ -125,7 +125,7 @@ namespace AF
 
                 if (!weapon.AreRequirementsMet(playerManager.statsBonusController))
                 {
-                    weaponDamage.ScaleDamage(.1f);
+                    weaponDamage.Multiply(.1f);
                 }
 
                 return playerManager.playerWeaponsManager.GetBuffedDamage(weaponDamage);

@@ -642,12 +642,12 @@ namespace AF.Shooting
 
                 if (GetPlayerManager().statsBonusController.spellDamageBonusMultiplier > 0)
                 {
-                    onDamageCollisionAbstractManager.damage.ScaleDamage(GetPlayerManager().statsBonusController.spellDamageBonusMultiplier);
+                    onDamageCollisionAbstractManager.damage.Multiply(GetPlayerManager().statsBonusController.spellDamageBonusMultiplier);
                 }
             }
 
             // Assign the damage owner to all child OnDamageCollisionAbstractManagers of the projectile instance
-            OnDamageCollisionAbstractManager[] onDamageCollisionAbstractManagers = GetAllChildOnDamageCollisionManagers(projectileInstance);
+            OnDamageCollisionAbstractManager[] onDamageCollisionAbstractManagers = Utils.CollectComponentsFromGameObject<OnDamageCollisionAbstractManager>(projectileInstance);
             foreach (var onChildDamageCollisionAbstractManager in onDamageCollisionAbstractManagers)
             {
                 onChildDamageCollisionAbstractManager.damageOwner = GetPlayerManager();
@@ -665,29 +665,10 @@ namespace AF.Shooting
 
                 if (GetPlayerManager().statsBonusController.spellDamageBonusMultiplier > 0)
                 {
-                    onChildDamageCollisionAbstractManager.damage.ScaleDamage(GetPlayerManager().statsBonusController.spellDamageBonusMultiplier);
+                    onChildDamageCollisionAbstractManager.damage.Multiply(GetPlayerManager().statsBonusController.spellDamageBonusMultiplier);
                 }
             }
         }
-
-        public OnDamageCollisionAbstractManager[] GetAllChildOnDamageCollisionManagers(GameObject obj)
-        {
-            List<OnDamageCollisionAbstractManager> managers = new List<OnDamageCollisionAbstractManager>();
-
-            foreach (Transform child in obj.transform)
-            {
-                managers.AddRange(GetAllChildOnDamageCollisionManagers(child.gameObject));
-            }
-
-            OnDamageCollisionAbstractManager[] childManagers = obj.GetComponents<OnDamageCollisionAbstractManager>();
-            if (childManagers.Length > 0)
-            {
-                managers.AddRange(childManagers);
-            }
-
-            return managers.ToArray();
-        }
-
 
         bool CanAim()
         {
@@ -839,7 +820,16 @@ namespace AF.Shooting
             {
                 if (spell.HasAbility())
                 {
-                    GetPlayerManager().playerAbilityManager.QueueAbility(spell.ability);
+                    Ability ability = Instantiate(spell.ability);
+
+                    if (ability is CastFromSpell castFromSpell)
+                    {
+                        castFromSpell.spell = spell;
+                        GetPlayerManager().playerAbilityManager.QueueAbility(castFromSpell);
+                        return;
+                    }
+
+                    GetPlayerManager().playerAbilityManager.QueueAbility(ability);
                 }
             }
         }

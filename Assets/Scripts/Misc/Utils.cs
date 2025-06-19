@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using AF.Characters;
 using AF.Combat;
@@ -250,6 +251,24 @@ namespace AF
             audioSource.maxDistance = 2f;
             audioSource.clip = clip;
             return audioSource;
+        }
+
+        public static T[] CollectComponentsFromGameObject<T>(GameObject obj)
+        {
+            List<T> managers = new List<T>();
+
+            foreach (Transform child in obj.transform)
+            {
+                managers.AddRange(CollectComponentsFromGameObject<T>(child.gameObject));
+            }
+
+            T[] childManagers = obj.GetComponents<T>();
+            if (childManagers.Length > 0)
+            {
+                managers.AddRange(childManagers);
+            }
+
+            return managers.ToArray();
         }
     }
 }

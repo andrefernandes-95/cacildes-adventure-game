@@ -16,12 +16,9 @@ namespace AF
 
         [Tooltip("The height the player can jump")]
         public float JumpHeight = 3f;
-        float DefaultJumpHeight;
-        public float JumpHeightBonus = 0f;
 
         [Tooltip("The character uses its own gravity value. The engine default is -9.81f")]
         public float Gravity = -15.0f;
-        float DefaultGravity;
 
         [Space(10)]
         [Tooltip("Time required to pass before being able to jump again. Set to 0f to instantly jump again")]
@@ -64,10 +61,10 @@ namespace AF
 
                     jumpTarget = characterManager.targetManager.currentTarget.transform;
                     float heightDifference = jumpTarget.position.y - characterManager.transform.position.y;
-                    float calculatedJumpHeight = Mathf.Max(JumpHeight, heightDifference + JumpHeightBonus);
+                    float calculatedJumpHeight = JumpHeight + heightDifference;
                     _verticalVelocity = Mathf.Sqrt(calculatedJumpHeight * -2f * Gravity);
 
-                    characterManager.animator.Play("JumpStart");
+                    PlayJumpAnimation();
                 }
             }
 
@@ -117,6 +114,14 @@ namespace AF
             }
 
             characterManager.characterController.Move(movement * Time.deltaTime);
+        }
+
+        void PlayJumpAnimation()
+        {
+            if (characterManager.combatant != null && characterManager.combatant.isHumanoid)
+            {
+                characterManager.animator.Play("JumpStart");
+            }
         }
     }
 }

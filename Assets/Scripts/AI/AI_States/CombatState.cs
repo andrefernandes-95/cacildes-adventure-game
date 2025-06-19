@@ -27,11 +27,6 @@ namespace AF
             onStateEnter?.Invoke();
 
             characterManager.SetSpeed(0f);
-
-            if (characterManager.targetManager.currentTarget != null)
-            {
-                RotateTowardsTarget(characterManager.targetManager.currentTarget.transform);
-            }
         }
 
         public override void OnStateExit(StateManager stateManager)
@@ -68,7 +63,7 @@ namespace AF
         private State HandleCombatWithTarget()
         {
             var target = characterManager.targetManager.currentTarget.transform;
-            float distanceToTarget = Vector3.Distance(characterManager.agent.transform.position, target.position);
+            float distanceToTarget = Vector3.Distance(characterManager.transform.position, target.position);
 
             if (distanceToTarget <= characterManager.agent.stoppingDistance)
             {
@@ -81,17 +76,5 @@ namespace AF
             }
         }
 
-        private void RotateTowardsTarget(Transform target)
-        {
-            Vector3 directionToLook = target.position - characterManager.transform.position;
-            directionToLook.y = 0; // Keep the y value 0 to avoid tilting
-
-            Quaternion targetRotation = Quaternion.LookRotation(directionToLook);
-            characterManager.transform.rotation = Quaternion.Slerp(
-                characterManager.transform.rotation,
-                targetRotation,
-                characterManager.rotationSpeed * Time.fixedDeltaTime
-            );
-        }
     }
 }

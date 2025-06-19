@@ -12,6 +12,9 @@ namespace AF
 
         public bool isHumanoid = true;
 
+        [Header("Locomotion Settings")]
+        public bool canJumpToReachTarget = true;
+
         [Header("Attributes")]
         public int maximumHealth = 500;
         public int maximumPosture = 100;

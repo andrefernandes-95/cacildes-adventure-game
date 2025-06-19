@@ -14,6 +14,8 @@ namespace AF
 
         Coroutine ResetIgnorePoiseDamageCoroutine;
 
+        public float angleHitFrom;
+
         public override void ResetStates()
         {
             hasHyperArmor = false;
@@ -62,6 +64,41 @@ namespace AF
         {
             yield return new WaitForSeconds(recoverPoiseCooldown);
             ignorePoiseDamage = false;
+        }
+
+        public override void PlayHitReaction()
+        {
+            if (characterManager is CharacterManager aiCharacter && aiCharacter.combatant != null && aiCharacter.combatant.isHumanoid)
+            {
+                // Directional damage
+                PlayDirectionalDamage();
+                return;
+            }
+            characterManager.PlayBusyAnimationWithRootMotion("TakingDamage");
+        }
+
+        void PlayDirectionalDamage()
+        {
+            if (angleHitFrom >= 145 && angleHitFrom <= 180)
+            {
+                characterManager.PlayBusyAnimationWithRootMotion("Take Damage - Front");
+            }
+            else if (angleHitFrom <= -145 && angleHitFrom >= -180)
+            {
+                characterManager.PlayBusyAnimationWithRootMotion("Take Damage - Front");
+            }
+            else if (angleHitFrom >= -45 && angleHitFrom <= 45)
+            {
+                characterManager.PlayBusyAnimationWithRootMotion("Take Damage - Back");
+            }
+            else if (angleHitFrom >= -144 && angleHitFrom <= -45)
+            {
+                characterManager.PlayBusyAnimationWithRootMotion("Take Damage - Left");
+            }
+            else if (angleHitFrom >= 45 && angleHitFrom <= 144)
+            {
+                characterManager.PlayBusyAnimationWithRootMotion("Take Damage - Right");
+            }
         }
     }
 }
