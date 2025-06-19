@@ -1,36 +1,52 @@
 
+Character Poise
+- Simplify Logic of isbroken, too many side effects
+
+
+Ability should consume stamina and mana
+
 1.7.1
 
 DONE
+
 - Simplify Music Code
 - Add dual wielding
 - Save dual wielding
 - Upgrade and save multiple weapons
 - Ignore Weapon Requirements
+- Mom should reward player with another shield or weapon after bear encounter, to reward him (She offers meat lofs)
+- mark chicken quest as tracked
 
 IN DEV:
+
 - Dark Souls Messaging System with hash spatial messaging
 - Proper Arena System with weapons awarded at the end
 - Simplify existing weapons
 - Increase stamina regen
 - If jump attack, enable both weapons
-- Bug: Heavy attack not working for Golden Lance (check)
 - Add Music UI to let user know which music is playing
 - Normalize audio
-- mark chicken quest as tracked
 
-- Mom should reward player with another shield or weapon after bear encounter, to reward him
+  1.7.2
 
-1.7.2
 - Replace cards with skill system
 - Magic should be cast with any weapon, staff only enhances it
 - Magic should be L2 button, dodge should be circle with sprint hold
 
-1.7.3
+  1.7.3
+
 - Replace iron shards with upgrade shards with levels
 - Refactor weapon levelling
 
+  1.8.1 Agent Refactor Code
+
+// Refactor AI Agent and Check:
+// Move Towards Target
+// Jump Chase
+// Cutting Distance Attacks
+
 READY FOR DEV:
+
 - Skills as scriptable objects
 - Add quest started popup
 - Elven bow should be offered by Fenlora in the epilogue
@@ -50,7 +66,7 @@ READY FOR DEV:
 - Fix pillar sounds in Arun garden
 - Add opening door sound to arun temple when fenlora is running towards the entrance
 - bee boss fight, the true bee doesnt go to the ground
-. Max Stamina values and health on level up screen look wrong
+  . Max Stamina values and health on level up screen look wrong
 - Make hitbox on shields on kayro better
 - Stamina and health not levelling well
 - Improve music system
@@ -70,6 +86,7 @@ READY FOR DEV:
 - Powerstance ring
 
 BACKLOG:
+
 - Adjust unarmed and weapon staminas
 - Review item descriptions
 - Allow messages to be continued by pressing mouse click ?
@@ -79,14 +96,15 @@ BACKLOG:
 - Ring that restores mana upon critical attacks
 
 Bonus:
+
 - Ring that checks if enemy is hit with arrow, there's 50% chances of recovering that arrow upon enemy death
 - Version save files
 - crafting should be earlier
 
-1.6.2
-Simplify Inputs for Sprint and Dodge to share same hotkey
-Jump should be on space, enable rebinding
-Gold Dooping - Check the gold and die, the pickup its still there. it should not reset during in-game
+  1.6.2
+  Simplify Inputs for Sprint and Dodge to share same hotkey
+  Jump should be on space, enable rebinding
+  Gold Dooping - Check the gold and die, the pickup its still there. it should not reset during in-game
 
 Shields as weapons
 Cloaks as accessories, same as pauldrons

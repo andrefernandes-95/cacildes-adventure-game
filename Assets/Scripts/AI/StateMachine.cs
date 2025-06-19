@@ -11,6 +11,8 @@ namespace AF
 
         State defaultState;
 
+        [SerializeField] CharacterManager characterManager;
+
         private void Awake()
         {
             this.defaultState = currentState;
@@ -41,6 +43,8 @@ namespace AF
                     ScheduleState(nextState);
                 }
             }
+
+            ResyncNavmeshAgent();
         }
 
         public void ScheduleState(State state)
@@ -59,6 +63,12 @@ namespace AF
             currentState = null;
             scheduledState = null;
             ScheduleState(defaultState);
+        }
+
+        void ResyncNavmeshAgent()
+        {
+            characterManager.agent.transform.localPosition = Vector3.zero;
+            characterManager.agent.transform.localRotation = Quaternion.identity;
         }
 
     }

@@ -99,6 +99,8 @@ namespace AF
         {
             if (CanLightAttack())
             {
+                playerManager.playerWeaponsManager.ShowEquipment();
+
                 HandleLightAttack();
                 canAttack = false;
             }
@@ -108,6 +110,8 @@ namespace AF
         {
             if (CanHeavyAttack())
             {
+                playerManager.playerWeaponsManager.ShowEquipment();
+
                 HandleHeavyAttack(false);
                 canAttack = false;
             }

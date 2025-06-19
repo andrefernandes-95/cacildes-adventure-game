@@ -8,22 +8,14 @@ namespace AF
         [Header("FX")]
         public GameObject chargingSpellFX;
         public GameObject releaseSpellFX;
-        public GameObject explosionSpellFX;
 
-        [Header("SFX")]
-        public AudioClip chargingSfx;
-        public AudioClip chargingLoopSfx;
-        public AudioClip releaseSfx;
-        public AudioClip explosionSfx;
-
-        [Header("Trajectory")]
-        [SerializeField] float projectileSpeed = 1f;
-        [SerializeField] float arcHeight = 1f;
+        [Header("Settings")]
+        [Tooltip("Because the player modal has wrong scaling, when we parent the spell, we need to rescale it appropriately")]
+        [SerializeField] float chargingAbilityLocalScale = 100f;
 
         // Private
-        Transform spawnRef;
-        Transform origin;
-        Transform target;
+        CharacterBaseManager caster;
+        CharacterBaseManager target;
 
         public override void OnPrepare(CharacterManager characterManager)
         {
@@ -38,92 +30,58 @@ namespace AF
 
             playerManager.playerAbilityManager.PrepareAbility(this);
             playerManager.playerWeaponsManager.HideEquipment();
-            GameObject chargingAbilityFXInstance = PrepareSpellGameObject(playerManager);
-            playerManager.playerAbilityManager.chargingAbilityFX = chargingAbilityFXInstance;
+
+            if (chargingSpellFX != null)
+            {
+                GameObject chargingAbilityFXInstance = Instantiate(
+                    chargingSpellFX, playerManager.characterTransformHelper.rightHand);
+
+                chargingAbilityFXInstance.transform.localScale *= chargingAbilityLocalScale;
+
+                playerManager.playerAbilityManager.chargingAbilityFX = chargingAbilityFXInstance;
+            }
+
             playerManager.PlayCrossFadeBusyAnimationWithRootMotion("Cast Spell", 0.1f);
         }
 
         public override void OnUse(PlayerManager playerManager)
         {
-            float chargingAbilityMultiplier = 1 + playerManager.playerAbilityManager.chargingAbilityAmount;
-            damage.ScaleDamage(chargingAbilityMultiplier);
-            spawnRef = playerManager.characterTransformHelper.rightHand;
-            origin = playerManager.transform;
-            target = playerManager.lockOnManager.nearestLockOnTarget != null
-                ? playerManager.lockOnManager.nearestLockOnTarget.transform : null;
+            damage.Multiply(playerManager.playerAbilityManager.GetChargingAmountMultiplier());
+            ApplyDamageScaling(playerManager);
 
-            ReleaseSpellGameObject(playerManager, new string[] { "Enemy" });
+            caster = playerManager;
+            target = playerManager.lockOnManager.nearestLockOnTarget != null
+                ? playerManager.lockOnManager.nearestLockOnTarget.characterManager : null;
+
+            ReleaseSpellGameObject(playerManager, new[] { "Enemy" });
         }
 
         public override void OnUse(CharacterManager characterManager)
         {
         }
 
-        GameObject PrepareSpellGameObject(CharacterBaseManager characterBaseManager)
-        {
-            GameObject instance = Instantiate(chargingSpellFX, characterBaseManager.characterTransformHelper.rightHand);
-
-            if (chargingSfx != null)
-            {
-                AudioSource audioSource = Utils.CreateAudioSource(instance, chargingSfx);
-                audioSource.Play();
-            }
-
-            if (chargingLoopSfx != null)
-            {
-                AudioSource audioSource = Utils.CreateAudioSource(instance, chargingLoopSfx);
-                audioSource.loop = true;
-                audioSource.Play();
-            }
-
-            return instance;
-        }
 
         void ReleaseSpellGameObject(CharacterBaseManager damageOwner, string[] tagsToDetect)
         {
-            GameObject instance = Instantiate(releaseSpellFX, origin.transform.position + origin.transform.up, Quaternion.identity);
+            GameObject instance = Instantiate(releaseSpellFX, caster.transform.position + caster.transform.up, Quaternion.identity);
             instance.transform.parent = null;
 
-            DestroyableParticle destroyableParticle = instance.AddComponent<DestroyableParticle>();
-            destroyableParticle.destroyAfter = 5;
-
-            OnDamageTriggerManager onDamageTriggerManager = instance.AddComponent<OnDamageTriggerManager>();
-            onDamageTriggerManager.damage = damage;
-            onDamageTriggerManager.tagsToDetect = tagsToDetect;
-            onDamageTriggerManager.damageOwner = damageOwner;
-
-            SphereCollider sphereCollider = instance.AddComponent<SphereCollider>();
-            sphereCollider.isTrigger = true;
-
-            if (releaseSfx != null)
+            OnDamageCollisionAbstractManager[] damageCollisionAbstractManagers = Utils.CollectComponentsFromGameObject<OnDamageCollisionAbstractManager>(instance);
+            foreach (OnDamageCollisionAbstractManager entry in damageCollisionAbstractManagers)
             {
-                AudioSource audioSource = Utils.CreateAudioSource(instance, releaseSfx);
-                audioSource.Play();
+                entry.damageOwner = damageOwner;
+                entry.damage = damage;
+                if (entry is OnDamageTriggerManager onDamageTriggerManager)
+                {
+                    onDamageTriggerManager.tagsToDetect = tagsToDetect;
+                }
             }
 
-            // Assign destination
-            TrackingProjectile trackingProjectile = instance.AddComponent<TrackingProjectile>();
-            trackingProjectile.travelDuration = projectileSpeed;
-            trackingProjectile.arcHeight = arcHeight;
-
-            trackingProjectile.explosionFx = explosionSpellFX;
-            trackingProjectile.explosionSfx = explosionSfx;
-
-            if (target != null)
+            IAbilityInstance[] abilityInstances = instance.GetComponents<IAbilityInstance>();
+            foreach (var abilityInstance in abilityInstances)
             {
-                Vector3 offsetTarget = target.position; // Optional vertical aim
-                trackingProjectile.destination = offsetTarget;
+                abilityInstance.CastAbility(caster, target);
             }
-            else
-            {
-                trackingProjectile.destination = origin.position + origin.forward * 20f; // Arbitrary forward target
-            }
-
-            trackingProjectile.Initialize(origin.position);
-
-            // If hit something, destroy projectile
-            onDamageTriggerManager.onColliding.AddListener(trackingProjectile.OnColliding);
-
         }
     }
 }

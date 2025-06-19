@@ -9,8 +9,6 @@ using UnityEngine;
 using UnityEngine.Events;
 using AF.Companions;
 using UnityEngine.AI;
-using System.Collections.Generic;
-using System;
 
 
 namespace AF
@@ -40,9 +38,12 @@ namespace AF
         [Header("Settings")]
         public float patrolSpeed = 2f;
         public float chaseSpeed = 4.5f;
-        public float cutDistanceToTargetSpeed = 12f;
         public float rotationSpeed = 6f;
-        [HideInInspector] public bool isCuttingDistanceToTarget = false;
+
+        [Header("Cutting Distance To Target")]
+        public float cutDistanceToTargetSpeed = 2;
+        public float cutDistanceRotationSpeedMultiplier = 2f;
+        public bool isCuttingDistanceToTarget = false;
 
         [Header("Settings")]
         public bool canRevive = true;
@@ -84,7 +85,6 @@ namespace AF
 
             animatorOverrideController = new AnimatorOverrideController(animator.runtimeAnimatorController);
             animator.runtimeAnimatorController = animatorOverrideController;
-
         }
 
         private void Start()
@@ -95,7 +95,7 @@ namespace AF
         public override void ResetStates()
         {
             isCuttingDistanceToTarget = false;
-            animator.applyRootMotion = false;
+            animator.applyRootMotion = true;
             isBusy = false;
 
             characterPosture.ResetStates();
@@ -126,47 +126,45 @@ namespace AF
 
         private void OnAnimatorMove()
         {
-            if ((faceTarget || alwaysFaceTarget) && targetManager?.currentTarget != null)
+            if (faceTarget || alwaysFaceTarget)
             {
-                var lookPos = targetManager.currentTarget.transform.position - transform.position;
-                lookPos.y = 0;
-                var lookRotation = Quaternion.LookRotation(lookPos);
-                transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * rotationSpeed);
+                RotateTowardsTarget();
             }
 
             if (animator.applyRootMotion)
             {
-                Quaternion rootMotionRotation = animator.deltaRotation;
-                transform.rotation *= rootMotionRotation;
+                // Apply animator's root rotation
+                transform.rotation *= animator.deltaRotation;
 
-                // Extract root motion position and rotation from the Animator
-                Vector3 rootMotionPosition = animator.deltaPosition + new Vector3(0.0f, -9, 0.0f) * Time.deltaTime;
+                // Apply root motion position and gravity
+                Vector3 rootMotionPosition = animator.deltaPosition + Physics.gravity * Time.deltaTime;
 
-
-                if (isCuttingDistanceToTarget && targetManager.currentTarget != null)
-                {
-                    agent.updatePosition = false;
-
-                    // Move the character towards the target based on root motion and glide speed
-                    Vector3 targetPosition = targetManager.currentTarget.transform.position;
-                    Vector3 directionToTarget = (targetPosition - transform.position).normalized;
-
-                    if (Vector3.Distance(agent.transform.position, targetPosition) >= agent.stoppingDistance)
-                    {
-                        rootMotionPosition += directionToTarget * cutDistanceToTargetSpeed * Time.deltaTime;
-                    }
-                }
-                else
-                {
-                    agent.updatePosition = true;
-                    agent.Warp(characterController.transform.position);
-                }
-
-                // Apply root motion to the NavMesh Agent
                 if (characterController.enabled)
                 {
+                    HandleCuttingDistance(ref rootMotionPosition);
+
                     characterController.Move(rootMotionPosition);
                 }
+            }
+        }
+
+        void HandleCuttingDistance(ref Vector3 rootMotionPosition)
+        {
+            if (!isCuttingDistanceToTarget)
+            {
+                return;
+            }
+
+            float distanceToTarget = Vector3.Distance(targetManager.currentTarget.transform.position, transform.position);
+
+            if (distanceToTarget >= agent.stoppingDistance)
+            {
+                rootMotionPosition *= cutDistanceToTargetSpeed;
+            }
+
+            if (distanceToTarget >= 0)
+            {
+                RotateTowardsTarget();
             }
         }
 
@@ -229,8 +227,6 @@ namespace AF
                 return;
             }
 
-            agent.speed = 0f;
-
             targetManager.ClearTarget();
 
             if (health is CharacterHealth characterHealth)
@@ -241,7 +237,6 @@ namespace AF
                 {
                     if (shouldReturnToInitialPositionOnRevive)
                     {
-                        agent.Warp(initialPosition);
                         characterController.enabled = false;
                         transform.SetPositionAndRotation(initialPosition, initialRotation);
                         characterController.enabled = true;
@@ -279,8 +274,6 @@ namespace AF
                 characterController.enabled = false;
                 agent.enabled = false;
                 transform.position = hit.position;
-                agent.nextPosition = hit.position;
-                agent.enabled = true;
                 characterController.enabled = true;
             }
         }
@@ -292,10 +285,7 @@ namespace AF
             if (IsValidPosition(hit.position))
             {
                 characterController.enabled = false;
-                agent.enabled = false;
                 transform.position = hit.position;
-                agent.nextPosition = hit.position;
-                agent.enabled = true;
                 characterController.enabled = true;
             }
         }
@@ -303,11 +293,8 @@ namespace AF
         public void Teleport(Vector3 desiredPosition, Quaternion desiredRotation)
         {
             characterController.enabled = false;
-            agent.enabled = false;
             transform.position = desiredPosition;
             transform.rotation = desiredRotation;
-            agent.nextPosition = desiredPosition;
-            agent.enabled = true;
             characterController.enabled = true;
         }
 
@@ -318,9 +305,66 @@ namespace AF
                    !float.IsNaN(position.x) && !float.IsNaN(position.y) && !float.IsNaN(position.z);
         }
 
-        internal IEnumerable<CharacterManager> Where(Func<object, object> value)
+
+
+        public void SetAgentDestination(Vector3 targetPosition)
         {
-            throw new NotImplementedException();
+            if (!agent.enabled)
+            {
+                return;
+            }
+
+            NavMeshPath navMeshPath = new();
+            agent.CalculatePath(targetPosition, navMeshPath);
+            agent.SetPath(navMeshPath);
+        }
+
+        public void RotateTowardsTargetAgent()
+        {
+            transform.rotation = agent.transform.rotation;
+        }
+
+        public void RotateTowardsTarget()
+        {
+            if (targetManager.currentTarget == null)
+            {
+                return;
+            }
+
+            Vector3 lookDirection = targetManager.currentTarget.transform.position - transform.position;
+            lookDirection.y = 0;
+
+            float speed = rotationSpeed;
+            if (isCuttingDistanceToTarget)
+            {
+                speed *= cutDistanceRotationSpeedMultiplier;
+            }
+            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(lookDirection), Time.deltaTime * speed);
+        }
+
+        public void SetSpeed(float speed)
+        {
+            animator.SetFloat("Speed", Mathf.Clamp01(speed));
+        }
+
+        public float GetAngleOfCurrentTarget()
+        {
+            if (targetManager.currentTarget == null)
+            {
+                return 0;
+            }
+
+            Vector3 directionToTarget = targetManager.currentTarget.transform.position - transform.position;
+
+            float viewableAngle = Vector3.Angle(transform.forward, directionToTarget);
+            Vector3 cross = Vector3.Cross(transform.forward, directionToTarget);
+
+            if (cross.y < 0)
+            {
+                viewableAngle = -viewableAngle;
+            }
+
+            return viewableAngle;
         }
     }
 }

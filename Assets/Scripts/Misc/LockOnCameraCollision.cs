@@ -18,6 +18,8 @@ namespace AF
 
         public LayerMask layersToConsider;
 
+        [SerializeField] GameSettings gameSettings;
+
         void Start()
         {
             cinemachineVirtualCamera = GetComponent<CinemachineVirtualCamera>();

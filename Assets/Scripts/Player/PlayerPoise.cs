@@ -29,5 +29,9 @@ namespace AF
         {
             return (int)Mathf.Round(playerStatsDatabase.endurance / 5f) + (int)Mathf.Round(playerStatsDatabase.strength / 2.5f); ;
         }
+
+        public override void PlayHitReaction()
+        {
+        }
     }
 }

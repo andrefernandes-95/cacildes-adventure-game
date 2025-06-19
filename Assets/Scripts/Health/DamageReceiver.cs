@@ -214,6 +214,8 @@ namespace AF
                 HandlePlayerRage();
 
                 HandlePlayerHealthBack(damageOwner);
+
+                HandleAngleHitFrom(damageOwner);
             }
 
             ApplyDamage(incomingDamage);
@@ -277,6 +279,15 @@ namespace AF
                 {
                     playerManager.health.RestoreHealth(playerManager.playerWeaponsManager.currentWeaponInstance.weapon.healthRestoredWithEachHit);
                 }
+            }
+        }
+
+        void HandleAngleHitFrom(CharacterBaseManager attacker)
+        {
+            if (character.characterPoise is CharacterPoise aiCharacterPoise)
+            {
+                aiCharacterPoise.angleHitFrom =
+                                Vector3.SignedAngle(attacker.transform.forward, character.transform.forward, Vector3.up);
             }
         }
 

@@ -45,13 +45,6 @@ namespace AF
         {
             onStateEnter?.Invoke();
 
-            if (characterManager.agent.isOnNavMesh)
-            {
-                characterManager.agent.ResetPath();
-            }
-
-            characterManager.agent.speed = 0f;
-
             characterManager.PlayBusyAnimationWithRootMotion(ambushIdle);
         }
 

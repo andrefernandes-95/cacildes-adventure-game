@@ -27,14 +27,13 @@ namespace AF
             {
                 playerManager = FindAnyObjectByType<PlayerManager>(FindObjectsInactive.Include);
             }
+
+            characterManager.SetSpeed(0f);
         }
 
         public override void OnStateEnter(StateManager stateManager)
         {
             onStateEnter?.Invoke();
-
-            characterManager.agent.ResetPath();
-            characterManager.agent.speed = 0f;
         }
 
         public override void OnStateExit(StateManager stateManager)

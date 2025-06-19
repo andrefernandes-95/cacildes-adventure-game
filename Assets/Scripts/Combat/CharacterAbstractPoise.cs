@@ -34,7 +34,7 @@ namespace AF
                 return false;
             }
 
-            currentPoiseHitCount = poiseDamage > 0 ? Mathf.Clamp(currentPoiseHitCount + 1 + poiseDamage, 0, GetMaxPoiseHits()) : 0;
+            currentPoiseHitCount += 1 + poiseDamage;
 
             if (ResetPoiseCoroutine != null)
             {
@@ -52,6 +52,7 @@ namespace AF
                 if (CanCallPoiseDamagedEvent())
                 {
                     onPoiseDamagedEvent?.Invoke();
+                    PlayHitReaction();
                 }
 
                 characterManager.health.PlayPostureHit();
@@ -72,6 +73,6 @@ namespace AF
 
         public abstract int GetMaxPoiseHits();
         public abstract bool CanCallPoiseDamagedEvent();
+        public abstract void PlayHitReaction();
     }
-
 }

@@ -89,12 +89,7 @@ namespace AF.Companions
             if (IsValidPosition(spawnPosition))
             {
                 characterManager.characterController.enabled = false;
-                characterManager.agent.enabled = false;
-
                 characterManager.transform.position = spawnPosition;
-                characterManager.agent.nextPosition = spawnPosition;
-
-                characterManager.agent.enabled = true;
                 characterManager.characterController.enabled = true;
             }
 
