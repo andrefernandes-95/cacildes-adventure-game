@@ -8,6 +8,8 @@ namespace AF
     [CreateAssetMenu(menuName = "Items / Spell / New Spell")]
     public class Spell : Item
     {
+        public SpellType spellType;
+
         public GameObject projectile;
         public float manaCostPerCast = 20;
 

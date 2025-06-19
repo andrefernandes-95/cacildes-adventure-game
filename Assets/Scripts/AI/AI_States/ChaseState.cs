@@ -113,6 +113,7 @@ namespace AF
         {
             characterManager.SetAgentDestination(playerManager.transform.position);
             characterManager.SetSpeed(1f);
+            characterManager.RotateTowardsTargetAgent();
 
             float distanceToTarget = Vector3.Distance(characterManager.transform.position, playerManager.transform.position);
 

@@ -34,7 +34,7 @@ namespace AF
         public float manaContainerBaseWidth = 150;
         float _containerMultiplierPerLevel = 10f;
 
-        Label quickItemName, arrowsLabel;
+        Label quickItemName, abilityName;
         IMGUIContainer shieldBlockedIcon;
 
 
@@ -132,7 +132,7 @@ namespace AF
             manaFill = root.Q<VisualElement>("ManaFill");
 
             quickItemName = root.Q<Label>("QuickItemName");
-            arrowsLabel = root.Q<Label>("ArrowsLabel");
+            abilityName = root.Q<Label>("AbilityName");
 
             spellSlotContainer = root.Q<IMGUIContainer>("SpellSlot");
             consumableSlotContainer = root.Q<IMGUIContainer>("ConsumableSlot");
@@ -262,24 +262,8 @@ namespace AF
             }
 
             quickItemName.text = "";
-            arrowsLabel.text = "";
 
-            if (equipmentDatabase.IsRangeWeaponEquipped())
-            {
-                arrowsLabel.text = equipmentDatabase.GetCurrentArrow() != null
-                    ? equipmentDatabase.GetCurrentArrow().GetName() + " (" + inventoryDatabase.GetItemAmount(equipmentDatabase.GetCurrentArrow()) + ")"
-                    : "";
-
-                spellSlotContainer.style.backgroundImage = equipmentDatabase.GetCurrentArrow() != null
-                    ? new StyleBackground(equipmentDatabase.GetCurrentArrow().sprite)
-                    : new StyleBackground(unequippedArrowSlot);
-            }
-            else
-            {
-                spellSlotContainer.style.backgroundImage = equipmentDatabase.GetCurrentSpell() != null
-                    ? new StyleBackground(equipmentDatabase.GetCurrentSpell().sprite)
-                    : new StyleBackground(unequippedSpellSlot);
-            }
+            UpdateSpellSlot();
 
             shieldSlotContainer.style.backgroundImage = equipmentDatabase.GetCurrentLeftWeapon() != null
                 ? new StyleBackground(equipmentDatabase.GetCurrentLeftWeapon().sprite)
@@ -325,6 +309,19 @@ namespace AF
                 : new StyleBackground(unequippedConsumableSlot);
 
             root.Q("ConsumableInfo").style.display = hasConsumable ? DisplayStyle.Flex : DisplayStyle.None;
+        }
+
+        void UpdateSpellSlot()
+        {
+            abilityName.text = "";
+            spellSlotContainer.style.backgroundImage = new StyleBackground(unequippedSpellSlot);
+
+            Spell currentSpell = equipmentDatabase.GetCurrentSpell();
+            if (currentSpell != null)
+            {
+                spellSlotContainer.style.backgroundImage = new StyleBackground(equipmentDatabase.GetCurrentSpell().sprite);
+                abilityName.text = currentSpell.GetName();
+            }
         }
 
         public void OnSwitchWeapon()

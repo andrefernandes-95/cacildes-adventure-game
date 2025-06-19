@@ -14,6 +14,7 @@ namespace AF
         public Color darknessDamage;
         public Color magicDamage;
         public Color waterDamage;
+        public Color healthRestored;
 
         [SerializeField] private CombatNotificationEntry combatNotificationPrefab;
         private IObjectPool<CombatNotificationEntry> combatNotificationEntryPool;

@@ -744,7 +744,7 @@ namespace AF
 
 
                         // the square root of H * -2 * G = how much velocity needed to reach desired height
-                        _verticalVelocity = Mathf.Sqrt((GetCurrentJumpHeight()) * -2f * Gravity);
+                        _verticalVelocity = Mathf.Sqrt(GetCurrentJumpHeight() * -2f * Gravity);
 
                         var weightSpeed = playerManager.statsBonusController.weightPenalty > 0 ? playerManager.statsBonusController.weightPenalty : 0;
 
@@ -921,7 +921,7 @@ namespace AF
                 // DEX 25: 2.23
                 // DEX 50: 2.65
                 // DEX 100: 3.16
-                _JumpHeightBonus += Mathf.Pow(playerManager.statsBonusController.GetCurrentDexterity(), .15f) / 2;
+                _JumpHeightBonus += Mathf.Pow(playerManager.statsBonusController.GetCurrentDexterity(), .05f) / 2;
             }
 
             return (int)(JumpHeight + _JumpHeightBonus + JumpWeightBonus);

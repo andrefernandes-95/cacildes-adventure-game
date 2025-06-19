@@ -75,6 +75,8 @@ namespace AF.Health
         {
             CurrentHealth += value;
 
+            ShowHealthRestoredText((int)value);
+
             onRestoreHealth?.Invoke();
         }
 

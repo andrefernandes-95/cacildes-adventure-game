@@ -262,26 +262,13 @@ namespace AF.UI.EquipmentMenu
             tooltipEffectsContainer.Clear();
             tooltipItemSprite.style.backgroundImage = new StyleBackground(item.sprite);
 
-            if (item is Card)
-            {
-                tooltipItemSprite.style.width = new StyleLength(100);
-                tooltipItemSprite.style.height = new StyleLength(120);
-                tooltipItemSprite.style.borderBottomWidth = 0;
-                tooltipItemSprite.style.borderTopWidth = 0;
-                tooltipItemSprite.style.borderLeftWidth = 0;
-                tooltipItemSprite.style.borderRightWidth = 0;
-                tooltipItemSprite.style.unityBackgroundScaleMode = ScaleMode.ScaleToFit;
-            }
-            else
-            {
-                tooltipItemSprite.style.width = new StyleLength(60);
-                tooltipItemSprite.style.height = new StyleLength(60);
-                tooltipItemSprite.style.borderBottomWidth = new StyleFloat(1);
-                tooltipItemSprite.style.borderTopWidth = new StyleFloat(1);
-                tooltipItemSprite.style.borderLeftWidth = new StyleFloat(1);
-                tooltipItemSprite.style.borderRightWidth = new StyleFloat(1);
-                tooltipItemSprite.style.unityBackgroundScaleMode = ScaleMode.ScaleAndCrop;
-            }
+            tooltipItemSprite.style.width = new StyleLength(60);
+            tooltipItemSprite.style.height = new StyleLength(60);
+            tooltipItemSprite.style.borderBottomWidth = new StyleFloat(1);
+            tooltipItemSprite.style.borderTopWidth = new StyleFloat(1);
+            tooltipItemSprite.style.borderLeftWidth = new StyleFloat(1);
+            tooltipItemSprite.style.borderRightWidth = new StyleFloat(1);
+            tooltipItemSprite.style.unityBackgroundScaleMode = ScaleMode.ScaleAndCrop;
 
             string itemName = item.GetName().ToUpper();
 

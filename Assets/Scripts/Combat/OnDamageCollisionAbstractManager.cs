@@ -64,9 +64,12 @@ namespace AF
             {
                 projectile.HandleCollision(damageReceiver);
             }
-            else if (healingAmount >= 0f)
+            else if (healingAmount != -1)
             {
-                damageReceiver.health.RestoreHealth(healingAmount);
+                if (healingAmount > 0)
+                {
+                    damageReceiver.health.RestoreHealth(healingAmount);
+                }
             }
             else if (damage != null && damageReceiver != null)
             {

@@ -1,5 +1,6 @@
 namespace AF
 {
+    using System.Linq;
     using UnityEngine;
 
     [CreateAssetMenu(fileName = "Cast Spell", menuName = "Abilities / Spells / New Cast From Spell", order = 0)]
@@ -13,7 +14,6 @@ namespace AF
         [Header("Settings")]
         [Tooltip("Because the player modal has wrong scaling, when we parent the spell, we need to rescale it appropriately")]
         [SerializeField] float chargingAbilityLocalScale = 100f;
-
 
         // Private
         CharacterBaseManager caster;
@@ -32,7 +32,6 @@ namespace AF
 
             playerManager.playerAbilityManager.PrepareAbility(this);
             playerManager.playerWeaponsManager.HideEquipment();
-
 
             if (chargingSpellFX != null)
             {
@@ -79,13 +78,25 @@ namespace AF
                 }
             }
 
-
             if (instance.TryGetComponent(out IAbilityInstance abilityInstance))
             {
                 abilityInstance.CastAbility(caster, target);
             }
 
+            ApplySpellStatusEffects(caster);
+
             return instance;
+        }
+
+        void ApplySpellStatusEffects(CharacterBaseManager caster)
+        {
+            foreach (StatusEffect statusEffect in spell.statusEffects)
+            {
+                caster.statusController.statusEffectInstances.FirstOrDefault(x => x.Key == statusEffect).Value?.onConsumeStart?.Invoke();
+                // For positive effects, we override the status effect resistance to be the duration of the consumable effect
+                caster.statusController.statusEffectResistances[statusEffect] = spell.effectsDurationInSeconds;
+                caster.statusController.InflictStatusEffect(statusEffect, spell.effectsDurationInSeconds, true);
+            }
         }
     }
 }

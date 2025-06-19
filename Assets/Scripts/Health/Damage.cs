@@ -105,6 +105,9 @@ namespace AF.Health
             this.lightning = (int)(this.lightning * multiplier);
             this.darkness = (int)(this.darkness * multiplier);
             this.water = (int)(this.water * multiplier);
+            this.poiseDamage = (int)(this.poiseDamage * multiplier);
+            this.pushForce = (int)(this.pushForce * multiplier);
+            this.postureDamage = (int)(this.postureDamage * multiplier);
         }
 
         public void ScaleSpell(
