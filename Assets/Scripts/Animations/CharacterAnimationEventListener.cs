@@ -93,9 +93,15 @@ namespace AF.Animations
             {
                 characterManager.animator.SetFloat(speedParameter, overrideChaseSpeed);
             }
+            // Patrolling / Running / Fleeing
+            else if (characterManager.agent.enabled && characterManager.agent.velocity.magnitude > 0.1f)
+            {
+                float speed = characterManager.targetManager.currentTarget != null ? 1f : 0.5f;
+                characterManager.animator.SetFloat(speedParameter, speed);
+            }
             else
             {
-                characterManager.animator.SetFloat(speedParameter, Mathf.Clamp01(characterManager.agent.speed / characterManager.chaseSpeed));
+                characterManager.animator.SetFloat(speedParameter, 0f);
             }
         }
 

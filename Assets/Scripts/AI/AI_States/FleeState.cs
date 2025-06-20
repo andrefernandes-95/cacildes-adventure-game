@@ -33,12 +33,14 @@ namespace AF
         public override void OnStateEnter(StateManager stateManager)
         {
             ResetFleeTimers();
+            characterManager.agent.enabled = true;
             ChooseFleeDestination();
             onStateEnter?.Invoke();
         }
 
         public override void OnStateExit(StateManager stateManager)
         {
+            characterManager.agent.enabled = false;
         }
 
         public override State Tick(StateManager stateManager)

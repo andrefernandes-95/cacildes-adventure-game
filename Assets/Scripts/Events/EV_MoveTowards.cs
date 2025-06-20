@@ -16,6 +16,7 @@ namespace AF.Events
 
         public override IEnumerator Dispatch()
         {
+            characterManager.agent.enabled = true;
             characterManager.SetAgentDestination(targetDestination.transform.position);
 
             yield return new WaitUntil(() =>
@@ -27,7 +28,7 @@ namespace AF.Events
 
             if (shouldWaitUntilReachingWaypoint)
             {
-                characterManager.agent.speed = 0f;
+                characterManager.agent.enabled = false;
             }
         }
     }

@@ -79,6 +79,8 @@ namespace AF
             initialPosition = transform.position;
             initialRotation = transform.rotation;
 
+            agent.enabled = false;
+
             EventManager.StartListening(EventMessages.ON_LEAVING_BONFIRE, Revive);
         }
 
@@ -135,46 +137,46 @@ namespace AF
 
             if (animator.applyRootMotion && characterController.enabled)
             {
-                // Apply animator's root rotation
-                transform.rotation *= animator.deltaRotation;
-
-                // Apply root motion position and gravity
-                Vector3 rootMotionPosition = animator.deltaPosition + Physics.gravity * Time.deltaTime;
-
-                HandleCuttingDistance(ref rootMotionPosition);
-
-                if (agent.hasPath)
+                // If Agent is Enabled and we are not performing action, use Navmesh to position character
+                if (agent.enabled && !isBusy)
                 {
                     Vector3 worldDeltaPosition = agent.nextPosition - transform.position;
                     worldDeltaPosition.y = 0f;
 
-                    Vector3 direction = worldDeltaPosition.normalized;
-                    characterController.Move(direction * agent.speed * Time.deltaTime);
+                    Vector3 direction = worldDeltaPosition.normalized + Physics.gravity;
+
+                    float speed = targetManager.currentTarget != null ? chaseSpeed : patrolSpeed;
+                    characterController.Move(direction * speed * Time.deltaTime);
+
+                    // Manually rotate to face agent's path direction
+                    Vector3 toTarget = agent.steeringTarget - transform.position;
+                    toTarget.y = 0;
+
+                    if (toTarget.sqrMagnitude > 0.001f)
+                    {
+                        Quaternion targetRotation = Quaternion.LookRotation(toTarget);
+                        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+                    }
                 }
                 else
                 {
-                    characterController.Move(rootMotionPosition);
-                }
+                    // Apply animator's root rotation
+                    transform.rotation *= animator.deltaRotation;
 
-                // Manually rotate to face agent's path direction
-                Vector3 toTarget = agent.steeringTarget - transform.position;
-                toTarget.y = 0;
-                if (toTarget.sqrMagnitude > 0.001f)
-                {
-                    Quaternion targetRotation = Quaternion.LookRotation(toTarget);
-                    transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, agent.angularSpeed * Time.deltaTime);
+                    // Apply root motion position and gravity
+                    Vector3 rootMotionPosition = animator.deltaPosition + Physics.gravity * Time.deltaTime;
+
+                    if (isCuttingDistanceToTarget)
+                    {
+                        HandleCuttingDistance(ref rootMotionPosition);
+                    }
+                    characterController.Move(rootMotionPosition);
                 }
             }
         }
 
-
         void HandleCuttingDistance(ref Vector3 rootMotionPosition)
         {
-            if (!isCuttingDistanceToTarget)
-            {
-                return;
-            }
-
             float distanceToTarget = Vector3.Distance(targetManager.currentTarget.transform.position, transform.position);
 
             if (distanceToTarget >= agent.stoppingDistance)
@@ -247,7 +249,10 @@ namespace AF
                 return;
             }
 
+            agent.enabled = false;
+
             targetManager.ClearTarget();
+            stateManager.ResetDefaultState();
 
             if (health is CharacterHealth characterHealth)
             {
@@ -327,14 +332,12 @@ namespace AF
 
         public void SetAgentDestination(Vector3 targetPosition)
         {
-            NavMeshPath navMeshPath = new();
-            agent.CalculatePath(targetPosition, navMeshPath);
-            agent.SetPath(navMeshPath);
-        }
-
-        public void ClearAgentDestination()
-        {
-            agent.ResetPath();
+            if (agent.enabled)
+            {
+                NavMeshPath navMeshPath = new();
+                agent.CalculatePath(targetPosition, navMeshPath);
+                agent.SetPath(navMeshPath);
+            }
         }
 
         public void RotateTowardsTarget()

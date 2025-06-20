@@ -1,15 +1,28 @@
+::PRIORITY::
 
-Character Poise
-- Simplify Logic of isbroken, too many side effects
+- All enemies have messed up stopping distances now
+- Check drogo and fenlora run sequences
 
 
-Check drogo and fenlora run sequences
+
+:: MUST BE DONE ::
 
 Ability should consume stamina and mana
 
 Requirements for spells can still exist, but damage will be lessen
 
 Add damage popup when healing too so we know the values
+
+Reduce Weapon Toss Push Force
+
+
+
+
+
+Character Poise
+- Simplify Logic of isbroken, too many side effects
+
+
 
 1.7.1
 

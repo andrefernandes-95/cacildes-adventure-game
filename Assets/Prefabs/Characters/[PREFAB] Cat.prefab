@@ -84,6 +84,7 @@ MonoBehaviour:
   animationName: Pet
   crossFadeTime: 0.1
   usePlayerAnimator: 1
+  useBusyAnimation: 0
   teleportPlayerToThisTransform: {fileID: 5915793177229318551}
 --- !u!114 &8090377626124823213
 MonoBehaviour:
@@ -510,6 +511,7 @@ MonoBehaviour:
   comboClip3: {fileID: 0}
   minimumHealthToUse: 100
   dontUseBelowHalfHealth: 0
+  halfHealthThreshold: 0.5
   minimumDistanceToTarget: 0
   maximumDistanceToTarget: 3
   onAttack_Start:
@@ -563,6 +565,10 @@ MonoBehaviour:
     ignoreBlocking: 0
     canNotBeParried: 0
     damageType: 0
+    strengthScaling: 5
+    dexterityScaling: 5
+    intelligenceScaling: 5
+  targetHitReaction: {fileID: 0}
   maxCooldown: 2
   frequency: 0.5
   animationSpeed: 1.2
@@ -690,11 +696,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1006329372686111791, guid: 2bbef0ac8248daa44909db9bb81b47ce, type: 3}
       propertyPath: m_Height
-      value: 0.77
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 1006329372686111791, guid: 2bbef0ac8248daa44909db9bb81b47ce, type: 3}
       propertyPath: m_Radius
-      value: 0.25
+      value: 0.19
       objectReference: {fileID: 0}
     - target: {fileID: 1006329372686111791, guid: 2bbef0ac8248daa44909db9bb81b47ce, type: 3}
       propertyPath: m_Center.y
@@ -739,6 +745,14 @@ PrefabInstance:
     - target: {fileID: 3510183873097404473, guid: 2bbef0ac8248daa44909db9bb81b47ce, type: 3}
       propertyPath: lootTable._serializedList.Array.size
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3784668010745104792, guid: 2bbef0ac8248daa44909db9bb81b47ce, type: 3}
+      propertyPath: m_Height
+      value: 0.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 3784668010745104792, guid: 2bbef0ac8248daa44909db9bb81b47ce, type: 3}
+      propertyPath: m_StoppingDistance
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3786289932839394611, guid: 2bbef0ac8248daa44909db9bb81b47ce, type: 3}
       propertyPath: currentState

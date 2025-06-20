@@ -65,10 +65,15 @@ namespace AF
             ScheduleState(defaultState);
         }
 
+        public State GetDefaultState() => defaultState;
+
         void ResyncNavmeshAgent()
         {
-            characterManager.agent.transform.localPosition = Vector3.zero;
-            characterManager.agent.transform.localRotation = Quaternion.identity;
+            if (characterManager.agent.enabled)
+            {
+                characterManager.agent.transform.localPosition = Vector3.zero;
+                characterManager.agent.transform.localRotation = Quaternion.identity;
+            }
         }
 
     }

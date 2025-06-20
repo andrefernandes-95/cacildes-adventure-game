@@ -42,13 +42,12 @@ namespace AF
         {
             currentIntervalBetweenChaseActions = 0f;
             onStateEnter?.Invoke();
-            characterManager.agent.speed = characterManager.chaseSpeed;
+            characterManager.agent.enabled = true;
         }
 
         public override void OnStateExit(StateManager stateManager)
         {
-            characterManager.ClearAgentDestination();
-            characterManager.agent.speed = 0f;
+            characterManager.agent.enabled = false;
         }
 
         public override State Tick(StateManager stateManager)

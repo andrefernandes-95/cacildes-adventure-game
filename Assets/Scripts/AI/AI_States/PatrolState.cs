@@ -73,13 +73,13 @@ namespace AF
         {
             onStateEnter?.Invoke();
             DecideNextWaypoint();
-            characterManager.agent.speed = characterManager.patrolSpeed;
+            characterManager.agent.enabled = true;
         }
 
         public override void OnStateExit(StateManager stateManager)
         {
             onStateExit?.Invoke();
-            characterManager.agent.speed = 0f;
+            characterManager.agent.enabled = false;
         }
 
         bool ShouldDecideNextWaypoint()

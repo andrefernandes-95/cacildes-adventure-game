@@ -8,7 +8,6 @@ namespace AF
         [SerializeField] CharacterManager dialogueOwner;
 
         [SerializeField] IdleState idleState;
-        State stateBeforeMomentBegan;
 
         // Refs
         PlayerManager _playerManager;
@@ -21,17 +20,13 @@ namespace AF
 
         void OnMomentStart()
         {
-            stateBeforeMomentBegan = dialogueOwner.stateManager.currentState;
             dialogueOwner.stateManager.ScheduleState(idleState);
             FacePlayer();
         }
 
         void OnMomentEnd()
         {
-            if (stateBeforeMomentBegan != null)
-            {
-                dialogueOwner.stateManager.ScheduleState(stateBeforeMomentBegan);
-            }
+            dialogueOwner.stateManager.ResetDefaultState();
         }
 
         void FacePlayer()

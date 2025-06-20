@@ -21,10 +21,13 @@ namespace AF
         [Header("Events")]
         public UnityEvent onStateEnter;
 
+        bool hasChosenAttack = false;
+
 
         public override void OnStateEnter(StateManager stateManager)
         {
             onStateEnter?.Invoke();
+            hasChosenAttack = false;
         }
 
         public override void OnStateExit(StateManager stateManager)
@@ -63,9 +66,10 @@ namespace AF
             var target = characterManager.targetManager.currentTarget.transform;
             float distanceToTarget = Vector3.Distance(characterManager.transform.position, target.position);
 
-            if (distanceToTarget <= characterManager.agent.stoppingDistance)
+            if (!hasChosenAttack || distanceToTarget <= characterManager.agent.stoppingDistance)
             {
                 onAttack?.Invoke();
+                hasChosenAttack = true;
                 return this;
             }
             else
