@@ -34,7 +34,7 @@ namespace AF
                 return false;
             }
 
-            currentPoiseHitCount += 1 + poiseDamage;
+            currentPoiseHitCount = poiseDamage > 0 ? Mathf.Clamp(currentPoiseHitCount + 1 + poiseDamage, 0, GetMaxPoiseHits()) : 0;
 
             if (ResetPoiseCoroutine != null)
             {

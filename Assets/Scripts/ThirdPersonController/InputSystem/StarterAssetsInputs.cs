@@ -165,7 +165,7 @@ namespace AF
 
 		void OnUseAbilityPerformed(InputAction.CallbackContext context)
 		{
-			if (context.performed)
+			if (context.performed && CanUseAction())
 			{
 				onChargeAbilityStart?.Invoke();
 			}
@@ -538,6 +538,16 @@ namespace AF
 			{
 				heavyAttack.RemoveAllBindingOverrides();
 			}
+		}
+
+		bool CanUseAction()
+		{
+			if (menuManager.isMenuOpen)
+			{
+				return false;
+			}
+
+			return true;
 		}
 	}
 }

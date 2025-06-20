@@ -61,6 +61,10 @@ namespace AF.Inventory
                 {
                     equipmentDatabase.EquipLegwear(legwear, false);
                 }
+                else if (defaultItem.Key is Spell spell)
+                {
+                    equipmentDatabase.EquipSpell(spell, 0);
+                }
             }
         }
 

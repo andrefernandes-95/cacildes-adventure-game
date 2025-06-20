@@ -35,6 +35,8 @@ namespace AF.Health
         [Header("Status")]
         public bool hasHealthCutInHalf = false;
 
+        [Header("Components")]
+        [SerializeField] CombatNotificationsController combatNotificationsController;
 
         private void Start()
         {
@@ -109,6 +111,11 @@ namespace AF.Health
         public virtual void SetHasHealthCutInHealth(bool value)
         {
             hasHealthCutInHalf = value;
+        }
+
+        public void ShowHealthRestoredText(int healthRestored)
+        {
+            combatNotificationsController.ShowHealthRestored(healthRestored);
         }
     }
 

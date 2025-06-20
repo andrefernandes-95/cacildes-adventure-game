@@ -130,15 +130,7 @@ namespace AF
                 return;
             }
 
-            if (equipmentDatabase.IsRangeWeaponEquipped())
-            {
-                equipmentDatabase.SwitchToNextArrow();
-            }
-            else
-            {
-                equipmentDatabase.SwitchToNextSpell();
-            }
-
+            equipmentDatabase.SwitchToNextSpell();
             uIDocumentPlayerHUDV2.OnSwitchSpell();
             UpdateCanSwitchFlag();
         }

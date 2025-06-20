@@ -18,8 +18,6 @@ namespace AF.Events
         {
             characterManager.SetAgentDestination(targetDestination.transform.position);
 
-            yield return new WaitForSeconds(0.1f);
-
             yield return new WaitUntil(() =>
             {
                 elapsedTime += Time.deltaTime;

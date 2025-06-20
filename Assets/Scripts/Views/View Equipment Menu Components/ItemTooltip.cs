@@ -262,26 +262,13 @@ namespace AF.UI.EquipmentMenu
             tooltipEffectsContainer.Clear();
             tooltipItemSprite.style.backgroundImage = new StyleBackground(item.sprite);
 
-            if (item is Card)
-            {
-                tooltipItemSprite.style.width = new StyleLength(100);
-                tooltipItemSprite.style.height = new StyleLength(120);
-                tooltipItemSprite.style.borderBottomWidth = 0;
-                tooltipItemSprite.style.borderTopWidth = 0;
-                tooltipItemSprite.style.borderLeftWidth = 0;
-                tooltipItemSprite.style.borderRightWidth = 0;
-                tooltipItemSprite.style.unityBackgroundScaleMode = ScaleMode.ScaleToFit;
-            }
-            else
-            {
-                tooltipItemSprite.style.width = new StyleLength(60);
-                tooltipItemSprite.style.height = new StyleLength(60);
-                tooltipItemSprite.style.borderBottomWidth = new StyleFloat(1);
-                tooltipItemSprite.style.borderTopWidth = new StyleFloat(1);
-                tooltipItemSprite.style.borderLeftWidth = new StyleFloat(1);
-                tooltipItemSprite.style.borderRightWidth = new StyleFloat(1);
-                tooltipItemSprite.style.unityBackgroundScaleMode = ScaleMode.ScaleAndCrop;
-            }
+            tooltipItemSprite.style.width = new StyleLength(60);
+            tooltipItemSprite.style.height = new StyleLength(60);
+            tooltipItemSprite.style.borderBottomWidth = new StyleFloat(1);
+            tooltipItemSprite.style.borderTopWidth = new StyleFloat(1);
+            tooltipItemSprite.style.borderLeftWidth = new StyleFloat(1);
+            tooltipItemSprite.style.borderRightWidth = new StyleFloat(1);
+            tooltipItemSprite.style.unityBackgroundScaleMode = ScaleMode.ScaleAndCrop;
 
             string itemName = item.GetName().ToUpper();
 
@@ -1282,46 +1269,6 @@ namespace AF.UI.EquipmentMenu
             if (consumable.shouldNotRemoveOnUse)
             {
                 CreateTooltip(replenishableSprite, Color.white, itemUsageReplenishesWhenRestingAtABonfire.GetLocalizedString());
-            }
-            if (consumable is Card card)
-            {
-                CreateTooltip(cardSprite, Color.white, LocalizationSettings.StringDatabase.GetLocalizedString("UIDocuments", "IsCard"));
-
-                if (card.commonlyFoundDescription.IsEmpty == false)
-                {
-                    CreateTooltip(cardSprite, Color.white, card.commonlyFoundDescription.GetLocalizedString());
-                }
-
-                if (card.manaRequired > 0)
-                {
-                    CreateTooltip(
-                        spellCastSprite,
-                        Color.white,
-                        String.Format(
-                            manaPointsRequiredToCast.GetLocalizedString(),
-                            card.manaRequired
-                    ));
-                }
-
-                if (card.staminaRequired > 0)
-                {
-                    CreateTooltip(
-                        staminaCostSprite,
-                        Color.white,
-                        String.Format(
-                            staminaCostLabel.GetLocalizedString(),
-                            card.staminaRequired,
-                            card.staminaRequired
-                    ));
-                }
-                if (!card.isRenewable)
-                {
-                    CreateTooltip(
-                        cardSprite,
-                        Color.white,
-                        lostUponUse.GetLocalizedString()
-                    );
-                }
             }
         }
 

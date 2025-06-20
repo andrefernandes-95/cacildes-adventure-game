@@ -40,9 +40,8 @@ namespace AF.Inventory
             queuedProjectile = null;
         }
 
-        public void Throw(GameObject projectile)
+        public Projectile Throw(GameObject projectile)
         {
-
             if (lockOnManager.nearestLockOnTarget != null)
             {
                 var rotation = lockOnManager.nearestLockOnTarget.transform.position - playerManager.transform.position;
@@ -64,6 +63,7 @@ namespace AF.Inventory
             }
 
             instance.Shoot(playerManager, instance.GetForwardVelocity() * instance.transform.forward, instance.forceMode);
+            return instance;
         }
 
         public void ShowArrowPlaceholder(Arrow arrow)

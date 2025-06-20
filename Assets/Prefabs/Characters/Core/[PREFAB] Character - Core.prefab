@@ -4326,6 +4326,9 @@ MonoBehaviour:
     ignoreBlocking: 0
     canNotBeParried: 0
     damageType: 0
+    strengthScaling: 5
+    dexterityScaling: 5
+    intelligenceScaling: 5
   targetHitReaction: {fileID: 0}
   maxCooldown: 11
   frequency: 0.35
@@ -11318,6 +11321,9 @@ MonoBehaviour:
     ignoreBlocking: 0
     canNotBeParried: 0
     damageType: 0
+    strengthScaling: 5
+    dexterityScaling: 5
+    intelligenceScaling: 5
   targetHitReaction: {fileID: 0}
   maxCooldown: 24
   frequency: 0.733
@@ -13625,6 +13631,9 @@ MonoBehaviour:
     ignoreBlocking: 0
     canNotBeParried: 0
     damageType: 0
+    strengthScaling: 5
+    dexterityScaling: 5
+    intelligenceScaling: 5
   targetHitReaction: {fileID: 0}
   maxCooldown: 2
   frequency: 0.5
@@ -21767,6 +21776,9 @@ MonoBehaviour:
     ignoreBlocking: 0
     canNotBeParried: 0
     damageType: 0
+    strengthScaling: 5
+    dexterityScaling: 5
+    intelligenceScaling: 5
   targetHitReaction: {fileID: 0}
   maxCooldown: 15
   frequency: 0.35
@@ -36172,6 +36184,9 @@ MonoBehaviour:
     ignoreBlocking: 0
     canNotBeParried: 0
     damageType: 0
+    strengthScaling: 5
+    dexterityScaling: 5
+    intelligenceScaling: 5
   targetHitReaction: {fileID: 0}
   maxCooldown: 13
   frequency: 0.4
@@ -37843,7 +37858,7 @@ CharacterController:
   serializedVersion: 3
   m_Height: 1.93
   m_Radius: 0.36
-  m_SlopeLimit: 45
+  m_SlopeLimit: 90
   m_StepOffset: 0.3
   m_SkinWidth: 0.036
   m_MinMoveDistance: 0.001
@@ -37884,11 +37899,13 @@ MonoBehaviour:
   characterBossController: {fileID: 2102271419543537189}
   executionManager: {fileID: 3652008012499799501}
   characterGravity: {fileID: 41835741450275024}
+  stateManager: {fileID: 2621631975807239129}
   animatorOverrideController: {fileID: 0}
   patrolSpeed: 2
   chaseSpeed: 4.5
-  cutDistanceToTargetSpeed: 2
   rotationSpeed: 6
+  cutDistanceToTargetSpeed: 2
+  cutDistanceRotationSpeedMultiplier: 2
   isCuttingDistanceToTarget: 0
   canRevive: 1
   shouldReturnToInitialPositionOnRevive: 1
@@ -52960,6 +52977,9 @@ MonoBehaviour:
     ignoreBlocking: 0
     canNotBeParried: 0
     damageType: 0
+    strengthScaling: 5
+    dexterityScaling: 5
+    intelligenceScaling: 5
   targetHitReaction: {fileID: 0}
   maxCooldown: 9
   frequency: 0.6
@@ -56933,6 +56953,9 @@ MonoBehaviour:
     ignoreBlocking: 0
     canNotBeParried: 0
     damageType: 0
+    strengthScaling: 5
+    dexterityScaling: 5
+    intelligenceScaling: 5
   targetHitReaction: {fileID: 0}
   maxCooldown: 13
   frequency: 0.6
@@ -57310,6 +57333,9 @@ MonoBehaviour:
     ignoreBlocking: 0
     canNotBeParried: 0
     damageType: 0
+    strengthScaling: 5
+    dexterityScaling: 5
+    intelligenceScaling: 5
   targetHitReaction: {fileID: 0}
   maxCooldown: 2
   frequency: 0.5
@@ -71582,7 +71608,7 @@ NavMeshAgent:
   m_AgentTypeID: 0
   m_Radius: 0.3
   m_Speed: 3.5
-  m_Acceleration: 8
+  m_Acceleration: 32
   avoidancePriority: 50
   m_AngularSpeed: 360
   m_StoppingDistance: 1
@@ -76998,6 +77024,7 @@ MonoBehaviour:
   dodgeSfx: {fileID: 0}
   audioSource: {fileID: 6363769051905563577}
   hasHealthCutInHalf: 0
+  combatNotificationsController: {fileID: 8890546953677537694}
   gameSession: {fileID: 11400000, guid: 806862db69fa7244189bed36885b18a4, type: 2}
   characterManager: {fileID: 1759811369383153655}
   companionsDatabase: {fileID: 11400000, guid: 304c7a15385a5904b83eaaa8ed072aa2, type: 2}

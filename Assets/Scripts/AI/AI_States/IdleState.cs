@@ -27,8 +27,6 @@ namespace AF
             {
                 playerManager = FindAnyObjectByType<PlayerManager>(FindObjectsInactive.Include);
             }
-
-            characterManager.SetSpeed(0f);
         }
 
         public override void OnStateEnter(StateManager stateManager)

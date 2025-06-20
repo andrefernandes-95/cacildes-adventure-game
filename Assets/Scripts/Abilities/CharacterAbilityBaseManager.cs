@@ -11,6 +11,23 @@ namespace AF
         public float chargingAbilityMultiplierBonus = 1f;
         public float chargingAbilityMultiplierBonusForFullCharge = 1.5f;
 
+        [Header("Default Animation Clips")]
+        [SerializeField] AnimationClip spellStart;
+        [SerializeField] AnimationClip spellHold;
+        [SerializeField] AnimationClip spellRelease;
+        public bool hasOverridenAnimations = false;
+
+        public virtual void ResetStates()
+        {
+            if (hasOverridenAnimations)
+            {
+                SetAnimations(spellStart, spellHold, spellRelease);
+                hasOverridenAnimations = false;
+            }
+        }
+
+        public abstract void SetAnimations(AnimationClip start, AnimationClip loop, AnimationClip end);
+
         public void PrepareAbility(Ability ability)
         {
             this.currentAbility = ability;

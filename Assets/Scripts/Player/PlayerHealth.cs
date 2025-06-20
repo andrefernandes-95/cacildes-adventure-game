@@ -61,10 +61,7 @@ namespace AF
         public void RestoreHealthPercentage(int amount)
         {
             var percentage = GetMaxHealth() * amount / 100;
-            var nextValue = Mathf.Clamp(
-                playerStatsDatabase.currentHealth + percentage, 0, GetMaxHealth());
-
-            playerStatsDatabase.currentHealth = nextValue;
+            RestoreHealth(percentage);
         }
 
         public float GetHealthPointsForGivenVitality(int vitality)
@@ -78,6 +75,7 @@ namespace AF
                 playerStatsDatabase.currentHealth + value, 0, GetMaxHealth());
 
             onRestoreHealth?.Invoke();
+            ShowHealthRestoredText((int)value);
         }
 
         public override void TakeDamage(float value)
@@ -211,6 +209,5 @@ namespace AF
         {
             onHealthChange?.Invoke();
         }
-
     }
 }

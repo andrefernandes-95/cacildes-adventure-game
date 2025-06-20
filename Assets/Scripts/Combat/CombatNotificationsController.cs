@@ -106,6 +106,11 @@ namespace AF
         {
             AddNotification("- " + amount + " " + LocalizationSettings.StringDatabase.GetLocalizedString("UIDocuments", "from broken posture"), combatNotificationManager.criticalDamage);
         }
+        public void ShowHealthRestored(int amount)
+        {
+            AddNotification("+ " + amount, combatNotificationManager.healthRestored);
+        }
+
     }
 
 }

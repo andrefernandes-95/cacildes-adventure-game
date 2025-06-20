@@ -3,7 +3,13 @@ Character Poise
 - Simplify Logic of isbroken, too many side effects
 
 
+Check drogo and fenlora run sequences
+
 Ability should consume stamina and mana
+
+Requirements for spells can still exist, but damage will be lessen
+
+Add damage popup when healing too so we know the values
 
 1.7.1
 

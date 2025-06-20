@@ -17958,6 +17958,25 @@ MonoBehaviour:
   equipmentDatabase: {fileID: 11400000, guid: a2bf3141e1e696a48952a3479a4a9742, type: 2}
   playerManager: {fileID: 4363140735506542586}
   attackSource: 2
+  damageBonus:
+    physical: 0
+    fire: 0
+    frost: 0
+    magic: 0
+    lightning: 0
+    darkness: 0
+    water: 0
+    postureDamage: 0
+    poiseDamage: 0
+    pushForce: 0
+    weaponAttackType: 0
+    statusEffects: []
+    ignoreBlocking: 0
+    canNotBeParried: 0
+    damageType: 0
+    strengthScaling: 5
+    dexterityScaling: 5
+    intelligenceScaling: 5
 --- !u!1 &1960108477710009583
 GameObject:
   m_ObjectHideFlags: 0
@@ -27658,6 +27677,7 @@ MonoBehaviour:
   dodgeSfx: {fileID: 0}
   audioSource: {fileID: 0}
   hasHealthCutInHalf: 0
+  combatNotificationsController: {fileID: 5200957334068746001}
   playerStatsBonusController: {fileID: 6020033262264106722}
   notificationManager: {fileID: 6922590514710513798}
   playerStatsDatabase: {fileID: 11400000, guid: 5700f759ff00d104a97ef4af25190ddd, type: 2}
@@ -43830,6 +43850,7 @@ MonoBehaviour:
   darknessDamage: {r: 0, g: 0, b: 0, a: 1}
   magicDamage: {r: 0.607098, g: 0.3066038, b: 1, a: 1}
   waterDamage: {r: 0.3726415, g: 0.9189477, b: 1, a: 1}
+  healthRestored: {r: 0.62501836, g: 1, b: 0.3915094, a: 1}
   combatNotificationPrefab: {fileID: 973437315888057596, guid: 95605a0f3c6ecde42a252995f5a2c1b7, type: 3}
 --- !u!1 &4900555813586875737
 GameObject:
@@ -56320,7 +56341,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   alertDuration: 5
-  questAppearPopupSfx: {fileID: 8300000, guid: 48f9038e91edd0b40aab036e90d7a435, type: 3}
+  questAppearPopupSfx: {fileID: 8300000, guid: 32351c0df759a3b44a47dd41410ca7c6, type: 3}
   bGMManager: {fileID: 2614391276045409048}
 --- !u!1 &7182020674900014566
 GameObject:
@@ -64614,6 +64635,10 @@ MonoBehaviour:
   chargingAbilityAmount: 0
   chargingAbilityMultiplierBonus: 1
   chargingAbilityMultiplierBonusForFullCharge: 1.5
+  spellStart: {fileID: 2164131687966594029, guid: c7fc619acaa3e1a47939c7c42aa9793d, type: 3}
+  spellHold: {fileID: 7948785167184613051, guid: 55c4ec20cf8caa943bdad5e197a391fc, type: 3}
+  spellRelease: {fileID: -218043517015539538, guid: 7f5d83467bf0f6f449682a86e71374dd, type: 3}
+  hasOverridenAnimations: 0
   playerManager: {fileID: 4363140735506542586}
   chargingAbilityFX: {fileID: 0}
 --- !u!1 &8097022939072974663
@@ -67969,6 +67994,7 @@ MonoBehaviour:
   uIDocumentPlayerHUDV2: {fileID: 5309569914880944466}
   uIDocumentAlert: {fileID: 2323535824834436681}
   playerAbilityManager: {fileID: 6010106734401224786}
+  playerThrowWeaponManager: {fileID: 919746405709999436}
   playerStatsDatabase: {fileID: 11400000, guid: 5700f759ff00d104a97ef4af25190ddd, type: 2}
   equipmentDatabase: {fileID: 11400000, guid: a2bf3141e1e696a48952a3479a4a9742, type: 2}
   oh_unarmedAnimationOverrides:
@@ -69051,8 +69077,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8619754588792639567}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: -0.6891771, z: 0, w: 0.72459304}
-  m_LocalPosition: {x: 36.44393, y: 1.378, z: 90.57715}
+  m_LocalRotation: {x: 0.11665458, y: -0.86895883, z: 0.24627867, w: 0.41309696}
+  m_LocalPosition: {x: 6.220745, y: 5.8706646, z: 0.33168006}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -69090,7 +69116,7 @@ Camera:
     width: 1
     height: 1
   near clip plane: 0.2
-  far clip plane: 500
+  far clip plane: 100
   field of view: 40
   orthographic: 0
   orthographic size: 10

@@ -42,10 +42,13 @@ namespace AF
         {
             currentIntervalBetweenChaseActions = 0f;
             onStateEnter?.Invoke();
+            characterManager.agent.speed = characterManager.chaseSpeed;
         }
 
         public override void OnStateExit(StateManager stateManager)
         {
+            characterManager.ClearAgentDestination();
+            characterManager.agent.speed = 0f;
         }
 
         public override State Tick(StateManager stateManager)
@@ -55,10 +58,11 @@ namespace AF
                 return this;
             }
 
+            /*
             if (jumpState != null && jumpState.ShouldJumpTowardsTarget())
             {
                 return jumpState;
-            }
+            } */
 
             if (characterManager.targetManager.currentTarget != null)
             {
@@ -72,8 +76,6 @@ namespace AF
                 characterManager.SetAgentDestination(characterManager.targetManager.currentTarget.transform.position);
 
                 PivotTowardsTarget();
-
-                characterManager.SetSpeed(1f);
 
                 float distanceToTarget = Vector3.Distance(characterManager.transform.position, characterManager.targetManager.currentTarget.transform.position);
 
@@ -112,7 +114,6 @@ namespace AF
         State FollowPlayer()
         {
             characterManager.SetAgentDestination(playerManager.transform.position);
-            characterManager.SetSpeed(1f);
 
             float distanceToTarget = Vector3.Distance(characterManager.transform.position, playerManager.transform.position);
 
@@ -130,11 +131,7 @@ namespace AF
 
         void PivotTowardsTarget()
         {
-            if (characterManager.isBusy)
-            {
-                return;
-            }
-
+            return;
             if (characterManager.combatant != null && characterManager.combatant.isHumanoid)
             {
                 float angleOfCurrentTarget = characterManager.GetAngleOfCurrentTarget();
@@ -151,9 +148,6 @@ namespace AF
                     return;
                 }
             }
-
-            characterManager.RotateTowardsTarget();
         }
-
     }
 }

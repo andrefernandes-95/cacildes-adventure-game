@@ -9,6 +9,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using AF.Companions;
 using UnityEngine.AI;
+using UnityEditorInternal;
 
 
 namespace AF
@@ -28,6 +29,7 @@ namespace AF
         public CharacterBossController characterBossController;
         public ExecutionManager executionManager;
         public CharacterGravity characterGravity;
+        public StateManager stateManager;
 
         // Animator Overrides
         [HideInInspector] public AnimatorOverrideController animatorOverrideController;
@@ -131,7 +133,7 @@ namespace AF
                 RotateTowardsTarget();
             }
 
-            if (animator.applyRootMotion)
+            if (animator.applyRootMotion && characterController.enabled)
             {
                 // Apply animator's root rotation
                 transform.rotation *= animator.deltaRotation;
@@ -139,14 +141,32 @@ namespace AF
                 // Apply root motion position and gravity
                 Vector3 rootMotionPosition = animator.deltaPosition + Physics.gravity * Time.deltaTime;
 
-                if (characterController.enabled)
-                {
-                    HandleCuttingDistance(ref rootMotionPosition);
+                HandleCuttingDistance(ref rootMotionPosition);
 
+                if (agent.hasPath)
+                {
+                    Vector3 worldDeltaPosition = agent.nextPosition - transform.position;
+                    worldDeltaPosition.y = 0f;
+
+                    Vector3 direction = worldDeltaPosition.normalized;
+                    characterController.Move(direction * agent.speed * Time.deltaTime);
+                }
+                else
+                {
                     characterController.Move(rootMotionPosition);
+                }
+
+                // Manually rotate to face agent's path direction
+                Vector3 toTarget = agent.steeringTarget - transform.position;
+                toTarget.y = 0;
+                if (toTarget.sqrMagnitude > 0.001f)
+                {
+                    Quaternion targetRotation = Quaternion.LookRotation(toTarget);
+                    transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, agent.angularSpeed * Time.deltaTime);
                 }
             }
         }
+
 
         void HandleCuttingDistance(ref Vector3 rootMotionPosition)
         {
@@ -305,23 +325,16 @@ namespace AF
                    !float.IsNaN(position.x) && !float.IsNaN(position.y) && !float.IsNaN(position.z);
         }
 
-
-
         public void SetAgentDestination(Vector3 targetPosition)
         {
-            if (!agent.enabled)
-            {
-                return;
-            }
-
             NavMeshPath navMeshPath = new();
             agent.CalculatePath(targetPosition, navMeshPath);
             agent.SetPath(navMeshPath);
         }
 
-        public void RotateTowardsTargetAgent()
+        public void ClearAgentDestination()
         {
-            transform.rotation = agent.transform.rotation;
+            agent.ResetPath();
         }
 
         public void RotateTowardsTarget()
@@ -340,11 +353,6 @@ namespace AF
                 speed *= cutDistanceRotationSpeedMultiplier;
             }
             transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(lookDirection), Time.deltaTime * speed);
-        }
-
-        public void SetSpeed(float speed)
-        {
-            animator.SetFloat("Speed", Mathf.Clamp01(speed));
         }
 
         public float GetAngleOfCurrentTarget()
@@ -366,5 +374,6 @@ namespace AF
 
             return viewableAngle;
         }
+
     }
 }
