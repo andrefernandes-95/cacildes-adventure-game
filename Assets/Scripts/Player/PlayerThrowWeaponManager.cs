@@ -23,7 +23,6 @@ namespace AF
 
             GameObject weaponThrowProjectileInstance = Instantiate(weaponThrowProjectilePrefab.gameObject, currentWeapon.transform.parent);
             GameObject clonedWeapon = Instantiate(currentWeapon.gameObject, weaponThrowProjectileInstance.transform.GetChild(0));
-
             // Enable the hitbox on the cloned weapon
             CharacterWeaponHitbox clonedWeaponHitbox = clonedWeapon.GetComponent<CharacterWeaponHitbox>();
             clonedWeaponHitbox.gameObject.SetActive(true);
@@ -42,7 +41,20 @@ namespace AF
             clonedWeapon.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
 
             // Throw the projectile instance
-            playerManager.projectileSpawner.Throw(weaponThrowProjectileInstance);
+            Projectile instance = playerManager.projectileSpawner.Throw(weaponThrowProjectileInstance);
+            CharacterWeaponHitbox characterWeaponHitboxInProjectile = instance.GetComponentInChildren<CharacterWeaponHitbox>();
+            if (characterWeaponHitboxInProjectile != null)
+            {
+                characterWeaponHitboxInProjectile.onDamageInflicted.AddListener(() =>
+                {
+                    characterWeaponHitboxInProjectile.trailRenderer.enabled = false;
+                    characterWeaponHitboxInProjectile.DisableHitbox();
+                    instance.GetComponent<MeshRenderer>().enabled = false;
+                    instance.GetComponent<BoxCollider>().enabled = false;
+                    instance.GetComponent<Rigidbody>().Sleep();
+                    characterWeaponHitboxInProjectile.GetComponent<MeshRenderer>().enabled = false;
+                });
+            }
 
             // Clear disappearing FX from this instance
             weaponThrowProjectileInstance.TryGetComponent<Projectile>(out var projectile);

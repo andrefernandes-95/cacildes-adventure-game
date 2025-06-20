@@ -412,27 +412,6 @@ namespace AF
                 }
             }
 
-
-            // Try to read card
-            quickSaveReader.TryRead<string[]>("consumables", out string[] cards);
-            if (cards != null && cards.Length > 0)
-            {
-                for (int idx = 0; idx < cards.Length; idx++)
-                {
-                    string cardName = cards[idx];
-
-                    if (!string.IsNullOrEmpty(cardName))
-                    {
-                        Card cardInstance = Resources.Load<Card>("Items/Cards/" + cardName);
-
-                        if (cardInstance != null)
-                        {
-                            equipmentDatabase.consumables[idx] = cardInstance;
-                        }
-                    }
-                }
-            }
-
             // Try to read helmet
             quickSaveReader.TryRead<string>("helmet", out string helmetName);
             if (!string.IsNullOrEmpty(helmetName))

@@ -233,21 +233,14 @@ namespace AF
                 uIDocumentPlayerGold.AddGold((int)consumable.value);
             }
 
-            if (consumable is not Card)
+            isConsumingItem = true;
+            foreach (StatusEffect statusEffect in currentConsumedItem.statusEffectsWhenConsumed)
             {
-                isConsumingItem = true;
-                foreach (StatusEffect statusEffect in currentConsumedItem.statusEffectsWhenConsumed)
-                {
-                    playerManager.statusController.statusEffectInstances.FirstOrDefault(x => x.Key == statusEffect).Value?.onConsumeStart?.Invoke();
-                }
+                playerManager.statusController.statusEffectInstances.FirstOrDefault(x => x.Key == statusEffect).Value?.onConsumeStart?.Invoke();
+            }
 
-                playerManager.playerComponentManager.DisableCharacterController();
-                playerManager.playerComponentManager.DisableComponents();
-            }
-            else
-            {
-                isConsumingItem = playerManager.playerCardManager.StartCardUse(currentConsumedItem as Card);
-            }
+            playerManager.playerComponentManager.DisableCharacterController();
+            playerManager.playerComponentManager.DisableComponents();
         }
 
         public void FinishItemConsumption()
@@ -257,15 +250,8 @@ namespace AF
                 return;
             }
 
-            if (currentConsumedItem is not Card)
-            {
-                playerManager.playerComponentManager.EnableCharacterController();
-                playerManager.playerComponentManager.EnableComponents();
-            }
-            else
-            {
-                playerManager.playerCardManager.EndCurrentCardUse();
-            }
+            playerManager.playerComponentManager.EnableCharacterController();
+            playerManager.playerComponentManager.EnableComponents();
 
             if (currentConsumedItem.shouldNotRemoveOnUse == false)
             {

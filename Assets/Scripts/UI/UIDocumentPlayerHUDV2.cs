@@ -284,23 +284,11 @@ namespace AF
                 equipmentDatabase.GetCurrentConsumable().GetName() + $" ({inventoryDatabase.GetItemAmount(equipmentDatabase.GetCurrentConsumable())})"
                 : "";
 
-            if (equipmentDatabase.GetCurrentConsumable() is Card)
-            {
-                consumableSlotContainer.style.unityBackgroundScaleMode = ScaleMode.ScaleToFit;
-                consumableSlotContainer.style.borderTopWidth = 0;
-                consumableSlotContainer.style.borderBottomWidth = 0;
-                consumableSlotContainer.style.borderLeftWidth = 0;
-                consumableSlotContainer.style.borderRightWidth = 0;
-
-            }
-            else
-            {
-                consumableSlotContainer.style.unityBackgroundScaleMode = ScaleMode.ScaleAndCrop;
-                consumableSlotContainer.style.borderTopWidth = new StyleFloat(1);
-                consumableSlotContainer.style.borderBottomWidth = new StyleFloat(1);
-                consumableSlotContainer.style.borderLeftWidth = new StyleFloat(1);
-                consumableSlotContainer.style.borderRightWidth = new StyleFloat(1);
-            }
+            consumableSlotContainer.style.unityBackgroundScaleMode = ScaleMode.ScaleAndCrop;
+            consumableSlotContainer.style.borderTopWidth = new StyleFloat(1);
+            consumableSlotContainer.style.borderBottomWidth = new StyleFloat(1);
+            consumableSlotContainer.style.borderLeftWidth = new StyleFloat(1);
+            consumableSlotContainer.style.borderRightWidth = new StyleFloat(1);
 
             bool hasConsumable = equipmentDatabase.GetCurrentConsumable() != null;
 

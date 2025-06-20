@@ -131,7 +131,7 @@ namespace AF
                 RotateTowardsTarget();
             }
 
-            if (animator.applyRootMotion)
+            if (animator.applyRootMotion && characterController.enabled)
             {
                 // Apply animator's root rotation
                 transform.rotation *= animator.deltaRotation;
@@ -139,14 +139,11 @@ namespace AF
                 // Apply root motion position and gravity
                 Vector3 rootMotionPosition = animator.deltaPosition + Physics.gravity * Time.deltaTime;
 
-                if (characterController.enabled)
-                {
-                    HandleCuttingDistance(ref rootMotionPosition);
-
-                    characterController.Move(rootMotionPosition);
-                }
+                HandleCuttingDistance(ref rootMotionPosition);
+                characterController.Move(rootMotionPosition);
             }
         }
+
 
         void HandleCuttingDistance(ref Vector3 rootMotionPosition)
         {
@@ -319,9 +316,18 @@ namespace AF
             agent.SetPath(navMeshPath);
         }
 
-        public void RotateTowardsTargetAgent()
+        public void MoveUsingNavmeshAgent(bool isRunning)
         {
-            transform.rotation = agent.transform.rotation;
+            agent.speed = isRunning ? chaseSpeed : patrolSpeed;
+            Vector3 worldDeltaPosition = agent.nextPosition - transform.position;
+            characterController.Move(agent.speed * Time.fixedDeltaTime * worldDeltaPosition);
+
+            if (worldDeltaPosition.sqrMagnitude > 0.001f)
+            {
+                worldDeltaPosition.y = 0;
+                Quaternion toRotation = Quaternion.LookRotation(worldDeltaPosition.normalized, Vector3.up);
+                transform.rotation = Quaternion.Slerp(transform.rotation, toRotation, rotationSpeed * Time.deltaTime);
+            }
         }
 
         public void RotateTowardsTarget()
@@ -340,11 +346,6 @@ namespace AF
                 speed *= cutDistanceRotationSpeedMultiplier;
             }
             transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(lookDirection), Time.deltaTime * speed);
-        }
-
-        public void SetSpeed(float speed)
-        {
-            animator.SetFloat("Speed", Mathf.Clamp01(speed));
         }
 
         public float GetAngleOfCurrentTarget()
@@ -366,5 +367,6 @@ namespace AF
 
             return viewableAngle;
         }
+
     }
 }

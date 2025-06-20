@@ -57,6 +57,8 @@ namespace AF
 
         public AttackSource attackSource = AttackSource.UNARMED;
 
+        [HideInInspector] public Damage damageBonus;
+
         private void Start()
         {
             scalingDictionary.Add("E", Formulas.E);
@@ -67,7 +69,10 @@ namespace AF
             scalingDictionary.Add("S", Formulas.S);
         }
 
-        public void ResetStates() { }
+        public void ResetStates()
+        {
+            damageBonus = null;
+        }
 
         public bool IsHeavyAttacking()
         {
@@ -126,6 +131,12 @@ namespace AF
                 if (!weapon.AreRequirementsMet(playerManager.statsBonusController))
                 {
                     weaponDamage.Multiply(.1f);
+                }
+
+                if (damageBonus != null)
+                {
+                    weaponDamage.Combine(damageBonus);
+                    damageBonus = null;
                 }
 
                 return playerManager.playerWeaponsManager.GetBuffedDamage(weaponDamage);

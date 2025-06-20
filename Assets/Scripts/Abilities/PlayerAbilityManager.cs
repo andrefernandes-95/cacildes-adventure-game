@@ -1,5 +1,6 @@
 namespace AF
 {
+    using System.Collections.Generic;
     using UnityEngine;
 
     public class PlayerAbilityManager : CharacterAbilityBaseManager
@@ -13,8 +14,10 @@ namespace AF
             playerManager.starterAssetsInputs.onChargeAbilityEnd.AddListener(EndChargeAbility);
         }
 
-        public void ResetStates()
+        public override void ResetStates()
         {
+            base.ResetStates();
+
             currentAbility = null;
             CleanupChargingAbilitySpell();
             playerManager.animator.SetBool("isCharging", false);
@@ -95,5 +98,15 @@ namespace AF
             return chargingAbilityMultiplier;
         }
 
+        public override void SetAnimations(AnimationClip start, AnimationClip loop, AnimationClip end)
+        {
+            Dictionary<string, AnimationClip> clips = new()
+            {
+                { "unarmed_main_charged_attack_02_charge", start },
+                { "unarmed_main_charged_attack_02_hold", loop },
+                { "unarmed_main_charged_attack_02_release", end }
+            };
+            playerManager.UpdateAnimatorOverrideControllerClipsUsingDictionary(clips);
+        }
     }
 }

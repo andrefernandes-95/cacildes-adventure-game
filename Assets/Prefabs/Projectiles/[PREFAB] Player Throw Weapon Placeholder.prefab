@@ -14,8 +14,9 @@ GameObject:
   - component: {fileID: 1185183324051266861}
   - component: {fileID: 2735042127936051529}
   - component: {fileID: 8706113530556065641}
-  - component: {fileID: -3348600147461869719}
   - component: {fileID: -3627017628521542990}
+  - component: {fileID: 1251779953159960061}
+  - component: {fileID: 2678094206112707333}
   m_Layer: 2
   m_Name: '[PREFAB] Player Throw Weapon Placeholder'
   m_TagString: Untagged
@@ -91,10 +92,10 @@ Rigidbody:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6611259348332053617}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Mass: 0.01
-  m_Drag: 0
-  m_AngularDrag: 0
+  m_LinearDamping: 0
+  m_AngularDamping: 0
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -146,8 +147,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   timeBeforeDestroying: 4
   forceMode: 5
-  forwardVelocity: 830
+  forwardVelocity: 1200
   useOwnDirection: 0
+  upwardsVelocity: 1
   damage:
     physical: 50
     fire: 0
@@ -164,6 +166,9 @@ MonoBehaviour:
     ignoreBlocking: 0
     canNotBeParried: 0
     damageType: 0
+    strengthScaling: 5
+    dexterityScaling: 5
+    intelligenceScaling: 5
   scaleWithIntelligence: 0
   rigidBody: {fileID: 6675525523291489110}
   disappearingFx: {fileID: 5786454153158328869, guid: 4714063176fb7f84c8cddb55b6e0e60b, type: 3}
@@ -221,7 +226,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: -3348600147461869719}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: AF.RotateUtil, AF
         m_MethodName: SetShouldStop
         m_Mode: 6
@@ -235,20 +240,9 @@ MonoBehaviour:
         m_CallState: 2
   onCollision:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: -3348600147461869719}
-        m_TargetAssemblyTypeName: AF.RotateUtil, AF
-        m_MethodName: SetShouldStop
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
+      m_Calls: []
   onFired_AfterDelay: 0.4
+  shooter: {fileID: 0}
   collideWithAnything: 0
   onAnyCollision:
     m_PersistentCalls:
@@ -350,23 +344,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &-3348600147461869719
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6611259348332053617}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2b56e846dc86f5442a72fadf2d529b41, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  rotationSpeed: 1000
-  rotateAroundX: 1
-  rotateAroundY: 0
-  rotateAroundZ: 0
-  shouldStop: 0
 --- !u!114 &-3627017628521542990
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -380,6 +357,74 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   destroyAfter: 2
+--- !u!114 &1251779953159960061
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6611259348332053617}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 180ecf9b41d478f468eb3e9083753217, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ImpulseDefinition:
+    m_ImpulseChannel: 1
+    m_ImpulseShape: 2
+    m_CustomImpulseShape:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    m_ImpulseDuration: 0.2
+    m_ImpulseType: 0
+    m_DissipationRate: 0.25
+    m_RawSignal: {fileID: 0}
+    m_AmplitudeGain: 1
+    m_FrequencyGain: 1
+    m_RepeatMode: 0
+    m_Randomize: 1
+    m_TimeEnvelope:
+      m_AttackShape:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      m_DecayShape:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      m_AttackTime: 0
+      m_SustainTime: 0.2
+      m_DecayTime: 0.7
+      m_ScaleWithImpact: 1
+      m_HoldForever: 0
+    m_ImpactRadius: 100
+    m_DirectionMode: 0
+    m_DissipationMode: 2
+    m_DissipationDistance: 100
+    m_PropagationSpeed: 343
+  m_DefaultVelocity: {x: 0, y: -1, z: 0}
+--- !u!114 &2678094206112707333
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6611259348332053617}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0439e3fe593a2d14d9a71db6e933654b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  initialForce: 0.2
+  collisionForce: 0.5
+  damageCollider: {fileID: 0}
 --- !u!1 &8526074208974343106
 GameObject:
   m_ObjectHideFlags: 0
@@ -389,6 +434,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1565706558917480737}
+  - component: {fileID: 3525613814902156588}
   m_Layer: 0
   m_Name: Child
   m_TagString: Untagged
@@ -411,3 +457,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 6611259348332354335}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3525613814902156588
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8526074208974343106}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b56e846dc86f5442a72fadf2d529b41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rotationSpeed: 1000
+  rotateAroundX: 1
+  rotateAroundY: 0
+  rotateAroundZ: 0
+  shouldStop: 0

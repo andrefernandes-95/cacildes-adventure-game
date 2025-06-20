@@ -25,8 +25,6 @@ namespace AF
         public override void OnStateEnter(StateManager stateManager)
         {
             onStateEnter?.Invoke();
-
-            characterManager.SetSpeed(0f);
         }
 
         public override void OnStateExit(StateManager stateManager)

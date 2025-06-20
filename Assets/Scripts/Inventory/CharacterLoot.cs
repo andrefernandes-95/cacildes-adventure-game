@@ -84,12 +84,6 @@ namespace AF
                     continue;
                 }
 
-                if (dropCurrency.Key is Card card
-                    && playerManager.playerInventory.inventoryDatabase.GetItemAmount(dropCurrency.Key) >= card.maximumCardsAllowedInInventory)
-                {
-                    continue;
-                }
-
                 float calc_dropChance = Random.Range(0, 100f);
 
                 if (calc_dropChance <= dropCurrency.Value.chanceToGet)
@@ -113,19 +107,7 @@ namespace AF
             {
                 GetPlayerManager().playerInventory.AddItem(item.Key, item.Value.amount);
 
-                bool isCard = item.Key is Card;
-
-                if (isCard)
-                {
-                    cardsToDisplay.Add(new()
-                    {
-                        itemName = item.Key.nameLocalized.GetLocalizedString(),
-                        quantity = item.Value.amount,
-                        sprite = item.Key.sprite,
-                        isCard = true
-                    });
-                }
-                else if (isBoss && GetUIDocumentReceivedItemPrompt() != null)
+                if (isBoss && GetUIDocumentReceivedItemPrompt() != null)
                 {
                     itemsToDisplay
                         .Add(new()
@@ -133,7 +115,7 @@ namespace AF
                             itemName = item.Key.GetName(),
                             quantity = 1,
                             sprite = item.Key.sprite,
-                            isCard = isCard
+                            isCard = false
                         });
                 }
                 else

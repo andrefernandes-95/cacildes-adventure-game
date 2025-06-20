@@ -70,10 +70,9 @@ namespace AF
                 }
 
                 characterManager.SetAgentDestination(characterManager.targetManager.currentTarget.transform.position);
+                characterManager.MoveUsingNavmeshAgent(true);
 
                 PivotTowardsTarget();
-
-                characterManager.SetSpeed(1f);
 
                 float distanceToTarget = Vector3.Distance(characterManager.transform.position, characterManager.targetManager.currentTarget.transform.position);
 
@@ -112,8 +111,6 @@ namespace AF
         State FollowPlayer()
         {
             characterManager.SetAgentDestination(playerManager.transform.position);
-            characterManager.SetSpeed(1f);
-            characterManager.RotateTowardsTargetAgent();
 
             float distanceToTarget = Vector3.Distance(characterManager.transform.position, playerManager.transform.position);
 
@@ -131,11 +128,6 @@ namespace AF
 
         void PivotTowardsTarget()
         {
-            if (characterManager.isBusy)
-            {
-                return;
-            }
-
             if (characterManager.combatant != null && characterManager.combatant.isHumanoid)
             {
                 float angleOfCurrentTarget = characterManager.GetAngleOfCurrentTarget();
@@ -152,9 +144,6 @@ namespace AF
                     return;
                 }
             }
-
-            characterManager.RotateTowardsTarget();
         }
-
     }
 }

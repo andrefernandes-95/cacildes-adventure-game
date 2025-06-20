@@ -471,11 +471,6 @@ namespace AF.UI.EquipmentMenu
             var query = inventoryDatabase.ownedItems
                 .Where(item => ShouldShowItem<T>(item, slotIndex, showOnlyKeyItems));
 
-            if (typeof(T) == typeof(Consumable))
-            {
-                query = query.OrderBy(item => item.Key is Card ? 0 : 1);
-            }
-
             Dictionary<Item, ItemAmount> filteredItems = query.ToDictionary(item => item.Key, item => item.Value);
 
             for (int i = 0; i < filteredItems.Count; i++)

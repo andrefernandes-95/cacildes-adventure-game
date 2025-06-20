@@ -336,5 +336,52 @@ namespace AF.Health
                 _ => 1f
             };
         }
+
+        public void Combine(Damage other)
+        {
+            if (other == null) return;
+
+            this.physical += other.physical;
+            this.fire += other.fire;
+            this.frost += other.frost;
+            this.magic += other.magic;
+            this.lightning += other.lightning;
+            this.darkness += other.darkness;
+            this.water += other.water;
+
+            this.poiseDamage += other.poiseDamage;
+            this.postureDamage += other.postureDamage;
+            this.pushForce += other.pushForce;
+
+            // Combine status effects
+            if (other.statusEffects != null)
+            {
+                if (this.statusEffects == null)
+                {
+                    this.statusEffects = new StatusEffectEntry[0];
+                }
+
+                List<StatusEffectEntry> combinedEffects = new List<StatusEffectEntry>(this.statusEffects);
+
+                foreach (var otherEffect in other.statusEffects)
+                {
+                    var existing = combinedEffects.Find(x => x.statusEffect == otherEffect.statusEffect);
+                    if (existing != null)
+                    {
+                        existing.amountPerHit += otherEffect.amountPerHit;
+                    }
+                    else
+                    {
+                        combinedEffects.Add(new StatusEffectEntry
+                        {
+                            statusEffect = otherEffect.statusEffect,
+                            amountPerHit = otherEffect.amountPerHit
+                        });
+                    }
+                }
+
+                this.statusEffects = combinedEffects.ToArray();
+            }
+        }
     }
 }

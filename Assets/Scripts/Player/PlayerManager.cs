@@ -53,6 +53,7 @@ namespace AF
         public UIDocumentPlayerHUDV2 uIDocumentPlayerHUDV2;
         public UIDocumentAlert uIDocumentAlert;
         public PlayerAbilityManager playerAbilityManager;
+        public PlayerThrowWeaponManager playerThrowWeaponManager;
 
         [Header("Databases")]
         public PlayerStatsDatabase playerStatsDatabase;
@@ -278,6 +279,21 @@ namespace AF
             animator.runtimeAnimatorController = defaultAnimatorController;
 
             clipOverrides[animationName] = animationClip;
+
+            animatorOverrideController.ApplyOverrides(clipOverrides);
+            animator.runtimeAnimatorController = animatorOverrideController;
+        }
+
+        public void UpdateAnimatorOverrideControllerClipsUsingDictionary(Dictionary<string, AnimationClip> clips)
+        {
+            var clipOverrides = new AnimationClipOverrides(animatorOverrideController.overridesCount);
+            animatorOverrideController.GetOverrides(clipOverrides);
+            animator.runtimeAnimatorController = defaultAnimatorController;
+
+            foreach (var clip in clips)
+            {
+                clipOverrides[clip.Key] = clip.Value;
+            }
 
             animatorOverrideController.ApplyOverrides(clipOverrides);
             animator.runtimeAnimatorController = animatorOverrideController;

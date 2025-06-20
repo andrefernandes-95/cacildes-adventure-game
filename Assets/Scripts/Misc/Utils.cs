@@ -124,10 +124,6 @@ namespace AF
             {
                 subFolder = "Arrows/";
             }
-            else if (item is Card)
-            {
-                subFolder = "Cards/";
-            }
             else if (item is Consumable)
             {
                 subFolder = "Consumables/";

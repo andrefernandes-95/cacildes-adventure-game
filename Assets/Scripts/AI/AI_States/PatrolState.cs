@@ -92,13 +92,16 @@ namespace AF
 
         public override State Tick(StateManager stateManager)
         {
-            characterManager.RotateTowardsTargetAgent();
             onStateUpdate?.Invoke();
 
             // Check if the agent has reached its current destination
             if (ShouldDecideNextWaypoint())
             {
                 DecideNextWaypoint();
+            }
+            else
+            {
+                characterManager.MoveUsingNavmeshAgent(false);
             }
 
             return this;
@@ -107,7 +110,6 @@ namespace AF
         void DecideNextWaypoint()
         {
             isWaitingOnWaypoint = true;
-            characterManager.SetSpeed(0f);
 
             if (waitCoroutine != null)
             {
@@ -149,7 +151,6 @@ namespace AF
             yield return new WaitForSeconds(waitOnWaypoints);
             onWaitOnWaypoint_End?.Invoke();
 
-            characterManager.SetSpeed(0.5f);
             SetNextWaypoint();
             isWaitingOnWaypoint = false;
         }
