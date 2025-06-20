@@ -73,11 +73,13 @@ namespace AF
         {
             onStateEnter?.Invoke();
             DecideNextWaypoint();
+            characterManager.agent.speed = characterManager.patrolSpeed;
         }
 
         public override void OnStateExit(StateManager stateManager)
         {
             onStateExit?.Invoke();
+            characterManager.agent.speed = 0f;
         }
 
         bool ShouldDecideNextWaypoint()
@@ -98,10 +100,6 @@ namespace AF
             if (ShouldDecideNextWaypoint())
             {
                 DecideNextWaypoint();
-            }
-            else
-            {
-                characterManager.MoveUsingNavmeshAgent(false);
             }
 
             return this;

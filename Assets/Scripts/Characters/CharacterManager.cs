@@ -9,6 +9,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using AF.Companions;
 using UnityEngine.AI;
+using UnityEditorInternal;
 
 
 namespace AF
@@ -28,6 +29,7 @@ namespace AF
         public CharacterBossController characterBossController;
         public ExecutionManager executionManager;
         public CharacterGravity characterGravity;
+        public StateManager stateManager;
 
         // Animator Overrides
         [HideInInspector] public AnimatorOverrideController animatorOverrideController;
@@ -140,7 +142,28 @@ namespace AF
                 Vector3 rootMotionPosition = animator.deltaPosition + Physics.gravity * Time.deltaTime;
 
                 HandleCuttingDistance(ref rootMotionPosition);
-                characterController.Move(rootMotionPosition);
+
+                if (agent.hasPath)
+                {
+                    Vector3 worldDeltaPosition = agent.nextPosition - transform.position;
+                    worldDeltaPosition.y = 0f;
+
+                    Vector3 direction = worldDeltaPosition.normalized;
+                    characterController.Move(direction * agent.speed * Time.deltaTime);
+                }
+                else
+                {
+                    characterController.Move(rootMotionPosition);
+                }
+
+                // Manually rotate to face agent's path direction
+                Vector3 toTarget = agent.steeringTarget - transform.position;
+                toTarget.y = 0;
+                if (toTarget.sqrMagnitude > 0.001f)
+                {
+                    Quaternion targetRotation = Quaternion.LookRotation(toTarget);
+                    transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, agent.angularSpeed * Time.deltaTime);
+                }
             }
         }
 
@@ -302,32 +325,16 @@ namespace AF
                    !float.IsNaN(position.x) && !float.IsNaN(position.y) && !float.IsNaN(position.z);
         }
 
-
-
         public void SetAgentDestination(Vector3 targetPosition)
         {
-            if (!agent.enabled)
-            {
-                return;
-            }
-
             NavMeshPath navMeshPath = new();
             agent.CalculatePath(targetPosition, navMeshPath);
             agent.SetPath(navMeshPath);
         }
 
-        public void MoveUsingNavmeshAgent(bool isRunning)
+        public void ClearAgentDestination()
         {
-            agent.speed = isRunning ? chaseSpeed : patrolSpeed;
-            Vector3 worldDeltaPosition = agent.nextPosition - transform.position;
-            characterController.Move(agent.speed * Time.fixedDeltaTime * worldDeltaPosition);
-
-            if (worldDeltaPosition.sqrMagnitude > 0.001f)
-            {
-                worldDeltaPosition.y = 0;
-                Quaternion toRotation = Quaternion.LookRotation(worldDeltaPosition.normalized, Vector3.up);
-                transform.rotation = Quaternion.Slerp(transform.rotation, toRotation, rotationSpeed * Time.deltaTime);
-            }
+            agent.ResetPath();
         }
 
         public void RotateTowardsTarget()

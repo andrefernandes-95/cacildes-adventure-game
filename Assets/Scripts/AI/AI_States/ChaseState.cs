@@ -42,10 +42,13 @@ namespace AF
         {
             currentIntervalBetweenChaseActions = 0f;
             onStateEnter?.Invoke();
+            characterManager.agent.speed = characterManager.chaseSpeed;
         }
 
         public override void OnStateExit(StateManager stateManager)
         {
+            characterManager.ClearAgentDestination();
+            characterManager.agent.speed = 0f;
         }
 
         public override State Tick(StateManager stateManager)
@@ -55,10 +58,11 @@ namespace AF
                 return this;
             }
 
+            /*
             if (jumpState != null && jumpState.ShouldJumpTowardsTarget())
             {
                 return jumpState;
-            }
+            } */
 
             if (characterManager.targetManager.currentTarget != null)
             {
@@ -70,7 +74,6 @@ namespace AF
                 }
 
                 characterManager.SetAgentDestination(characterManager.targetManager.currentTarget.transform.position);
-                characterManager.MoveUsingNavmeshAgent(true);
 
                 PivotTowardsTarget();
 
@@ -128,6 +131,7 @@ namespace AF
 
         void PivotTowardsTarget()
         {
+            return;
             if (characterManager.combatant != null && characterManager.combatant.isHumanoid)
             {
                 float angleOfCurrentTarget = characterManager.GetAngleOfCurrentTarget();
