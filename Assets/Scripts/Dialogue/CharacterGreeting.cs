@@ -9,5 +9,10 @@ namespace AF.Dialogue
         public string greeting = "";
 
         public float duration = 5f;
+
+        public AnimationClip gesture;
+
+        [Header("Settings")]
+        public bool shouldFacePlayerWhenGreeting = true;
     }
 }

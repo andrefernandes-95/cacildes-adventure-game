@@ -18,6 +18,7 @@ namespace AF.Combat
 
         [Header("Combat Actions")]
         public List<CombatAction> reactionsToTarget = new();
+        public List<Ability> combatAbilities = new();
         public List<CombatAction> combatActions = new();
         public List<CombatAction> chaseActions = new();
 
@@ -141,8 +142,33 @@ namespace AF.Combat
             return null;
         }
 
+        Ability GetCombatAbility()
+        {
+            if (combatAbilities.Count > 0)
+            {
+                var shuffledAbilities = Randomize(combatAbilities.ToArray());
+
+                foreach (Ability ability in shuffledAbilities)
+                {
+                    if (ability != null && ability.CanUseAbility(characterManager))
+                    {
+                        return ability;
+                    }
+                }
+            }
+
+            return null;
+        }
+
         public void UseCombatAction()
         {
+            Ability combatAbility = GetCombatAbility();
+            if (combatAbility != null)
+            {
+                characterManager.characterAbilityManager.QueueAbility(combatAbility);
+                return;
+            }
+
             CombatAction newCombatAction = GetCombatAction();
             if (newCombatAction == null)
             {
@@ -350,7 +376,7 @@ namespace AF.Combat
             }
         }
 
-        public IEnumerable<CombatAction> Randomize(CombatAction[] source)
+        public IEnumerable<T> Randomize<T>(T[] source)
         {
             System.Random rnd = new System.Random();
             return source.OrderBy((item) => rnd.Next());

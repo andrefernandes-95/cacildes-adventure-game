@@ -267,7 +267,7 @@ namespace AF.Animations
 
         public void OnWeaponSpecial()
         {
-            playerManager.playerWeaponsManager.HandleWeaponSpecial();
+            //playerManager.playerWeaponsManager.HandleWeaponSpecial();
         }
 
         public void MoveTowardsTarget()
@@ -337,6 +337,10 @@ namespace AF.Animations
         public void OnUseAbility()
         {
             playerManager.playerAbilityManager.OnUseAbility();
+        }
+
+        public void OnCombo()
+        {
         }
     }
 }

@@ -24,10 +24,10 @@ namespace AF
                 return;
             }
 
-            playerManager.playerAbilityManager.SetAnimations(spellStart, spellHold, spellRelease);
+            playerManager.playerAbilityManager.SetAnimations(playerManager, spellStart, spellHold, spellRelease);
             playerManager.playerAbilityManager.hasOverridenAnimations = true;
 
-            playerManager.playerAbilityManager.PrepareAbility(this);
+            playerManager.playerAbilityManager.SetCurrentAbility(this);
 
             if (chargingFX != null)
             {
@@ -53,6 +53,10 @@ namespace AF
 
         }
 
+        public override bool CanUseAbility(CharacterBaseManager character)
+        {
+            return true;
+        }
 
     }
 }

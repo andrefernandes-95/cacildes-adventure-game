@@ -7,6 +7,10 @@ namespace AF
     {
         public Damage damage;
 
+        [Header("Combo")]
+        public Ability next;
+        public float chanceToCombo = 0.5f;
+
         public abstract void OnPrepare(CharacterManager characterManager);
         public abstract void OnPrepare(PlayerManager characterManager);
         public abstract void OnUse(CharacterManager characterManager);
@@ -19,5 +23,12 @@ namespace AF
                 playerManager.statsBonusController.GetCurrentDexterity(),
                 playerManager.statsBonusController.GetCurrentIntelligence());
         }
+
+
+        public void ApplyDamageScaling(CharacterManager characterManager)
+        {
+        }
+
+        public abstract bool CanUseAbility(CharacterBaseManager character);
     }
 }

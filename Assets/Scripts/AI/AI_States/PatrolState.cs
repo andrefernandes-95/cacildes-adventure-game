@@ -37,7 +37,11 @@ namespace AF
 
         Vector3 originalPosition;
 
+        [Header("Optional States")]
+        public GreetingState greetingState;
 
+        // Refs
+        PlayerManager _playerManager;
 
         private void Awake()
         {
@@ -100,6 +104,10 @@ namespace AF
             if (ShouldDecideNextWaypoint())
             {
                 DecideNextWaypoint();
+            }
+            else if (ShouldGreetPlayer())
+            {
+                return greetingState;
             }
 
             return this;
@@ -167,6 +175,11 @@ namespace AF
             }
 
             return randomPoint;
+        }
+
+        bool ShouldGreetPlayer()
+        {
+            return greetingState != null && greetingState.CanGreet();
         }
     }
 }

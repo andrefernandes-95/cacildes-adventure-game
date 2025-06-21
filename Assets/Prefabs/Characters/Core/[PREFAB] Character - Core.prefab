@@ -3711,6 +3711,7 @@ Transform:
   - {fileID: 4928473008519269233}
   - {fileID: 5051301463840657263}
   - {fileID: 3556136610349564142}
+  - {fileID: 7720873064170678229}
   m_Father: {fileID: 5761406467621364391}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &470890705903673039
@@ -7867,6 +7868,7 @@ MonoBehaviour:
       m_Calls: []
   companionsDatabase: {fileID: 0}
   chaseState: {fileID: 0}
+  greetingState: {fileID: 0}
 --- !u!1 &842679142554593102
 GameObject:
   m_ObjectHideFlags: 0
@@ -12149,6 +12151,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   greeting: You... do know you're naked, right?
   duration: 5
+  gesture: {fileID: -1105731507409099037, guid: b341fa5c3b8da0e41940b53b6478721d, type: 3}
+  shouldFacePlayerWhenGreeting: 1
 --- !u!1 &1305271534236345169
 GameObject:
   m_ObjectHideFlags: 0
@@ -16114,6 +16118,59 @@ SkinnedMeshRenderer:
     m_Center: {x: 0, y: 25.73793, z: 12.5502205}
     m_Extent: {x: 6.3966866, y: 11.903442, z: 6.0423813}
   m_DirtyAABB: 0
+--- !u!1 &1776883136993956885
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 420484866194307265}
+  - component: {fileID: 6091258077892022474}
+  m_Layer: 22
+  m_Name: "Ability Manager \U0001F525"
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &420484866194307265
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1776883136993956885}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1438186108084557261}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6091258077892022474
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1776883136993956885}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9438db5584d0a6d4bb7088c01ecfc827, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentAbility: {fileID: 0}
+  chargingAbilityAmount: 0
+  chargingAbilityMultiplierBonus: 1
+  chargingAbilityMultiplierBonusForFullCharge: 1.5
+  spellStart: {fileID: 0}
+  spellHold: {fileID: 0}
+  spellRelease: {fileID: 0}
+  hasOverridenAnimations: 0
+  characterManager: {fileID: 1759811369383153655}
 --- !u!1 &1785385940767917756
 GameObject:
   m_ObjectHideFlags: 0
@@ -19256,6 +19313,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8462105069514119192}
   - component: {fileID: 1655343460118099854}
+  - component: {fileID: 2086803880636229612}
   m_Layer: 22
   m_Name: Greeting State
   m_TagString: Untagged
@@ -19275,7 +19333,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 515384997820624555}
   m_Father: {fileID: 904049696184886649}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1655343460118099854
@@ -19290,9 +19349,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2c6afba196f6b0449874aa886e4faa8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cooldown: 35
   characterManager: {fileID: 1759811369383153655}
-  animationClip: {fileID: 0}
-  greetingDuration: 3
+  greetingMessageController: {fileID: 7252461538553910409}
+--- !u!114 &2086803880636229612
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2098588540025110380}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9becde771798e0409a7b6180d070e74, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  text: Put the greetings as a child of this state, and order them in order of importance.
+    The first active one will be displayed.
 --- !u!1 &2118167603871671707
 GameObject:
   m_ObjectHideFlags: 0
@@ -28647,8 +28720,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 663694065089165705}
+  - component: {fileID: 7252461538553910409}
   m_Layer: 22
-  m_Name: '[Optional] Greeting Controller'
+  m_Name: Greeting Message Controller
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -28666,10 +28740,23 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 515384997820624555}
+  m_Children: []
   m_Father: {fileID: 1438186108084557261}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7252461538553910409
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3136893562264692455}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f73e7d13eb68004a8b998684453e595, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  greetingMessageUI: {fileID: 6287724693497680340}
+  characterManager: {fileID: 1759811369383153655}
 --- !u!1 &3151104505152965544
 GameObject:
   m_ObjectHideFlags: 0
@@ -34953,6 +35040,7 @@ Transform:
   - {fileID: 2856669573838137456}
   - {fileID: 1765528011536581225}
   - {fileID: 6689596459403687085}
+  - {fileID: 420484866194307265}
   m_Father: {fileID: 6242450190264014007}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3705549246472038351
@@ -37864,6 +37952,7 @@ MonoBehaviour:
   damageReceiver: {fileID: 9038299807041895652}
   characterPushController: {fileID: 2757715166602653082}
   characterTransformHelper: {fileID: 0}
+  characterBaseWeaponsManager: {fileID: 7353292270462359461}
   combatant: {fileID: 0}
   companionID: {fileID: 0}
   characterCombatController: {fileID: 8518529533467014141}
@@ -37874,6 +37963,7 @@ MonoBehaviour:
   executionManager: {fileID: 3652008012499799501}
   characterGravity: {fileID: 41835741450275024}
   stateManager: {fileID: 2621631975807239129}
+  characterAbilityManager: {fileID: 6091258077892022474}
   animatorOverrideController: {fileID: 0}
   patrolSpeed: 2
   chaseSpeed: 6
@@ -40921,6 +41011,7 @@ MonoBehaviour:
   reactionsToTarget:
   - {fileID: 2075967524163347042}
   - {fileID: 8631636866818146784}
+  combatAbilities: []
   combatActions:
   - {fileID: 6404899608183921184}
   chaseActions:
@@ -44232,6 +44323,7 @@ Transform:
   - {fileID: 6727413086649130084}
   - {fileID: 6901004937823248203}
   - {fileID: 9141050919324274716}
+  - {fileID: 2485977768864367817}
   m_Father: {fileID: 6371012833678847504}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4677824397218842690
@@ -46757,6 +46849,37 @@ Transform:
   m_Children:
   - {fileID: 1881769325807516234}
   m_Father: {fileID: 242356950717324713}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &5008126203329618083
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7720873064170678229}
+  m_Layer: 0
+  m_Name: Left Hand Grip
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7720873064170678229
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5008126203329618083}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: -1, z: 0, w: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3774359572307695498}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5038446441816537689
 GameObject:
@@ -58475,6 +58598,7 @@ MonoBehaviour:
   onWaitOnWaypoint_End:
     m_PersistentCalls:
       m_Calls: []
+  greetingState: {fileID: 0}
 --- !u!1 &6373810503619968205
 GameObject:
   m_ObjectHideFlags: 0
@@ -63888,7 +64012,7 @@ GameObject:
   - component: {fileID: 515384997820624555}
   - component: {fileID: 1749150046517776287}
   m_Layer: 22
-  m_Name: ?? On Player Naked
+  m_Name: If Player Is Naked
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -63902,13 +64026,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6773526348497838381}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3596084614715415155}
-  m_Father: {fileID: 663694065089165705}
+  m_Father: {fileID: 8462105069514119192}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1749150046517776287
 MonoBehaviour:
@@ -64630,6 +64754,37 @@ Transform:
   - {fileID: 6720773714491351956}
   - {fileID: 1847443097671126845}
   m_Father: {fileID: 8850411640471515598}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &6846013883575665313
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2485977768864367817}
+  m_Layer: 0
+  m_Name: Right Hand Grip
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2485977768864367817
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6846013883575665313}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6428397718215034728}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6861051726214803352
 GameObject:
@@ -81109,6 +81264,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad1ee64f39703ac48a19d80004d137e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  leftHandHitbox: {fileID: 0}
+  rightHandHitbox: {fileID: 0}
+  leftFootHitbox: {fileID: 0}
+  rightFootHitbox: {fileID: 0}
+  currentWeaponInstance: {fileID: 0}
+  currentShieldInstance: {fileID: 0}
+  weaponsManager: {fileID: 0}
+  DEFAULT_WEAPON_BUFF_DURATION: 120
+  rightHandGrip: {fileID: 2485977768864367817}
+  leftHandGrip: {fileID: 7720873064170678229}
+  characterManager: {fileID: 1759811369383153655}
+  rightHandWeapons:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  leftHandWeapons:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  isTwoHanding: 0
   weapons:
   - {fileID: 6991590817592598386}
   bow: {fileID: 4931148195828745823}

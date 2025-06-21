@@ -35,7 +35,6 @@ public class EquipmentDatabase : ScriptableObject
 
     [Header("Flags")]
     public bool isTwoHanding = false;
-    public bool isUsingShield = false;
 
     [Header("Databases")]
     public InventoryDatabase inventoryDatabase;

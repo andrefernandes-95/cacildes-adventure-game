@@ -128,6 +128,11 @@ namespace AF.Animations
         public void OpenRightWeaponHitbox()
         {
             onRightWeaponHitboxOpen?.Invoke();
+
+            if (characterManager.characterAbilityManager.currentAbility != null)
+            {
+                characterManager.characterAbilityManager.OnUseAbility();
+            }
         }
 
         public void CloseRightWeaponHitbox()
@@ -338,6 +343,11 @@ namespace AF.Animations
 
         public void OnBuffWeaponWithFire()
         {
+        }
+
+        public void OnCombo()
+        {
+            characterManager.characterAbilityManager.ComboToNextAbility();
         }
     }
 }

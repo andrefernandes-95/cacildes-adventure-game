@@ -28,7 +28,7 @@ namespace AF
                 return;
             }
 
-            playerManager.playerAbilityManager.PrepareAbility(this);
+            playerManager.playerAbilityManager.SetCurrentAbility(this);
             playerManager.playerWeaponsManager.HideEquipment();
 
             if (chargingSpellFX != null)
@@ -82,6 +82,11 @@ namespace AF
             {
                 abilityInstance.CastAbility(caster, target);
             }
+        }
+
+        public override bool CanUseAbility(CharacterBaseManager character)
+        {
+            return true;
         }
     }
 }

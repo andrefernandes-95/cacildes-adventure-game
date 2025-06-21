@@ -1,3 +1,4 @@
+using AF.Dialogue;
 using UnityEngine;
 
 namespace AF
@@ -5,16 +6,16 @@ namespace AF
     public class GreetingState : State
     {
 
+        [Header("Settings")]
+        [SerializeField] float cooldown = 35f;
+        float lastTimeOfGreeting = -Mathf.Infinity;
+
         [Header("Components")]
         public CharacterManager characterManager;
+        [SerializeField] GreetingMessageController greetingMessageController;
+
+        // Refs
         PlayerManager _playerManager;
-
-        [Header("Greeting Animation")]
-        public AnimationClip animationClip;
-
-        [Header("Duration")]
-        [SerializeField] float greetingDuration = 3f;
-        float lastGreetingDuration;
 
         private void Awake()
         {
@@ -22,7 +23,7 @@ namespace AF
 
         public override void OnStateEnter(StateManager stateManager)
         {
-            lastGreetingDuration = Time.time;
+            PickGreeting();
         }
 
         public override void OnStateExit(StateManager stateManager)
@@ -31,7 +32,7 @@ namespace AF
 
         public override State Tick(StateManager stateManager)
         {
-            if (lastGreetingDuration + greetingDuration > Time.time)
+            if (!greetingMessageController.IsGreeting())
             {
                 return stateManager.GetDefaultState();
             }
@@ -43,6 +44,55 @@ namespace AF
         {
             if (_playerManager == null) { _playerManager = FindAnyObjectByType<PlayerManager>(FindObjectsInactive.Include); }
             return _playerManager;
+        }
+
+        public bool CanGreet()
+        {
+            if (greetingMessageController.IsGreeting())
+            {
+                return false;
+            }
+
+            if (Time.time < lastTimeOfGreeting + cooldown)
+            {
+                return false;
+            }
+
+            if (Vector3.Distance(characterManager.transform.position, GetPlayerManager().transform.position)
+                    > characterManager.agent.stoppingDistance)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        void PickGreeting()
+        {
+            CharacterGreeting characterGreeting = FindCharacterGreetingInChildren();
+            if (characterGreeting != null)
+            {
+                greetingMessageController.ShowGreeting(characterGreeting);
+            }
+
+            lastTimeOfGreeting = Time.time;
+        }
+
+        CharacterGreeting FindCharacterGreetingInChildren()
+        {
+            CharacterGreeting[] characterGreetings = Utils.CollectComponentsFromGameObject<CharacterGreeting>(this.gameObject);
+
+            CharacterGreeting activeCharacterGreeting = null;
+            foreach (CharacterGreeting characterGreeting in characterGreetings)
+            {
+                if (characterGreeting.gameObject.activeSelf)
+                {
+                    activeCharacterGreeting = characterGreeting;
+                    break;
+                }
+            }
+
+            return activeCharacterGreeting;
         }
     }
 }

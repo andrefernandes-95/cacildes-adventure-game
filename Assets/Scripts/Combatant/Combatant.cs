@@ -53,5 +53,8 @@ namespace AF
         public int paralysisResistance = 25;
         public int slownessResistance = 25;
 
+        [Header("Sounds")]
+        public AudioClip greeting;
+
     }
 }

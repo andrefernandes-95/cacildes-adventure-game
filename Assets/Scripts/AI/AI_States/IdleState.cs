@@ -16,17 +16,19 @@ namespace AF
         public UnityEvent onStateExit;
 
         [Header("Companion Settings")]
-        PlayerManager playerManager;
-
         public CompanionsDatabase companionsDatabase;
+
+        [Header("States")]
         public State chaseState;
+
+        [Header("Optional States")]
+        public GreetingState greetingState;
+
+        // Refs
+        PlayerManager _playerManager;
 
         private void Awake()
         {
-            if (characterManager.IsCompanion())
-            {
-                playerManager = FindAnyObjectByType<PlayerManager>(FindObjectsInactive.Include);
-            }
         }
 
         public override void OnStateEnter(StateManager stateManager)
@@ -46,6 +48,10 @@ namespace AF
             {
                 return chaseState;
             }
+            else if (ShouldGreetPlayer())
+            {
+                return greetingState;
+            }
 
             return this;
         }
@@ -59,11 +65,23 @@ namespace AF
 
             if (companionsDatabase.IsCompanionAndIsActivelyInParty(characterManager.GetCharacterID()))
             {
-                return Vector3.Distance(characterManager.agent.transform.position, playerManager.transform.position)
+                return Vector3.Distance(characterManager.agent.transform.position, GetPlayerManager().transform.position)
                     > characterManager.agent.stoppingDistance + companionsDatabase.companionToPlayerStoppingDistance;
             }
 
             return false;
         }
+
+        bool ShouldGreetPlayer()
+        {
+            return greetingState != null && greetingState.CanGreet();
+        }
+
+        PlayerManager GetPlayerManager()
+        {
+            if (_playerManager == null) { _playerManager = FindAnyObjectByType<PlayerManager>(FindObjectsInactive.Include); }
+            return _playerManager;
+        }
+
     }
 }

@@ -1,5 +1,7 @@
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
+using AF.Animations;
 using AF.Characters;
 using AF.Combat;
 using AF.Health;
@@ -37,6 +39,7 @@ namespace AF
         public DamageReceiver damageReceiver;
         public CharacterPushController characterPushController;
         public CharacterTransformHelper characterTransformHelper;
+        public CharacterBaseWeaponsManager characterBaseWeaponsManager;
 
         public abstract void ResetStates();
 
@@ -118,5 +121,39 @@ namespace AF
         {
             this.isConfused = false;
         }
+
+        protected void AddOrReplaceOverride(List<AnimationOverride> list, Dictionary<string, AnimationOverride> overrides)
+        {
+            if (list == null || list.Count == 0)
+                return;
+
+            foreach (var entry in list)
+            {
+                if (entry == null || string.IsNullOrEmpty(entry.animationName))
+                    continue;
+
+                overrides[entry.animationName] = entry; // Replace or add
+            }
+        }
+
+
+
+        public void UpdateAnimatorOverrideControllerClipsUsingDictionary(Dictionary<string, AnimationClip> clips)
+        {
+            var clipOverrides = new AnimationClipOverrides(GetAnimatorOverrideController().overridesCount);
+            GetAnimatorOverrideController().GetOverrides(clipOverrides);
+            animator.runtimeAnimatorController = GetAnimatorOverrideController();
+
+            foreach (var clip in clips)
+            {
+                clipOverrides[clip.Key] = clip.Value;
+            }
+
+            GetAnimatorOverrideController().ApplyOverrides(clipOverrides);
+            animator.runtimeAnimatorController = GetAnimatorOverrideController();
+        }
+
+        public abstract AnimatorOverrideController GetAnimatorOverrideController();
+
     }
 }

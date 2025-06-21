@@ -30,7 +30,7 @@ namespace AF
                 return;
             }
 
-            playerManager.playerAbilityManager.PrepareAbility(this);
+            playerManager.playerAbilityManager.SetCurrentAbility(this);
             playerManager.playerWeaponsManager.HideEquipment();
 
             if (chargingSpellFX != null)
@@ -97,6 +97,11 @@ namespace AF
                 caster.statusController.statusEffectResistances[statusEffect] = spell.effectsDurationInSeconds;
                 caster.statusController.InflictStatusEffect(statusEffect, spell.effectsDurationInSeconds, true);
             }
+        }
+
+        public override bool CanUseAbility(CharacterBaseManager character)
+        {
+            return true;
         }
     }
 }

@@ -68,5 +68,7 @@ namespace AF.Animations
 
         public void OnBuffWeaponWithFire();
 
+        public void OnCombo();
+
     }
 }

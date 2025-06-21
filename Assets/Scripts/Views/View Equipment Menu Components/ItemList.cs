@@ -431,22 +431,22 @@ namespace AF.UI.EquipmentMenu
 
                         if (isRightHandSlot)
                         {
-                            playerManager.playerWeaponsManager.EquipWeapon(item, slotIndex);
+                            equipmentDatabase.EquipWeapon(item, slotIndex);
                         }
                         else
                         {
-                            playerManager.playerWeaponsManager.EquipShield(item, slotIndex);
+                            equipmentDatabase.EquipShield(item, slotIndex);
                         }
                     }
                     else
                     {
                         if (isRightHandSlot)
                         {
-                            playerManager.playerWeaponsManager.UnequipWeapon(slotIndex);
+                            equipmentDatabase.UnequipWeapon(slotIndex);
                         }
                         else
                         {
-                            playerManager.playerWeaponsManager.UnequipShield(slotIndex);
+                            equipmentDatabase.UnequipShield(slotIndex);
                         }
                     }
 
@@ -546,22 +546,22 @@ namespace AF.UI.EquipmentMenu
                     {
                         if (!isEquipped)
                         {
-                            playerManager.playerWeaponsManager.EquipWeapon(weapon, slotIndex);
+                            equipmentDatabase.EquipWeapon(weapon, slotIndex);
                         }
                         else
                         {
-                            playerManager.playerWeaponsManager.UnequipWeapon(slotIndex);
+                            equipmentDatabase.UnequipWeapon(slotIndex);
                         }
                     }
                     else if (item.Key is Shield shield)
                     {
                         if (!isEquipped)
                         {
-                            playerManager.playerWeaponsManager.EquipShield(shield, slotIndex);
+                            equipmentDatabase.EquipShield(shield, slotIndex);
                         }
                         else
                         {
-                            playerManager.playerWeaponsManager.UnequipShield(slotIndex);
+                            equipmentDatabase.UnequipShield(slotIndex);
                         }
                     }
                     else if (item.Key is Helmet helmet)

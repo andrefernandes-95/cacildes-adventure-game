@@ -1,11 +1,22 @@
-using System.Linq;
 using UnityEngine;
 
 namespace AF.Equipment
 {
-    public class CharacterWeaponsManager : MonoBehaviour
+    public class CharacterWeaponsManager : CharacterBaseWeaponsManager
     {
+        [Header("Character")]
+        [SerializeField] CharacterManager characterManager;
 
+        [Header("Right Weapons")]
+        [SerializeField] Weapon[] rightHandWeapons = new Weapon[3];
+        [SerializeField] Weapon[] leftHandWeapons = new Weapon[3];
+        int currentRightWeaponIndex = 0;
+        int currentLeftWeaponIndex = 0;
+
+        [Header("Two Handing Option")]
+        [SerializeField] bool isTwoHanding = false;
+
+        [Header("Custom Weapons")]
         public CharacterWeaponHitbox[] weapons;
         public GameObject bow;
         public GameObject shield;
@@ -14,20 +25,24 @@ namespace AF.Equipment
         [Header("Backpack Options")]
         public GameObject unequippedShieldInTheBack;
 
-        public void ResetStates()
+        void Start()
         {
-            CloseAllWeaponHitboxes();
+            UpdateEquipment();
         }
 
-        public void ShowEquipment()
+        public override void ShowEquipment()
         {
+            base.ShowEquipment();
+
             ShowWeapon();
             ShowBow();
             ShowShield();
         }
 
-        public void HideEquipment()
+        public override void HideEquipment()
         {
+            base.HideEquipment();
+
             HideWeapon();
             HideBow();
             HideShield();
@@ -54,8 +69,10 @@ namespace AF.Equipment
             }
         }
 
-        public void ShowShield()
+        public override void ShowShield()
         {
+            base.ShowShield();
+
             if (shield != null)
             {
                 shield.SetActive(true);
@@ -66,8 +83,11 @@ namespace AF.Equipment
                 unequippedShieldInTheBack.SetActive(false);
             }
         }
-        public void HideShield()
+
+        public override void HideShield()
         {
+            base.HideShield();
+
             if (shield != null && shouldHideShield)
             {
                 shield.SetActive(false);
@@ -121,8 +141,10 @@ namespace AF.Equipment
             characterWeaponHitbox?.DisableHitbox();
         }
 
-        public void CloseAllWeaponHitboxes()
+        public override void CloseAllWeaponHitboxes()
         {
+            base.CloseAllWeaponHitboxes();
+
             foreach (CharacterWeaponHitbox characterWeaponHitbox in weapons)
             {
                 characterWeaponHitbox?.DisableHitbox();
@@ -161,5 +183,53 @@ namespace AF.Equipment
                 weapons[idx].gameObject.SetActive(true);
             }
         }
+
+        public override Weapon GetCurrentRightWeapon()
+        {
+            return rightHandWeapons[currentRightWeaponIndex];
+        }
+
+        public override Weapon GetCurrentLeftWeapon()
+        {
+            return leftHandWeapons[currentLeftWeaponIndex];
+        }
+
+        public override bool IsTwoHanding()
+        {
+            return isTwoHanding;
+        }
+
+        public override bool HasRangeWeapon()
+        {
+            return false;
+        }
+
+        protected override float GetCharacterUnarmedDefenseAbsorption()
+        {
+            return characterManager.characterBlockController.unarmedDefenseAbsorption;
+        }
+
+        protected override void UpdateCurrentWeapon()
+        {
+            base.UpdateCurrentWeapon();
+            RefreshAnimations();
+        }
+
+        protected override void UpdateCurrentLeftWeapon()
+        {
+            base.UpdateCurrentLeftWeapon();
+            RefreshAnimations();
+        }
+
+        protected override CharacterBaseManager GetCharacter()
+        {
+            return characterManager;
+        }
+
+        void RefreshAnimations()
+        {
+            characterManager.UpdateAnimationsBasedOnEquippedWeapons();
+        }
+
     }
 }

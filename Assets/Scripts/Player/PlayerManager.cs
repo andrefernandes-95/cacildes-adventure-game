@@ -169,21 +169,6 @@ namespace AF
             }
         }
 
-
-        void AddOrReplaceOverride(List<AnimationOverride> list, Dictionary<string, AnimationOverride> overrides)
-        {
-            if (list == null || list.Count == 0)
-                return;
-
-            foreach (var entry in list)
-            {
-                if (entry == null || string.IsNullOrEmpty(entry.animationName))
-                    continue;
-
-                overrides[entry.animationName] = entry; // Replace or add
-            }
-        }
-
         public void UpdateAnimatorOverrideControllerClips()
         {
             SetupAnimRefs();
@@ -284,21 +269,6 @@ namespace AF
             animator.runtimeAnimatorController = animatorOverrideController;
         }
 
-        public void UpdateAnimatorOverrideControllerClipsUsingDictionary(Dictionary<string, AnimationClip> clips)
-        {
-            var clipOverrides = new AnimationClipOverrides(animatorOverrideController.overridesCount);
-            animatorOverrideController.GetOverrides(clipOverrides);
-            animator.runtimeAnimatorController = defaultAnimatorController;
-
-            foreach (var clip in clips)
-            {
-                clipOverrides[clip.Key] = clip.Value;
-            }
-
-            animatorOverrideController.ApplyOverrides(clipOverrides);
-            animator.runtimeAnimatorController = animatorOverrideController;
-        }
-
         public void SetCanUseIK_False()
         {
             _canUseWeaponIK = false;
@@ -314,6 +284,11 @@ namespace AF
         public bool CanUseIK()
         {
             return _canUseWeaponIK;
+        }
+
+        public override AnimatorOverrideController GetAnimatorOverrideController()
+        {
+            return animatorOverrideController;
         }
     }
 }

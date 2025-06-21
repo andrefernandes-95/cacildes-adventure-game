@@ -1,13 +1,10 @@
 namespace AF
 {
-    using System.Collections.Generic;
     using UnityEngine;
 
     public class PlayerAbilityManager : CharacterAbilityBaseManager
     {
         [SerializeField] PlayerManager playerManager;
-
-        public GameObject chargingAbilityFX;
 
         void Awake()
         {
@@ -16,12 +13,11 @@ namespace AF
 
         public override void ResetStates()
         {
-            base.ResetStates();
-
             currentAbility = null;
             CleanupChargingAbilitySpell();
             playerManager.animator.SetBool("isCharging", false);
             chargingAbilityAmount = 0f;
+            ResetChargeAnimations(playerManager);
         }
 
         public override void OnPrepareAbility()
@@ -44,38 +40,7 @@ namespace AF
             CleanupChargingAbilitySpell();
         }
 
-        void CleanupChargingAbilitySpell()
-        {
-            // Clean up charging spells if we were interrupted before
-            if (chargingAbilityFX != null)
-            {
-                foreach (ParticleSystem ps in Utils.CollectComponentsFromGameObject<ParticleSystem>(chargingAbilityFX))
-                {
-                    if (ps != null)
-                    {
-                        ps.Stop();
-                    }
-                }
-                foreach (AudioSource audioSource in Utils.CollectComponentsFromGameObject<AudioSource>(chargingAbilityFX))
-                {
-                    if (audioSource != null)
-                    {
-                        audioSource.Stop();
-                    }
-                }
-
-                Destroy(chargingAbilityFX, 2f);
-
-                chargingAbilityFX = null;
-            }
-        }
-
-        void EndChargeAbility()
-        {
-            playerManager.animator.SetBool("isCharging", false);
-        }
-
-        public void QueueAbility(Ability ability)
+        public void QueueChargingAbility(Ability ability)
         {
             ability.OnPrepare(playerManager);
             playerManager.animator.SetBool("isCharging", true);
@@ -98,15 +63,9 @@ namespace AF
             return chargingAbilityMultiplier;
         }
 
-        public override void SetAnimations(AnimationClip start, AnimationClip loop, AnimationClip end)
+        protected override CharacterBaseManager GetCharacter()
         {
-            Dictionary<string, AnimationClip> clips = new()
-            {
-                { "unarmed_main_charged_attack_02_charge", start },
-                { "unarmed_main_charged_attack_02_hold", loop },
-                { "unarmed_main_charged_attack_02_release", end }
-            };
-            playerManager.UpdateAnimatorOverrideControllerClipsUsingDictionary(clips);
+            return playerManager;
         }
     }
 }

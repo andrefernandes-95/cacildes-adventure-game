@@ -10,6 +10,8 @@ using UnityEngine.Events;
 using AF.Companions;
 using UnityEngine.AI;
 using UnityEditorInternal;
+using System.Collections.Generic;
+using System.Linq;
 
 
 namespace AF
@@ -30,7 +32,7 @@ namespace AF
         public ExecutionManager executionManager;
         public CharacterGravity characterGravity;
         public StateManager stateManager;
-
+        public CharacterAbilityManager characterAbilityManager;
         // Animator Overrides
         [HideInInspector] public AnimatorOverrideController animatorOverrideController;
 
@@ -113,6 +115,7 @@ namespace AF
             characterPoise.ResetStates();
 
             executionManager.ResetStates();
+            characterAbilityManager.ResetStates();
         }
 
         public void UpdateAnimatorOverrideControllerClips(string animationName, AnimationClip animationClip)
@@ -128,11 +131,77 @@ namespace AF
             animatorOverrideController.ApplyOverrides(clipOverrides);
         }
 
+        public void UpdateAnimationsBasedOnEquippedWeapons()
+        {
+            if (animatorOverrideController == null)
+            {
+                SetupAnimatorOverrides();
+            }
+
+            animatorOverrideController = new AnimatorOverrideController(animator.runtimeAnimatorController);
+            var clipOverrides = new AnimationClipOverrides(animatorOverrideController.overridesCount);
+            animatorOverrideController.GetOverrides(clipOverrides);
+
+            Dictionary<string, AnimationOverride> overrides = new();
+
+            // Apply right-hand weapon overrides
+            Weapon currentWeapon = characterWeaponsManager.GetCurrentRightWeapon();
+            if (currentWeapon != null)
+            {
+                AddOrReplaceOverride(currentWeapon.weaponAnimationData.GetRightHandAnimationsForAI(), overrides);
+
+                if (characterWeaponsManager.IsTwoHanding())
+                {
+                    AddOrReplaceOverride(currentWeapon.weaponAnimationData.GetTwoHandAnimationsForAI(), overrides);
+                }
+            }
+
+            // Apply left-hand weapon overrides if not two-handing
+            Weapon leftWeapon = characterWeaponsManager.GetCurrentLeftWeapon();
+            if (leftWeapon != null && !characterWeaponsManager.IsTwoHanding())
+            {
+                AddOrReplaceOverride(leftWeapon.weaponAnimationData.GetLeftHandAnimationsForAI(), overrides);
+
+                // If left weapons is a range weapon, override the animations for shooting
+                if (leftWeapon.weaponRangeAnimation != null)
+                {
+                    AddOrReplaceOverride(leftWeapon.weaponRangeAnimation.GetAnimations(), overrides);
+                }
+            }
+
+            // Lastly, check for any additional weapon animation overrides that have the highest priority
+            if (currentWeapon != null)
+            {
+                if (characterWeaponsManager.IsTwoHanding() && currentWeapon.th_weaponAnimationOverrides.Count > 0)
+                {
+                    AddOrReplaceOverride(currentWeapon.th_weaponAnimationOverrides, overrides);
+                }
+                else if (currentWeapon.oh_weaponAnimationOverrides.Count > 0)
+                {
+                    AddOrReplaceOverride(currentWeapon.oh_weaponAnimationOverrides, overrides);
+                }
+            }
+
+            // Apply all collected overrides in one go
+            UpdateAnimationOverrides(animator, clipOverrides, overrides.Values.ToList());
+        }
+
+        void UpdateAnimationOverrides(Animator animator, AnimationClipOverrides clipOverrides, List<AnimationOverride> clips)
+        {
+            foreach (var animationOverride in clips)
+            {
+                clipOverrides[animationOverride.animationName] = animationOverride.animationClip;
+                animatorOverrideController.ApplyOverrides(clipOverrides);
+            }
+
+            animator.runtimeAnimatorController = animatorOverrideController;
+        }
+
         private void OnAnimatorMove()
         {
             if (faceTarget || alwaysFaceTarget)
             {
-                RotateTowardsTarget();
+                RotateTowardsTarget(rotationSpeed);
             }
 
             if (animator.applyRootMotion && characterController.enabled)
@@ -186,7 +255,7 @@ namespace AF
 
             if (distanceToTarget >= 0)
             {
-                RotateTowardsTarget();
+                RotateTowardsTarget(rotationSpeed);
             }
         }
 
@@ -340,7 +409,7 @@ namespace AF
             }
         }
 
-        public void RotateTowardsTarget()
+        public void RotateTowardsTarget(float rotationSpeed)
         {
             if (targetManager.currentTarget == null)
             {
@@ -378,5 +447,9 @@ namespace AF
             return viewableAngle;
         }
 
+        public override AnimatorOverrideController GetAnimatorOverrideController()
+        {
+            return animatorOverrideController;
+        }
     }
 }

@@ -69,6 +69,7 @@ namespace AF
             if (!hasChosenAttack || distanceToTarget <= characterManager.agent.stoppingDistance)
             {
                 onAttack?.Invoke();
+                characterManager.characterCombatController.UseCombatAction();
                 hasChosenAttack = true;
                 return this;
             }

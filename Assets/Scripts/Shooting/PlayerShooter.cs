@@ -825,11 +825,11 @@ namespace AF.Shooting
                     if (ability is CastFromSpell castFromSpell)
                     {
                         castFromSpell.spell = spell;
-                        GetPlayerManager().playerAbilityManager.QueueAbility(castFromSpell);
+                        GetPlayerManager().playerAbilityManager.QueueChargingAbility(castFromSpell);
                         return;
                     }
 
-                    GetPlayerManager().playerAbilityManager.QueueAbility(ability);
+                    GetPlayerManager().playerAbilityManager.QueueChargingAbility(ability);
                 }
             }
         }

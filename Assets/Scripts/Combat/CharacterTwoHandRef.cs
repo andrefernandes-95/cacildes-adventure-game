@@ -20,8 +20,7 @@ namespace AF
         Quaternion originalRotation;
 
         [Header("Components")]
-        public PlayerManager playerManager;
-        public EquipmentDatabase equipmentDatabase;
+        public CharacterBaseManager characterBaseManager;
 
         public void SetOriginalPositionAndRotation(Vector3 initialLocalPosition, Quaternion initialLocalRotation)
         {
@@ -31,9 +30,12 @@ namespace AF
 
         private void OnEnable()
         {
-            playerManager.twoHandingController.onTwoHandingModeChanged += EvaluateTwoHandingUpdate;
-            playerManager.characterBlockController.onBlockChanged += EvaluateTwoHandingUpdate;
-            playerManager.characterBlockController.onBlockChanged += UseBlockTransform;
+            if (characterBaseManager is PlayerManager playerManager)
+            {
+                playerManager.twoHandingController.onTwoHandingModeChanged += EvaluateTwoHandingUpdate;
+                playerManager.characterBlockController.onBlockChanged += EvaluateTwoHandingUpdate;
+                playerManager.characterBlockController.onBlockChanged += UseBlockTransform;
+            }
 
             EvaluateTwoHandingUpdate();
         }
@@ -41,21 +43,24 @@ namespace AF
         private void OnDisable()
         {
 
-            playerManager.twoHandingController.onTwoHandingModeChanged -= EvaluateTwoHandingUpdate;
-            playerManager.characterBlockController.onBlockChanged -= EvaluateTwoHandingUpdate;
-            playerManager.characterBlockController.onBlockChanged -= UseBlockTransform;
+            if (characterBaseManager is PlayerManager playerManager)
+            {
+                playerManager.twoHandingController.onTwoHandingModeChanged -= EvaluateTwoHandingUpdate;
+                playerManager.characterBlockController.onBlockChanged -= EvaluateTwoHandingUpdate;
+                playerManager.characterBlockController.onBlockChanged -= UseBlockTransform;
+            }
         }
 
 
         public void EvaluateTwoHandingUpdate()
         {
-            if (equipmentDatabase.isTwoHanding == false)
+            if (characterBaseManager.characterBaseWeaponsManager.IsTwoHanding() == false)
             {
                 UseOneHandTransform();
                 return;
             }
 
-            if (playerManager.characterBlockController.isBlocking && equipmentDatabase.isTwoHanding)
+            if (characterBaseManager.characterBlockController.isBlocking && characterBaseManager.characterBaseWeaponsManager.IsTwoHanding())
             {
                 UseBlockTransform();
                 return;
@@ -71,7 +76,7 @@ namespace AF
 
         public void UseTwoHandTransform()
         {
-            Weapon currentWeapon = equipmentDatabase.GetCurrentWeapon();
+            Weapon currentWeapon = characterBaseManager.characterBaseWeaponsManager.GetCurrentRightWeapon();
             if (currentWeapon == null || currentWeapon.useTwoHandingTransform == false)
             {
                 return;
@@ -83,12 +88,11 @@ namespace AF
 
         public void UseBlockTransform()
         {
-            Weapon currentWeapon = equipmentDatabase.GetCurrentWeapon();
+            Weapon currentWeapon = characterBaseManager.characterBaseWeaponsManager.GetCurrentRightWeapon();
 
             if (
-                equipmentDatabase.isTwoHanding == false ||
-                playerManager.characterBlockController.isBlocking == false ||
-                equipmentDatabase.isUsingShield ||
+                characterBaseManager.characterBaseWeaponsManager.IsTwoHanding() == false ||
+                characterBaseManager.characterBlockController.isBlocking == false ||
                 currentWeapon == null ||
                 currentWeapon.useCustomTwoHandingBlockTransforms == false)
             {
