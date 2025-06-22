@@ -215,6 +215,7 @@ namespace AF
                     Vector3 direction = worldDeltaPosition.normalized + Physics.gravity;
 
                     float speed = targetManager.currentTarget != null ? chaseSpeed : patrolSpeed;
+
                     characterController.Move(direction * speed * Time.deltaTime);
 
                     // Manually rotate to face agent's path direction
@@ -261,6 +262,11 @@ namespace AF
 
         public override Damage GetAttackDamage()
         {
+            if (characterAbilityManager.currentAbility != null && characterAbilityManager.currentAbility is UseWeaponAttack useWeaponAttack)
+            {
+                return useWeaponAttack.GetDamage(characterBaseWeaponsManager);
+            }
+
             return characterCombatController.GetCurrentDamage();
         }
 

@@ -638,5 +638,20 @@ namespace AF
                 currentShieldInstance.transform.localEulerAngles = leftWeapon.aimingRotation;
             }
         }
+
+        public bool CanPowerStance()
+        {
+            if (IsTwoHanding())
+            {
+                return false;
+            }
+
+            if (GetCurrentRightWeapon() == null || GetCurrentLeftWeapon() == null)
+            {
+                return false;
+            }
+
+            return GetCurrentRightWeapon().weaponType == GetCurrentLeftWeapon().weaponType;
+        }
     }
 }

@@ -29,6 +29,7 @@ namespace AF
             }
 
             playerManager.playerAbilityManager.SetCurrentAbility(this);
+            playerManager.playerAbilityManager.SetIsCharging(true);
             playerManager.playerWeaponsManager.HideEquipment();
 
             if (chargingSpellFX != null)

@@ -6,12 +6,19 @@ namespace AF
     public abstract class CharacterAbilityBaseManager : MonoBehaviour
     {
         public Ability currentAbility;
+        [SerializeField] protected List<Ability> queuedAbilities = new();
+
+        [Header("Queued Abilities Settings")]
+        [SerializeField] int maxQueuedAbilities = 2;
 
         [Header("Charging Ability")]
         public float chargingAbilityAmount = 0f;
         public float chargingAbilityMultiplierBonus = 1f;
         public float chargingAbilityMultiplierBonusForFullCharge = 1.5f;
         [HideInInspector] public GameObject chargingAbilityFX;
+
+        [Header("Animation Parameters")]
+        public const string IS_CHARGING = "isCharging";
 
         [Header("Default Animation Clips")]
         [SerializeField] AnimationClip spellStart;
@@ -26,6 +33,24 @@ namespace AF
             this.currentAbility = ability;
             chargingAbilityAmount = 0f;
         }
+
+        public void QueueAbility(Ability ability)
+        {
+            if (queuedAbilities.Count > maxQueuedAbilities)
+            {
+                return;
+            }
+
+            queuedAbilities.Add(ability);
+            if (ability.next != null && Random.Range(0, 1f) >= ability.chanceToCombo)
+            {
+                queuedAbilities.Add(ability.next);
+            }
+
+            DequeueAbilities();
+        }
+
+        protected abstract void DequeueAbilities();
 
         protected void ResetChargeAnimations(CharacterBaseManager character)
         {
@@ -93,11 +118,12 @@ namespace AF
             }
         }
 
-        protected void EndChargeAbility()
+        protected abstract CharacterBaseManager GetCharacter();
+
+        public void SetIsCharging(bool value)
         {
-            GetCharacter().animator.SetBool("isCharging", false);
+            GetCharacter().animator.SetBool(IS_CHARGING, value);
         }
 
-        protected abstract CharacterBaseManager GetCharacter();
     }
 }

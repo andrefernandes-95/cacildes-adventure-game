@@ -8,8 +8,6 @@ namespace AF
     {
         [SerializeField] CharacterManager characterManager;
 
-        List<Ability> queuedAbilities = new();
-
         public override void ResetStates()
         {
             currentAbility = null;
@@ -19,30 +17,6 @@ namespace AF
             DequeueAbilities();
         }
 
-        public void QueueAbility(Ability ability)
-        {
-            queuedAbilities.Add(ability);
-            if (ability.next != null && Random.Range(0, 1f) >= ability.chanceToCombo)
-            {
-                queuedAbilities.Add(ability.next);
-            }
-
-            DequeueAbilities();
-        }
-
-        void DequeueAbilities()
-        {
-            if (!CanUseAbility() || queuedAbilities.Count == 0)
-                return;
-
-            var selectedAbility = queuedAbilities[0];
-            queuedAbilities.RemoveAt(0);
-
-            if (selectedAbility != null)
-            {
-                selectedAbility.OnPrepare(characterManager);
-            }
-        }
 
         public override void OnPrepareAbility()
         {
@@ -54,7 +28,7 @@ namespace AF
 
         public override void OnUseAbility()
         {
-            EndChargeAbility();
+            SetIsCharging(false);
 
             if (currentAbility != null)
             {
@@ -75,5 +49,18 @@ namespace AF
             DequeueAbilities();
         }
 
+        protected override void DequeueAbilities()
+        {
+            if (!CanUseAbility() || queuedAbilities.Count == 0)
+                return;
+
+            var selectedAbility = queuedAbilities[0];
+            queuedAbilities.RemoveAt(0);
+
+            if (selectedAbility != null)
+            {
+                selectedAbility.OnPrepare(characterManager);
+            }
+        }
     }
 }

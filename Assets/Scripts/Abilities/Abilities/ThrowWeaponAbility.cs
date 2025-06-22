@@ -26,6 +26,7 @@ namespace AF
 
             playerManager.playerAbilityManager.SetAnimations(playerManager, spellStart, spellHold, spellRelease);
             playerManager.playerAbilityManager.hasOverridenAnimations = true;
+            playerManager.playerAbilityManager.SetIsCharging(true);
 
             playerManager.playerAbilityManager.SetCurrentAbility(this);
 

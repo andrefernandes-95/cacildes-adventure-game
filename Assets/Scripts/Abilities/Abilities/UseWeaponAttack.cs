@@ -1,3 +1,4 @@
+using AF.Health;
 using UnityEngine;
 
 namespace AF
@@ -5,8 +6,9 @@ namespace AF
     [CreateAssetMenu(fileName = "Use Weapon Attack", menuName = "Abilities / Weapons / New Use Weapon Attack", order = 0)]
     public class UseWeaponAttack : Ability
     {
-        [SerializeField] bool isRightHand = true;
-        [SerializeField] int attackIndex = 0;
+        public bool isRightHand = true;
+        public bool isHeavyAttack = false;
+        public int attackIndex = 0;
 
         [Header("AI Settings")]
         public float cooldown = 5f;
@@ -21,10 +23,17 @@ namespace AF
             characterManager.characterAbilityManager.SetCurrentAbility(this);
             characterManager.RotateTowardsTarget(characterManager.rotationSpeed * 10f);
 
-            bool canPowerStance = false;
+            string hashAttack = "";
+            if (isHeavyAttack)
+            {
+                hashAttack = CombatUtils.GetHeavyAttackAnimationName(attackIndex, !isRightHand);
+            }
+            else
+            {
+                hashAttack = CombatUtils.GetLightAttackAnimationName(attackIndex, !isRightHand, characterManager.characterBaseWeaponsManager.CanPowerStance());
+            }
 
-            characterManager.PlayCrossFadeBusyAnimationWithRootMotion(
-                CombatUtils.GetLightAttackAnimationName(attackIndex, !isRightHand, canPowerStance), .1f);
+            characterManager.PlayCrossFadeBusyAnimationWithRootMotion(hashAttack, .1f);
         }
 
         public override void OnPrepare(PlayerManager playerManager)
@@ -62,25 +71,35 @@ namespace AF
 
         public override void OnUse(CharacterManager characterManager)
         {
-            //            damage.Multiply(characterManager.characterAbilityManager.GetChargingAmountMultiplier());
-
-            ApplyDamageScaling(characterManager);
-
-            // characterManager.characterCombatController = damage;
-
-            if (isRightHand && characterManager.characterWeaponsManager.currentWeaponInstance != null)
-            {
-                characterManager.characterWeaponsManager.currentWeaponInstance.EnableHitbox();
-            }
-            else if (!isRightHand && characterManager.characterWeaponsManager.currentShieldInstance != null)
-            {
-                characterManager.characterWeaponsManager.currentShieldInstance.EnableHitbox();
-            }
         }
 
         public override bool CanUseAbility(CharacterBaseManager character)
         {
             return true;
+        }
+
+        public Damage GetDamage(CharacterBaseWeaponsManager characterBaseWeaponsManager)
+        {
+            if (isRightHand)
+            {
+                Weapon rightWeapon = characterBaseWeaponsManager.GetCurrentRightWeapon();
+                if (rightWeapon != null)
+                {
+                    Damage weaponDamage = rightWeapon.damage.Clone();
+                    weaponDamage.Combine(damage);
+                    return weaponDamage;
+                }
+            }
+
+            Weapon leftWeapon = characterBaseWeaponsManager.GetCurrentLeftWeapon();
+            if (leftWeapon != null)
+            {
+                Damage weaponDamage = leftWeapon.damage.Clone();
+                weaponDamage.Combine(damage);
+                return weaponDamage;
+            }
+
+            return damage;
         }
     }
 }

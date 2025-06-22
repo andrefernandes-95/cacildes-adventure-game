@@ -2,18 +2,18 @@ namespace AF
 {
     public static class CombatUtils
     {
-        static readonly string hashLightAttack1 = "Light Attack 1";
-        static readonly string hashLightAttack2 = "Light Attack 2";
-        static readonly string hashLightAttack3 = "Light Attack 3";
-        static readonly string hashLightAttack4 = "Light Attack 4";
-        static readonly string hashLeftLightAttack1 = "Left Light Attack 1";
-        static readonly string hashLeftLightAttack2 = "Left Light Attack 2";
-        static readonly string hashPowerStanceAttack1 = "Power Stance Attack 1";
-        static readonly string hashPowerStanceAttack2 = "Power Stance Attack 2";
-        static readonly string hashHeavyAttack1 = "Heavy Attack 1";
-        static readonly string hashHeavyAttack2 = "Heavy Attack 2";
-        static readonly string hashHeavyPowerStanceAttack1 = "Heavy Power Stance Attack 1";
-        static readonly string hashHeavyPowerStanceAttack2 = "Heavy Power Stance Attack 2";
+        static readonly string hashLightAttack1 = "Weapon Light Attack 1";
+        static readonly string hashLightAttack2 = "Weapon Light Attack 2";
+        static readonly string hashLightAttack3 = "Weapon Light Attack 3";
+        static readonly string hashLightAttack4 = "Weapon Light Attack 4";
+        static readonly string hashLeftLightAttack1 = "Weapon Left Light Attack 1";
+        static readonly string hashLeftLightAttack2 = "Weapon Left Light Attack 2";
+        static readonly string hashPowerStanceAttack1 = "Weapon Power Stance Attack 1";
+        static readonly string hashPowerStanceAttack2 = "Weapon Power Stance Attack 2";
+        static readonly string hashHeavyAttack1 = "Weapon Heavy Attack 1";
+        static readonly string hashHeavyAttack2 = "Weapon Heavy Attack 2";
+        static readonly string hashHeavyPowerStanceAttack1 = "Weapon Heavy Power Stance Attack 1";
+        static readonly string hashHeavyPowerStanceAttack2 = "Weapon Heavy Power Stance Attack 2";
 
         public static string GetLightAttackAnimationName(int lightAttackComboIndex, bool isAttackingWithLeftHand, bool canPowerStance)
         {

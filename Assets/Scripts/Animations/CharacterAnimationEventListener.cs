@@ -118,6 +118,11 @@ namespace AF.Animations
         public void OpenLeftWeaponHitbox()
         {
             onLeftWeaponHitboxOpen?.Invoke();
+
+            if (characterManager.characterWeaponsManager.currentShieldInstance != null)
+            {
+                characterManager.characterWeaponsManager.currentShieldInstance.EnableHitbox();
+            }
         }
 
         public void CloseLeftWeaponHitbox()
@@ -129,9 +134,9 @@ namespace AF.Animations
         {
             onRightWeaponHitboxOpen?.Invoke();
 
-            if (characterManager.characterAbilityManager.currentAbility != null)
+            if (characterManager.characterWeaponsManager.currentWeaponInstance != null)
             {
-                characterManager.characterAbilityManager.OnUseAbility();
+                characterManager.characterWeaponsManager.currentWeaponInstance.EnableHitbox();
             }
         }
 

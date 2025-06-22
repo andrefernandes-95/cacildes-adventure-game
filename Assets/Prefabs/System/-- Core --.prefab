@@ -64678,15 +64678,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentAbility: {fileID: 0}
+  queuedAbilities: []
+  maxQueuedAbilities: 2
   chargingAbilityAmount: 0
   chargingAbilityMultiplierBonus: 1
   chargingAbilityMultiplierBonusForFullCharge: 1.5
+  chargingAbilityFX: {fileID: 0}
   spellStart: {fileID: 2164131687966594029, guid: c7fc619acaa3e1a47939c7c42aa9793d, type: 3}
   spellHold: {fileID: 7948785167184613051, guid: 55c4ec20cf8caa943bdad5e197a391fc, type: 3}
   spellRelease: {fileID: -218043517015539538, guid: 7f5d83467bf0f6f449682a86e71374dd, type: 3}
   hasOverridenAnimations: 0
   playerManager: {fileID: 4363140735506542586}
-  chargingAbilityFX: {fileID: 0}
 --- !u!1 &8097022939072974663
 GameObject:
   m_ObjectHideFlags: 0
@@ -215518,6 +215520,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1631607032641582, guid: 0c14f3ea30af4174ba288b3c2042f665, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1829068000529093466}
+    - targetCorrespondingSourceObject: {fileID: 1631607032641582, guid: 0c14f3ea30af4174ba288b3c2042f665, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3852602312821722470}
   m_SourcePrefab: {fileID: 100100000, guid: 0c14f3ea30af4174ba288b3c2042f665, type: 3}
 --- !u!4 &9029353307990194617 stripped
 Transform:
@@ -215556,7 +215561,19 @@ MonoBehaviour:
       m_Calls: []
   onDamageInflicted:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 3852602312821722470}
+        m_TargetAssemblyTypeName: Cinemachine.CinemachineImpulseSource, Cinemachine
+        m_MethodName: GenerateImpulse
+        m_Mode: 4
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0.5
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   onWeaponSpecial:
     m_PersistentCalls:
       m_Calls:
@@ -215637,6 +215654,59 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &3852602312821722470
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9032896730303727599}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 180ecf9b41d478f468eb3e9083753217, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ImpulseDefinition:
+    m_ImpulseChannel: 1
+    m_ImpulseShape: 2
+    m_CustomImpulseShape:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    m_ImpulseDuration: 0.2
+    m_ImpulseType: 0
+    m_DissipationRate: 0.25
+    m_RawSignal: {fileID: 0}
+    m_AmplitudeGain: 1
+    m_FrequencyGain: 1
+    m_RepeatMode: 0
+    m_Randomize: 1
+    m_TimeEnvelope:
+      m_AttackShape:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      m_DecayShape:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      m_AttackTime: 0
+      m_SustainTime: 0.2
+      m_DecayTime: 0.7
+      m_ScaleWithImpact: 1
+      m_HoldForever: 0
+    m_ImpactRadius: 100
+    m_DirectionMode: 0
+    m_DissipationMode: 2
+    m_DissipationDistance: 100
+    m_PropagationSpeed: 343
+  m_DefaultVelocity: {x: 0, y: -1, z: 0}
 --- !u!1001 &9034826196428279304
 PrefabInstance:
   m_ObjectHideFlags: 0

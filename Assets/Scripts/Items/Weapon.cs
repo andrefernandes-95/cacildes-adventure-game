@@ -110,7 +110,10 @@ namespace AF
         [Header("Optional - Animation Templates")]
         public WeaponAnimation weaponAnimationData;
         public WeaponRangeAnimation weaponRangeAnimation;
+
+        // TODO: This needs to be divided between right and left 
         [Tooltip("Optional")] public List<AnimationOverride> oh_weaponAnimationOverrides = new();
+
         [Tooltip("Optional")] public List<AnimationOverride> th_weaponAnimationOverrides = new();
 
         [Header("Combos")]

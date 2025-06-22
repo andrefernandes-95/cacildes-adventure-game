@@ -8,14 +8,19 @@ namespace AF
 
         void Awake()
         {
-            playerManager.starterAssetsInputs.onChargeAbilityEnd.AddListener(EndChargeAbility);
+            playerManager.starterAssetsInputs.onChargeAbilityEnd.AddListener(() => SetIsCharging(false));
         }
 
         public override void ResetStates()
         {
+            // Clear current ability
             currentAbility = null;
+
+            // Clean Warmup Spell Effects
             CleanupChargingAbilitySpell();
-            playerManager.animator.SetBool("isCharging", false);
+
+            // Reset Charging Settings
+            SetIsCharging(false);
             chargingAbilityAmount = 0f;
             ResetChargeAnimations(playerManager);
         }
@@ -30,7 +35,7 @@ namespace AF
 
         public override void OnUseAbility()
         {
-            EndChargeAbility();
+            SetIsCharging(false);
 
             if (currentAbility != null)
             {
@@ -38,12 +43,6 @@ namespace AF
             }
 
             CleanupChargingAbilitySpell();
-        }
-
-        public void QueueChargingAbility(Ability ability)
-        {
-            ability.OnPrepare(playerManager);
-            playerManager.animator.SetBool("isCharging", true);
         }
 
         public float GetChargingAmountMultiplier()
@@ -66,6 +65,20 @@ namespace AF
         protected override CharacterBaseManager GetCharacter()
         {
             return playerManager;
+        }
+
+        protected override void DequeueAbilities()
+        {
+            if (!CanUseAbility() || queuedAbilities.Count == 0)
+                return;
+
+            var selectedAbility = queuedAbilities[0];
+            queuedAbilities.RemoveAt(0);
+
+            if (selectedAbility != null)
+            {
+                selectedAbility.OnPrepare(playerManager);
+            }
         }
     }
 }
