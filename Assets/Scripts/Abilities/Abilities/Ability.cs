@@ -30,5 +30,7 @@ namespace AF
         }
 
         public abstract bool CanUseAbility(CharacterBaseManager character);
+
+        public abstract Damage GetDamage(CharacterBaseManager attacker);
     }
 }

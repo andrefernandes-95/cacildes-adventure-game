@@ -1,5 +1,6 @@
 namespace AF
 {
+    using AF.Health;
     using UnityEngine;
 
     [CreateAssetMenu(fileName = "Throw Spell Ability", menuName = "Abilities / Spells / New Throw Spell Ability", order = 0)]
@@ -19,6 +20,26 @@ namespace AF
 
         public override void OnPrepare(CharacterManager characterManager)
         {
+            if (!characterManager.characterAbilityManager.CanUseAbility())
+            {
+                return;
+            }
+
+            characterManager.characterAbilityManager.SetCurrentAbility(this);
+            characterManager.characterAbilityManager.SetIsCharging(true);
+            characterManager.characterWeaponsManager.HideEquipment();
+
+            if (chargingSpellFX != null)
+            {
+                GameObject chargingAbilityFXInstance = Instantiate(
+                    chargingSpellFX, characterManager.characterTransformHelper.rightHand ?? characterManager.transform);
+
+                chargingAbilityFXInstance.transform.localScale *= chargingAbilityLocalScale;
+
+                characterManager.characterAbilityManager.chargingAbilityFX = chargingAbilityFXInstance;
+            }
+
+            characterManager.PlayCrossFadeBusyAnimationWithRootMotion("Cast Spell", 0.1f);
         }
 
         public override void OnPrepare(PlayerManager playerManager)
@@ -59,6 +80,16 @@ namespace AF
 
         public override void OnUse(CharacterManager characterManager)
         {
+            damage.Multiply(characterManager.characterAbilityManager.GetChargingAmountMultiplier());
+            ApplyDamageScaling(characterManager);
+
+            caster = characterManager;
+            target = characterManager.targetManager.currentTarget != null
+                ? characterManager.targetManager.currentTarget : null;
+
+            characterManager.FaceTarget();
+
+            ReleaseSpellGameObject(characterManager, new[] { "Player" });
         }
 
 
@@ -88,6 +119,11 @@ namespace AF
         public override bool CanUseAbility(CharacterBaseManager character)
         {
             return true;
+        }
+
+        public override Damage GetDamage(CharacterBaseManager attacker)
+        {
+            return damage;
         }
     }
 }

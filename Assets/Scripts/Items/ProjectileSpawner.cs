@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using AYellowpaper.SerializedCollections;
 using UnityEngine;
@@ -40,6 +41,7 @@ namespace AF.Inventory
             queuedProjectile = null;
         }
 
+        [Obsolete("Use CombatUtils.ThrowWeapon")]
         public Projectile Throw(GameObject projectile)
         {
             if (lockOnManager.nearestLockOnTarget != null)

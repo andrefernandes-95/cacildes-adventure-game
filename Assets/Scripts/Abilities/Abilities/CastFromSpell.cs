@@ -1,6 +1,7 @@
 namespace AF
 {
     using System.Linq;
+    using AF.Health;
     using UnityEngine;
 
     [CreateAssetMenu(fileName = "Cast Spell", menuName = "Abilities / Spells / New Cast From Spell", order = 0)]
@@ -103,6 +104,11 @@ namespace AF
         public override bool CanUseAbility(CharacterBaseManager character)
         {
             return true;
+        }
+
+        public override Damage GetDamage(CharacterBaseManager attacker)
+        {
+            return damage;
         }
     }
 }

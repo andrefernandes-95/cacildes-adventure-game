@@ -165,7 +165,7 @@ namespace AF.Combat
             Ability combatAbility = GetCombatAbility();
             if (combatAbility != null)
             {
-                characterManager.characterAbilityManager.QueueAbility(combatAbility);
+                characterManager.characterAbilityManager.QueueAbility(Instantiate(combatAbility));
                 return;
             }
 

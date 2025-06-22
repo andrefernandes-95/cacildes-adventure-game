@@ -1,3 +1,5 @@
+using UnityEngine;
+
 namespace AF
 {
     public static class CombatUtils
@@ -81,6 +83,59 @@ namespace AF
             }
 
             return hashAttack;
+        }
+
+        public static void ThrowWeapon(CharacterWeaponHitbox currentWeapon, GameObject weaponThrowProjectilePrefab, CharacterBaseManager attacker, CharacterBaseManager target)
+        {
+            if (currentWeapon == null)
+            {
+                return;
+            }
+
+            currentWeapon.gameObject.SetActive(false);
+
+            // Clone our current weapon and put it as a child of the weaponProjectilePrefab
+            GameObject clonedWeapon = GameObject.Instantiate(currentWeapon.gameObject, attacker.transform.position + attacker.transform.up, attacker.transform.rotation);
+
+            // Set the local scale, position, and rotation of the cloned weapon
+            clonedWeapon.transform.parent = null;
+            clonedWeapon.transform.localScale = new Vector3(1, 1, 1);
+
+            var rotateUtil = clonedWeapon.AddComponent<RotateUtil>();
+            rotateUtil.rotationSpeed = 1000;
+            rotateUtil.rotateAroundX = true;
+            rotateUtil.rotateAroundY = false;
+            rotateUtil.rotateAroundZ = false;
+            clonedWeapon.AddComponent<AttachCameraShakeToSpell>();
+            clonedWeapon.AddComponent<Rigidbody>();
+            clonedWeapon.AddComponent<ThrowWeaponHelper>().Initialize(attacker);
+        }
+
+        public static Projectile ThrowProjectile(GameObject projectile, CharacterBaseManager attacker, CharacterBaseManager target)
+        {
+            if (target != null)
+            {
+                var rotation = target.transform.position - attacker.transform.position;
+                rotation.y = 0;
+                attacker.transform.rotation = Quaternion.LookRotation(rotation);
+            }
+
+            GameObject instanceGO = GameObject.Instantiate(projectile, attacker.transform.position + attacker.transform.up, Quaternion.identity);
+            Projectile instance = instanceGO.GetComponent<Projectile>();
+            instance.shooter = attacker;
+
+            if (target != null)
+            {
+                Quaternion targetRotation = Quaternion.LookRotation(target.transform.position - instance.transform.position);
+                instance.transform.rotation = targetRotation;
+            }
+            else
+            {
+                instance.transform.rotation = attacker.transform.rotation;
+            }
+
+            instance.Shoot(attacker, instance.GetForwardVelocity() * instance.transform.forward, instance.forceMode);
+            return instance;
         }
 
 

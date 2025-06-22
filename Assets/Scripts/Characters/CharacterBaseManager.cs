@@ -154,6 +154,7 @@ namespace AF
         }
 
         public abstract AnimatorOverrideController GetAnimatorOverrideController();
+        public abstract CharacterBaseManager GetTarget();
 
     }
 }

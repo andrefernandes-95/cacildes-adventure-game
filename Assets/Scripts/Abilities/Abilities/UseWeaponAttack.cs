@@ -78,11 +78,11 @@ namespace AF
             return true;
         }
 
-        public Damage GetDamage(CharacterBaseWeaponsManager characterBaseWeaponsManager)
+        public override Damage GetDamage(CharacterBaseManager attacker)
         {
             if (isRightHand)
             {
-                Weapon rightWeapon = characterBaseWeaponsManager.GetCurrentRightWeapon();
+                Weapon rightWeapon = attacker.characterBaseWeaponsManager.GetCurrentRightWeapon();
                 if (rightWeapon != null)
                 {
                     Damage weaponDamage = rightWeapon.damage.Clone();
@@ -91,7 +91,7 @@ namespace AF
                 }
             }
 
-            Weapon leftWeapon = characterBaseWeaponsManager.GetCurrentLeftWeapon();
+            Weapon leftWeapon = attacker.characterBaseWeaponsManager.GetCurrentLeftWeapon();
             if (leftWeapon != null)
             {
                 Damage weaponDamage = leftWeapon.damage.Clone();

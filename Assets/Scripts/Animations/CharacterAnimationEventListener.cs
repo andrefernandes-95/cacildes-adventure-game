@@ -354,5 +354,15 @@ namespace AF.Animations
         {
             characterManager.characterAbilityManager.ComboToNextAbility();
         }
+        public void OnPrepareAbility()
+        {
+            characterManager.characterAbilityManager.OnPrepareAbility();
+        }
+
+        public void OnUseAbility()
+        {
+            characterManager.characterAbilityManager.OnUseAbility();
+        }
+
     }
 }

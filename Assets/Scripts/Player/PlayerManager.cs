@@ -112,7 +112,6 @@ namespace AF
             playerComponentManager.ResetStates();
 
             playerWeaponsManager.ResetStates();
-            playerWeaponsManager.ShowEquipment();
 
             playerBlockInput.CheckQueuedInput();
 
@@ -289,6 +288,11 @@ namespace AF
         public override AnimatorOverrideController GetAnimatorOverrideController()
         {
             return animatorOverrideController;
+        }
+
+        public override CharacterBaseManager GetTarget()
+        {
+            return lockOnManager.nearestLockOnTarget != null ? lockOnManager.nearestLockOnTarget.characterManager : null;
         }
     }
 }

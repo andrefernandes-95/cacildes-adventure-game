@@ -50,6 +50,7 @@ namespace AF
         public void ResetStates()
         {
             CloseAllWeaponHitboxes();
+            ShowEquipment();
         }
 
         /// <summary>

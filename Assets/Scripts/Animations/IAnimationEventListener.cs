@@ -70,5 +70,10 @@ namespace AF.Animations
 
         public void OnCombo();
 
+
+        public void OnPrepareAbility();
+
+        public void OnUseAbility();
+
     }
 }

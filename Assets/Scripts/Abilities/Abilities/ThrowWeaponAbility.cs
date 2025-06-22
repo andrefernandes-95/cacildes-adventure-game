@@ -1,3 +1,4 @@
+using AF.Health;
 using UnityEngine;
 
 namespace AF
@@ -8,6 +9,9 @@ namespace AF
         [Header("FX")]
         public GameObject chargingFX;
 
+        [Header("Throw Weapon Projectile Prefab")]
+        public GameObject throwWeaponProjectilePrefab;
+
         [Header("Override Animation Clips")]
         [SerializeField] AnimationClip spellStart;
         [SerializeField] AnimationClip spellHold;
@@ -15,6 +19,26 @@ namespace AF
 
         public override void OnPrepare(CharacterManager characterManager)
         {
+            if (!characterManager.characterAbilityManager.CanUseAbility())
+            {
+                return;
+            }
+
+            characterManager.characterAbilityManager.SetAnimations(characterManager, spellStart, spellHold, spellRelease);
+            characterManager.characterAbilityManager.hasOverridenAnimations = true;
+            characterManager.characterAbilityManager.SetIsCharging(true);
+
+            characterManager.characterAbilityManager.SetCurrentAbility(this);
+
+            if (chargingFX != null)
+            {
+                GameObject chargingAbilityFXInstance = Instantiate(
+                    chargingFX, characterManager.characterTransformHelper.rightHand);
+
+                characterManager.characterAbilityManager.chargingAbilityFX = chargingAbilityFXInstance;
+            }
+
+            characterManager.PlayBusyAnimationWithRootMotion("Cast Spell");
         }
 
         public override void OnPrepare(PlayerManager playerManager)
@@ -46,17 +70,43 @@ namespace AF
             damage.Multiply(playerManager.playerAbilityManager.GetChargingAmountMultiplier());
             ApplyDamageScaling(playerManager);
             playerManager.attackStatManager.damageBonus = damage;
-            playerManager.playerThrowWeaponManager.ThrowWeapon();
+
+            CombatUtils.ThrowWeapon(
+                playerManager.playerWeaponsManager.currentWeaponInstance,
+                throwWeaponProjectilePrefab,
+                playerManager,
+                playerManager.GetTarget());
         }
 
         public override void OnUse(CharacterManager characterManager)
         {
+            damage.Multiply(characterManager.characterAbilityManager.GetChargingAmountMultiplier());
+            ApplyDamageScaling(characterManager);
 
+            characterManager.FaceTarget();
+            CombatUtils.ThrowWeapon(
+                characterManager.characterWeaponsManager.currentWeaponInstance,
+                throwWeaponProjectilePrefab,
+                characterManager,
+                characterManager.targetManager.currentTarget != null ? characterManager.targetManager.currentTarget : null);
         }
 
         public override bool CanUseAbility(CharacterBaseManager character)
         {
             return true;
+        }
+
+        public override Damage GetDamage(CharacterBaseManager attacker)
+        {
+            Weapon rightWeapon = attacker.characterBaseWeaponsManager.GetCurrentRightWeapon();
+            if (rightWeapon != null)
+            {
+                Damage weaponDamage = rightWeapon.damage.Clone();
+                weaponDamage.Combine(damage);
+                return weaponDamage;
+            }
+
+            return damage;
         }
 
     }

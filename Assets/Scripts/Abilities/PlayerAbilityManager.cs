@@ -45,23 +45,6 @@ namespace AF
             CleanupChargingAbilitySpell();
         }
 
-        public float GetChargingAmountMultiplier()
-        {
-            if (chargingAbilityAmount <= 0.25f)
-            {
-                return 1f;
-            }
-
-            float chargingAbilityMultiplier = 1 + chargingAbilityAmount * chargingAbilityMultiplierBonus;
-
-            if (chargingAbilityAmount >= 1f)
-            {
-                chargingAbilityMultiplier *= chargingAbilityMultiplierBonusForFullCharge;
-            }
-
-            return chargingAbilityMultiplier;
-        }
-
         protected override CharacterBaseManager GetCharacter()
         {
             return playerManager;

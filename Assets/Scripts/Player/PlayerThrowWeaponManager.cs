@@ -1,3 +1,4 @@
+using System;
 using AF.Health;
 using UnityEngine;
 using UnityEngine.Events;
@@ -10,6 +11,7 @@ namespace AF
 
         public Projectile weaponThrowProjectilePrefab;
 
+        [Obsolete("Use CombatUtils.ThrowWeapon")]
         public void ThrowWeapon()
         {
             CharacterWeaponHitbox currentWeapon = playerManager.playerWeaponsManager.currentWeaponInstance;

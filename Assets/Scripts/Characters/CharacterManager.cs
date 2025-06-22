@@ -262,9 +262,9 @@ namespace AF
 
         public override Damage GetAttackDamage()
         {
-            if (characterAbilityManager.currentAbility != null && characterAbilityManager.currentAbility is UseWeaponAttack useWeaponAttack)
+            if (characterAbilityManager.currentAbility != null)
             {
-                return useWeaponAttack.GetDamage(characterBaseWeaponsManager);
+                return characterAbilityManager.currentAbility.GetDamage(this);
             }
 
             return characterCombatController.GetCurrentDamage();
@@ -278,7 +278,17 @@ namespace AF
             faceTarget = true;
             Invoke(nameof(ResetFaceTargetFlag), faceTargetDuration);
         }
+        public void FaceTargetImmediately()
+        {
+            if (targetManager.currentTarget == null)
+            {
+                return;
+            }
 
+            Vector3 lookDirection = targetManager.currentTarget.transform.position - transform.position;
+            lookDirection.y = 0;
+            transform.rotation = Quaternion.LookRotation(lookDirection);
+        }
         public void SetAlwaysFaceTarget(bool value)
         {
             alwaysFaceTarget = value;
@@ -456,6 +466,11 @@ namespace AF
         public override AnimatorOverrideController GetAnimatorOverrideController()
         {
             return animatorOverrideController;
+        }
+
+        public override CharacterBaseManager GetTarget()
+        {
+            return targetManager.currentTarget;
         }
     }
 }
