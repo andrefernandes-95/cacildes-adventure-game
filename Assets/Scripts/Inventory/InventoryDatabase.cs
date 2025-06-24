@@ -4,6 +4,20 @@ using System.Linq;
 using AYellowpaper.SerializedCollections;
 using UnityEditor;
 using UnityEngine;
+using System.Collections.Generic;
+using System.IO;
+using UnityEngine;
+using YamlDotNet.Serialization;
+using YamlDotNet.Serialization.NamingConventions;
+
+[System.Serializable]
+public class ItemData
+{
+    public string EN_Description;
+    public string PT_Description;
+    public List<string> Items;
+}
+
 
 namespace AF.Inventory
 {
@@ -21,13 +35,73 @@ namespace AF.Inventory
         [Header("Databases")]
         public EquipmentDatabase equipmentDatabase;
 
+        [Header("Item Descriptions")]
+        [SerializeField] TextAsset file;
+        public SerializedDictionary<string, ItemData> itemDictionary = new SerializedDictionary<string, ItemData>();
+
 
 #if UNITY_EDITOR
         private void OnEnable()
         {
             // No need to populate the list; it's serialized directly
             EditorApplication.playModeStateChanged += OnPlayModeStateChanged;
+        }
 
+        public void LoadDescriptionsData()
+        {
+            if (itemDictionary.Count > 0)
+            {
+                return;
+            }
+
+            string yamlContent = file.text;
+
+            var deserializer = new DeserializerBuilder()
+                .WithNamingConvention(NullNamingConvention.Instance)  // No naming conversion
+                .IgnoreUnmatchedProperties()
+                .Build();
+
+            var result = deserializer.Deserialize<Dictionary<string, ItemData>>(yamlContent);
+
+            if (result != null)
+            {
+                itemDictionary.Clear();
+
+                // Step 2: Flatten items into individual keys
+                foreach (var item in result)
+                {
+                    ItemData itemInfo = item.Value;
+
+                    if (itemInfo.Items != null)
+                    {
+                        foreach (string itemName in itemInfo.Items)
+                        {
+                            if (!itemDictionary.ContainsKey(itemName))
+                            {
+                                itemDictionary.Add(itemName, itemInfo);
+                            }
+                            else
+                            {
+                                Debug.LogWarning($"Duplicate item key '{itemName}' found in YAML. Skipping.");
+                            }
+                        }
+                    }
+                }
+            }
+            else
+            {
+                Debug.LogError("Failed to parse YAML armor data.");
+            }
+        }
+
+        public string GetItemDescription(Item item)
+        {
+            if (itemDictionary.ContainsKey(item.name))
+            {
+                return Utils.IsPortuguese() ? itemDictionary[item.name].PT_Description : itemDictionary[item.name].EN_Description;
+            }
+
+            return item.GetDescription();
         }
 
         private void OnPlayModeStateChanged(PlayModeStateChange state)

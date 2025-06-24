@@ -2,10 +2,10 @@ Done:
 
 - Add damage popup when healing too so we know the values
 - Replace cards with skill system (this is done, but we need to still convert some abilities, and also check the chests)
+- Refactor Player Customization
 
 To Do:
 
-- Refactor Player Customization
 - Add armors to characters, show graphic if humanoid and using synty character model
 - Cloaks as accessories, same as pauldrons
 - Add Stats to characters, and refactor stats bonus controller

@@ -236,6 +236,9 @@ namespace AF.UI.EquipmentMenu
                 SetupRefs();
             }
 
+            // Load item descriptions for tooltips
+            playerManager.playerInventory.inventoryDatabase.LoadDescriptionsData();
+
             tooltip.style.display = DisplayStyle.Flex;
         }
 
@@ -278,7 +281,7 @@ namespace AF.UI.EquipmentMenu
             }
 
             tooltipItemName.text = itemName;
-            tooltipItemDescription.text = item.GetDescription();
+            tooltipItemDescription.text = playerManager.playerInventory.inventoryDatabase.GetItemDescription(item);
 
             if (item is Weapon weapon)
             {
