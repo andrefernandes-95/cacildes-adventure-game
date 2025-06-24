@@ -309,6 +309,11 @@ namespace AF
             {
                 spellSlotContainer.style.backgroundImage = new StyleBackground(equipmentDatabase.GetCurrentSpell().sprite);
                 abilityName.text = currentSpell.GetName();
+                root.Q<VisualElement>("AbilityInfo").style.display = DisplayStyle.Flex;
+            }
+            else
+            {
+                root.Q<VisualElement>("AbilityInfo").style.display = DisplayStyle.None;
             }
         }
 

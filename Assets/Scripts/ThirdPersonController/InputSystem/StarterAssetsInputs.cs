@@ -46,9 +46,9 @@ namespace AF
 
 		[Header("UI")]
 		public UnityEvent onMenuEvent;
-		public UnityEvent onCustomizeCharacter;
 		[SerializeField] MenuManager menuManager;
 		public UnityEvent onMainMenuUnequipSlot;
+		[SerializeField] UIDocumentCharacterCustomization uIDocumentCharacterCustomization;
 
 		[Header("Movement Settings")]
 		public bool analogMovement;
@@ -235,7 +235,14 @@ namespace AF
 		{
 			if (value.isPressed)
 			{
-				onCustomizeCharacter?.Invoke();
+				if (uIDocumentCharacterCustomization.isActiveAndEnabled)
+				{
+					uIDocumentCharacterCustomization.gameObject.SetActive(false);
+				}
+				else
+				{
+					uIDocumentCharacterCustomization.gameObject.SetActive(true);
+				}
 			}
 		}
 

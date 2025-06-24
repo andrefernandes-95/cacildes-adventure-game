@@ -1,0 +1,34 @@
+{
+  "events": [
+    {
+      "type": "dialogue",
+      "payload": {
+        "message": "Hello son!",
+        "choices": [
+          {
+            "message": "Yes, I'm good!",
+            "events": [
+              {
+                "type": "dialogue",
+                "message": "Good, son."
+              },
+              {
+                "type": "add_reputation",
+                "payload": {
+                  "flag": "give_reputation_for_good_response_about_bear",
+                  "amount": 5
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "type": "wait",
+      "payload": {
+        "duration": 3
+      }
+    }
+  ]
+}

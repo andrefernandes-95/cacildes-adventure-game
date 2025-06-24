@@ -101,11 +101,6 @@ namespace AF
             clonedWeapon.transform.parent = null;
             clonedWeapon.transform.localScale = new Vector3(1, 1, 1);
 
-            var rotateUtil = clonedWeapon.AddComponent<RotateUtil>();
-            rotateUtil.rotationSpeed = 1000;
-            rotateUtil.rotateAroundX = true;
-            rotateUtil.rotateAroundY = false;
-            rotateUtil.rotateAroundZ = false;
             clonedWeapon.AddComponent<AttachCameraShakeToSpell>();
             clonedWeapon.AddComponent<Rigidbody>();
             clonedWeapon.AddComponent<ThrowWeaponHelper>().Initialize(attacker);

@@ -40,6 +40,7 @@ namespace AF
         public CharacterPushController characterPushController;
         public CharacterTransformHelper characterTransformHelper;
         public CharacterBaseWeaponsManager characterBaseWeaponsManager;
+        public CharacterBaseAppearance characterBaseAppearance;
 
         public abstract void ResetStates();
 

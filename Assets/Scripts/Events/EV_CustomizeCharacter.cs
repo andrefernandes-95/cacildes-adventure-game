@@ -6,22 +6,20 @@ namespace AF
 {
     public class EV_CustomizeCharacter : EventBase
     {
-        PlayerAppearance _playerAppearance;
+        [SerializeField] UIDocumentCharacterCustomization uIDocumentCharacterCustomization;
 
         public override IEnumerator Dispatch()
         {
-            GetPlayerAppearance()?.ActivatePlayerAppearanceManager();
-            yield return null;
-        }
-
-        PlayerAppearance GetPlayerAppearance()
-        {
-            if (_playerAppearance == null)
+            if (uIDocumentCharacterCustomization.isActiveAndEnabled)
             {
-                _playerAppearance = FindAnyObjectByType<PlayerAppearance>(FindObjectsInactive.Include);
+                uIDocumentCharacterCustomization.gameObject.SetActive(false);
+            }
+            else
+            {
+                uIDocumentCharacterCustomization.gameObject.SetActive(true);
             }
 
-            return _playerAppearance;
+            yield return null;
         }
 
     }

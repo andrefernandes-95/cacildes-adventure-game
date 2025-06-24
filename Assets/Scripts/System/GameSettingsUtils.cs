@@ -67,6 +67,51 @@ namespace AF
                     gameSettings.useAbilityBinding = useAbilityBinding;
                 }
 
+                // Character Customization
+                if (gamePreferencesReader.TryRead("playerName", out string playerName))
+                {
+                    gameSettings.playerName = playerName;
+                }
+                if (gamePreferencesReader.TryRead("hairColor", out string hairColor))
+                {
+                    gameSettings.hairColor = hairColor;
+                }
+                if (gamePreferencesReader.TryRead("skinColor", out string skinColor))
+                {
+                    gameSettings.skinColor = skinColor;
+                }
+                if (gamePreferencesReader.TryRead("eyeColor", out string eyeColor))
+                {
+                    gameSettings.eyeColor = eyeColor;
+                }
+                if (gamePreferencesReader.TryRead("tattooColor", out string tattooColor))
+                {
+                    gameSettings.tattooColor = tattooColor;
+                }
+                if (gamePreferencesReader.TryRead("hair", out string hair))
+                {
+                    gameSettings.hair = hair;
+                }
+                if (gamePreferencesReader.TryRead("eyebrows", out string eyebrows))
+                {
+                    gameSettings.eyebrows = eyebrows;
+                }
+                if (gamePreferencesReader.TryRead("beard", out string beard))
+                {
+                    gameSettings.beard = beard;
+                }
+                if (gamePreferencesReader.TryRead("face", out string face))
+                {
+                    gameSettings.face = face;
+                }
+                if (gamePreferencesReader.TryRead("isMale", out bool isMale))
+                {
+                    gameSettings.isMale = isMale;
+                }
+                if (gamePreferencesReader.TryRead("playerPortrait", out int playerPortrait))
+                {
+                    gameSettings.playerPortrait = playerPortrait;
+                }
             }
             catch (Exception e)
             {
@@ -94,6 +139,19 @@ namespace AF
                 quickSaveWriter.Write("heavyAttackBinding", gameSettings.heavyAttackBinding);
                 quickSaveWriter.Write("toggleCombatStanceBinding", gameSettings.toggleCombatStanceBinding);
                 quickSaveWriter.Write("useAbilityBinding", gameSettings.useAbilityBinding);
+
+                // Character Customization
+                quickSaveWriter.Write("playerName", gameSettings.playerName);
+                quickSaveWriter.Write("hairColor", gameSettings.hairColor);
+                quickSaveWriter.Write("skinColor", gameSettings.skinColor);
+                quickSaveWriter.Write("eyeColor", gameSettings.eyeColor);
+                quickSaveWriter.Write("tattooColor", gameSettings.tattooColor);
+                quickSaveWriter.Write("hair", gameSettings.hair);
+                quickSaveWriter.Write("eyebrows", gameSettings.eyebrows);
+                quickSaveWriter.Write("beard", gameSettings.beard);
+                quickSaveWriter.Write("face", gameSettings.face);
+                quickSaveWriter.Write("isMale", gameSettings.isMale);
+                quickSaveWriter.Write("playerPortrait", gameSettings.playerPortrait);
 
                 if (quickSaveWriter.TryCommit())
                 {

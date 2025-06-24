@@ -17,7 +17,7 @@ namespace AF
         /// </summary>
         public void PlayRageSound()
         {
-            if (playerManager.playerAppearance.GetBodyType() > 0)
+            if (playerManager.gameSettings.isMale == false)
             {
                 audioSource.PlayOneShot(femaleRageSound);
             }

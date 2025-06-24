@@ -52,6 +52,7 @@ namespace AF.Events
         public static readonly string ON_PLAYER_DODGING_FINISHED = "ON_PLAYER_DODGING_FINISHED";
 
         public static readonly string ON_PLAYER_HUD_VISIBILITY_CHANGED = "ON_PLAYER_HUD_VISIBILITY_CHANGED";
+        public static readonly string ON_CHARACTER_CUSTOMIZED = "ON_CHARACTER_CUSTOMIZED";
 
 
     }

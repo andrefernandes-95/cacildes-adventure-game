@@ -46,7 +46,6 @@ namespace AF
         public TwoHandingController twoHandingController;
         public LockOnManager lockOnManager;
         public PlayerReputation playerReputation;
-        public PlayerAppearance playerAppearance;
         public RageManager rageManager;
         public PlayerCardManager playerCardManager;
         public ExecutionerManager executionerManager;
@@ -59,6 +58,10 @@ namespace AF
         public PlayerStatsDatabase playerStatsDatabase;
 
         public EquipmentDatabase equipmentDatabase;
+        public GameSettings gameSettings;
+
+        [Header("Other Components")]
+        [SerializeField] UIDocumentCharacterCustomization uIDocumentCharacterCustomization;
 
         // Animator Overrides
         protected AnimatorOverrideController animatorOverrideController;
@@ -294,5 +297,7 @@ namespace AF
         {
             return lockOnManager.nearestLockOnTarget != null ? lockOnManager.nearestLockOnTarget.characterManager : null;
         }
+
+        public Sprite GetPlayerPortrait() => uIDocumentCharacterCustomization.portraits[gameSettings.playerPortrait];
     }
 }

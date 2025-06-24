@@ -37,11 +37,27 @@ public class GameSettings : ScriptableObject
     public string heavyAttackBinding = "";
     public string useAbilityBinding = "";
 
-    public readonly string PLAYER_NAME_KEY = "PLAYER_NAME";
-    public readonly string defaultPlayerName = "Cacildes";
     public readonly string HIDE_PLAYER_HUD_KEY = "HIDE_PLAYER_HUD_KEY";
 
     [HideInInspector] public string SAVE_FILES_FOLDER = "GamePreferences";
+
+    [Header("Player Apperance")]
+    public readonly string defaultPlayerName = "Cacildes";
+    public string playerName = "Cacildes";
+    public readonly string defaultHairColor = "#4F412D";
+    public string hairColor = "#4F412D";
+    public readonly string defaultSkinColor = "#FFCCAE";
+    public string skinColor = "#FFCCAE";
+    public readonly string defaultEyeColor = "#000000";
+    public string eyeColor = "#000000";
+    public readonly string defaultTattooColor = "#874FA5";
+    public string tattooColor = "#874FA5";
+    public string hair = "";
+    public string eyebrows = "";
+    public string beard = "";
+    public string face = "";
+    public bool isMale = true;
+    public int playerPortrait = 0;
 
 
 #if UNITY_EDITOR
@@ -75,9 +91,8 @@ public class GameSettings : ScriptableObject
         var characterName =
             source["global"]["playerName"] as UnityEngine.Localization.SmartFormat.PersistentVariables.StringVariable;
         // Update the global variable
-        characterName.Value = GetPlayerName();
+        characterName.Value = playerName;
     }
-
 
     public bool ShouldShowPlayerHUD()
     {
@@ -96,21 +111,9 @@ public class GameSettings : ScriptableObject
         EventManager.EmitEvent(EventMessages.ON_PLAYER_HUD_VISIBILITY_CHANGED);
     }
 
-    public string GetPlayerName()
+    public void SetPlayerName(string newPlayerName)
     {
-        if (!PlayerPrefs.HasKey(PLAYER_NAME_KEY))
-        {
-            return defaultPlayerName;
-        }
-
-        return PlayerPrefs.GetString(PLAYER_NAME_KEY);
-    }
-
-    public void SetPlayerName(string playerName)
-    {
-
-        PlayerPrefs.SetString(PLAYER_NAME_KEY, playerName);
-        PlayerPrefs.Save();
+        playerName = newPlayerName;
         UpdatePlayerNameOnLocalizedAssets();
     }
 

@@ -15,7 +15,7 @@ namespace AF
         float rotationTimer = 2f;
         float rotationSpeed = 25f;
         float launchForce = 15f;
-        float upwardArcForce = 1f;
+        float upwardArcForce = 3f;
 
         Rigidbody rb;
 
@@ -44,11 +44,6 @@ namespace AF
 
             Launch(); // launch with arc
 
-            if (target != null)
-            {
-                rotateTowardsTargetBriefly = true;
-                rotationTimer = rotationDuration;
-            }
         }
 
         void Launch()
@@ -84,24 +79,7 @@ namespace AF
 
         void Update()
         {
-            if (rotateTowardsTargetBriefly && rotationTimer > 0f)
-            {
-                RotateTowardsTarget();
-                rotationTimer -= Time.deltaTime;
-
-                if (rotationTimer <= 0f)
-                {
-                    rotateTowardsTargetBriefly = false;
-                    DisableWeaponEffects();
-                }
-            }
-        }
-
-        void RotateTowardsTarget()
-        {
-            Vector3 direction = (target.position - transform.position).normalized;
-            Quaternion lookRotation = Quaternion.LookRotation(direction);
-            transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * rotationSpeed);
+            transform.Rotate(Vector3.right, 1000 * Time.deltaTime, Space.Self);
         }
     }
 }

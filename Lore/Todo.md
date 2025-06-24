@@ -1,131 +1,69 @@
-::PRIORITY::
+Done:
 
-- All enemies have messed up stopping distances now
-- Check drogo and fenlora run sequences
+- Add damage popup when healing too so we know the values
+- Replace cards with skill system (this is done, but we need to still convert some abilities, and also check the chests)
 
+To Do:
 
-
-:: MUST BE DONE ::
-
-Ability should consume stamina and mana
-
-Requirements for spells can still exist, but damage will be lessen
-
-Add damage popup when healing too so we know the values
-
-Reduce Weapon Toss Push Force
-
-
-
-
-
-Character Poise
-- Simplify Logic of isbroken, too many side effects
-
-
-
-1.7.1
-
-DONE
-
-- Simplify Music Code
-- Add dual wielding
-- Save dual wielding
-- Upgrade and save multiple weapons
-- Ignore Weapon Requirements
-- Mom should reward player with another shield or weapon after bear encounter, to reward him (She offers meat lofs)
-- mark chicken quest as tracked
-
-IN DEV:
-
-- Dark Souls Messaging System with hash spatial messaging
-- Proper Arena System with weapons awarded at the end
-- Simplify existing weapons
-- Increase stamina regen
-- If jump attack, enable both weapons
-- Add Music UI to let user know which music is playing
-- Normalize audio
-
-  1.7.2
-
-- Replace cards with skill system
-- Magic should be cast with any weapon, staff only enhances it
-- Magic should be L2 button, dodge should be circle with sprint hold
-
-  1.7.3
-
-- Replace iron shards with upgrade shards with levels
-- Refactor weapon levelling
-
-  1.8.1 Agent Refactor Code
-
-// Refactor AI Agent and Check:
-// Move Towards Target
-// Jump Chase
-// Cutting Distance Attacks
-
-READY FOR DEV:
-
-- Skills as scriptable objects
-- Add quest started popup
-- Elven bow should be offered by Fenlora in the epilogue
+- Refactor Player Customization
+- Add armors to characters, show graphic if humanoid and using synty character model
+- Cloaks as accessories, same as pauldrons
+- Add Stats to characters, and refactor stats bonus controller
+- Add chest that uses another script for adding items, to avoid bugs with armors
+- Add database for items with json descriptions
+- Weapon should have abilities for right trigger and right bumper and left trigger (this way, the amount of combos is dependant on the weapon itself)
+- Unify Player and Enemy Actions (Block, Parry, Shooting Bow, Throwing Firebomb, Consuming Orange Juice)
+- Music HUD showing which music is playing
+- Moments as jsons
+- Crafting upgrades to +10
+- We should be able to upgrade spells and armors
+- Create Iron Shards up to 10
+- Remove staffs
 - Add category to received items popup
 - Make item popups pop up animation
 - Add note to quest for Maerimond which is : Rewards - Unlock Boss Weapons
 - Add note to boss tokens which is: Talk to Altaire in Snailcliff to unlock boss weapons
-- Fix R key on gamepad
-- Review Music Code
-- Moonligh Spell not facing the right direction
-- Review weapon movesets
 - Review enemies
-- Tecla hotkey consumivel aparece como keyboard na steam deck
+- Add total game progress
+- TH when unarmed is not adding extra bonus
+- Fix gold dupping by not reloading save data.
+
+Low:
+
+- Ability should consume stamina and mana
+- Requirements for spells can still exist, but damage will be lessen
+- Poise: Simplify Logic of isbroken, too many side effects
+- Proper Arena System with weapons awarded at the end
+- If jump attack, enable both weapons
+- Normalize audio
+- Elven bow should be offered by Fenlora in the epilogue
+- Fix R key on gamepad
 - When swimming, do not take damage, instead build up drowning
-- Add more posture damage from parry
 - Add pillar sound to the last one
 - Fix pillar sounds in Arun garden
 - Add opening door sound to arun temple when fenlora is running towards the entrance
-- bee boss fight, the true bee doesnt go to the ground
-  . Max Stamina values and health on level up screen look wrong
+- Bee boss fight, the true bee doesnt go to the ground
+- Max Stamina values and health on level up screen look wrong
 - Make hitbox on shields on kayro better
-- Stamina and health not levelling well
-- Improve music system
-- Normalize musics
 - Add different music to cecily town
-- Add total game progress
 - Soldier in Impossible City has guard dialogue
 - Add note explaining scroll wheel distance
 - Remove walk
-- th when unarmed is not adding extra bonus
 - improve main story bosses
-- Levelling up too fast
-- Wooden Staff walk is strange
 - Improve Roberto boss fight
 - Captain drinking bottles always appear outside main quest near the orc cavern
 - Stamina Potion should increase max stamina for 60 seconds
 - Powerstance ring
-
-BACKLOG:
-
-- Adjust unarmed and weapon staminas
-- Review item descriptions
-- Allow messages to be continued by pressing mouse click ?
-- Setup Analytics for Unity
 - Earthstomp should be prize for winning Arena
 - Ring that restores health upon critical attacks
 - Ring that restores mana upon critical attacks
-
-Bonus:
-
+- Ring that enhances shield attacks
+- Ring that enhances weapon toss attacks
+- Ring that enhances power stance attacks
+- Weapon crafting should be earlier
 - Ring that checks if enemy is hit with arrow, there's 50% chances of recovering that arrow upon enemy death
 - Version save files
-- crafting should be earlier
 
-  1.6.2
-  Simplify Inputs for Sprint and Dodge to share same hotkey
-  Jump should be on space, enable rebinding
-  Gold Dooping - Check the gold and die, the pickup its still there. it should not reset during in-game
+BACKLOG:
 
-Shields as weapons
-Cloaks as accessories, same as pauldrons
-Arrow jump attacks
-missao recuperar vinho
+- Setup Analytics for Unity

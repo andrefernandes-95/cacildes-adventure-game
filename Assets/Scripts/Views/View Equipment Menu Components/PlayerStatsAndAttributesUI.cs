@@ -45,7 +45,7 @@ namespace AF
 
         public void DrawStats(Item item)
         {
-            root.Q<VisualElement>("PlayerName").Q<Label>().text = playerManager.playerAppearance.GetPlayerName();
+            root.Q<VisualElement>("PlayerName").Q<Label>().text = playerManager.gameSettings.playerName;
 
             root.Q<VisualElement>("Level").Q<Label>("Value").text = playerStatsDatabase.GetCurrentLevel().ToString();
             root.Q<VisualElement>("Gold").Q<Label>("Value").text = playerStatsDatabase.gold.ToString();

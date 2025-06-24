@@ -14,8 +14,6 @@ namespace AF
         [Header("Game Session")]
         public GameSession gameSession;
         public SaveManager saveManager;
-        public StarterAssetsInputs starterAssetsInputs;
-        public PlayerAppearance playerAppearance;
         [SerializeField] PlayerManager playerManager;
         public GameSettings gameSettings;
 

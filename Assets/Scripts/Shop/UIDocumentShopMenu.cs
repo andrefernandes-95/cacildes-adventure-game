@@ -173,9 +173,9 @@ namespace AF.Shops
         {
             if (playerIsBuying)
             {
-                buyerName.text = playerManager.playerAppearance.GetPlayerName();
+                buyerName.text = playerManager.gameSettings.playerName;
                 buyerGold.text = playerStatsDatabase.gold.ToString() + " " + coins_LocalizedString.GetLocalizedString();
-                buyerIcon.style.backgroundImage = new StyleBackground(playerManager.playerAppearance.GetPlayerPortrait());
+                buyerIcon.style.backgroundImage = new StyleBackground(playerManager.GetPlayerPortrait());
 
                 sellerName.text = characterShop.character.GetCharacterName();
                 sellerGold.text = characterShop.shopGold.ToString();
@@ -187,9 +187,9 @@ namespace AF.Shops
                 buyerGold.text = characterShop.shopGold.ToString() + " " + coins_LocalizedString.GetLocalizedString();
                 buyerIcon.style.backgroundImage = new StyleBackground(characterShop.character.avatar);
 
-                sellerName.text = playerManager.playerAppearance.GetPlayerName();
+                sellerName.text = playerManager.gameSettings.playerName;
                 sellerGold.text = playerStatsDatabase.gold.ToString();
-                sellerIcon.style.backgroundImage = new StyleBackground(playerManager.playerAppearance.GetPlayerPortrait());
+                sellerIcon.style.backgroundImage = new StyleBackground(playerManager.GetPlayerPortrait());
             }
 
             root.Q<Label>("AppliedDiscountsLabel").text = characterShop.GetShopDiscountsDescription(inventoryDatabase, playerManager.statsBonusController, playerIsBuying);

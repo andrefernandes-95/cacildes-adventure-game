@@ -1,13 +1,11 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UIElements;
-using UnityEngine.InputSystem;
 using System.Linq;
 using DG.Tweening;
 using UnityEngine.Events;
 using AF.Dialogue;
 using AF.Flags;
-using System.Collections.Generic;
 
 namespace AF
 {
@@ -143,7 +141,7 @@ namespace AF
             if (character != null && string.IsNullOrEmpty(character.name) == false)
             {
                 actorNameLabel.style.display = DisplayStyle.Flex;
-                actorNameLabel.text = character.isPlayer ? playerManager.playerAppearance.GetPlayerName() : character.GetCharacterName();
+                actorNameLabel.text = character.isPlayer ? playerManager.gameSettings.playerName : character.GetCharacterName();
                 actorInfoContainer.style.display = DisplayStyle.Flex;
             }
             else
@@ -165,7 +163,7 @@ namespace AF
             if (character != null && character.avatar != null)
             {
                 actorSprite.style.backgroundImage = new StyleBackground(
-                                   character.isPlayer ? playerManager.playerAppearance.GetPlayerPortrait() : character.avatar);
+                                   character.isPlayer ? playerManager.GetPlayerPortrait() : character.avatar);
                 actorSprite.style.display = DisplayStyle.Flex;
             }
             else
