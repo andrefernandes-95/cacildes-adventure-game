@@ -33,9 +33,9 @@ namespace AF
         {
             string message = strengthMessage;
 
-            int strength = statsBonusController.GetCurrentStrength();
-            int dexterity = statsBonusController.GetCurrentDexterity();
-            int intelligence = statsBonusController.GetCurrentIntelligence();
+            int strength = statsBonusController.character.characterBaseStats.GetStrength();
+            int dexterity = statsBonusController.character.characterBaseStats.GetDexterity();
+            int intelligence = statsBonusController.character.characterBaseStats.GetIntelligence();
 
             if (strength >= dexterity && strength >= intelligence)
             {

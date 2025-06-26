@@ -273,7 +273,9 @@ namespace AF.Combat
                     characterManager.UpdateAnimatorOverrideControllerClips(ANIMATION_CLIP_TO_OVERRIDE_NAME, currentCombatAction.attackAnimationClip);
                 }
 
+#pragma warning disable CS0618 // Type or member is obsolete
                 characterManager.animator.ForceStateNormalizedTime(0f);
+#pragma warning restore CS0618 // Type or member is obsolete
 
                 if (currentCombatAction.animationSpeed != 1f)
                 {

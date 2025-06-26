@@ -125,35 +125,63 @@ namespace AF
             quickSaveWriter.Write("currentConsumableIndex", equipmentDatabase.currentConsumableIndex);
             quickSaveWriter.Write("weapons", equipmentDatabase.weapons.Select(weapon =>
             {
-                SerializedWeapon serializedWeapon = null;
+                SerializedUpgradeableItem serializedWeapon = null;
                 if (weapon != null)
                 {
                     serializedWeapon = new();
-                    serializedWeapon.weaponID = weapon.weaponID;
+                    serializedWeapon.itemID = weapon.itemID;
                 }
                 return serializedWeapon;
             }));
             quickSaveWriter.Write("shields", equipmentDatabase.shields.Select(shield =>
             {
-                SerializedWeapon serializedWeapon = null;
+                SerializedUpgradeableItem serializedWeapon = null;
                 if (shield != null)
                 {
-                    serializedWeapon = new();
-                    serializedWeapon.weaponID = shield.weaponID;
+                    serializedWeapon = new()
+                    {
+                        itemID = shield.itemID
+                    };
                 }
                 return serializedWeapon;
             }));
             quickSaveWriter.Write("arrows", equipmentDatabase.arrows.Select(arrow => arrow != null ? arrow.name : ""));
-            quickSaveWriter.Write("spells", equipmentDatabase.spells.Select(spell => spell != null ? spell.name : ""));
-            quickSaveWriter.Write("accessories", equipmentDatabase.accessories.Select(accessory => accessory != null ? accessory.name : ""));
+
+            quickSaveWriter.Write("spells", equipmentDatabase.spells.Select(spell =>
+            {
+                SerializedUpgradeableItem serializedSpell = null;
+                if (spell != null)
+                {
+                    serializedSpell = new()
+                    {
+                        itemID = spell.itemID
+                    };
+                }
+                return serializedSpell;
+            }));
+
+            quickSaveWriter.Write("accessories", equipmentDatabase.accessories.Select(accessory =>
+            {
+                SerializedUpgradeableItem serializedAccessory = null;
+                if (serializedAccessory != null)
+                {
+                    serializedAccessory = new()
+                    {
+                        itemID = accessory.itemID
+                    };
+                }
+                return serializedAccessory;
+            }));
+
             quickSaveWriter.Write("consumables", equipmentDatabase.consumables.Select(consumable => consumable != null ? consumable.name : ""));
-            quickSaveWriter.Write("helmet", equipmentDatabase.helmet != null ? equipmentDatabase.helmet.name : "");
-            quickSaveWriter.Write("armor", equipmentDatabase.armor != null ? equipmentDatabase.armor.name : "");
-            quickSaveWriter.Write("gauntlet", equipmentDatabase.gauntlet != null ? equipmentDatabase.gauntlet.name : "");
-            quickSaveWriter.Write("legwear", equipmentDatabase.legwear != null ? equipmentDatabase.legwear.name : "");
+
+            quickSaveWriter.Write("helmet", equipmentDatabase.helmet != null ? equipmentDatabase.helmet.itemID : "");
+            quickSaveWriter.Write("armor", equipmentDatabase.armor != null ? equipmentDatabase.armor.itemID : "");
+            quickSaveWriter.Write("gauntlet", equipmentDatabase.gauntlet != null ? equipmentDatabase.gauntlet.itemID : "");
+            quickSaveWriter.Write("legwear", equipmentDatabase.legwear != null ? equipmentDatabase.legwear.itemID : "");
+
             quickSaveWriter.Write("isTwoHanding", equipmentDatabase.isTwoHanding);
         }
-
 
         void SavePlayerInventory(QuickSaveWriter quickSaveWriter)
         {
@@ -171,18 +199,7 @@ namespace AF
 
             quickSaveWriter.Write("ownedItems", keyValuePairs);
 
-            List<SerializedWeapon> serializedWeapons = new();
-            foreach (Weapon weapon in inventoryDatabase.ownedWeapons)
-            {
-                string path = Utils.GetItemPath(weapon).Replace("(Clone)", "");
-                SerializedWeapon serializedWeapon = new();
-                serializedWeapon.weaponID = weapon.weaponID;
-                serializedWeapon.level = weapon.level;
-                serializedWeapon.resourcePath = path;
-                serializedWeapons.Add(serializedWeapon);
-            }
-
-            quickSaveWriter.Write("ownedWeapons", serializedWeapons);
+            SaveUtils.SaveItems(quickSaveWriter, playerManager.playerInventory.inventoryDatabase);
         }
         void SavePickups(QuickSaveWriter quickSaveWriter)
         {
@@ -313,179 +330,18 @@ namespace AF
             quickSaveReader.TryRead<int>("currentConsumableIndex", out int currentConsumableIndex);
             equipmentDatabase.currentConsumableIndex = currentConsumableIndex;
 
-            quickSaveReader.TryRead("weapons", out SerializedWeapon[] serializedWeapons);
-            if (serializedWeapons != null && serializedWeapons.Length > 0)
-            {
-                for (int idx = 0; idx < serializedWeapons.Length; idx++)
-                {
-                    LoadSerializedWeapon(serializedWeapons[idx], idx, true);
-                }
-            }
-
-            // Try to read shields
-            quickSaveReader.TryRead("shields", out SerializedWeapon[] serializedLeftWeapons);
-            if (serializedLeftWeapons != null && serializedLeftWeapons.Length > 0)
-            {
-                for (int idx = 0; idx < serializedLeftWeapons.Length; idx++)
-                {
-                    LoadSerializedWeapon(serializedLeftWeapons[idx], idx, false);
-                }
-            }
-
-            // Try to read arrows
-            quickSaveReader.TryRead<string[]>("arrows", out string[] arrows);
-            if (arrows != null && arrows.Length > 0)
-            {
-                for (int idx = 0; idx < arrows.Length; idx++)
-                {
-                    string arrowName = arrows[idx];
-
-                    if (!string.IsNullOrEmpty(arrowName))
-                    {
-                        Arrow arrowInstance = Resources.Load<Arrow>("Items/Arrows/" + arrowName);
-
-                        if (arrowInstance != null)
-                        {
-                            equipmentDatabase.arrows[idx] = arrowInstance;
-                        }
-                    }
-                }
-            }
-
-            // Try to read spells
-            quickSaveReader.TryRead<string[]>("spells", out string[] spells);
-            if (spells != null && spells.Length > 0)
-            {
-                for (int idx = 0; idx < spells.Length; idx++)
-                {
-                    string spellName = spells[idx];
-
-                    if (!string.IsNullOrEmpty(spellName))
-                    {
-                        Spell spellInstance = Resources.Load<Spell>("Items/Spells/" + spellName);
-
-                        if (spellInstance != null)
-                        {
-                            equipmentDatabase.spells[idx] = spellInstance;
-                        }
-                    }
-                }
-            }
-
-            // Try to read accessories
-            quickSaveReader.TryRead<string[]>("accessories", out string[] accessories);
-            if (accessories != null && accessories.Length > 0)
-            {
-                for (int idx = 0; idx < accessories.Length; idx++)
-                {
-                    string accessoryName = accessories[idx];
-
-                    if (!string.IsNullOrEmpty(accessoryName))
-                    {
-                        Accessory accessoryInstance = Resources.Load<Accessory>("Items/Accessories/" + accessoryName);
-
-                        if (accessoryInstance != null)
-                        {
-                            equipmentDatabase.accessories[idx] = accessoryInstance;
-                        }
-                    }
-                }
-            }
-
-            // Try to read consumables
-            quickSaveReader.TryRead<string[]>("consumables", out string[] consumables);
-            if (consumables != null && consumables.Length > 0)
-            {
-                for (int idx = 0; idx < consumables.Length; idx++)
-                {
-                    string consumableName = consumables[idx];
-
-                    if (!string.IsNullOrEmpty(consumableName))
-                    {
-                        Consumable consumableInstance = Resources.Load<Consumable>("Items/Consumables/" + consumableName);
-
-                        if (consumableInstance != null)
-                        {
-                            equipmentDatabase.consumables[idx] = consumableInstance;
-                        }
-                    }
-                }
-            }
-
-            // Try to read helmet
-            quickSaveReader.TryRead<string>("helmet", out string helmetName);
-            if (!string.IsNullOrEmpty(helmetName))
-            {
-                Helmet helmetInstance = Resources.Load<Helmet>("Items/Helmets/" + helmetName);
-
-                if (helmetInstance != null)
-                {
-                    equipmentDatabase.helmet = helmetInstance;
-                }
-            }
-            else
-            {
-                equipmentDatabase.UnequipHelmet();
-            }
-
-            // Try to read armor
-            quickSaveReader.TryRead<string>("armor", out string armorName);
-            if (!string.IsNullOrEmpty(armorName))
-            {
-                Armor armorInstance = Resources.Load<Armor>("Items/Armors/" + armorName);
-
-                if (armorInstance != null)
-                {
-                    equipmentDatabase.armor = armorInstance;
-                }
-            }
-            else
-            {
-                equipmentDatabase.UnequipArmor();
-            }
-
-            // Try to read gauntlet
-            quickSaveReader.TryRead<string>("gauntlet", out string gauntletName);
-            if (!string.IsNullOrEmpty(gauntletName))
-            {
-                Gauntlet gauntletInstance = Resources.Load<Gauntlet>("Items/Gauntlets/" + gauntletName);
-
-                if (gauntletInstance != null)
-                {
-                    equipmentDatabase.gauntlet = gauntletInstance;
-                }
-            }
-            else
-            {
-                equipmentDatabase.UnequipGauntlet();
-            }
-
-            // Try to read legwear
-            quickSaveReader.TryRead<string>("legwear", out string legwearName);
-            if (!string.IsNullOrEmpty(legwearName))
-            {
-                Legwear legwearInstance = Resources.Load<Legwear>("Items/Legwears/" + legwearName);
-
-                if (legwearInstance != null)
-                {
-                    equipmentDatabase.legwear = legwearInstance;
-                }
-            }
-            else
-            {
-                equipmentDatabase.UnequipLegwear();
-            }
+            SaveUtils.LoadEquipment(quickSaveReader, playerManager.characterBaseInventory, equipmentDatabase);
 
             quickSaveReader.TryRead<bool>("isTwoHanding", out bool isTwoHanding);
             equipmentDatabase.isTwoHanding = isTwoHanding;
         }
 
-        void LoadSerializedWeapon(SerializedWeapon serializedWeapon, int slotIndex, bool isRightHandWeapon)
+        void LoadSerializedWeapon(SerializedUpgradeableItem serializedWeapon, int slotIndex, bool isRightHandWeapon)
         {
             if (serializedWeapon != null)
             {
                 Weapon match = inventoryDatabase.ownedWeapons.First(ownedWeapon =>
-                ownedWeapon.weaponID == serializedWeapon.weaponID);
+                ownedWeapon.itemID == serializedWeapon.itemID);
 
                 if (match != null)
                 {
@@ -500,7 +356,6 @@ namespace AF
                 }
             }
         }
-
 
         void LoadPlayerInventory(QuickSaveReader quickSaveReader)
         {
@@ -532,29 +387,7 @@ namespace AF
                 }
             }
 
-
-            quickSaveReader.TryRead("ownedWeapons", out List<SerializedWeapon> ownedWeapons);
-            if (ownedWeapons != null && ownedWeapons.Count > 0)
-            {
-                for (int idx = 0; idx < ownedWeapons.Count; idx++)
-                {
-                    SerializedWeapon serializedWeapon = ownedWeapons.ElementAt(idx);
-
-                    if (serializedWeapon != null)
-                    {
-                        Weapon weaponPrefab = Resources.Load<Weapon>(serializedWeapon.resourcePath);
-
-                        if (weaponPrefab != null)
-                        {
-                            Weapon weaponClone = Instantiate(weaponPrefab);
-                            weaponClone.weaponID = serializedWeapon.weaponID;
-                            weaponClone.level = serializedWeapon.level;
-                            inventoryDatabase.ownedWeapons.Add(weaponClone);
-                        }
-                    }
-                }
-            }
-
+            SaveUtils.LoadItems(quickSaveReader, playerManager);
         }
 
         void LoadPickups(QuickSaveReader quickSaveReader)

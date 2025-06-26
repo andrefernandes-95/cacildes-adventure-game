@@ -11,7 +11,6 @@ namespace AF
     {
         [Header("Components")]
         public PlayerManager playerManager;
-        public StatsBonusController playerStatsBonusController;
         public EquipmentGraphicsHandler equipmentGraphicsHandler;
         public AttackStatManager attackStatManager;
         public DefenseStatManager defenseStatManager;
@@ -198,12 +197,12 @@ namespace AF
         private (int vitality, int endurance, int strength, int dexterity, int intelligence, int reputation) GetPlayerBaseStats()
         {
             return (
-                playerStatsBonusController.GetCurrentVitality(),
-                playerStatsBonusController.GetCurrentEndurance(),
-                playerStatsBonusController.GetCurrentStrength(),
-                playerStatsBonusController.GetCurrentDexterity(),
-                playerStatsBonusController.GetCurrentIntelligence(),
-                playerStatsBonusController.GetCurrentReputation()
+                playerManager.playerStats.GetVitality(),
+                playerManager.playerStats.GetEndurance(),
+                playerManager.playerStats.GetStrength(),
+                playerManager.playerStats.GetDexterity(),
+                playerManager.playerStats.GetIntelligence(),
+                playerManager.playerStats.GetReputation()
             );
         }
 
@@ -213,12 +212,12 @@ namespace AF
             if (item is ArmorBase armor)
             {
                 return (
-                    EquipmentUtils.GetAttributeFromEquipment(armor, EquipmentUtils.AttributeType.VITALITY, playerStatsBonusController, equipmentDatabase),
-                    EquipmentUtils.GetAttributeFromEquipment(armor, EquipmentUtils.AttributeType.ENDURANCE, playerStatsBonusController, equipmentDatabase),
-                    EquipmentUtils.GetAttributeFromEquipment(armor, EquipmentUtils.AttributeType.STRENGTH, playerStatsBonusController, equipmentDatabase),
-                    EquipmentUtils.GetAttributeFromEquipment(armor, EquipmentUtils.AttributeType.DEXTERITY, playerStatsBonusController, equipmentDatabase),
-                    EquipmentUtils.GetAttributeFromEquipment(armor, EquipmentUtils.AttributeType.INTELLIGENCE, playerStatsBonusController, equipmentDatabase),
-                    EquipmentUtils.GetAttributeFromEquipment(armor, EquipmentUtils.AttributeType.REPUTATION, playerStatsBonusController, equipmentDatabase),
+                    EquipmentUtils.GetAttributeFromEquipment(armor, EquipmentUtils.AttributeType.VITALITY, playerManager, equipmentDatabase),
+                    EquipmentUtils.GetAttributeFromEquipment(armor, EquipmentUtils.AttributeType.ENDURANCE, playerManager, equipmentDatabase),
+                    EquipmentUtils.GetAttributeFromEquipment(armor, EquipmentUtils.AttributeType.STRENGTH, playerManager, equipmentDatabase),
+                    EquipmentUtils.GetAttributeFromEquipment(armor, EquipmentUtils.AttributeType.DEXTERITY, playerManager, equipmentDatabase),
+                    EquipmentUtils.GetAttributeFromEquipment(armor, EquipmentUtils.AttributeType.INTELLIGENCE, playerManager, equipmentDatabase),
+                    EquipmentUtils.GetAttributeFromEquipment(armor, EquipmentUtils.AttributeType.REPUTATION, playerManager, equipmentDatabase),
                     EquipmentUtils.GetAttributeFromAccessory(armor as Accessory, EquipmentUtils.AccessoryAttributeType.HEALTH_BONUS, playerManager, equipmentDatabase),
                     EquipmentUtils.GetAttributeFromAccessory(armor as Accessory, EquipmentUtils.AccessoryAttributeType.STAMINA_BONUS, playerManager, equipmentDatabase),
                     EquipmentUtils.GetAttributeFromAccessory(armor as Accessory, EquipmentUtils.AccessoryAttributeType.MANA_BONUS, playerManager, equipmentDatabase)
@@ -243,9 +242,9 @@ namespace AF
         private void SetAttackLabels(Weapon item, string labelName, WeaponElementType elementType)
         {
             int baseValue = EquipmentUtils.GetElementalAttackForCurrentWeapon(
-                equipmentDatabase.GetCurrentWeapon(), elementType, playerManager.attackStatManager, playerManager.statsBonusController.GetCurrentReputation());
+                equipmentDatabase.GetCurrentWeapon(), elementType, playerManager.attackStatManager, playerManager.playerStats.GetReputation());
             int itemValue = EquipmentUtils.GetElementalAttackForCurrentWeapon(
-                item, elementType, playerManager.attackStatManager, playerManager.statsBonusController.GetCurrentReputation());
+                item, elementType, playerManager.attackStatManager, playerManager.playerStats.GetReputation());
 
             SetStatLabel(labelName, baseValue, itemValue);
         }

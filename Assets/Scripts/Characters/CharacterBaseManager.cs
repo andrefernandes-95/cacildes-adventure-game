@@ -5,6 +5,7 @@ using AF.Animations;
 using AF.Characters;
 using AF.Combat;
 using AF.Health;
+using AF.Stats;
 using AF.StatusEffects;
 using UnityEngine;
 using UnityEngine.AI;
@@ -41,7 +42,12 @@ namespace AF
         public CharacterTransformHelper characterTransformHelper;
         public CharacterBaseWeaponsManager characterBaseWeaponsManager;
         public CharacterBaseAppearance characterBaseAppearance;
-
+        public SyntyCharacterModelManager syntyCharacterModelManager;
+        public CharacterBaseEquipment characterBaseEquipment;
+        public CharacterBaseInventory characterBaseInventory;
+        public CharacterBaseStats characterBaseStats;
+        public StatsBonusController statsBonusController;
+        public CharacterBaseDefenseManager characterBaseDefenseManager;
         public abstract void ResetStates();
 
         public bool IsBusy()
@@ -157,5 +163,9 @@ namespace AF
         public abstract AnimatorOverrideController GetAnimatorOverrideController();
         public abstract CharacterBaseManager GetTarget();
 
+        public bool IsUsingSyntyModularFantasyHeroModel()
+        {
+            return syntyCharacterModelManager.isUsingSyntyModularFantasyHeroModel;
+        }
     }
 }

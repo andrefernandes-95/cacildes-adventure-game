@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using AF.Health;
 using UnityEngine;
 using UnityEngine.Localization.Settings;
@@ -13,7 +15,7 @@ namespace AF
         Legs,
     }
 
-    public class ArmorBase : Item
+    public class ArmorBase : UpgradableItem
     {
         [System.Serializable]
         public class StatusEffectResistance
@@ -30,18 +32,22 @@ namespace AF
         }
 
         [Header("Stats")]
-        public float physicalDefense;
+
+        [Header("Damage Absorption")]
+        public Damage damageAbsorbed = new();
+
+        [Obsolete("Use Damage Absorbed")] public float physicalDefense;
 
         [Header("Elemental")]
-        public float fireDefense;
-        public float frostDefense;
-        public float lightningDefense;
-        public float magicDefense = 0;
-        public float darkDefense = 0;
-        public float waterDefense = 0;
+        [Obsolete("Use Damage Absorbed")] public float fireDefense;
+        [Obsolete("Use Damage Absorbed")] public float frostDefense;
+        [Obsolete("Use Damage Absorbed")] public float lightningDefense;
+        [Obsolete("Use Damage Absorbed")] public float magicDefense = 0;
+        [Obsolete("Use Damage Absorbed")] public float darkDefense = 0;
+        [Obsolete("Use Damage Absorbed")] public float waterDefense = 0;
 
         [Header("Negative Status Resistances")]
-        public StatusEffectResistance[] statusEffectResistances;
+        [Obsolete("Use Damage Absorbed")] public StatusEffectResistance[] statusEffectResistances;
         public StatusEffectCancellationRate[] statusEffectCancellationRates;
 
         [Header("Graphics")]
@@ -96,6 +102,13 @@ namespace AF
         [Header("Rage Mode")]
         public bool canRage = false;
 
+        [Header("Graphics")]
+        public List<string> graphicsToShow = new();
+        public string male_GraphicsToShow;
+        public string female_GraphicsToShow;
+        public Material armorMaterial;
+
+
         public string GetFormattedStatusResistances()
         {
             string result = "";
@@ -145,8 +158,6 @@ namespace AF
             return result.TrimEnd();
         }
 
-
-
         public void AttackEnemy(CharacterManager enemy)
         {
             if (!canDamageEnemiesUponAttack)
@@ -154,6 +165,14 @@ namespace AF
                 return;
             }
             enemy.damageReceiver.TakeDamage(damageDealtToEnemiesUponAttacked);
+        }
+
+        public virtual void OnEquip(CharacterBaseManager character)
+        {
+        }
+
+        public virtual void OnUnequip(CharacterBaseManager character)
+        {
         }
     }
 }

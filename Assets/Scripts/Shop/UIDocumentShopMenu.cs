@@ -288,9 +288,9 @@ namespace AF.Shops
             {
                 int finalValue = characterShop.GetItemEvaluation(item, inventoryDatabase, playerManager.statsBonusController, isPlayerBuying);
 
-                if (item.value != finalValue)
+                if (item.GetValue() != finalValue)
                 {
-                    buySellButton.Q<Label>("OriginalValue").text = item.value.ToString();
+                    buySellButton.Q<Label>("OriginalValue").text = item.GetValue().ToString();
                     buySellButton.Q<VisualElement>("OriginalValueContainer").style.display = DisplayStyle.Flex;
                 }
 

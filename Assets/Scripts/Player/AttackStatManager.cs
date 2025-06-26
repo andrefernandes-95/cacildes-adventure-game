@@ -128,7 +128,7 @@ namespace AF
                     weaponDamage.damageType = DamageType.ENRAGED;
                 }
 
-                if (!weapon.AreRequirementsMet(playerManager.statsBonusController))
+                if (!weapon.AreRequirementsMet(playerManager))
                 {
                     weaponDamage.Multiply(.1f);
                 }
@@ -394,7 +394,7 @@ namespace AF
             }
 
             return Formulas.GetBonusFromWeapon(
-                playerManager.statsBonusController.GetCurrentStrength(),
+                playerManager.characterBaseStats.GetStrength(),
                  scalingDictionary[weapon.strengthScaling.ToString()]
             );
         }
@@ -407,7 +407,7 @@ namespace AF
             }
 
             return Formulas.GetBonusFromWeapon(
-                playerManager.statsBonusController.GetCurrentDexterity(),
+                playerManager.characterBaseStats.GetDexterity(),
                  scalingDictionary[weapon.dexterityScaling.ToString()]
             );
         }
@@ -415,7 +415,7 @@ namespace AF
         public float GetIntelligenceBonusFromWeapon(Weapon weapon)
         {
             return Formulas.GetBonusFromWeapon(
-                playerManager.statsBonusController.GetCurrentIntelligence(),
+                playerManager.characterBaseStats.GetIntelligence(),
                  scalingDictionary[weapon.intelligenceScaling.ToString()]
             );
         }

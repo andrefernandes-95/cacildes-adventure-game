@@ -205,17 +205,17 @@ namespace AF
             }
         }
 
-        public static int GetAttributeFromEquipment(ArmorBase armorBase, AttributeType attributeType, StatsBonusController playerStatsBonusController, EquipmentDatabase equipmentDatabase)
+        public static int GetAttributeFromEquipment(ArmorBase armorBase, AttributeType attributeType, CharacterBaseManager characterBaseManager, EquipmentDatabase equipmentDatabase)
         {
             // Get current value based on attribute type
             int currentValue = attributeType switch
             {
-                AttributeType.VITALITY => playerStatsBonusController.GetCurrentVitality(),
-                AttributeType.ENDURANCE => playerStatsBonusController.GetCurrentEndurance(),
-                AttributeType.STRENGTH => playerStatsBonusController.GetCurrentStrength(),
-                AttributeType.DEXTERITY => playerStatsBonusController.GetCurrentDexterity(),
-                AttributeType.INTELLIGENCE => playerStatsBonusController.GetCurrentIntelligence(),
-                AttributeType.REPUTATION => playerStatsBonusController.GetCurrentReputation(),
+                AttributeType.VITALITY => characterBaseManager.characterBaseStats.GetVitality(),
+                AttributeType.ENDURANCE => characterBaseManager.characterBaseStats.GetEndurance(),
+                AttributeType.STRENGTH => characterBaseManager.characterBaseStats.GetStrength(),
+                AttributeType.DEXTERITY => characterBaseManager.characterBaseStats.GetDexterity(),
+                AttributeType.INTELLIGENCE => characterBaseManager.characterBaseStats.GetIntelligence(),
+                AttributeType.REPUTATION => characterBaseManager.characterBaseStats.GetReputation(),
                 _ => 0 // Fallback for safety
             };
 

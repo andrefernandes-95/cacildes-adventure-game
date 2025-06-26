@@ -9,6 +9,7 @@ namespace AF
 {
     public class SyntyCharacterModelManager : MonoBehaviour
     {
+        public bool isUsingSyntyModularFantasyHeroModel = true;
         public SerializedDictionary<string, GameObject> syntyCharacterBodyParts = new();
 
         public CharacterBaseManager character;
@@ -26,6 +27,12 @@ namespace AF
 
         void Awake()
         {
+            if (!isUsingSyntyModularFantasyHeroModel)
+            {
+                gameObject.SetActive(false);
+                return;
+            }
+
             CacheCharacterParts();
             InitializeDefaultBodyParts();
             LoadMaterialColorsAndApplyColors();
@@ -291,6 +298,54 @@ namespace AF
         public void ToggleLegs(bool show)
         {
             TogglePiece(character.characterBaseAppearance.GetLegs(), show);
+        }
+
+        public void EnableArmorPiece(
+           List<string> pieces,
+           Material armorMaterial
+       )
+        {
+            foreach (string gameObjectName in pieces)
+            {
+                if (!syntyCharacterBodyParts.ContainsKey(gameObjectName))
+                {
+                    continue;
+                }
+
+                GameObject bodyPieces = syntyCharacterBodyParts[gameObjectName];
+
+                // Set Materials
+                if (bodyPieces.TryGetComponent(out SkinnedMeshRenderer skinnedMeshRenderer))
+                {
+
+                    // Clone the material to avoid modifying the shared one
+                    Material clonedMaterial = new Material(armorMaterial);
+
+                    clonedMaterial.SetColor("_Color_Hair", character.characterBaseAppearance.GetHairColor());
+                    clonedMaterial.SetColor("_Color_Skin", character.characterBaseAppearance.GetSkinColor());
+                    clonedMaterial.SetColor("_Color_Stubble", character.characterBaseAppearance.GetSkinColor());
+                    clonedMaterial.SetColor("_Color_Eyes", character.characterBaseAppearance.GetEyesColor());
+                    clonedMaterial.SetColor("_Color_BodyArt", character.characterBaseAppearance.GetTattooColor());
+                    clonedMaterial.SetColor("_Color_Scar", character.characterBaseAppearance.GetTattooColor());
+
+                    // Set the new cloned materials back to the renderer
+                    skinnedMeshRenderer.material = clonedMaterial;
+                }
+
+                // Enable body piece
+                bodyPieces.SetActive(true);
+            }
+        }
+
+        public void DisablePieces(List<string> pieces)
+        {
+            foreach (string gameObjectName in pieces)
+            {
+                if (syntyCharacterBodyParts.ContainsKey(gameObjectName))
+                {
+                    syntyCharacterBodyParts[gameObjectName].SetActive(false);
+                }
+            }
         }
     }
 }

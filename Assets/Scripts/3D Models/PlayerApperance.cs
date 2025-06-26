@@ -14,7 +14,6 @@ namespace AF
         [SerializeField] List<string> maleLegs = new();
 
         [Header("Female Parts")]
-        [SerializeField] List<string> femaleHead = new();
         [SerializeField] List<string> femaleTorso = new();
         [SerializeField] List<string> femaleHands = new();
         [SerializeField] List<string> femaleLegs = new();

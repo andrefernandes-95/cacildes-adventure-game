@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using AF.Companions;
@@ -360,6 +361,382 @@ namespace AF
 
             recipes.TryRead("craftingRecipes", out string[] craftingRecipes);
             quickSaveWriter.Write("craftingRecipes", craftingRecipes);
+        }
+
+        public static void SaveItems(QuickSaveWriter quickSaveWriter, InventoryDatabase inventoryDatabase)
+        {
+            SerializeAndWriteForUpgradeableItem(quickSaveWriter, "ownedWeapons", inventoryDatabase.ownedSpells);
+            SerializeAndWriteForUpgradeableItem(quickSaveWriter, "ownedSpells", inventoryDatabase.ownedSpells);
+            SerializeAndWriteForUpgradeableItem(quickSaveWriter, "ownedHelmets", inventoryDatabase.ownedHelmets);
+            SerializeAndWriteForUpgradeableItem(quickSaveWriter, "ownedArmors", inventoryDatabase.ownedArmors);
+            SerializeAndWriteForUpgradeableItem(quickSaveWriter, "ownedLegwears", inventoryDatabase.ownedLegwears);
+            SerializeAndWriteForUpgradeableItem(quickSaveWriter, "ownedGauntlets", inventoryDatabase.ownedGauntlets);
+
+            SerializeAndWrite(quickSaveWriter, "ownedArrows", inventoryDatabase.ownedArrows);
+            SerializeAndWrite(quickSaveWriter, "ownedAccessories", inventoryDatabase.ownedAccessories);
+            SerializeAndWrite(quickSaveWriter, "ownedConsumables", inventoryDatabase.ownedConsumables);
+            SerializeAndWrite(quickSaveWriter, "ownedKeyItems", inventoryDatabase.ownedKeyItems);
+            SerializeAndWrite(quickSaveWriter, "ownedCraftingMaterials", inventoryDatabase.ownedCraftingMaterials);
+            SerializeAndWrite(quickSaveWriter, "ownedUpgradeMaterials", inventoryDatabase.ownedUpgradeMaterials);
+        }
+
+        static void SerializeAndWrite<T>(QuickSaveWriter quickSaveWriter, string key, List<T> items) where T : Item
+        {
+            List<SerializedItem> serializedItems = new();
+            foreach (T item in items)
+            {
+                string path = Utils.GetItemPath(item).Replace("(Clone)", "");
+                serializedItems.Add(new SerializedItem
+                {
+                    itemID = item.itemID,
+                    resourcePath = path
+                });
+            }
+            quickSaveWriter.Write(key, serializedItems);
+        }
+
+        static void SerializeAndWriteForUpgradeableItem<T>(QuickSaveWriter quickSaveWriter, string key, List<T> items) where T : UpgradableItem
+        {
+            List<SerializedUpgradeableItem> serializedItems = new();
+            foreach (T item in items)
+            {
+                string path = Utils.GetItemPath(item).Replace("(Clone)", "");
+                serializedItems.Add(new SerializedUpgradeableItem
+                {
+                    itemID = item.itemID,
+                    resourcePath = path,
+                    level = item.level
+                });
+            }
+            quickSaveWriter.Write(key, serializedItems);
+        }
+
+        public static void LoadItems(QuickSaveReader quickSaveReader, CharacterBaseManager characterBaseManager)
+        {
+            // Loading Upgradable Items
+            List<Weapon> weaponsToLoad = LoadUpgradeableItems<Weapon>(quickSaveReader, "ownedWeapons");
+            foreach (Weapon weapon in weaponsToLoad)
+            {
+                characterBaseManager.characterBaseInventory.AddWeapon(weapon);
+            }
+
+            List<Spell> spellsToLoad = LoadUpgradeableItems<Spell>(quickSaveReader, "ownedSpells");
+            foreach (Spell spell in spellsToLoad)
+            {
+                characterBaseManager.characterBaseInventory.AddSpell(spell);
+            }
+
+            List<Helmet> helmetsToLoad = LoadUpgradeableItems<Helmet>(quickSaveReader, "ownedHelmets");
+            foreach (Helmet helmet in helmetsToLoad)
+            {
+                characterBaseManager.characterBaseInventory.AddHelmet(helmet);
+            }
+
+            List<Armor> armorsToLoad = LoadUpgradeableItems<Armor>(quickSaveReader, "ownedArmors");
+            foreach (Armor armor in armorsToLoad)
+            {
+                characterBaseManager.characterBaseInventory.AddArmor(armor);
+            }
+
+            List<Legwear> legwearsToLoad = LoadUpgradeableItems<Legwear>(quickSaveReader, "ownedLegwears");
+            foreach (Legwear legwear in legwearsToLoad)
+            {
+                characterBaseManager.characterBaseInventory.AddLegwear(legwear);
+            }
+
+            List<Gauntlet> gauntletsToLoad = LoadUpgradeableItems<Gauntlet>(quickSaveReader, "ownedGauntlets");
+            foreach (Gauntlet gauntlet in gauntletsToLoad)
+            {
+                characterBaseManager.characterBaseInventory.AddGauntlet(gauntlet);
+            }
+
+            List<Accessory> accessoriesToLoad = LoadUpgradeableItems<Accessory>(quickSaveReader, "ownedAccessories");
+            foreach (Accessory accessory in accessoriesToLoad)
+            {
+                characterBaseManager.characterBaseInventory.AddAccessory(accessory);
+            }
+
+            List<Arrow> arrowsToLoad = LoadSerializedItem<Arrow>(quickSaveReader, "ownedArrows");
+            foreach (Arrow arrow in arrowsToLoad)
+            {
+                characterBaseManager.characterBaseInventory.AddArrow(arrow);
+            }
+
+            List<Consumable> consumablesToLoad = LoadSerializedItem<Consumable>(quickSaveReader, "ownedConsumables");
+            foreach (Consumable consumable in consumablesToLoad)
+            {
+                characterBaseManager.characterBaseInventory.AddConsumable(consumable);
+            }
+
+            List<KeyItem> keyItemsToLoad = LoadSerializedItem<KeyItem>(quickSaveReader, "ownedKeyItems");
+            foreach (KeyItem keyItem in keyItemsToLoad)
+            {
+                characterBaseManager.characterBaseInventory.AddKeyItem(keyItem);
+            }
+
+            List<CraftingMaterial> craftingMaterialsToLoad = LoadSerializedItem<CraftingMaterial>(quickSaveReader, "ownedCraftingMaterials");
+            foreach (CraftingMaterial material in craftingMaterialsToLoad)
+            {
+                characterBaseManager.characterBaseInventory.AddCraftingMaterial(material);
+            }
+
+            List<UpgradeMaterial> upgradeMaterialsToLoad = LoadSerializedItem<UpgradeMaterial>(quickSaveReader, "ownedUpgradeMaterials");
+            foreach (UpgradeMaterial material in upgradeMaterialsToLoad)
+            {
+                characterBaseManager.characterBaseInventory.AddUpgradeMaterial(material);
+            }
+        }
+
+        static List<T> LoadUpgradeableItems<T>(QuickSaveReader quickSaveReader, string key) where T : UpgradableItem
+        {
+            quickSaveReader.TryRead(key, out List<SerializedUpgradeableItem> ownedUpgradeableItems);
+
+            List<T> itemsToAdd = new();
+
+            if (ownedUpgradeableItems != null && ownedUpgradeableItems.Count > 0)
+            {
+                for (int idx = 0; idx < ownedUpgradeableItems.Count; idx++)
+                {
+                    SerializedUpgradeableItem serializedItem = ownedUpgradeableItems.ElementAt(idx);
+
+                    if (serializedItem != null)
+                    {
+                        T itemFile = Resources.Load<T>(serializedItem.resourcePath);
+
+                        if (itemFile != null)
+                        {
+                            T clone = ScriptableObject.Instantiate(itemFile);
+                            clone.itemID = serializedItem.itemID;
+                            clone.level = serializedItem.level;
+
+                            itemsToAdd.Add(clone);
+                        }
+                    }
+                }
+            }
+
+            return itemsToAdd;
+        }
+
+        static List<T> LoadSerializedItem<T>(QuickSaveReader quickSaveReader, string key) where T : Item
+        {
+            quickSaveReader.TryRead(key, out List<SerializedItem> ownedSerializedItems);
+
+            List<T> itemsToAdd = new();
+
+            if (ownedSerializedItems != null && ownedSerializedItems.Count > 0)
+            {
+                for (int idx = 0; idx < ownedSerializedItems.Count; idx++)
+                {
+                    SerializedItem serializedItem = ownedSerializedItems.ElementAt(idx);
+
+                    if (serializedItem != null)
+                    {
+                        T itemFile = Resources.Load<T>(serializedItem.resourcePath);
+
+                        if (itemFile != null)
+                        {
+                            T clone = ScriptableObject.Instantiate(itemFile);
+                            clone.itemID = serializedItem.itemID;
+                            itemsToAdd.Add(clone);
+                        }
+                    }
+                }
+            }
+
+            return itemsToAdd;
+        }
+
+        public static void LoadEquipment(QuickSaveReader quickSaveReader, CharacterBaseInventory characterBaseInventory, EquipmentDatabase equipmentDatabase)
+        {
+            quickSaveReader.TryRead("weapons", out SerializedUpgradeableItem[] serializedWeapons);
+            if (serializedWeapons != null && serializedWeapons.Length > 0)
+            {
+                for (int idx = 0; idx < serializedWeapons.Length; idx++)
+                {
+                    LoadSerializedWeapon(serializedWeapons[idx], idx, true, characterBaseInventory, equipmentDatabase);
+                }
+            }
+            quickSaveReader.TryRead("shields", out SerializedUpgradeableItem[] serializedLeftWeapons);
+            if (serializedLeftWeapons != null && serializedLeftWeapons.Length > 0)
+            {
+                for (int idx = 0; idx < serializedLeftWeapons.Length; idx++)
+                {
+                    LoadSerializedWeapon(serializedLeftWeapons[idx], idx, false, characterBaseInventory, equipmentDatabase);
+                }
+            }
+
+            // Try to read arrows
+            quickSaveReader.TryRead<string[]>("arrows", out string[] arrows);
+            if (arrows != null && arrows.Length > 0)
+            {
+                for (int idx = 0; idx < arrows.Length; idx++)
+                {
+                    string arrowName = arrows[idx];
+
+                    if (!string.IsNullOrEmpty(arrowName))
+                    {
+                        Arrow arrowInstance = Resources.Load<Arrow>("Items/Arrows/" + arrowName);
+
+                        if (arrowInstance != null)
+                        {
+                            equipmentDatabase.arrows[idx] = arrowInstance;
+                        }
+                    }
+                }
+            }
+
+            // Try to read spells
+            quickSaveReader.TryRead<string[]>("spells", out string[] spells);
+            if (spells != null && spells.Length > 0)
+            {
+                for (int idx = 0; idx < spells.Length; idx++)
+                {
+                    string spellId = spells[idx];
+
+                    if (!string.IsNullOrEmpty(spellId))
+                    {
+                        Spell match = characterBaseInventory.GetSpells().First(
+                            item => item.itemID == spellId);
+
+                        if (match != null)
+                        {
+                            equipmentDatabase.spells[idx] = match;
+                        }
+                    }
+                }
+            }
+
+            // Try to read accessories
+            quickSaveReader.TryRead<string[]>("accessories", out string[] accessories);
+            if (accessories != null && accessories.Length > 0)
+            {
+                for (int idx = 0; idx < accessories.Length; idx++)
+                {
+                    string accessoryId = accessories[idx];
+
+                    if (!string.IsNullOrEmpty(accessoryId))
+                    {
+                        Accessory match = characterBaseInventory.GetAccessories().First(
+                            item => item.itemID == accessoryId);
+
+                        if (match != null)
+                        {
+                            equipmentDatabase.accessories[idx] = match;
+                        }
+                    }
+                }
+            }
+
+            // Try to read consumables
+            quickSaveReader.TryRead<string[]>("consumables", out string[] consumables);
+            if (consumables != null && consumables.Length > 0)
+            {
+                for (int idx = 0; idx < consumables.Length; idx++)
+                {
+                    string consumableId = consumables[idx];
+
+                    if (!string.IsNullOrEmpty(consumableId))
+                    {
+                        Consumable match = characterBaseInventory.GetConsumables().First(
+                            item => item.itemID == consumableId);
+
+                        if (match != null)
+                        {
+                            equipmentDatabase.consumables[idx] = match;
+                        }
+                    }
+                }
+            }
+
+            // Try to read helmet
+            quickSaveReader.TryRead<string>("helmet", out string helmetId);
+            if (!string.IsNullOrEmpty(helmetId))
+            {
+                Helmet match = characterBaseInventory.GetHelmets().First(
+                    item => item.itemID == helmetId);
+
+                if (match != null)
+                {
+                    equipmentDatabase.helmet = match;
+                }
+            }
+            else
+            {
+                equipmentDatabase.UnequipHelmet();
+            }
+
+            // Try to read armor
+            quickSaveReader.TryRead<string>("armor", out string armorId);
+            if (!string.IsNullOrEmpty(armorId))
+            {
+                Armor match = characterBaseInventory.GetArmors().First(
+                    item => item.itemID == armorId);
+
+                if (match != null)
+                {
+                    equipmentDatabase.armor = match;
+                }
+            }
+            else
+            {
+                equipmentDatabase.UnequipArmor();
+            }
+
+            // Try to read gauntlet
+            quickSaveReader.TryRead<string>("gauntlet", out string gauntletId);
+            if (!string.IsNullOrEmpty(gauntletId))
+            {
+                Gauntlet match = characterBaseInventory.GetGauntlets().First(
+                    item => item.itemID == gauntletId);
+
+                if (match != null)
+                {
+                    equipmentDatabase.gauntlet = match;
+                }
+            }
+            else
+            {
+                equipmentDatabase.UnequipGauntlet();
+            }
+
+            // Try to read legwear
+            quickSaveReader.TryRead<string>("legwear", out string legwearId);
+            if (!string.IsNullOrEmpty(legwearId))
+            {
+                Legwear match = characterBaseInventory.GetLegwears().First(
+                    item => item.itemID == legwearId);
+
+                if (match != null)
+                {
+                    equipmentDatabase.legwear = match;
+                }
+            }
+            else
+            {
+                equipmentDatabase.UnequipLegwear();
+            }
+        }
+
+        static void LoadSerializedWeapon(SerializedUpgradeableItem serializedWeapon, int slotIndex, bool isRightHandWeapon, CharacterBaseInventory characterBaseInventory, EquipmentDatabase equipmentDatabase)
+        {
+            if (serializedWeapon != null)
+            {
+                Weapon match = characterBaseInventory.GetWeapons().First(
+                    ownedWeapon => ownedWeapon.itemID == serializedWeapon.itemID);
+
+                if (match != null)
+                {
+                    if (isRightHandWeapon)
+                    {
+                        equipmentDatabase.weapons[slotIndex] = match;
+                    }
+                    else
+                    {
+                        equipmentDatabase.shields[slotIndex] = match;
+                    }
+                }
+            }
         }
     }
 }

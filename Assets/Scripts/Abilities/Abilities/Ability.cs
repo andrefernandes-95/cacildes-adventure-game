@@ -19,11 +19,10 @@ namespace AF
         public void ApplyDamageScaling(PlayerManager playerManager)
         {
             damage.ScaleWithStats(
-                playerManager.statsBonusController.GetCurrentStrength(),
-                playerManager.statsBonusController.GetCurrentDexterity(),
-                playerManager.statsBonusController.GetCurrentIntelligence());
+                playerManager.playerStats.GetStrength(),
+                playerManager.playerStats.GetDexterity(),
+                playerManager.playerStats.GetIntelligence());
         }
-
 
         public void ApplyDamageScaling(CharacterManager characterManager)
         {

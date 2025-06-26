@@ -14,12 +14,6 @@ namespace AF
         public EquipmentDatabase equipmentDatabase;
 
         [Header("Components")]
-        public StatsBonusController playerStatsBonusController;
-
-        public StarterAssetsInputs inputs;
-
-        public EquipmentGraphicsHandler equipmentGraphicsHandler;
-
         public PlayerManager playerManager;
 
         [Header("Regeneration Settings")]
@@ -36,7 +30,7 @@ namespace AF
 
         private void Update()
         {
-            if (playerStatsBonusController.shouldRegenerateMana && playerStatsDatabase.currentMana < playerStatsDatabase.maxMana)
+            if (playerManager.statsBonusController.shouldRegenerateMana && playerStatsDatabase.currentMana < playerStatsDatabase.maxMana)
             {
                 HandleManaRegen();
             }
@@ -44,7 +38,7 @@ namespace AF
 
         void HandleManaRegen()
         {
-            var finalRegenerationRate = MANA_REGENERATION_RATE + playerStatsBonusController.staminaRegenerationBonus;
+            var finalRegenerationRate = MANA_REGENERATION_RATE + playerManager.statsBonusController.staminaRegenerationBonus;
 
             playerStatsDatabase.currentMana = Mathf.Clamp(playerStatsDatabase.currentMana + finalRegenerationRate * Time.deltaTime, 0f, GetMaxMana());
         }
@@ -52,8 +46,8 @@ namespace AF
         public int GetMaxMana()
         {
             return Formulas.CalculateStatForLevel(
-                playerStatsDatabase.maxMana + playerStatsBonusController.magicBonus,
-                playerStatsBonusController.GetCurrentIntelligence(),
+                playerStatsDatabase.maxMana + playerManager.statsBonusController.magicBonus,
+                playerManager.playerStats.GetIntelligence(),
                 playerStatsDatabase.levelMultiplierForMana);
         }
 

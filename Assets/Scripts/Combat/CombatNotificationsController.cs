@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
@@ -16,7 +15,7 @@ namespace AF
 
         private void Awake()
         {
-            combatNotificationManager = FindObjectOfType<CombatNotificationManager>(true);
+            combatNotificationManager = FindFirstObjectByType<CombatNotificationManager>(FindObjectsInactive.Include);
         }
 
         public void AddNotification(string text, Color color)

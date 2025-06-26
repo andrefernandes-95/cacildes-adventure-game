@@ -139,7 +139,7 @@ namespace AF.UI.EquipmentMenu
             }
             else if (equipmentType == EquipmentType.ARROW)
             {
-                PopulateScrollView<Arrow>(false, slotIndex);
+                PopulateScrollView(false, slotIndex, playerManager.characterBaseInventory.GetArrows());
 
                 if (!equipmentDatabase.IsRangeWeaponEquippedOnAnySlot())
                 {
@@ -157,7 +157,7 @@ namespace AF.UI.EquipmentMenu
             }
             else if (equipmentType == EquipmentType.SPELL)
             {
-                PopulateScrollView<Spell>(false, slotIndex);
+                PopulateScrollView(false, slotIndex, playerManager.characterBaseInventory.GetSpells());
 
                 if (!equipmentDatabase.IsStaffWeaponEquippedOnAnySlot())
                 {
@@ -175,31 +175,35 @@ namespace AF.UI.EquipmentMenu
             }
             else if (equipmentType == EquipmentType.HELMET)
             {
-                PopulateScrollView<Helmet>(false, slotIndex);
+                PopulateScrollView(false, slotIndex, playerManager.characterBaseInventory.GetHelmets());
             }
             else if (equipmentType == EquipmentType.ARMOR)
             {
-                PopulateScrollView<Armor>(false, slotIndex);
+                PopulateScrollView(false, slotIndex, playerManager.characterBaseInventory.GetArmors());
             }
             else if (equipmentType == EquipmentType.GAUNTLET)
             {
-                PopulateScrollView<Gauntlet>(false, slotIndex);
+                PopulateScrollView(false, slotIndex, playerManager.characterBaseInventory.GetGauntlets());
             }
             else if (equipmentType == EquipmentType.BOOTS)
             {
-                PopulateScrollView<Legwear>(false, slotIndex);
+                PopulateScrollView(false, slotIndex, playerManager.characterBaseInventory.GetLegwears());
             }
             else if (equipmentType == EquipmentType.ACCESSORIES)
             {
-                PopulateScrollView<Accessory>(false, slotIndex);
+                PopulateScrollView(false, slotIndex, playerManager.characterBaseInventory.GetAccessories());
             }
             else if (equipmentType == EquipmentType.CONSUMABLES)
             {
-                PopulateScrollView<Consumable>(false, slotIndex);
+                PopulateScrollView(false, slotIndex, playerManager.characterBaseInventory.GetConsumables());
             }
             else if (equipmentType == EquipmentType.OTHER_ITEMS)
             {
-                PopulateScrollView<Item>(true, slotIndex);
+                List<Item> otherItems = new();
+                otherItems.AddRange(playerManager.characterBaseInventory.GetKeyItems());
+                otherItems.AddRange(playerManager.characterBaseInventory.GetUpgradeMaterials());
+                otherItems.AddRange(playerManager.characterBaseInventory.GetCraftingMaterials());
+                PopulateScrollView(true, slotIndex, otherItems);
             }
 
             // Delay the focus until the next frame, required as a hack for now
@@ -464,36 +468,46 @@ namespace AF.UI.EquipmentMenu
             Invoke(nameof(GiveFocus), 0f);
         }
 
-        void PopulateScrollView<T>(bool showOnlyKeyItems, int slotIndex) where T : Item
+        void PopulateScrollView<T>(bool showOnlyKeyItems, int slotIndex, List<T> items) where T : Item
         {
             this.itemsScrollView.Clear();
 
             var query = inventoryDatabase.ownedItems
                 .Where(item => ShouldShowItem<T>(item, slotIndex, showOnlyKeyItems));
 
-            Dictionary<Item, ItemAmount> filteredItems = query.ToDictionary(item => item.Key, item => item.Value);
+            Dictionary<Item, int> stackableItems = new();
+            Dictionary<Item, Label> stackableItemAmountLabels = new();
 
-            for (int i = 0; i < filteredItems.Count; i++)
+            for (int i = 0; i < items.Count; i++)
             {
-                var item = filteredItems.ElementAt(i);
+                var item = items.ElementAt(i);
 
-                bool isEquipped = IsItemEquipped(item.Key, slotIndex);
+                if (stackableItems.ContainsKey(item))
+                {
+                    stackableItemAmountLabels[item].text = $"${item.GetName()} ({stackableItems})";
+                    continue;
+                }
+
+                bool isEquipped = IsItemEquipped(item, slotIndex);
 
                 var instance = itemButtonPrefab.CloneTree();
-                instance.Q<VisualElement>("Sprite").style.backgroundImage = new StyleBackground(item.Key.sprite);
+                instance.Q<VisualElement>("Sprite").style.backgroundImage = new StyleBackground(item.sprite);
+                instance.Q<VisualElement>("CardSprite").style.display = DisplayStyle.None;
+                instance.Q<VisualElement>("Sprite").style.backgroundImage = new StyleBackground(item.sprite);
 
-                instance.Q<VisualElement>("CardSprite").style.display = item.Key is Card ? DisplayStyle.Flex : DisplayStyle.None;
-
-                instance.Q<VisualElement>("Sprite").style.backgroundImage = new StyleBackground(item.Key.sprite);
                 var itemName = instance.Q<Label>("ItemName");
                 var itemType = instance.Q<Label>("ItemType");
                 itemType.style.display = DisplayStyle.None;
 
-                itemName.text = item.Key.GetName();
+                itemName.text = item.GetName();
 
-                if (item.Key is Consumable || item.Key is Arrow || showOnlyKeyItems)
+                if (item is Consumable || item is Arrow || showOnlyKeyItems)
                 {
-                    itemName.text += $" ({item.Value.amount})";
+                    if (!stackableItems.ContainsKey(item))
+                    {
+                        stackableItems.Add(item, 1);
+                        stackableItemAmountLabels.Add(item, itemName);
+                    }
                 }
 
                 if (isEquipped)
@@ -501,7 +515,7 @@ namespace AF.UI.EquipmentMenu
                     itemName.text += " " + LocalizationSettings.StringDatabase.GetLocalizedString("UIDocuments", "(Equipped)");
                 }
 
-                if (item.Key is Weapon weapon)
+                if (item is Weapon weapon)
                 {
                     itemType.text = Utils.IsPortuguese() ? "Corpo a Corpo" : "Melee Weapon";
                     itemType.style.color = meleeWeaponTypeColor;
@@ -520,14 +534,14 @@ namespace AF.UI.EquipmentMenu
                     itemType.style.display = DisplayStyle.Flex;
                 }
 
-                var equipmentColorIndicator = GetEquipmentColorIndicator(item.Key);
+                var equipmentColorIndicator = GetEquipmentColorIndicator(item);
                 if (equipmentColorIndicator == Color.black)
                 {
                     instance.Q<VisualElement>("Indicator").style.display = DisplayStyle.None;
                 }
                 else
                 {
-                    instance.Q<VisualElement>("Indicator").style.unityBackgroundImageTintColor = GetEquipmentColorIndicator(item.Key);
+                    instance.Q<VisualElement>("Indicator").style.unityBackgroundImageTintColor = GetEquipmentColorIndicator(item);
                     instance.Q<VisualElement>("Indicator").style.display = DisplayStyle.Flex;
                 }
 
@@ -542,7 +556,7 @@ namespace AF.UI.EquipmentMenu
 
                     bool ignoreRerender = false;
 
-                    if (item.Key is Weapon weapon)
+                    if (item is Weapon weapon)
                     {
                         if (!isEquipped)
                         {
@@ -553,7 +567,7 @@ namespace AF.UI.EquipmentMenu
                             equipmentDatabase.UnequipWeapon(slotIndex);
                         }
                     }
-                    else if (item.Key is Shield shield)
+                    else if (item is Shield shield)
                     {
                         if (!isEquipped)
                         {
@@ -564,95 +578,95 @@ namespace AF.UI.EquipmentMenu
                             equipmentDatabase.UnequipShield(slotIndex);
                         }
                     }
-                    else if (item.Key is Helmet helmet)
+                    else if (item is Helmet helmet)
                     {
                         if (!isEquipped)
                         {
-                            playerManager.equipmentGraphicsHandler.EquipHelmet(helmet);
+                            playerManager.characterBaseEquipment.EquipHelmet(Instantiate(helmet));
                         }
                         else
                         {
-                            playerManager.equipmentGraphicsHandler.UnequipHelmet();
+                            playerManager.characterBaseEquipment.UnequipHelmet();
                         }
                     }
-                    else if (item.Key is Armor armor)
+                    else if (item is Armor armor)
                     {
                         if (!isEquipped)
                         {
-                            playerManager.equipmentGraphicsHandler.EquipArmor(armor);
+                            playerManager.characterBaseEquipment.EquipArmor(Instantiate(armor));
                         }
                         else
                         {
-                            playerManager.equipmentGraphicsHandler.UnequipArmor();
+                            playerManager.characterBaseEquipment.UnequipArmor();
                         }
                     }
-                    else if (item.Key is Gauntlet gauntlet)
+                    else if (item is Gauntlet gauntlet)
                     {
                         if (!isEquipped)
                         {
-                            playerManager.equipmentGraphicsHandler.EquipGauntlet(gauntlet);
+                            playerManager.characterBaseEquipment.EquipGauntlets(Instantiate(gauntlet));
                         }
                         else
                         {
-                            playerManager.equipmentGraphicsHandler.UnequipGauntlet();
+                            playerManager.characterBaseEquipment.UnequipGauntlets();
                         }
                     }
-                    else if (item.Key is Legwear legwear)
+                    else if (item is Legwear legwear)
                     {
                         if (!isEquipped)
                         {
-                            playerManager.equipmentGraphicsHandler.EquipLegwear(legwear);
+                            playerManager.characterBaseEquipment.EquipLegwear(Instantiate(legwear));
                         }
                         else
                         {
-                            playerManager.equipmentGraphicsHandler.UnequipLegwear();
+                            playerManager.characterBaseEquipment.UnequipLegwear();
                         }
                     }
-                    else if (item.Key is Accessory accessory)
+                    else if (item is Accessory accessory)
                     {
                         if (!isEquipped)
                         {
-                            playerManager.equipmentGraphicsHandler.EquipAccessory(accessory, slotIndex);
+                            playerManager.characterBaseEquipment.EquipAccessory(Instantiate(accessory), slotIndex);
                         }
                         else
                         {
-                            playerManager.equipmentGraphicsHandler.UnequipAccessory(slotIndex);
+                            playerManager.characterBaseEquipment.UnequipAccessory(slotIndex);
                         }
                     }
-                    else if (item.Key is Arrow)
+                    else if (item is Arrow)
                     {
                         if (!isEquipped)
                         {
-                            equipmentDatabase.EquipArrow(item.Key as Arrow, slotIndex);
+                            equipmentDatabase.EquipArrow(item as Arrow, slotIndex);
                         }
                         else
                         {
                             equipmentDatabase.UnequipArrow(slotIndex);
                         }
                     }
-                    else if (item.Key is Consumable)
+                    else if (item is Consumable)
                     {
                         if (!isEquipped)
                         {
-                            equipmentDatabase.EquipConsumable(item.Key as Consumable, slotIndex);
+                            equipmentDatabase.EquipConsumable(item as Consumable, slotIndex);
                         }
                         else
                         {
                             equipmentDatabase.UnequipConsumable(slotIndex);
                         }
                     }
-                    else if (item.Key is Spell spell)
+                    else if (item is Spell spell)
                     {
                         if (!isEquipped)
                         {
-                            if (!spell.AreRequirementsMet(playerManager.statsBonusController))
+                            if (!spell.AreRequirementsMet(playerManager))
                             {
                                 notificationManager.ShowNotification(LocalizationSettings.StringDatabase.GetLocalizedString("UIDocuments", "Can not equip spell. Requirements not met!"), notificationManager.systemError);
                                 ignoreRerender = true;
                             }
                             else
                             {
-                                equipmentDatabase.EquipSpell(item.Key as Spell, slotIndex);
+                                equipmentDatabase.EquipSpell(item as Spell, slotIndex);
                             }
                         }
                         else
@@ -669,28 +683,10 @@ namespace AF.UI.EquipmentMenu
                     //PopulateScrollView<T>(showOnlyKeyItems, slotIndex);
                 };
 
-                SetupItemButton(instance, item.Key);
-
-                instance.RegisterCallback<KeyDownEvent>(ev =>
-                {
-                    if (inputs.jump && item.Key is Consumable)
-                    {
-                        inputs.jump = false;
-
-                        if (playerStatsDatabase.currentHealth <= 0)
-                        {
-                            return;
-                        }
-
-                        playerManager.playerInventory.PrepareItemForConsuming(item.Key as Consumable);
-                        menuManager.CloseMenu();
-                    }
-                });
+                SetupItemButton(instance, item);
 
                 this.itemsScrollView.Add(instance);
             }
-
-
 
             Invoke(nameof(GiveFocus), 0f);
         }

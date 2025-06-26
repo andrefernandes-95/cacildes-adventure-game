@@ -914,14 +914,14 @@ namespace AF
                 JumpWeightBonus = -1;
             }
 
-            if (playerManager.statsBonusController.GetCurrentDexterity() > 1)
+            if (playerManager.playerStats.GetDexterity() > 1)
             {
                 // DEX 1: 1
                 // DEX 10: 1.7
                 // DEX 25: 2.23
                 // DEX 50: 2.65
                 // DEX 100: 3.16
-                _JumpHeightBonus += Mathf.Pow(playerManager.statsBonusController.GetCurrentDexterity(), .05f) / 2;
+                _JumpHeightBonus += Mathf.Pow(playerManager.playerStats.GetDexterity(), .05f) / 2;
             }
 
             return (int)(JumpHeight + _JumpHeightBonus + JumpWeightBonus);
@@ -931,9 +931,9 @@ namespace AF
         {
             int movementSpeedBonus = playerManager.statsBonusController.movementSpeedBonus;
 
-            if (playerManager.statsBonusController.GetCurrentDexterity() > 1)
+            if (playerManager.playerStats.GetDexterity() > 1)
             {
-                movementSpeedBonus += (int)Mathf.Pow(playerManager.statsBonusController.GetCurrentDexterity(), .115f);
+                movementSpeedBonus += (int)Mathf.Pow(playerManager.playerStats.GetDexterity(), .115f);
             }
 
             return movementSpeedBonus;

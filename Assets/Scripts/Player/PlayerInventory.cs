@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using AF.Inventory;
 using AF.Ladders;
@@ -10,7 +11,7 @@ using UnityEngine.Localization.Settings;
 
 namespace AF
 {
-    public class PlayerInventory : MonoBehaviour
+    public class PlayerInventory : CharacterBaseInventory
     {
         public Consumable currentConsumedItem;
 
@@ -230,7 +231,7 @@ namespace AF
 
             if (consumable.isBossToken || consumable.canBeConsumedForGold)
             {
-                uIDocumentPlayerGold.AddGold((int)consumable.value);
+                uIDocumentPlayerGold.AddGold((int)consumable.GetValue());
             }
 
             isConsumingItem = true;
@@ -312,6 +313,183 @@ namespace AF
         {
             onDisabledAshes?.Invoke();
             disableAshesUsage = true;
+        }
+
+        public override List<Weapon> GetWeapons()
+        {
+            return inventoryDatabase.ownedWeapons;
+        }
+
+        public override List<Shield> GetShields()
+        {
+            return inventoryDatabase.ownedWeapons.Where(weapon => weapon is Shield).OfType<Shield>().ToList();
+        }
+
+        public override List<Arrow> GetArrows()
+        {
+            return inventoryDatabase.ownedArrows;
+        }
+
+        public override List<Spell> GetSpells()
+        {
+            return inventoryDatabase.ownedSpells;
+        }
+
+        public override List<Accessory> GetAccessories()
+        {
+            return inventoryDatabase.ownedAccessories;
+        }
+
+        public override List<Consumable> GetConsumables()
+        {
+            return inventoryDatabase.ownedConsumables;
+        }
+
+        public override List<Helmet> GetHelmets()
+        {
+            return inventoryDatabase.ownedHelmets;
+        }
+
+        public override List<Armor> GetArmors()
+        {
+            return inventoryDatabase.ownedArmors;
+        }
+
+        public override List<Gauntlet> GetGauntlets()
+        {
+            return inventoryDatabase.ownedGauntlets;
+        }
+
+        public override List<Legwear> GetLegwears()
+        {
+            return inventoryDatabase.ownedLegwears;
+        }
+
+        public override List<CraftingMaterial> GetCraftingMaterials()
+        {
+            return inventoryDatabase.ownedCraftingMaterials;
+        }
+
+        public override List<UpgradeMaterial> GetUpgradeMaterials()
+        {
+            return inventoryDatabase.ownedUpgradeMaterials;
+        }
+
+        public override List<KeyItem> GetKeyItems()
+        {
+            return inventoryDatabase.ownedKeyItems;
+        }
+
+        public override Weapon AddWeapon(Weapon weapon)
+        {
+            Weapon clone = Instantiate(weapon);
+            clone.itemID = GenerateItemId();
+            clone.level = 0;
+            inventoryDatabase.ownedWeapons.Add(clone);
+            return clone;
+        }
+
+        public override Shield AddShield(Shield shield)
+        {
+            Shield clone = Instantiate(shield);
+            clone.itemID = GenerateItemId();
+            clone.level = 0;
+            inventoryDatabase.ownedWeapons.Add(clone);
+            return clone;
+        }
+
+        public override Helmet AddHelmet(Helmet helmet)
+        {
+            Helmet clone = Instantiate(helmet);
+            clone.itemID = GenerateItemId();
+            clone.level = 0;
+            inventoryDatabase.ownedHelmets.Add(clone);
+            return clone;
+        }
+
+        public override Armor AddArmor(Armor armor)
+        {
+            Armor clone = Instantiate(armor);
+            clone.itemID = GenerateItemId();
+            clone.level = 0;
+            inventoryDatabase.ownedArmors.Add(clone);
+            return clone;
+        }
+
+        public override Gauntlet AddGauntlet(Gauntlet gauntlet)
+        {
+            Gauntlet clone = Instantiate(gauntlet);
+            clone.itemID = GenerateItemId();
+            clone.level = 0;
+            inventoryDatabase.ownedGauntlets.Add(clone);
+            return clone;
+        }
+
+        public override Legwear AddLegwear(Legwear legwear)
+        {
+            Legwear clone = Instantiate(legwear);
+            clone.itemID = GenerateItemId();
+            clone.level = 0;
+            inventoryDatabase.ownedLegwears.Add(clone);
+            return clone;
+        }
+
+        public override Accessory AddAccessory(Accessory accessory)
+        {
+            Accessory clone = Instantiate(accessory);
+            clone.itemID = GenerateItemId();
+            clone.level = 0;
+            inventoryDatabase.ownedAccessories.Add(clone);
+            return clone;
+        }
+
+        public override Arrow AddArrow(Arrow arrow)
+        {
+            Arrow clone = Instantiate(arrow);
+            clone.itemID = GenerateItemId();
+            inventoryDatabase.ownedArrows.Add(clone);
+            return clone;
+        }
+
+        public override Spell AddSpell(Spell spell)
+        {
+            Spell clone = Instantiate(spell);
+            clone.itemID = GenerateItemId();
+            clone.level = 0;
+            inventoryDatabase.ownedSpells.Add(clone);
+            return clone;
+        }
+
+        public override Consumable AddConsumable(Consumable consumable)
+        {
+            Consumable clone = Instantiate(consumable);
+            clone.itemID = GenerateItemId();
+            inventoryDatabase.ownedConsumables.Add(clone);
+            return clone;
+        }
+
+        public override UpgradeMaterial AddUpgradeMaterial(UpgradeMaterial upgradeMaterial)
+        {
+            UpgradeMaterial clone = Instantiate(upgradeMaterial);
+            clone.itemID = GenerateItemId();
+            inventoryDatabase.ownedUpgradeMaterials.Add(clone);
+            return clone;
+        }
+
+        public override CraftingMaterial AddCraftingMaterial(CraftingMaterial craftingMaterial)
+        {
+            CraftingMaterial clone = Instantiate(craftingMaterial);
+            clone.itemID = GenerateItemId();
+            inventoryDatabase.ownedCraftingMaterials.Add(clone);
+            return clone;
+        }
+
+        public override KeyItem AddKeyItem(KeyItem keyItem)
+        {
+            KeyItem clone = Instantiate(keyItem);
+            clone.itemID = GenerateItemId();
+            inventoryDatabase.ownedKeyItems.Add(clone);
+            return clone;
         }
     }
 }

@@ -415,8 +415,8 @@ namespace AF.UI.EquipmentMenu
             {
                 CreateTooltip(
                     requirementsSprite,
-                    weapon.AreRequirementsMet(playerManager.statsBonusController) ? Color.white : requirementsNotMet,
-                    weapon.DrawRequirements(playerManager.statsBonusController));
+                    weapon.AreRequirementsMet(playerManager) ? Color.white : requirementsNotMet,
+                    weapon.DrawRequirements(playerManager));
             }
 
             if (attackStatManager.GetWeaponAttack(weapon) > 0)
@@ -1180,8 +1180,8 @@ namespace AF.UI.EquipmentMenu
             {
                 CreateTooltip(
                     requirementsSprite,
-                    spell.AreRequirementsMet(playerManager.statsBonusController) ? Color.white : requirementsNotMet,
-                    spell.DrawRequirements(playerManager.statsBonusController));
+                    spell.AreRequirementsMet(playerManager) ? Color.white : requirementsNotMet,
+                    spell.DrawRequirements(playerManager));
             }
 
             if (spell.GetShortDescription() != null && spell.GetShortDescription().Length > 0)
@@ -1267,7 +1267,7 @@ namespace AF.UI.EquipmentMenu
             }
             if (consumable.canBeConsumedForGold)
             {
-                CreateTooltip(goldCoinSprite, Color.white, String.Format(consumeToReceive.GetLocalizedString(), consumable.value));
+                CreateTooltip(goldCoinSprite, Color.white, String.Format(consumeToReceive.GetLocalizedString(), consumable.GetValue()));
             }
             if (consumable.shouldNotRemoveOnUse)
             {

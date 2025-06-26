@@ -28,9 +28,20 @@ namespace AF.Inventory
         [Header("Inventory")]
         [SerializedDictionary("Item", "Quantity")]
         public SerializedDictionary<Item, ItemAmount> ownedItems = new();
-
         public SerializedDictionary<Item, ItemAmount> defaultItems = new();
+
         public List<Weapon> ownedWeapons = new();
+        public List<Spell> ownedSpells = new();
+        public List<Arrow> ownedArrows = new();
+        public List<Helmet> ownedHelmets = new();
+        public List<Armor> ownedArmors = new();
+        public List<Legwear> ownedLegwears = new();
+        public List<Gauntlet> ownedGauntlets = new();
+        public List<Accessory> ownedAccessories = new();
+        public List<Consumable> ownedConsumables = new();
+        public List<KeyItem> ownedKeyItems = new();
+        public List<CraftingMaterial> ownedCraftingMaterials = new();
+        public List<UpgradeMaterial> ownedUpgradeMaterials = new();
 
         [Header("Databases")]
         public EquipmentDatabase equipmentDatabase;
@@ -117,6 +128,17 @@ namespace AF.Inventory
         {
             ownedItems.Clear();
             ownedWeapons.Clear();
+            ownedSpells.Clear();
+            ownedArrows.Clear();
+            ownedHelmets.Clear();
+            ownedArmors.Clear();
+            ownedLegwears.Clear();
+            ownedGauntlets.Clear();
+            ownedAccessories.Clear();
+            ownedConsumables.Clear();
+            ownedKeyItems.Clear();
+            ownedCraftingMaterials.Clear();
+            ownedUpgradeMaterials.Clear();
         }
 
         public void SetDefaultItems()
@@ -176,7 +198,7 @@ namespace AF.Inventory
             for (int i = 0; i < quantity; i++)
             {
                 Weapon weaponInstance = Instantiate(weaponToAdd);
-                weaponInstance.weaponID = Guid.NewGuid().ToString();
+                weaponInstance.itemID = Guid.NewGuid().ToString();
 
                 ownedWeapons.Add(weaponInstance);
             }

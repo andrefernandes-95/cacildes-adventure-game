@@ -82,7 +82,7 @@ namespace AF
                 currentWeaponInstance = null;
             }
 
-            if (rightHandGrip.childCount > 0)
+            if (rightHandGrip != null && rightHandGrip.childCount > 0)
             {
                 foreach (Transform child in rightHandGrip.transform)
                 {
@@ -107,7 +107,7 @@ namespace AF
                 currentShieldInstance = null;
             }
 
-            if (leftHandGrip.childCount > 0)
+            if (leftHandGrip != null && leftHandGrip.childCount > 0)
             {
                 foreach (Transform child in leftHandGrip.transform)
                 {
@@ -137,7 +137,7 @@ namespace AF
 
             Transform grip = isRightHand ? rightHandGrip : leftHandGrip;
 
-            if (weaponPrefab != null)
+            if (weaponPrefab != null && grip != null)
             {
                 foreach (Transform child in grip.transform)
                 {

@@ -21,7 +21,6 @@ namespace AF
         public PlayerWeaponsManager playerWeaponsManager;
         public ClimbController climbController;
         public DodgeController dodgeController;
-        public StatsBonusController statsBonusController;
         public PlayerLevelManager playerLevelManager;
         public PlayerAchievementsManager playerAchievementsManager;
         public CombatNotificationsController combatNotificationsController;
@@ -53,6 +52,7 @@ namespace AF
         public UIDocumentAlert uIDocumentAlert;
         public PlayerAbilityManager playerAbilityManager;
         public PlayerThrowWeaponManager playerThrowWeaponManager;
+        public PlayerStats playerStats;
 
         [Header("Databases")]
         public PlayerStatsDatabase playerStatsDatabase;

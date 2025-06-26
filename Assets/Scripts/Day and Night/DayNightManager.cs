@@ -259,7 +259,7 @@ namespace AF
             }
             else
             {
-                Light[] lights = FindObjectsOfType<Light>();
+                Light[] lights = FindObjectsByType<Light>(FindObjectsInactive.Include, FindObjectsSortMode.None);
                 foreach (Light light in lights)
                 {
                     if (light.type == LightType.Directional)

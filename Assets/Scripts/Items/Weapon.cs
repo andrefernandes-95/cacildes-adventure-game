@@ -62,16 +62,11 @@ namespace AF
     }
 
     [CreateAssetMenu(menuName = "Items / Weapon / New Weapon")]
-    public class Weapon : Item
+    public class Weapon : UpgradableItem
     {
-        public string weaponID;
-
         [Header("Attack")]
         public Damage damage;
 
-        [Header("Level & Upgrades")]
-        public bool canBeUpgraded = true;
-        public int level = 1;
         public WeaponUpgradeLevel[] weaponUpgrades;
 
         //        [Tooltip("How much block hit this weapon does on an enemy shield. Heavier weapons should do at least 2 or 3 hits.")]
@@ -350,7 +345,7 @@ namespace AF
         {
             Damage baseDamage = CalculateValue(this.level);
 
-            if (!AreRequirementsMet(attackStatManager.playerManager.statsBonusController))
+            if (!AreRequirementsMet(attackStatManager.playerManager))
             {
                 baseDamage.Multiply(.1f);
             }
@@ -392,30 +387,30 @@ namespace AF
             return strengthRequired != 0 || dexterityRequired != 0 || intelligenceRequired != 0 || positiveReputationRequired != 0 || negativeReputationRequired != 0;
         }
 
-        public bool AreRequirementsMet(StatsBonusController statsBonusController)
+        public bool AreRequirementsMet(CharacterBaseManager characterBaseManager)
         {
-            if (statsBonusController.ignoreWeaponRequirements)
+            if (characterBaseManager.statsBonusController.ignoreWeaponRequirements)
             {
                 return true;
             }
 
-            if (strengthRequired != 0 && statsBonusController.GetCurrentStrength() < strengthRequired)
+            if (strengthRequired != 0 && characterBaseManager.characterBaseStats.GetStrength() < strengthRequired)
             {
                 return false;
             }
-            else if (dexterityRequired != 0 && statsBonusController.GetCurrentDexterity() < dexterityRequired)
+            else if (dexterityRequired != 0 && characterBaseManager.characterBaseStats.GetDexterity() < dexterityRequired)
             {
                 return false;
             }
-            else if (intelligenceRequired != 0 && statsBonusController.GetCurrentIntelligence() < intelligenceRequired)
+            else if (intelligenceRequired != 0 && characterBaseManager.characterBaseStats.GetIntelligence() < intelligenceRequired)
             {
                 return false;
             }
-            else if (positiveReputationRequired != 0 && statsBonusController.GetCurrentReputation() < positiveReputationRequired)
+            else if (positiveReputationRequired != 0 && characterBaseManager.characterBaseStats.GetReputation() < positiveReputationRequired)
             {
                 return false;
             }
-            else if (negativeReputationRequired != 0 && statsBonusController.GetCurrentReputation() > -negativeReputationRequired)
+            else if (negativeReputationRequired != 0 && characterBaseManager.characterBaseStats.GetReputation() > -negativeReputationRequired)
             {
                 return false;
             }
@@ -423,9 +418,9 @@ namespace AF
             return true;
         }
 
-        public string DrawRequirements(StatsBonusController statsBonusController)
+        public string DrawRequirements(CharacterBaseManager characterBaseManager)
         {
-            bool areRequirementsMet = AreRequirementsMet(statsBonusController);
+            bool areRequirementsMet = AreRequirementsMet(characterBaseManager);
 
             string text = "";
             if (areRequirementsMet)
@@ -454,24 +449,24 @@ namespace AF
 
             if (strengthRequired != 0)
             {
-                text += $"  {LocalizationSettings.StringDatabase.GetLocalizedString("UIDocuments", "Strength Required:")} {strengthRequired}   {LocalizationSettings.StringDatabase.GetLocalizedString("UIDocuments", "Current:")} {statsBonusController.GetCurrentStrength()}\n";
+                text += $"  {LocalizationSettings.StringDatabase.GetLocalizedString("UIDocuments", "Strength Required:")} {strengthRequired}   {LocalizationSettings.StringDatabase.GetLocalizedString("UIDocuments", "Current:")} {characterBaseManager.characterBaseStats.GetStrength()}\n";
             }
             if (dexterityRequired != 0)
             {
-                text += $"  {LocalizationSettings.StringDatabase.GetLocalizedString("UIDocuments", "Dexterity Required:")} {dexterityRequired}   {LocalizationSettings.StringDatabase.GetLocalizedString("UIDocuments", "Current:")} {statsBonusController.GetCurrentDexterity()}\n";
+                text += $"  {LocalizationSettings.StringDatabase.GetLocalizedString("UIDocuments", "Dexterity Required:")} {dexterityRequired}   {LocalizationSettings.StringDatabase.GetLocalizedString("UIDocuments", "Current:")} {characterBaseManager.characterBaseStats.GetDexterity()}\n";
             }
             if (intelligenceRequired != 0)
             {
-                text += $"  {LocalizationSettings.StringDatabase.GetLocalizedString("UIDocuments", "Intelligence Required:")} {intelligenceRequired}   {LocalizationSettings.StringDatabase.GetLocalizedString("UIDocuments", "Current:")} {statsBonusController.GetCurrentIntelligence()}\n";
+                text += $"  {LocalizationSettings.StringDatabase.GetLocalizedString("UIDocuments", "Intelligence Required:")} {intelligenceRequired}   {LocalizationSettings.StringDatabase.GetLocalizedString("UIDocuments", "Current:")} {characterBaseManager.characterBaseStats.GetIntelligence()}\n";
             }
             if (positiveReputationRequired != 0)
             {
-                text += $"  {LocalizationSettings.StringDatabase.GetLocalizedString("UIDocuments", "Reputation Required:")} {intelligenceRequired}   {LocalizationSettings.StringDatabase.GetLocalizedString("UIDocuments", "Current:")} {statsBonusController.GetCurrentReputation()}\n";
+                text += $"  {LocalizationSettings.StringDatabase.GetLocalizedString("UIDocuments", "Reputation Required:")} {intelligenceRequired}   {LocalizationSettings.StringDatabase.GetLocalizedString("UIDocuments", "Current:")} {characterBaseManager.characterBaseStats.GetReputation()}\n";
             }
 
             if (negativeReputationRequired != 0)
             {
-                text += $"  {LocalizationSettings.StringDatabase.GetLocalizedString("UIDocuments", "Reputation Required:")} -{negativeReputationRequired}   {LocalizationSettings.StringDatabase.GetLocalizedString("UIDocuments", "Current:")} {statsBonusController.GetCurrentReputation()}\n";
+                text += $"  {LocalizationSettings.StringDatabase.GetLocalizedString("UIDocuments", "Reputation Required:")} -{negativeReputationRequired}   {LocalizationSettings.StringDatabase.GetLocalizedString("UIDocuments", "Current:")} {characterBaseManager.characterBaseStats.GetReputation()}\n";
             }
 
             return text.TrimEnd();

@@ -4,6 +4,7 @@ namespace AF
 
     public class AttachToCharacterModel : MonoBehaviour
     {
+        [SerializeField] string nameOfParentGameObjectToAttachTo = "Exported Synty Character";
         [Header("Assign Via Name")]
         [SerializeField] string boneName = "";
 
@@ -25,7 +26,7 @@ namespace AF
                 CharacterBaseManager character = GetComponentInParent<CharacterBaseManager>();
                 if (character != null)
                 {
-                    Transform targetModel = FindChildByName(character.transform, "Exported Synty Character");
+                    Transform targetModel = FindChildByName(character.transform, nameOfParentGameObjectToAttachTo);
                     Transform foundBone = FindChildByName(targetModel.transform, boneName);
                     if (foundBone != null)
                     {

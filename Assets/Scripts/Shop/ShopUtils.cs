@@ -13,18 +13,18 @@ namespace AF.Shops
         {
             if (discountPercentage <= 0f)
             {
-                return (int)item.value;
+                return item.GetValue();
             }
 
-            int discountAmount = (int)(item.value * discountPercentage);
+            int discountAmount = (int)(item.GetValue() * discountPercentage);
 
             if (playerIsBuying)
             {
-                return (int)(item.value - discountAmount);
+                return (int)(item.GetValue() - discountAmount);
             }
             else
             {
-                return (int)(item.value + discountAmount);
+                return (int)(item.GetValue() + discountAmount);
             }
         }
 
@@ -42,7 +42,7 @@ namespace AF.Shops
         {
             if (ItemRequiresCoinsToBeBought(itemToBuy))
             {
-                onGoldLost((int)itemToBuy.value);
+                onGoldLost((int)itemToBuy.GetValue());
             }
             else
             {

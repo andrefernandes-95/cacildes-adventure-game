@@ -6,7 +6,7 @@ using UnityEngine.Localization.Settings;
 namespace AF
 {
     [CreateAssetMenu(menuName = "Items / Spell / New Spell")]
-    public class Spell : Item
+    public class Spell : UpgradableItem
     {
         public SpellType spellType;
 
@@ -40,6 +40,9 @@ namespace AF
         [Header("Actions")]
         [HelpBox("If true, will use the new action system")]
         public Ability ability;
+        [Header("Level & Upgrades")]
+        public bool canBeUpgraded = true;
+        public int level = 1;
 
         public string GetFormattedAppliedStatusEffects()
         {
@@ -56,17 +59,17 @@ namespace AF
             return result.TrimEnd();
         }
 
-        public bool AreRequirementsMet(StatsBonusController statsBonusController)
+        public bool AreRequirementsMet(CharacterBaseManager characterBaseManager)
         {
-            if (intelligenceRequired != 0 && statsBonusController.GetCurrentIntelligence() < intelligenceRequired)
+            if (intelligenceRequired != 0 && characterBaseManager.characterBaseStats.GetIntelligence() < intelligenceRequired)
             {
                 return false;
             }
-            else if (positiveReputationRequired != 0 && statsBonusController.GetCurrentReputation() < positiveReputationRequired)
+            else if (positiveReputationRequired != 0 && characterBaseManager.characterBaseStats.GetReputation() < positiveReputationRequired)
             {
                 return false;
             }
-            else if (negativeReputationRequired != 0 && statsBonusController.GetCurrentReputation() > -negativeReputationRequired)
+            else if (negativeReputationRequired != 0 && characterBaseManager.characterBaseStats.GetReputation() > -negativeReputationRequired)
             {
                 return false;
             }
@@ -79,24 +82,24 @@ namespace AF
             return intelligenceRequired != 0 || positiveReputationRequired != 0 || negativeReputationRequired != 0;
         }
 
-        public string DrawRequirements(StatsBonusController statsBonusController)
+        public string DrawRequirements(CharacterBaseManager characterBaseManager)
         {
-            string text = AreRequirementsMet(statsBonusController)
+            string text = AreRequirementsMet(characterBaseManager)
                 ? LocalizationSettings.StringDatabase.GetLocalizedString("UIDocuments", "Requirements met: ")
                 : LocalizationSettings.StringDatabase.GetLocalizedString("UIDocuments", "Requirements not met: ");
 
             if (intelligenceRequired != 0)
             {
-                text += $"  {LocalizationSettings.StringDatabase.GetLocalizedString("UIDocuments", "Intelligence Required:")} {intelligenceRequired}   {LocalizationSettings.StringDatabase.GetLocalizedString("UIDocuments", "Current:")} {statsBonusController.GetCurrentIntelligence()}\n";
+                text += $"  {LocalizationSettings.StringDatabase.GetLocalizedString("UIDocuments", "Intelligence Required:")} {intelligenceRequired}   {LocalizationSettings.StringDatabase.GetLocalizedString("UIDocuments", "Current:")} {characterBaseManager.characterBaseStats.GetIntelligence()}\n";
             }
             if (positiveReputationRequired != 0)
             {
-                text += $"  {LocalizationSettings.StringDatabase.GetLocalizedString("UIDocuments", "Reputation Required:")} {intelligenceRequired}   {LocalizationSettings.StringDatabase.GetLocalizedString("UIDocuments", "Current:")} {statsBonusController.GetCurrentReputation()}\n";
+                text += $"  {LocalizationSettings.StringDatabase.GetLocalizedString("UIDocuments", "Reputation Required:")} {intelligenceRequired}   {LocalizationSettings.StringDatabase.GetLocalizedString("UIDocuments", "Current:")} {characterBaseManager.characterBaseStats.GetReputation()}\n";
             }
 
             if (negativeReputationRequired != 0)
             {
-                text += $"  {LocalizationSettings.StringDatabase.GetLocalizedString("UIDocuments", "Reputation Required:")} -{negativeReputationRequired}   {LocalizationSettings.StringDatabase.GetLocalizedString("UIDocuments", "Current:")} {statsBonusController.GetCurrentReputation()}\n";
+                text += $"  {LocalizationSettings.StringDatabase.GetLocalizedString("UIDocuments", "Reputation Required:")} -{negativeReputationRequired}   {LocalizationSettings.StringDatabase.GetLocalizedString("UIDocuments", "Current:")} {characterBaseManager.characterBaseStats.GetReputation()}\n";
             }
             return text.TrimEnd();
         }

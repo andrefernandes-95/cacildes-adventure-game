@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 namespace AF
 {
@@ -14,6 +15,7 @@ namespace AF
         public int physicalAttackBonus = 0;
         public int jumpAttackBonus = 0;
         public float twoHandAttackBonusMultiplier = 0f;
+        public float heavyAttackBonusMultiplier = 0f;
         public float slashDamageMultiplier = 0f;
         public float pierceDamageMultiplier = 0f;
         public float bluntDamageMultiplier = 0f;
@@ -39,5 +41,40 @@ namespace AF
         [Header("Inventory")]
         public bool chanceToNotLoseItemUponConsumption = false;
 
+        public override void OnEquip(CharacterBaseManager character)
+        {
+            if (!character.IsUsingSyntyModularFantasyHeroModel())
+            {
+                return;
+            }
+
+            List<string> finalList = graphicsToShow;
+
+            if (character.characterBaseAppearance.IsMale())
+            {
+                finalList.Add(male_GraphicsToShow);
+            }
+            else
+            {
+                finalList.Add(female_GraphicsToShow);
+            }
+
+            character.syntyCharacterModelManager.EnableArmorPiece(finalList, armorMaterial);
+        }
+
+        public override void OnUnequip(CharacterBaseManager character)
+        {
+            if (!character.IsUsingSyntyModularFantasyHeroModel())
+            {
+                return;
+            }
+
+            List<string> finalList = graphicsToShow;
+
+            finalList.Add(male_GraphicsToShow);
+            finalList.Add(female_GraphicsToShow);
+
+            character.syntyCharacterModelManager.DisablePieces(finalList);
+        }
     }
 }

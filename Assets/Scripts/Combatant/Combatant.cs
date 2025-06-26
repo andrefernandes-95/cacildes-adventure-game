@@ -15,6 +15,16 @@ namespace AF
         [Header("Locomotion Settings")]
         public bool canJumpToReachTarget = true;
 
+        [Header("Stats")]
+        public int vitality = 1;
+        public int endurance = 1;
+        public int intelligence = 1;
+        public int strength = 1;
+        public int dexterity = 1;
+
+        [Header("Other Stats")]
+        public int reputation = 1;
+
         [Header("Attributes")]
         public int maximumHealth = 500;
         public int maximumPosture = 100;
@@ -56,5 +66,10 @@ namespace AF
         [Header("Sounds")]
         public AudioClip greeting;
 
+
+        public int GetCurrentLevel()
+        {
+            return vitality + endurance + strength + dexterity + intelligence;
+        }
     }
 }

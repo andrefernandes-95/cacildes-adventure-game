@@ -23,12 +23,7 @@ namespace AF
         public EquipmentDatabase equipmentDatabase;
 
         [Header("Components")]
-        public StatsBonusController playerStatsBonusController;
-
         public StarterAssetsInputs inputs;
-
-        public EquipmentGraphicsHandler equipmentGraphicsHandler;
-
         public PlayerManager playerManager;
 
         Coroutine RegenerateEmptyStaminaCoroutine;
@@ -48,8 +43,8 @@ namespace AF
         public int GetMaxStamina()
         {
             return Formulas.CalculateStatForLevel(
-                playerStatsDatabase.maxStamina + playerStatsBonusController.staminaBonus,
-                playerStatsBonusController.GetCurrentEndurance(),
+                playerStatsDatabase.maxStamina + playerManager.statsBonusController.staminaBonus,
+                playerManager.playerStats.GetEndurance(),
                 playerStatsDatabase.levelMultiplierForStamina);
         }
 
@@ -94,7 +89,7 @@ namespace AF
 
         float GetStaminaRegenerationRate()
         {
-            float value = STAMINA_REGENERATION_RATE + playerStatsBonusController.staminaRegenerationBonus - negativeStaminaRegenerationBonus + STAMINA_REGENERATION_RATE_BONUS;
+            float value = STAMINA_REGENERATION_RATE + playerManager.statsBonusController.staminaRegenerationBonus - negativeStaminaRegenerationBonus + STAMINA_REGENERATION_RATE_BONUS;
 
             if (GetCurrentStaminaPercentage() <= 25)
             {

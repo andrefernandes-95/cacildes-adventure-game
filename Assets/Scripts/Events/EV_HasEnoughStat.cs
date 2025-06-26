@@ -26,9 +26,6 @@ namespace AF
         [Header("Components")]
         public StatsBonusController playerStatsBonusController;
 
-        [Header("Databases")]
-        public PlayerStatsDatabase playerStatsDatabase;
-
         public override IEnumerator Dispatch()
         {
             bool finalValue = false;
@@ -36,23 +33,23 @@ namespace AF
             int currentValue = 0;
             if (isVitality)
             {
-                currentValue = playerStatsBonusController.GetCurrentVitality();
+                currentValue = playerStatsBonusController.character.characterBaseStats.GetVitality();
             }
             else if (isEndurance)
             {
-                currentValue = playerStatsBonusController.GetCurrentEndurance();
+                currentValue = playerStatsBonusController.character.characterBaseStats.GetEndurance();
             }
             else if (isStrength)
             {
-                currentValue = playerStatsBonusController.GetCurrentStrength();
+                currentValue = playerStatsBonusController.character.characterBaseStats.GetStrength();
             }
             else if (isDexterity)
             {
-                currentValue = playerStatsBonusController.GetCurrentDexterity();
+                currentValue = playerStatsBonusController.character.characterBaseStats.GetDexterity();
             }
             else if (isIntelligence)
             {
-                currentValue = playerStatsBonusController.GetCurrentIntelligence();
+                currentValue = playerStatsBonusController.character.characterBaseStats.GetIntelligence();
             }
 
             if (equal)

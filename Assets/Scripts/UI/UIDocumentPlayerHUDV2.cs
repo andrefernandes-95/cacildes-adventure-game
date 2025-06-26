@@ -37,10 +37,6 @@ namespace AF
         Label quickItemName, abilityName;
         IMGUIContainer shieldBlockedIcon;
 
-
-        [Header("Components")]
-        public StatsBonusController playerStatsBonusController;
-
         [Header("Databases")]
         public EquipmentDatabase equipmentDatabase;
         public InventoryDatabase inventoryDatabase;
@@ -225,13 +221,13 @@ namespace AF
         private void Update()
         {
             healthContainer.style.width = (healthContainerBaseWidth +
-                playerStatsBonusController.GetCurrentVitality() * _containerMultiplierPerLevel) * (playerHealth.hasHealthCutInHalf ? .5f : 1f);
+                playerManager.playerStats.GetVitality() * _containerMultiplierPerLevel) * (playerHealth.hasHealthCutInHalf ? .5f : 1f);
 
             staminaContainer.style.width = staminaContainerBaseWidth + ((
-                playerStatsBonusController.GetCurrentEndurance()) * _containerMultiplierPerLevel);
+                playerManager.playerStats.GetEndurance()) * _containerMultiplierPerLevel);
 
             manaContainer.style.width = manaContainerBaseWidth + ((
-                playerStatsBonusController.GetCurrentIntelligence()) * _containerMultiplierPerLevel);
+                playerManager.playerStats.GetIntelligence()) * _containerMultiplierPerLevel);
 
             this.healthFill.style.width = new Length(playerManager.health.GetCurrentHealthPercentage() * ((playerHealth.hasHealthCutInHalf ? .5f : 1f)), LengthUnit.Percent);
             this.staminaFill.style.width = new Length(playerManager.staminaStatManager.GetCurrentStaminaPercentage(), LengthUnit.Percent);

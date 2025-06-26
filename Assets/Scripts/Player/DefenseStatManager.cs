@@ -35,7 +35,7 @@ namespace AF
 
             return (int)(
                 GetCurrentPhysicalDefense()
-                + playerStatsBonusController.equipmentPhysicalDefense // Equipment Bonus
+                + playerStatsBonusController.equipmentPhysicalDefenseBonus // Equipment Bonus
                 + physicalDefenseBonus
                 + (playerStatsBonusController.enduranceBonus * levelMultiplier)
             );
@@ -58,32 +58,32 @@ namespace AF
 
         public float GetMagicDefense()
         {
-            return playerStatsBonusController.magicDefenseBonus;
+            return playerStatsBonusController.equipmentMagicDefenseBonus;
         }
 
         public float GetDarknessDefense()
         {
-            return playerStatsBonusController.darkDefenseBonus;
+            return playerStatsBonusController.equipmentDarkDefenseBonus;
         }
 
         public float GetWaterDefense()
         {
-            return playerStatsBonusController.waterDefenseBonus;
+            return playerStatsBonusController.equipmentWaterDefenseBonus;
         }
 
         public float GetFireDefense()
         {
-            return playerStatsBonusController.fireDefenseBonus;
+            return playerStatsBonusController.equipmentFireDefenseBonus;
         }
 
         public float GetFrostDefense()
         {
-            return playerStatsBonusController.frostDefenseBonus;
+            return playerStatsBonusController.equipmentFrostDefenseBonus;
         }
 
         public float GetLightningDefense()
         {
-            return playerStatsBonusController.lightningDefenseBonus;
+            return playerStatsBonusController.equipmentLightningDefenseBonus;
         }
 
         public int CompareHelmet(Helmet helmet)

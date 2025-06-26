@@ -12,13 +12,12 @@ namespace AF
     {
 
         [Header("Components")]
-        public StatsBonusController playerStatsBonusController;
+        [SerializeField] PlayerManager playerManager;
         public NotificationManager notificationManager;
 
         [Header("Databases")]
         public PlayerStatsDatabase playerStatsDatabase;
         public GameSession gameSession;
-
 
         [Header("Events")]
         public UnityEvent onDyingInArena;
@@ -40,8 +39,8 @@ namespace AF
         public override int GetMaxHealth()
         {
             int baseValue = Formulas.CalculateStatForLevel(
-                playerStatsDatabase.maxHealth + playerStatsBonusController.healthBonus,
-                playerStatsBonusController.GetCurrentVitality(),
+                playerStatsDatabase.maxHealth + playerManager.statsBonusController.healthBonus,
+                playerManager.playerStats.GetVitality(),
                 playerStatsDatabase.levelMultiplierForHealth);
 
             if (hasHealthCutInHalf)
@@ -98,7 +97,7 @@ namespace AF
                     return;
                 }
 
-                if (value < 999 && playerStatsBonusController.chanceToRestoreHealthUponDeath && Random.Range(0, 1f) >= 0.5f)
+                if (value < 999 && playerManager.statsBonusController.chanceToRestoreHealthUponDeath && Random.Range(0, 1f) >= 0.5f)
                 {
                     RestoreHealthPercentage(50);
                     notificationManager.ShowNotification(LocalizationSettings.StringDatabase.GetLocalizedString("UIDocuments", "You were saved from death."));

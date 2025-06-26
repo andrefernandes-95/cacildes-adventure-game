@@ -46,7 +46,52 @@ namespace AF.Pickups
                     isCard = false
                 });
 
-                GetPlayerInventory().AddItem(item.Key, item.Value.amount);
+                switch (item.Key)
+                {
+                    case Shield shield:
+                        GetPlayerInventory().AddShield(shield);
+                        break;
+                    case Weapon weapon:
+                        GetPlayerInventory().AddWeapon(weapon);
+                        break;
+                    case Spell spell:
+                        GetPlayerInventory().AddSpell(spell);
+                        break;
+                    case Arrow arrow:
+                        GetPlayerInventory().AddArrow(arrow);
+                        break;
+                    case Helmet helmet:
+                        GetPlayerInventory().AddHelmet(helmet);
+                        break;
+                    case Gauntlet gauntlet:
+                        GetPlayerInventory().AddGauntlet(gauntlet);
+                        break;
+                    case Armor armor:
+                        GetPlayerInventory().AddArmor(armor);
+                        break;
+                    case Legwear legwear:
+                        GetPlayerInventory().AddLegwear(legwear);
+                        break;
+                    case Consumable consumable:
+                        GetPlayerInventory().AddConsumable(consumable);
+                        break;
+                    case Accessory accessory:
+                        GetPlayerInventory().AddAccessory(accessory);
+                        break;
+                    case UpgradeMaterial upgradeMaterial:
+                        GetPlayerInventory().AddUpgradeMaterial(upgradeMaterial);
+                        break;
+                    case CraftingMaterial craftingMaterial:
+                        GetPlayerInventory().AddCraftingMaterial(craftingMaterial);
+                        break;
+                    case KeyItem keyItem:
+                        GetPlayerInventory().AddKeyItem(keyItem);
+                        break;
+                    default:
+                        // Handle other item types if needed
+                        break;
+                }
+
             }
 
             GetUIDocumentReceivedItemPrompt().DisplayItemsReceived(itemsToDisplay);
