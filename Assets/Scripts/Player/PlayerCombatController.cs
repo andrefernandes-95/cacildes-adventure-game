@@ -415,7 +415,7 @@ namespace AF
 
         public void HandlePlayerAttack(IDamageable damageable, Weapon weapon)
         {
-            if (damageable is not DamageReceiver damageReceiver)
+            if (damageable is not CharacterBaseDamageReceiver damageReceiver)
             {
                 return;
             }
@@ -425,11 +425,11 @@ namespace AF
                 playerManager.playerBlockController.onCounterAttack?.Invoke();
             }
 
-            damageReceiver?.health?.onDamageFromPlayer?.Invoke();
+            damageReceiver?.GetCharacter().health?.onDamageFromPlayer?.Invoke();
 
-            if (weapon != null && damageReceiver?.health?.weaponRequiredToKill != null && damageReceiver.health.weaponRequiredToKill == weapon)
+            if (weapon != null && damageReceiver?.GetCharacter()?.health?.weaponRequiredToKill != null && damageReceiver.GetCharacter().health.weaponRequiredToKill == weapon)
             {
-                damageReceiver.health.hasBeenHitWithRequiredWeapon = true;
+                damageReceiver.GetCharacter().health.hasBeenHitWithRequiredWeapon = true;
             }
 
             if (weapon != null)

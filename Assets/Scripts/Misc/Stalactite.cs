@@ -7,7 +7,7 @@ namespace AF
 {
     public class Stalactite : MonoBehaviour
     {
-        public DamageReceiver damageOwner;
+        public CharacterBaseDamageReceiver damageOwner;
         public Damage damage;
         public GameObject collisionWithGroundParticle;
 
@@ -46,7 +46,7 @@ namespace AF
 
         private void OnTriggerEnter(Collider other)
         {
-            other.TryGetComponent<DamageReceiver>(out var damageReceiver);
+            other.TryGetComponent<CharacterBaseDamageReceiver>(out var damageReceiver);
             if (damageReceiver == null || damageReceiver == damageOwner)
             {
                 return;

@@ -122,6 +122,11 @@ namespace AF
         {
             onParryEvent?.Invoke();
 
+            if (characterManager is CharacterManager aiCharacter)
+            {
+                aiCharacter.FaceTarget();
+            }
+
             currentCounterAttackWindow = 0f;
             if (counterAttackWindowCoroutine != null)
             {

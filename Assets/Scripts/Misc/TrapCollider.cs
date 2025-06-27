@@ -26,7 +26,7 @@ namespace AF
 
         private void OnTriggerEnter(Collider other)
         {
-            if (!other.TryGetComponent<DamageReceiver>(out var damageReceiver))
+            if (!other.TryGetComponent<CharacterBaseDamageReceiver>(out var damageReceiver))
             {
                 return;
             }

@@ -68,7 +68,7 @@ namespace AF
                 return;
             }
 
-            other.TryGetComponent(out DamageReceiver damageReceiver);
+            other.TryGetComponent(out CharacterBaseDamageReceiver damageReceiver);
 
             if (CanDamageTarget(damageReceiver))
             {
@@ -76,7 +76,7 @@ namespace AF
             }
         }
 
-        bool CanDamageTarget(DamageReceiver damageReceiver)
+        bool CanDamageTarget(CharacterBaseDamageReceiver damageReceiver)
         {
             if (damageReceiver == null)
             {
@@ -84,7 +84,7 @@ namespace AF
             }
 
             // Do not damage ourselves
-            if (shooter.transform.root == damageReceiver.character.transform.root)
+            if (shooter.transform.root == damageReceiver.GetCharacter().transform.root)
             {
                 return false;
             }
@@ -92,14 +92,14 @@ namespace AF
             return true;
         }
 
-        public void HandleCollision(DamageReceiver damageReceiver)
+        public void HandleCollision(CharacterBaseDamageReceiver damageReceiver)
         {
             hasCollided = true;
 
             damageReceiver.TakeDamage(calculatedDamage);
 
             if (shooter != null
-                && damageReceiver?.character is CharacterManager characterManager
+                && damageReceiver?.GetCharacter() is CharacterManager characterManager
                 && characterManager.targetManager != null)
             {
                 characterManager.targetManager.SetTarget(shooter);

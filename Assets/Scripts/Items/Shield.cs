@@ -191,7 +191,7 @@ namespace AF
             {
                 return;
             }
-            enemy.damageReceiver.TakeDamage(damageDealtToEnemiesUponBlocking);
+            enemy.characterBaseDamageReceiver.TakeDamage(damageDealtToEnemiesUponBlocking);
         }
 
     }

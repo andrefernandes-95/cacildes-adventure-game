@@ -13,7 +13,7 @@ namespace AF
 
         [Header("Damage Settings")]
         public Damage damage;
-        List<DamageReceiver> damageReceivers = new();
+        List<CharacterBaseDamageReceiver> damageReceivers = new();
         Coroutine ResetDamageReceiversCoroutine;
         public CharacterBaseManager damageOwner;
         public float damageCooldown = 1f;
@@ -36,19 +36,19 @@ namespace AF
 
         public void OnCollision(GameObject other)
         {
-            other.TryGetComponent<DamageReceiver>(out var damageReceiver);
+            other.TryGetComponent<CharacterBaseDamageReceiver>(out var damageReceiver);
 
             if (damageReceiver == null && other.TryGetComponent<CharacterManager>(out var characterManager))
             {
-                damageReceiver = characterManager.damageReceiver;
+                damageReceiver = characterManager.characterBaseDamageReceiver;
             }
 
             HandleDamage(damageReceiver);
         }
 
-        void HandleDamage(DamageReceiver damageReceiver)
+        void HandleDamage(CharacterBaseDamageReceiver damageReceiver)
         {
-            if (damageOwner != null && damageOwner.damageReceiver == damageReceiver)
+            if (damageOwner != null && damageOwner.characterBaseDamageReceiver == damageReceiver)
             {
                 return;
             }
@@ -68,7 +68,7 @@ namespace AF
             {
                 if (healingAmount > 0)
                 {
-                    damageReceiver.health.RestoreHealth(healingAmount);
+                    damageReceiver.GetCharacter().health.RestoreHealth(healingAmount);
                 }
             }
             else if (damage != null && damageReceiver != null)
@@ -86,14 +86,14 @@ namespace AF
 
                 damageReceiver.TakeDamage(damage);
 
-                if (damageOwner != null && damageReceiver.character is CharacterManager aiCharacter && aiCharacter.targetManager != null)
+                if (damageOwner != null && damageReceiver.GetCharacter() is CharacterManager aiCharacter && aiCharacter.targetManager != null)
                 {
                     aiCharacter.targetManager.SetTarget(damageOwner);
                 }
 
                 if (damageOwner is PlayerManager)
                 {
-                    damageReceiver?.health?.onDamageFromPlayer?.Invoke();
+                    damageReceiver?.GetCharacter().health?.onDamageFromPlayer?.Invoke();
                 }
             }
 

@@ -258,11 +258,11 @@ namespace AF.Animations
 
         public void SetCanTakeDamage_False()
         {
-            if (characterManager == null || characterManager.damageReceiver == null)
+            if (characterManager == null || characterManager.characterBaseDamageReceiver == null)
             {
                 return;
             }
-            characterManager.damageReceiver.SetCanTakeDamage(false);
+            characterManager.characterBaseDamageReceiver.SetCanTakeDamage(false);
         }
 
         public void OnFireMultipleArrows()

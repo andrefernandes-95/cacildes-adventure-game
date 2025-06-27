@@ -164,7 +164,7 @@ namespace AF
             {
                 return;
             }
-            enemy.damageReceiver.TakeDamage(damageDealtToEnemiesUponAttacked);
+            enemy.characterBaseDamageReceiver.TakeDamage(damageDealtToEnemiesUponAttacked);
         }
 
         public virtual void OnEquip(CharacterBaseManager character)

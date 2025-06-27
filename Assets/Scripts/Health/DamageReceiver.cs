@@ -256,7 +256,6 @@ namespace AF
         }
 
 
-
         void HandlePlayerRage()
         {
             if (character is not PlayerManager playerManager)

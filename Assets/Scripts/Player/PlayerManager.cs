@@ -108,7 +108,7 @@ namespace AF
             playerInventory.ResetStates();
             characterPosture.ResetStates();
             characterPoise.ResetStates();
-            damageReceiver.ResetStates();
+            characterBaseDamageReceiver.ResetStates();
 
             rageManager.ResetStates();
 
@@ -150,7 +150,7 @@ namespace AF
                 return;
             }
 
-            if (other.TryGetComponent<DamageReceiver>(out var damageReceiver) && damageReceiver.damageOnDodge)
+            if (other.TryGetComponent<CharacterBaseDamageReceiver>(out var damageReceiver) && damageReceiver.damageOnDodge)
             {
                 damageReceiver.TakeDamage(new Damage(
                     physical: 1,

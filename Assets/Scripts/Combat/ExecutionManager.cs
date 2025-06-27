@@ -48,7 +48,7 @@ namespace AF
             characterManager.UpdateAnimatorOverrideControllerClips(hashExecutionToDeath, executionClip);
 
             characterManager.targetManager.SetPlayerAsTarget();
-            characterManager.damageReceiver.ApplyDamage(incomingDamage);
+            characterManager.characterBaseDamageReceiver.ApplyDamage(incomingDamage);
 
             StartCoroutine(PlayAnimation());
         }

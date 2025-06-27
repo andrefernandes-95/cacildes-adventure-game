@@ -14,8 +14,6 @@ namespace AF
 
         Coroutine ResetIgnorePoiseDamageCoroutine;
 
-        public float angleHitFrom;
-
         public override void ResetStates()
         {
             hasHyperArmor = false;

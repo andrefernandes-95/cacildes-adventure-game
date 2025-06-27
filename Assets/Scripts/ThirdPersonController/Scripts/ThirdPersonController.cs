@@ -361,7 +361,7 @@ namespace AF
                 // Takes fall damage?
                 if (ShouldTakeFallDamage())
                 {
-                    playerManager.damageReceiver.TakeDamage(new Damage()
+                    playerManager.characterBaseDamageReceiver.TakeDamage(new Damage()
                     {
                         physical = (int)(GetCurrentFallHeight() * damageMultiplierPerMeter),
                         fire = 0,

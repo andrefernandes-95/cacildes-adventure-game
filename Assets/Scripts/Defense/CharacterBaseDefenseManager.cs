@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using AF.Health;
 using AF.Stats;
 using UnityEngine;
@@ -10,6 +11,11 @@ namespace AF
     {
         [Header("Negated Damage")]
         public Damage damagedAbsorbed = new();
+
+        [Header("Damage Type Absorptions")]
+        public float pierceDamageAbsorption = 1f;
+        public float slashDamageAbsorption = 1f;
+        public float bluntDamageAbsorption = 1f;
 
         [Header("Components")]
         public CharacterBaseManager character;
@@ -45,6 +51,8 @@ namespace AF
             // Defense from equipment
             defense += character.statsBonusController.equipmentPhysicalDefenseBonus;
 
+            // TODO: Lowered damage bonus from status effect like weaken enemy to attacks
+
             return defense;
         }
 
@@ -79,7 +87,6 @@ namespace AF
 
             return defense;
         }
-
 
         int GetLightningDamageAbsorption()
         {
@@ -220,5 +227,100 @@ namespace AF
             return 0;
         }
 
+        public void FilterIncomingDamage(Damage incomingDamage)
+        {
+            if (damagedAbsorbed.physical > 0)
+            {
+                incomingDamage.physical -= Mathf.Max(1, damagedAbsorbed.physical);
+
+                // Apply weapon type multiplier after flat reduction
+                switch (incomingDamage.weaponAttackType)
+                {
+                    case WeaponAttackType.Slash:
+                        incomingDamage.physical = Mathf.Max(1, (int)(incomingDamage.physical * slashDamageAbsorption));
+                        break;
+                    case WeaponAttackType.Blunt:
+                        incomingDamage.physical = Mathf.Max(1, (int)(incomingDamage.physical * bluntDamageAbsorption));
+                        break;
+                    case WeaponAttackType.Pierce:
+                        incomingDamage.physical = Mathf.Max(1, (int)(incomingDamage.physical * pierceDamageAbsorption));
+                        break;
+                }
+            }
+
+            if (damagedAbsorbed.fire > 0)
+            {
+                incomingDamage.fire -= Mathf.Max(0, damagedAbsorbed.fire);
+            }
+
+            if (damagedAbsorbed.frost > 0)
+            {
+                incomingDamage.frost -= Mathf.Max(0, damagedAbsorbed.frost);
+            }
+
+            if (damagedAbsorbed.water > 0)
+            {
+                incomingDamage.water -= Mathf.Max(0, damagedAbsorbed.water);
+            }
+
+            if (damagedAbsorbed.darkness > 0)
+            {
+                incomingDamage.darkness -= Mathf.Max(0, damagedAbsorbed.darkness);
+            }
+
+            if (damagedAbsorbed.lightning > 0)
+            {
+                incomingDamage.lightning -= Mathf.Max(0, damagedAbsorbed.lightning);
+            }
+
+            if (damagedAbsorbed.magic > 0)
+            {
+                incomingDamage.magic -= Mathf.Max(0, damagedAbsorbed.magic);
+            }
+
+            if (damagedAbsorbed.postureDamage > 0)
+            {
+                incomingDamage.postureDamage -= Mathf.Max(1, damagedAbsorbed.postureDamage);
+            }
+
+            if (damagedAbsorbed.poiseDamage > 0)
+            {
+                incomingDamage.poiseDamage -= Mathf.Max(1, damagedAbsorbed.poiseDamage);
+            }
+
+            if (damagedAbsorbed.pushForce > 0)
+            {
+                incomingDamage.pushForce -= damagedAbsorbed.pushForce;
+                incomingDamage.pushForce = Mathf.Max(0, incomingDamage.pushForce);
+            }
+
+            if (incomingDamage.statusEffects != null && incomingDamage.statusEffects.Length > 0)
+            {
+                List<StatusEffectEntry> filteredEffects = new();
+
+                foreach (var effectEntry in incomingDamage.statusEffects)
+                {
+                    StatusEffectEntry match = damagedAbsorbed.statusEffects.FirstOrDefault(
+                        entry => entry.statusEffect == effectEntry.statusEffect);
+
+                    if (match == null)
+                    {
+                        // Do not apply filter to this effect since we do not absorb it
+                        filteredEffects.Add(effectEntry);
+                        continue;
+                    }
+
+                    float finalAmount = Mathf.Max(1, effectEntry.amountPerHit - match.amountPerHit);
+
+                    filteredEffects.Add(new StatusEffectEntry
+                    {
+                        statusEffect = effectEntry.statusEffect,
+                        amountPerHit = finalAmount
+                    });
+                }
+
+                incomingDamage.statusEffects = filteredEffects.ToArray();
+            }
+        }
     }
 }

@@ -105,14 +105,14 @@ namespace AF
                 return;
             }
 
-            other.TryGetComponent(out DamageReceiver damageReceiver);
+            other.TryGetComponent(out CharacterBaseDamageReceiver damageReceiver);
 
             HandleCollision(damageReceiver);
         }
 
-        public void HandleCollision(DamageReceiver damageReceiver)
+        public void HandleCollision(CharacterBaseDamageReceiver damageReceiver)
         {
-            if (collideWithAnything == false && damageReceiver == null || damageReceiver?.character == shooter)
+            if (collideWithAnything == false && damageReceiver == null || damageReceiver?.GetCharacter() == shooter)
             {
                 return;
             }
@@ -145,7 +145,7 @@ namespace AF
 
 
             if (shooter != null
-                && damageReceiver?.character is CharacterManager characterManager
+                && damageReceiver?.GetCharacter() is CharacterManager characterManager
                 && characterManager.targetManager != null)
             {
                 characterManager.targetManager.SetTarget(shooter);

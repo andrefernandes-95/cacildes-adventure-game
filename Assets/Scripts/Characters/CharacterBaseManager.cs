@@ -37,7 +37,7 @@ namespace AF
         public CharacterAbstractPosture characterPosture;
         public CharacterAbstractPoise characterPoise;
         public CharacterAbstractBlockController characterBlockController;
-        public DamageReceiver damageReceiver;
+        public CharacterBaseDamageReceiver characterBaseDamageReceiver;
         public CharacterPushController characterPushController;
         public CharacterTransformHelper characterTransformHelper;
         public CharacterBaseWeaponsManager characterBaseWeaponsManager;

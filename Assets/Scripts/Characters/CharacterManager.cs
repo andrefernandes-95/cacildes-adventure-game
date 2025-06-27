@@ -107,7 +107,7 @@ namespace AF
             characterPosture.ResetStates();
             characterCombatController.ResetStates();
             characterWeaponsManager.ResetStates();
-            damageReceiver?.ResetStates();
+            characterBaseDamageReceiver?.ResetStates();
             onResetStates?.Invoke();
 
             characterBlockController.ResetStates();

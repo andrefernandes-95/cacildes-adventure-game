@@ -18,6 +18,8 @@ namespace AF.Health
         NORMAL,
         COUNTER_ATTACK,
         ENRAGED,
+        CRITICAL_ATTACK,
+        BACKSTAB
     }
 
     [System.Serializable]

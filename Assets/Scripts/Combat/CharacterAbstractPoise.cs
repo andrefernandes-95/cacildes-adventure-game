@@ -8,6 +8,8 @@ namespace AF
     {
         public int currentPoiseHitCount = 0;
 
+        public float angleHitFrom;
+
         [Header("Components")]
         public CharacterBaseManager characterManager;
 

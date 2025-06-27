@@ -1,0 +1,423 @@
+namespace AF
+{
+    using System;
+    using AF.Combat;
+    using AF.Health;
+    using GameAnalyticsSDK;
+    using UnityEngine;
+    using UnityEngine.Events;
+
+    public abstract class CharacterBaseDamageReceiver : MonoBehaviour
+    {
+        public readonly int hashBackstabExecuted = Animator.StringToHash("AI Humanoid - Backstabbed");
+
+        [Range(0, 1f)] public float pushForceAbsorption = 1;
+
+        [Header("Backstab Options")]
+        public bool canBeBackstabbed = true;
+
+        [Header("Components")]
+        public CombatNotificationsController combatNotificationsController;
+
+        [Header("Visual Effects")]
+        [SerializeField] Transform characterVfxRoot;
+        [SerializeField] GameObject bluntVfxPrefab;
+        GameObject bluntVfxInstance;
+        [SerializeField] GameObject slashVfxPrefab;
+        GameObject slashVfxInstance;
+        [SerializeField] GameObject pierceVfxPrefab;
+        GameObject pierceVfxInstance;
+        [SerializeField] GameObject fireVfxPrefab;
+        GameObject fireVfxInstance;
+        [SerializeField] GameObject frostVfxPrefab;
+        GameObject frostVfxInstance;
+        [SerializeField] GameObject lightningVfxPrefab;
+        GameObject lightningVfxInstance;
+        [SerializeField] GameObject magicVfxPrefab;
+        GameObject magicVfxInstance;
+        [SerializeField] GameObject darknessVfxPrefab;
+        GameObject darknessVfxInstance;
+        [SerializeField] GameObject waterVfxPrefab;
+        GameObject waterVfxInstance;
+
+
+        [Header("Unity Events")]
+        public UnityEvent onDamageReceived;
+        public UnityEvent onPhysicalDamage;
+        public UnityEvent onFireDamage;
+        public UnityEvent onFrostDamage;
+        public UnityEvent onMagicDamage;
+        public UnityEvent onLightningDamage;
+        public UnityEvent onDarknessDamage;
+        public UnityEvent onWaterDamage;
+        public UnityEvent onBackstabbed;
+        public UnityEvent onAttackedWhileWithFlatulence;
+
+
+        [Header("Flags")]
+        public bool ignoreDamage = false;
+        public bool canTakeDamage = true;
+        public bool damageOnDodge = false;
+        public bool waitingForBackstab = false;
+        public bool hasFlatulence = false;
+        public bool isTakingDamage = false;
+
+        public abstract CharacterBaseManager GetCharacter();
+
+        public void ResetStates()
+        {
+            canTakeDamage = true;
+            isTakingDamage = false;
+        }
+
+        public abstract void HandleIncomingDamage(CharacterBaseManager attacker, UnityAction<Damage> onTakeDamage);
+
+        public abstract void TakeDamage(Damage damage);
+        public abstract void TakeDamage(Damage damage, bool callOnDamageReceivedEvent);
+        public abstract void ApplyDamage(Damage damage);
+        public abstract void SetCanTakeDamage(bool value);
+
+        public virtual bool CanTakeDamage(CharacterBaseManager attacker)
+        {
+            if (GetCharacter() != null)
+            {
+                if (!GetCharacter().isConfused)
+                {
+                    // If attacking ourselves, do not allow damage to be taken
+                    if (GetCharacter() == attacker)
+                    {
+                        return false;
+                    }
+
+                    // Don't allow same factions to hit each other
+                    if (GetCharacter().IsFromSameFaction(attacker))
+                    {
+                        return false;
+                    }
+                }
+
+                // If dead, do not take damage
+                if (GetCharacter().health.GetCurrentHealth() <= 0)
+                {
+                    return false;
+                }
+            }
+
+            if (ignoreDamage)
+            {
+                return false;
+            }
+
+            if (!canTakeDamage)
+            {
+                return false;
+            }
+
+            if (hasFlatulence)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        protected void HandleAttackWhileFlatulent()
+        {
+            if (hasFlatulence)
+            {
+                onAttackedWhileWithFlatulence?.Invoke();
+            }
+        }
+
+        protected void LogIncomingDamageNullError(CharacterBaseManager attacker)
+        {
+            if (!GameAnalytics.Initialized)
+            {
+                GameAnalytics.Initialize();
+            }
+
+            GameAnalytics.NewErrorEvent(GAErrorSeverity.Error, "Incoming Damage was null. Damage Owner was: " + attacker != null ? attacker.gameObject.name : " - null damage owner game object - ");
+        }
+
+        protected void RecoverFromStunnedStateWhenAttacked()
+        {
+            if (waitingForBackstab)
+            {
+                return;
+            }
+
+            if (GetCharacter().characterPosture.isStunned)
+            {
+                GetCharacter().characterPosture.RecoverFromStunned();
+            }
+        }
+
+        protected bool TryParryIncomingDamage(CharacterBaseManager attacker, Damage incomingDamage)
+        {
+            if (GetCharacter().characterBlockController.CanParry(incomingDamage))
+            {
+                GetCharacter().characterBlockController.HandleParryEvent();
+                attacker.characterBlockController.HandleParriedEvent(GetCharacter().characterBlockController.GetPostureDamageFromParry());
+                return true;
+            }
+
+            return false;
+        }
+
+        protected bool TryBlockIncomingDamageForAI(CharacterBaseManager attacker, Damage incomingDamage)
+        {
+            if (!GetCharacter().characterBlockController.CanBlockDamage(incomingDamage))
+            {
+                return false;
+            }
+
+            GetCharacter().characterBlockController.BlockAttack(incomingDamage);
+            return true;
+        }
+
+        protected bool TryBlockIncomingDamageForPlayer(PlayerManager playerManager, CharacterBaseManager attacker, Damage incomingDamage)
+        {
+            if (!GetCharacter().characterBlockController.CanBlockDamage(incomingDamage))
+            {
+                return false;
+            }
+
+            if (playerManager.staminaStatManager.HasEnoughStaminaForAction(playerManager.playerWeaponsManager.GetCurrentBlockStaminaCost()))
+            {
+                incomingDamage = playerManager.playerWeaponsManager.GetCurrentShieldDefenseAbsorption(incomingDamage);
+
+                if (attacker != null && attacker is CharacterManager enemy)
+                {
+                    playerManager.playerWeaponsManager.ApplyShieldDamageToAttacker(enemy);
+                }
+
+                playerManager.staminaStatManager.DecreaseStamina((int)playerManager.playerWeaponsManager.GetCurrentBlockStaminaCost());
+                playerManager.characterBlockController.BlockAttack(incomingDamage);
+
+                if (playerManager.characterBlockController is PlayerBlockController playerBlockController)
+                {
+                    playerBlockController.SetCanCounterAttack(true);
+                }
+            }
+
+            return true;
+        }
+
+        protected void HandleAngleHitFrom(CharacterBaseManager attacker)
+        {
+            if (GetCharacter() != null)
+            {
+                GetCharacter().characterPoise.angleHitFrom =
+                                Vector3.SignedAngle(attacker.transform.forward, GetCharacter().transform.forward, Vector3.up);
+            }
+        }
+
+        protected void HandlePushForce(Damage damage)
+        {
+            if (waitingForBackstab)
+            {
+                return;
+            }
+
+            if (damage.pushForce <= 0)
+            {
+                return;
+            }
+
+            if (GetCharacter() == null || GetCharacter().characterPushController == null)
+            {
+                return;
+            }
+
+            var targetPos = GetCharacter().transform.position - Camera.main.transform.position;
+            targetPos.y = 0;
+            GetCharacter().characterPushController.ApplyForceSmoothly(
+                targetPos.normalized,
+                Mathf.Clamp(damage.pushForce * pushForceAbsorption, 0, Mathf.Infinity) * 2.5f,
+                .25f);
+        }
+
+        // No need to pass ref in the functions argument since Damage is a class, not a struct
+        protected void FilterDamageAbsorption(Damage damage)
+        {
+            if (GetCharacter() == null)
+            {
+                return;
+            }
+
+            GetCharacter().characterBaseDefenseManager.FilterIncomingDamage(damage);
+        }
+
+        protected void HandleEquipmentPassiveFilterEffects(Damage damage)
+        {
+            if (GetCharacter() != null)
+            {
+                GetCharacter().characterBaseWeaponsManager.GetCurrentShieldPassiveDamageFilter(damage);
+            }
+        }
+
+        protected bool HandleDamageFromBackstab(Damage incomingDamage)
+        {
+            if (!waitingForBackstab)
+            {
+                return false;
+            }
+
+            waitingForBackstab = false;
+            GetCharacter().PlayBusyHashedAnimationWithRootMotion(hashBackstabExecuted);
+
+            // Apply Damage
+            incomingDamage.physical += GetCharacter().characterPosture.GetPostureDamageBonus();
+            GetCharacter().health.TakeDamage(incomingDamage.GetTotalDamage());
+
+            onBackstabbed?.Invoke();
+
+            return true;
+        }
+
+        protected bool HandleDamageFromAttack(Damage incomingDamage)
+        {
+            bool isPostureBroken = GetCharacter().characterPosture.TakePostureDamage(incomingDamage.postureDamage);
+
+            if (isPostureBroken)
+            {
+                incomingDamage.physical += GetCharacter().characterPosture.GetPostureDamageBonus();
+            }
+
+            GetCharacter().health.TakeDamage(incomingDamage.GetTotalDamage());
+
+            // Apply poise damage if not stunned
+            if (!isPostureBroken)
+            {
+                GetCharacter().characterPoise.TakePoiseDamage(incomingDamage.poiseDamage);
+            }
+
+            return isPostureBroken;
+        }
+
+        protected void HandleDamageFromStatusEffects(Damage incomingDamage)
+        {
+            if (incomingDamage.statusEffects.Length > 0)
+            {
+                foreach (var statusEffectToApply in incomingDamage.statusEffects)
+                {
+                    GetCharacter().statusController.InflictStatusEffect(
+                        statusEffectToApply.statusEffect, statusEffectToApply.amountPerHit, false);
+                }
+            }
+        }
+
+        protected void HandleDamageEvents(Damage incomingDamage)
+        {
+            if (incomingDamage.physical > 0)
+            {
+                if (combatNotificationsController != null)
+                {
+                    if (incomingDamage.damageType == DamageType.CRITICAL_ATTACK)
+                    {
+                        combatNotificationsController.ShowPostureBroken(incomingDamage.physical);
+                    }
+                    else if (incomingDamage.damageType == DamageType.COUNTER_ATTACK)
+                    {
+                        combatNotificationsController.ShowGuardCounter(incomingDamage.physical);
+                    }
+                    else if (incomingDamage.damageType == DamageType.ENRAGED)
+                    {
+                        combatNotificationsController.ShowRageCounter(incomingDamage.physical);
+                    }
+                    else if (incomingDamage.damageType == DamageType.BACKSTAB)
+                    {
+                        combatNotificationsController.ShowBackstab(incomingDamage.physical);
+                    }
+                    else
+                    {
+                        combatNotificationsController.ShowDamage(incomingDamage.physical);
+                    }
+                }
+
+                HandlePhysicalDamageEffect(incomingDamage);
+            }
+
+            if (incomingDamage.fire > 0)
+            {
+                if (combatNotificationsController != null)
+                {
+                    combatNotificationsController.ShowFireDamage(incomingDamage.fire);
+                }
+
+                onFireDamage?.Invoke();
+            }
+
+            if (incomingDamage.frost > 0)
+            {
+                if (combatNotificationsController != null)
+                {
+                    combatNotificationsController.ShowFrostDamage(incomingDamage.frost);
+                }
+
+                onFrostDamage?.Invoke();
+            }
+
+            if (incomingDamage.magic > 0)
+            {
+                if (combatNotificationsController != null)
+                {
+                    combatNotificationsController.ShowMagicDamage(incomingDamage.magic);
+                }
+
+                onMagicDamage?.Invoke();
+            }
+
+            if (incomingDamage.lightning > 0)
+            {
+                if (combatNotificationsController != null)
+                {
+                    combatNotificationsController.ShowLightningDamage(incomingDamage.lightning);
+                }
+
+                onLightningDamage?.Invoke();
+            }
+
+            if (incomingDamage.darkness > 0)
+            {
+                if (combatNotificationsController != null)
+                {
+                    combatNotificationsController.ShowDarknessDamage(incomingDamage.darkness);
+                }
+
+                onDarknessDamage?.Invoke();
+            }
+
+            if (incomingDamage.water > 0)
+            {
+                if (combatNotificationsController != null)
+                {
+                    combatNotificationsController.ShowWaterDamage(incomingDamage.water);
+                }
+
+                onWaterDamage?.Invoke();
+            }
+        }
+
+        void HandlePhysicalDamageEffect(Damage incomingDamage)
+        {
+            if (incomingDamage.weaponAttackType == WeaponAttackType.Pierce)
+            {
+                PlayPierceVfx();
+            }
+        }
+
+        void PlayPierceVfx()
+        {
+            if (pierceVfxInstance == null)
+            {
+                pierceVfxInstance = Instantiate(pierceVfxPrefab, characterVfxRoot);
+            }
+
+            pierceVfxInstance.transform.localPosition = Vector3.zero;
+            pierceVfxInstance.transform.localRotation = Quaternion.identity;
+            pierceVfxInstance.SetActive(false);
+            pierceVfxInstance.SetActive(true);
+        }
+    }
+}

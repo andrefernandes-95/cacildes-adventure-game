@@ -15,9 +15,9 @@ namespace AF
                 animator.TryGetComponent(out character);
             }
 
-            if (character.damageReceiver != null)
+            if (character.characterBaseDamageReceiver != null)
             {
-                character.damageReceiver.SetCanTakeDamage(true);
+                character.characterBaseDamageReceiver.SetCanTakeDamage(true);
             }
         }
 

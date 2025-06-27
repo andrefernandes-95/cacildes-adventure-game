@@ -262,7 +262,7 @@ namespace AF.Animations
 
         public void SetCanTakeDamage_False()
         {
-            playerManager.damageReceiver.SetCanTakeDamage(false);
+            playerManager.characterBaseDamageReceiver.SetCanTakeDamage(false);
         }
 
         public void OnWeaponSpecial()
