@@ -21,6 +21,10 @@ namespace AF
         public ItemValue itemValue;
         [System.Obsolete("Use itemValue")]
         public float value = 0;
+
+        [Header("Weight")]
+        public ItemWeight itemWeight;
+
         public bool isRenewable = false;
         [Tooltip("If we want to buy this item on a shop, this will override their value when trading with an NPC. E.g. Buying a boss weapon by trading a boss soul")]
         public SerializedDictionary<Item, int> tradingItemRequirements = new();
@@ -71,6 +75,15 @@ namespace AF
                 return itemValue.value;
             }
             return (int)value;
+        }
+
+        public float GetWeight()
+        {
+            if (itemWeight != null)
+            {
+                return itemWeight.weight;
+            }
+            return 0.1f;
         }
     }
 }

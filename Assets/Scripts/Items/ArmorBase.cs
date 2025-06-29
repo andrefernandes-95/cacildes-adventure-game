@@ -115,12 +115,12 @@ namespace AF
 
             var resistenceAgainstLabel = LocalizationSettings.StringDatabase.GetLocalizedString("UIDocuments", "resistence against");
 
-            foreach (var resistance in statusEffectResistances)
+            foreach (var resistance in damageAbsorbed.statusEffects)
             {
 
                 if (resistance != null && resistance.statusEffect != null && resistance.statusEffect.GetName().Length > 0)
                 {
-                    result += $"+{resistance.resistanceBonus} {resistenceAgainstLabel} {resistance.statusEffect.GetName()}\n";
+                    result += $"+{resistance.amountPerHit} {resistenceAgainstLabel} {resistance.statusEffect.GetName()}\n";
                 }
             }
 

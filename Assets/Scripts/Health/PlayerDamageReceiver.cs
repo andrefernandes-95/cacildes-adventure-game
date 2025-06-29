@@ -58,6 +58,11 @@ namespace AF
                 return false;
             }
 
+            if (playerManager.dodgeController.isDodging)
+            {
+                return false;
+            }
+
             return true;
         }
 
@@ -155,32 +160,7 @@ namespace AF
             TakeDamage(damage, true);
         }
 
-        public override void TakeDamage(Damage damage, bool callOnDamageReceivedEvent)
-        {
-            if (hasFlatulence)
-            {
-                onAttackedWhileWithFlatulence?.Invoke();
-            }
-
-            if (!CanTakeDamage(null))
-            {
-                return;
-            }
-
-            ApplyDamage(damage, true, callOnDamageReceivedEvent);
-        }
-
-        /// <summary>
-        /// Unity Event
-        /// Bypass the CanTakeDamage check
-        /// </summary>
-        /// <param name="damage"></param>
-        public override void ApplyDamage(Damage damage)
-        {
-            ApplyDamage(damage, true, true);
-        }
-
-        public void ApplyDamage(Damage damage, bool checkForPosture, bool callOnDamageReceivedEvent)
+        public override void ApplyDamage(Damage damage, bool callOnDamageReceivedEvent)
         {
             HandlePushForce(damage);
             FilterDamageAbsorption(damage);
@@ -211,28 +191,6 @@ namespace AF
             {
                 onDamageReceived?.Invoke();
             }
-        }
-
-        public void TakeDamagePercentage(float damagePercentage)
-        {
-            int damageAmount = (int)damagePercentage * playerManager.health.GetMaxHealth() / 100;
-
-            ApplyDamage(
-                new(
-                    physical: damageAmount,
-                    fire: 0,
-                    frost: 0,
-                    magic: 0,
-                    lightning: 0,
-                    darkness: 0,
-                    water: 0,
-                    poiseDamage: 1,
-                    postureDamage: 2,
-                    weaponAttackType: WeaponAttackType.Slash,
-                    statusEffects: null,
-                    pushForce: 0,
-                    canNotBeParried: false,
-                    ignoreBlocking: false));
         }
 
         void HandlePlayerReactionToEnemyAttack(CharacterBaseManager damageOwner, CharacterBaseManager target)

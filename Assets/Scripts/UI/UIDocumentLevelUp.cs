@@ -282,6 +282,8 @@ namespace AF
                 previousActiveButton = "";
                 previousActiveButton = "";
             }
+
+            SetupDescriptions();
         }
 
         public bool HasEnoughExperienceForLevelling(float experience, int levelDesired)
@@ -304,6 +306,15 @@ namespace AF
 
             return playerManager.playerLevelManager.GetCurrentLevel() + (
                 vitalityLevels + enduranceLevels + strengthLevels + dexterityLevels + intelligenceLevels);
+        }
+
+        void SetupDescriptions()
+        {
+            root.Q<Label>("VitalityDescriptionText").text = StatsUtils.GetVitalityDescription();
+            root.Q<Label>("EnduranceDescriptionText").text = StatsUtils.GetEnduranceDescription();
+            root.Q<Label>("IntelligenceDescriptionText").text = StatsUtils.GetIntelligenceDescription();
+            root.Q<Label>("StrengthDescriptionText").text = StatsUtils.GetStrengthDescription();
+            root.Q<Label>("DexterityDescriptionText").text = StatsUtils.GetDexterityDescription();
         }
     }
 

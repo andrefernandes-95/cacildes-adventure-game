@@ -4,6 +4,17 @@ Done:
 - Replace cards with skill system (this is done, but we need to still convert some abilities, and also check the chests)
 - Refactor Player Customization
 
+
+In Dev:
+
+- Create specific tooltip scripts for equipments
+- Inventory weight, if too heavy, do heavy roll ( do not hinder jump )
+- Attack Stat Manager to store current damage for right and left weapon, we should also store bonus damage from str, dex and int into separate variables for consultation (for right and left hand)
+- Rework stat scale to work with module operators for every 2 or 3 levels (25 bonus to health every level)
+- Create AI Damage Receiver class
+
+- accessories can be equipped on other slots
+
 To Do:
 
 - Add armors to characters, show graphic if humanoid and using synty character model
@@ -26,7 +37,8 @@ To Do:
 - Review enemies
 - Add total game progress
 - TH when unarmed is not adding extra bonus
-- Fix gold dupping by not reloading save data.
+- Fix gold dupping by not reloading save data, we need to check boss story events to not use monobehaviour ids, and rely on quest progress instead
+- Buff weapons made easier
 
 Low:
 

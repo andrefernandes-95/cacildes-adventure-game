@@ -227,49 +227,95 @@ namespace AF.UI.EquipmentMenu
 
         bool IsItemEquipped(Item item, int slotIndex)
         {
+            if (item == null)
+                return false;
+
             if (item is Weapon)
             {
-                return equipmentDatabase.weapons[slotIndex] == item;
+                if (equipmentDatabase.weapons == null || slotIndex < 0 || slotIndex >= equipmentDatabase.weapons.Length)
+                    return false;
+
+                var equippedWeapon = equipmentDatabase.weapons[slotIndex];
+                if (equippedWeapon == null)
+                    return false;
+
+                return equippedWeapon.itemID == item.itemID;
             }
             else if (item is Shield)
             {
-                return equipmentDatabase.shields[slotIndex] == item;
+                if (equipmentDatabase.shields == null || slotIndex < 0 || slotIndex >= equipmentDatabase.shields.Length)
+                    return false;
+
+                var equippedShield = equipmentDatabase.shields[slotIndex];
+                if (equippedShield == null)
+                    return false;
+
+                return equippedShield.itemID == item.itemID;
             }
             else if (item is Arrow)
             {
-                return equipmentDatabase.arrows[slotIndex] == item;
+                if (equipmentDatabase.arrows == null || slotIndex < 0 || slotIndex >= equipmentDatabase.arrows.Length)
+                    return false;
+
+                var equippedArrow = equipmentDatabase.arrows[slotIndex];
+                if (equippedArrow == null)
+                    return false;
+
+                return equippedArrow.itemID == item.itemID;
             }
             else if (item is Spell)
             {
-                return equipmentDatabase.spells[slotIndex] == item;
+                if (equipmentDatabase.spells == null || slotIndex < 0 || slotIndex >= equipmentDatabase.spells.Length)
+                    return false;
+
+                var equippedSpell = equipmentDatabase.spells[slotIndex];
+                if (equippedSpell == null)
+                    return false;
+
+                return equippedSpell.itemID == item.itemID;
             }
             else if (item is Accessory)
             {
-                return equipmentDatabase.accessories[slotIndex] == item;
+                if (equipmentDatabase.accessories == null || slotIndex < 0 || slotIndex >= equipmentDatabase.accessories.Length)
+                    return false;
+
+                var equippedAccessory = equipmentDatabase.accessories[slotIndex];
+                if (equippedAccessory == null)
+                    return false;
+
+                return equippedAccessory.itemID == item.itemID;
             }
             else if (item is Consumable)
             {
-                return equipmentDatabase.consumables[slotIndex] == item;
+                if (equipmentDatabase.consumables == null || slotIndex < 0 || slotIndex >= equipmentDatabase.consumables.Length)
+                    return false;
+
+                var equippedConsumable = equipmentDatabase.consumables[slotIndex];
+                if (equippedConsumable == null)
+                    return false;
+
+                return equippedConsumable.itemID == item.itemID;
             }
             else if (item is Helmet)
             {
-                return equipmentDatabase.helmet == item;
+                return equipmentDatabase.helmet != null && equipmentDatabase.helmet.itemID == item.itemID;
             }
             else if (item is Armor)
             {
-                return equipmentDatabase.armor == item;
+                return equipmentDatabase.armor != null && equipmentDatabase.armor.itemID == item.itemID;
             }
             else if (item is Gauntlet)
             {
-                return equipmentDatabase.gauntlet == item;
+                return equipmentDatabase.gauntlet != null && equipmentDatabase.gauntlet.itemID == item.itemID;
             }
             else if (item is Legwear)
             {
-                return equipmentDatabase.legwear == item;
+                return equipmentDatabase.legwear != null && equipmentDatabase.legwear.itemID == item.itemID;
             }
 
             return false;
         }
+
 
         public bool IsKeyItem(Item item)
         {
@@ -277,6 +323,7 @@ namespace AF.UI.EquipmentMenu
                         || item is Accessory || item is Consumable || item is Spell || item is Arrow);
         }
 
+        // Move to a utils class
         public bool ShouldShowItem<T>(KeyValuePair<Item, ItemAmount> item, int slotIndexToEquip, bool showOnlyKeyItems)
         {
             if (item.Key is not T)
@@ -371,10 +418,6 @@ namespace AF.UI.EquipmentMenu
                 bool isEquipped = IsWeaponEquipped(item, slotIndex, isRightHandSlot);
 
                 var instance = itemButtonPrefab.CloneTree();
-                instance.Q<VisualElement>("Sprite").style.backgroundImage = new StyleBackground(item.sprite);
-
-                instance.Q<VisualElement>("CardSprite").style.display = DisplayStyle.None;
-
                 instance.Q<VisualElement>("Sprite").style.backgroundImage = new StyleBackground(item.sprite);
                 var itemName = instance.Q<Label>("ItemName");
                 var itemType = instance.Q<Label>("ItemType");
@@ -491,8 +534,6 @@ namespace AF.UI.EquipmentMenu
                 bool isEquipped = IsItemEquipped(item, slotIndex);
 
                 var instance = itemButtonPrefab.CloneTree();
-                instance.Q<VisualElement>("Sprite").style.backgroundImage = new StyleBackground(item.sprite);
-                instance.Q<VisualElement>("CardSprite").style.display = DisplayStyle.None;
                 instance.Q<VisualElement>("Sprite").style.backgroundImage = new StyleBackground(item.sprite);
 
                 var itemName = instance.Q<Label>("ItemName");

@@ -11,6 +11,8 @@ namespace AF
     {
         // Animation hash values
         public readonly int hashRoll = Animator.StringToHash("Roll");
+        public readonly int hashMidRoll = Animator.StringToHash("Mid Roll");
+        public readonly int hashHeavyRoll = Animator.StringToHash("Heavy Roll");
         public readonly int hashBackStep = Animator.StringToHash("BackStep");
 
         [Header("Components")]
@@ -87,32 +89,18 @@ namespace AF
 
         void HandleDodge()
         {
-            playerManager.PlayBusyHashedAnimationWithRootMotion(hashRoll);
+            int hash = hashRoll;
 
-            /*
-            if (playerManager.equipmentGraphicsHandler.IsHeavyWeight())
+            if (playerManager.characterBaseWeight.ShouldHeavyroll())
             {
-                StartCoroutine(StopHeavyRollRootmotion());
+                hash = hashHeavyRoll;
             }
-            else if (playerManager.equipmentGraphicsHandler.IsMidWeight())
+            else if (playerManager.characterBaseWeight.ShouldMidroll())
             {
-                StartCoroutine(StopMidRollRootmotion());
-            }*/
-        }
+                hash = hashMidRoll;
+            }
 
-        IEnumerator StopMidRollRootmotion()
-        {
-            yield return new WaitForSeconds(0.75f);
-            playerManager.animator.applyRootMotion = false;
-        }
-
-        IEnumerator StopHeavyRollRootmotion()
-        {
-            yield return new WaitForSeconds(0.3f);
-            isDodging = false;
-
-            yield return new WaitForSeconds(0.3f);
-            playerManager.animator.applyRootMotion = false;
+            playerManager.PlayBusyHashedAnimationWithRootMotion(hash);
         }
 
         public bool ShouldBackstep()

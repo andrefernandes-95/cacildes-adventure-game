@@ -59,6 +59,8 @@ namespace AF
 
         [HideInInspector] public Damage damageBonus;
 
+        StatusEffectEntry[] unarmedStatusEffects = new List<StatusEffectEntry>().ToArray();
+
         private void Start()
         {
             scalingDictionary.Add("E", Formulas.E);
@@ -156,7 +158,7 @@ namespace AF
                     : unarmedLightAttackPostureDamage,
                 poiseDamage: 1,
                 weaponAttackType: WeaponAttackType.Blunt,
-                statusEffects: null,
+                statusEffects: unarmedStatusEffects,
                 pushForce: 0,
                 canNotBeParried: false,
                 ignoreBlocking: false

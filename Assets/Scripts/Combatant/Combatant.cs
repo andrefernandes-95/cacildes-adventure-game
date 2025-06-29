@@ -29,6 +29,7 @@ namespace AF
         public int maximumHealth = 500;
         public int maximumPosture = 100;
         public int maximumPoise = 3;
+        public int maximumCarryingWeight = 100;
 
         [Header("Resistances")]
         public float pierceAbsorption = 1f;

@@ -18,7 +18,9 @@ namespace AF.UI.EquipmentMenu
         Label tooltipItemName;
         Label tooltipItemDescription;
 
-        VisualElement tooltipEffectsContainer;
+        [HideInInspector] public VisualElement tooltipEffectsContainer;
+        Label itemWeightLabel;
+        Label itemValueLabel;
 
         public VisualTreeAsset itemEffectTooltipEntry;
 
@@ -226,6 +228,8 @@ namespace AF.UI.EquipmentMenu
         public LocalizedString twoHandDamageLabel;
         public LocalizedString jumpingDamageLabel;
 
+        [Header("Components")]
+        [SerializeField] ArmorTooltip armorTooltip;
 
         private void OnEnable()
         {
@@ -257,6 +261,8 @@ namespace AF.UI.EquipmentMenu
             tooltipItemName = root.Q<VisualElement>("ItemTooltipContainer").Q<Label>("ItemName");
             tooltipItemDescription = root.Q<VisualElement>("ItemTooltipContainer").Q<Label>("ItemDescription");
             tooltipEffectsContainer = tooltip.Q<VisualElement>("ItemAttributes");
+            itemWeightLabel = tooltip.Q<VisualElement>("WeightAndValueContainer").Q<VisualElement>("Weight").Q<Label>();
+            itemValueLabel = tooltip.Q<VisualElement>("WeightAndValueContainer").Q<VisualElement>("Value").Q<Label>();
         }
 
         public void PrepareTooltipForItem(Item item)
@@ -274,6 +280,7 @@ namespace AF.UI.EquipmentMenu
             tooltipItemSprite.style.unityBackgroundScaleMode = ScaleMode.ScaleAndCrop;
 
             string itemName = item.GetName().ToUpper();
+
 
             if (item is Weapon wp)
             {
@@ -293,7 +300,7 @@ namespace AF.UI.EquipmentMenu
             }
             else if (item is ArmorBase armorBase)
             {
-                DrawArmorBase(armorBase);
+                armorTooltip.DrawArmorBase(armorBase);
 
                 if (item is Accessory accessory)
                 {
@@ -819,241 +826,7 @@ namespace AF.UI.EquipmentMenu
             CreateEquipLoadTooltip(shield.speedPenalty);
         }
 
-        void DrawArmorBase(ArmorBase armor)
-        {
-            if (armor.physicalDefense > 0)
-            {
-                CreateTooltip(
-                    defenseAbsorptionSprite,
-                    Color.white,
-                    String.Format(
-                        physicalDefenseBonus.GetLocalizedString(),
-                        armor.physicalDefense));
-            }
 
-            if (armor.speedPenalty > 0)
-            {
-                CreateEquipLoadTooltip(armor.speedPenalty);
-            }
-
-            if (armor.fireDefense > 0)
-            {
-                CreateTooltip(
-                    fireSprite,
-                    fire,
-                    String.Format(
-                        fireDefenseBonus.GetLocalizedString(),
-                        armor.fireDefense));
-
-            }
-            if (armor.frostDefense > 0)
-            {
-                CreateTooltip(
-                    frostSprite,
-                    frost,
-                    String.Format(
-                        frostDefenseBonus.GetLocalizedString(),
-                        armor.frostDefense));
-            }
-            if (armor.lightningDefense > 0)
-            {
-                CreateTooltip(
-                    lightningSprite,
-                    lightning,
-                    String.Format(
-                        lightningDefenseBonus.GetLocalizedString(),
-                        armor.lightningDefense));
-            }
-            if (armor.magicDefense > 0)
-            {
-                CreateTooltip(
-                    magicSprite,
-                    magic,
-                    String.Format(
-                        magicDefenseBonus.GetLocalizedString(),
-                        armor.magicDefense));
-            }
-            if (armor.darkDefense > 0)
-            {
-                CreateTooltip(
-                    darknessSprite,
-                    darkness,
-                    String.Format(
-                        darknessDefenseBonus.GetLocalizedString(),
-                        armor.darkDefense));
-            }
-            if (armor.waterDefense > 0)
-            {
-                CreateTooltip(
-                    waterSprite,
-                    water,
-                    String.Format(
-                        waterDefenseBonus.GetLocalizedString(),
-                        armor.waterDefense));
-            }
-
-            if (armor.poiseBonus != 0)
-            {
-                CreatePoiseTooltip(armor.poiseBonus);
-            }
-
-            if (armor.postureBonus != 0)
-            {
-                CreatePostureTooltip(armor.postureBonus);
-            }
-
-            if (armor.statusEffectResistances != null && armor.statusEffectResistances.Length > 0)
-            {
-                CreateTooltip(statusEffectsSprite, Color.white, armor.GetFormattedStatusResistances());
-            }
-
-            if (armor.statusEffectCancellationRates != null && armor.statusEffectCancellationRates.Length > 0)
-            {
-                CreateTooltip(statusEffectsSprite, Color.white, armor.GetFormattedStatusCancellationRates());
-            }
-
-            CreateAdditionalGoldTooltip(armor.additionalCoinPercentage);
-
-            CreateStatTooltip(armor.vitalityBonus, vitalityBonus.GetLocalizedString(), vitalitySprite);
-            CreateStatTooltip(armor.enduranceBonus, enduranceBonus.GetLocalizedString(), enduranceSprite);
-            CreateStatTooltip(armor.intelligenceBonus, intelligenceBonus.GetLocalizedString(), intelligenceSprite);
-            CreateStatTooltip(armor.strengthBonus, strengthBonus.GetLocalizedString(), strengthSprite);
-            CreateStatTooltip(armor.dexterityBonus, dexterityBonus.GetLocalizedString(), dexteritySprite);
-
-            if (armor.reputationBonus > 0)
-            {
-                CreateTooltip(
-                    reputationSprite,
-                    Color.white,
-                    String.Format(
-                        reputationBonus.GetLocalizedString(),
-                        $"+{armor.reputationBonus}"));
-            }
-            else if (armor.reputationBonus < 0)
-            {
-                CreateTooltip(
-                    reputationSprite,
-                    Color.white,
-                    String.Format(
-                        reputationBonus.GetLocalizedString(),
-                        $"{armor.reputationBonus}"));
-            }
-
-            if (armor.discountPercentage > 0)
-            {
-                CreateTooltip(
-                    barterSprite,
-                    Color.white,
-                    String.Format(
-                        betterPrices.GetLocalizedString(),
-                        Math.Round(armor.discountPercentage * 100, 2)
-                ));
-            }
-
-            if (armor.canDamageEnemiesUponAttack)
-            {
-                if (armor.damageDealtToEnemiesUponAttacked.physical != 0)
-                {
-                    CreateTooltip(
-                        weaponPhysicalAttackSprite,
-                        Color.white,
-                        String.Format(
-                            physicalDamageDealtToAttackingEnemies.GetLocalizedString(),
-                            armor.damageDealtToEnemiesUponAttacked.physical
-                    ));
-                }
-
-                if (armor.damageDealtToEnemiesUponAttacked.fire != 0)
-                {
-
-                    CreateTooltip(
-                        fireSprite,
-                        fire,
-                        String.Format(
-                            fireDamageDealtToAttackingEnemies.GetLocalizedString(),
-                            armor.damageDealtToEnemiesUponAttacked.fire
-                    ));
-
-                }
-
-                if (armor.damageDealtToEnemiesUponAttacked.frost != 0)
-                {
-
-                    CreateTooltip(
-                        frostSprite,
-                        frost,
-                        String.Format(
-                            frostDamageDealtToAttackingEnemies.GetLocalizedString(),
-                            armor.damageDealtToEnemiesUponAttacked.frost
-                    ));
-
-                }
-
-                if (armor.damageDealtToEnemiesUponAttacked.lightning != 0)
-                {
-                    CreateTooltip(
-                        lightningSprite,
-                        lightning,
-                        String.Format(
-                            lightningDamageDealtToAttackingEnemies.GetLocalizedString(),
-                            armor.damageDealtToEnemiesUponAttacked.lightning
-                    ));
-
-                }
-
-                if (armor.damageDealtToEnemiesUponAttacked.magic != 0)
-                {
-                    CreateTooltip(
-                        magicSprite,
-                        magic,
-                        String.Format(
-                            magicDamageDealtToAttackingEnemies.GetLocalizedString(),
-                            armor.damageDealtToEnemiesUponAttacked.magic
-                    ));
-
-                }
-
-                if (armor.damageDealtToEnemiesUponAttacked.darkness != 0)
-                {
-                    CreateTooltip(
-                        darknessSprite,
-                        darkness,
-                        String.Format(
-                            darknessDamageDealtToAttackingEnemies.GetLocalizedString(),
-                            armor.damageDealtToEnemiesUponAttacked.darkness
-                    ));
-
-                }
-
-                if (armor.damageDealtToEnemiesUponAttacked.water != 0)
-                {
-                    CreateTooltip(
-                        waterSprite,
-                        water,
-                        String.Format(
-                            magicDamageDealtToAttackingEnemies.GetLocalizedString(),
-                            armor.damageDealtToEnemiesUponAttacked.water
-                    ));
-
-                }
-
-                if (armor.damageDealtToEnemiesUponAttacked.statusEffects != null && armor.damageDealtToEnemiesUponAttacked.statusEffects.Length > 0)
-                {
-                    CreateTooltip(statusEffectsSprite, Color.white, armor.GetFormattedDamageDealtToEnemiesUpponAttacked());
-                }
-            }
-
-            if (armor.projectileMultiplierBonus > 0)
-            {
-                CreateTooltip(
-                    projectileSprite,
-                    Color.white,
-                    String.Format(
-                        damageOnProjectilesBonus.GetLocalizedString(),
-                        armor.projectileMultiplierBonus
-                ));
-            }
-        }
 
         void DrawAccessory(Accessory accessory)
         {
@@ -1388,7 +1161,7 @@ namespace AF.UI.EquipmentMenu
         }
 
 
-        void CreateTooltip(Texture2D sprite, Color color, string description)
+        public void CreateTooltip(Texture2D sprite, Color color, string description)
         {
             VisualElement clone = itemEffectTooltipEntry.CloneTree();
 

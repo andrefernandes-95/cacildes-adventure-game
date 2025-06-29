@@ -640,28 +640,28 @@ namespace AF.UI.EquipmentMenu
                     equipmentDatabase.UnequipSpell(4);
                     break;
                 case var _ when focusedElement == helmetButtonSlot:
-                    playerManager.equipmentGraphicsHandler.UnequipHelmet();
+                    playerManager.characterBaseEquipment.UnequipHelmet();
                     break;
                 case var _ when focusedElement == armorButtonSlot:
-                    playerManager.equipmentGraphicsHandler.UnequipArmor();
+                    playerManager.characterBaseEquipment.UnequipArmor();
                     break;
                 case var _ when focusedElement == gauntletsButtonSlot:
-                    playerManager.equipmentGraphicsHandler.UnequipGauntlet();
+                    playerManager.characterBaseEquipment.UnequipGauntlets();
                     break;
                 case var _ when focusedElement == bootsButtonSlot:
-                    playerManager.equipmentGraphicsHandler.UnequipLegwear();
+                    playerManager.characterBaseEquipment.UnequipLegwear();
                     break;
                 case var _ when focusedElement == accessoryButtonSlot1:
-                    playerManager.equipmentGraphicsHandler.UnequipAccessory(0);
+                    playerManager.characterBaseEquipment.UnequipAccessory(0);
                     break;
                 case var _ when focusedElement == accessoryButtonSlot2:
-                    playerManager.equipmentGraphicsHandler.UnequipAccessory(1);
+                    playerManager.characterBaseEquipment.UnequipAccessory(1);
                     break;
                 case var _ when focusedElement == accessoryButtonSlot3:
-                    playerManager.equipmentGraphicsHandler.UnequipAccessory(2);
+                    playerManager.characterBaseEquipment.UnequipAccessory(2);
                     break;
                 case var _ when focusedElement == accessoryButtonSlot4:
-                    playerManager.equipmentGraphicsHandler.UnequipAccessory(3);
+                    playerManager.characterBaseEquipment.UnequipAccessory(3);
                     break;
                 case var _ when focusedElement == consumableButtonSlot1:
                     equipmentDatabase.UnequipConsumable(0);

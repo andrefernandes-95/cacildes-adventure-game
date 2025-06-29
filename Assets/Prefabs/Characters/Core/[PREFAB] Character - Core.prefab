@@ -35221,6 +35221,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentPoiseHitCount: 0
+  angleHitFrom: 0
   characterManager: {fileID: 1759811369383153655}
   maxTimeBeforeResettingPoise: 15
   onPoiseDamagedEvent:
@@ -35228,7 +35229,6 @@ MonoBehaviour:
       m_Calls: []
   maxPoiseHits: 5
   hasHyperArmor: 0
-  angleHitFrom: 0
 --- !u!1 &3700532747592145204
 GameObject:
   m_ObjectHideFlags: 0
@@ -35289,6 +35289,7 @@ Transform:
   - {fileID: 8331840166802218857}
   - {fileID: 3724974250028495229}
   - {fileID: 4569028400353981414}
+  - {fileID: 2119559175556153859}
   m_Father: {fileID: 6242450190264014007}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3705549246472038351
@@ -38285,6 +38286,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4011914ff19fe314c95808aa4fa140c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  combatant: {fileID: 0}
   animator: {fileID: 2361713697337747750}
   agent: {fileID: 2625498830857262962}
   characterController: {fileID: 2097905559925885637}
@@ -38297,7 +38299,7 @@ MonoBehaviour:
   characterPosture: {fileID: 2132110015949008154}
   characterPoise: {fileID: 3957914672120321434}
   characterBlockController: {fileID: 4535353149655014410}
-  damageReceiver: {fileID: 9038299807041895652}
+  characterBaseDamageReceiver: {fileID: 9038299807041895652}
   characterPushController: {fileID: 2757715166602653082}
   characterTransformHelper: {fileID: 4552234289973705027}
   characterBaseWeaponsManager: {fileID: 7353292270462359461}
@@ -38308,7 +38310,7 @@ MonoBehaviour:
   characterBaseStats: {fileID: 8576874672740754404}
   statsBonusController: {fileID: 3075981457721325637}
   characterBaseDefenseManager: {fileID: 5636885518856347443}
-  combatant: {fileID: 0}
+  characterBaseWeight: {fileID: 4682122210633535746}
   companionID: {fileID: 0}
   characterCombatController: {fileID: 8518529533467014141}
   targetManager: {fileID: 2735465378605405321}
@@ -38609,39 +38611,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5b55a9b3282586468c5077a091792fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  character: {fileID: 1759811369383153655}
   pushForceAbsorption: 1
   canBeBackstabbed: 1
-  damageResistances: {fileID: 8523245691039101283}
-  health: {fileID: 8818868876428911327}
   combatNotificationsController: {fileID: 8890546953677537694}
+  characterVfxRoot: {fileID: 826813144468769505}
+  bluntVfxPrefab: {fileID: 7226583673155636401, guid: a2ab56839e1c9504ea9d141e95d0b16b, type: 3}
+  slashVfxPrefab: {fileID: 2955623459812423943, guid: 1599640f9b7839344b11d833a9acb3cf, type: 3}
+  pierceVfxPrefab: {fileID: 2955623459812423943, guid: 67ecc724a936ac74bb98ac7c9f1f337a, type: 3}
+  fireVfxPrefab: {fileID: 174222, guid: 7ddfcb4a528e9534885ef03034e9d79e, type: 3}
+  frostVfxPrefab: {fileID: 100264, guid: 00e94e6e46315b641a15d9fe1bb4c80a, type: 3}
+  lightningVfxPrefab: {fileID: 108168, guid: f42842a15a8957c499187a02e40dbe81, type: 3}
+  magicVfxPrefab: {fileID: 175624, guid: b40d6d996002ccd4e8644f5ef79a941a, type: 3}
+  darknessVfxPrefab: {fileID: 167926, guid: cebfa4dc2701e884f9f0aa89d39eade5, type: 3}
+  waterVfxPrefab: {fileID: 124858, guid: 4c77a03a983260049a6f46c388dfc30f, type: 3}
   onDamageReceived:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 7353292270462359461}
-        m_TargetAssemblyTypeName: AF.Equipment.CharacterWeaponsManager, AF
-        m_MethodName: CloseAllWeaponHitboxes
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: AF.Dialogue.GreetingMessageController, AF
-        m_MethodName: StopDisplayingGreetingMessage
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   onPhysicalDamage:
     m_PersistentCalls:
       m_Calls:
@@ -38671,31 +38656,7 @@ MonoBehaviour:
         m_CallState: 2
   onFireDamage:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 2739450041318906942}
-        m_TargetAssemblyTypeName: UnityEngine.ParticleSystem, UnityEngine
-        m_MethodName: Play
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 8940114095399404179}
-        m_TargetAssemblyTypeName: UnityEngine.AudioSource, UnityEngine
-        m_MethodName: Play
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   onFrostDamage:
     m_PersistentCalls:
       m_Calls: []
@@ -38735,6 +38696,9 @@ MonoBehaviour:
   waitingForBackstab: 0
   hasFlatulence: 0
   isTakingDamage: 0
+  character: {fileID: 1759811369383153655}
+  damageResistances: {fileID: 8523245691039101283}
+  health: {fileID: 8818868876428911327}
 --- !u!114 &8790543926545046353
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -40453,6 +40417,9 @@ MonoBehaviour:
     strengthScaling: 5
     dexterityScaling: 5
     intelligenceScaling: 5
+  pierceDamageAbsorption: 1
+  slashDamageAbsorption: 1
+  bluntDamageAbsorption: 1
   character: {fileID: 1759811369383153655}
 --- !u!1 &4202954190753790916
 GameObject:
@@ -85200,6 +85167,51 @@ Transform:
   - {fileID: 3970314209385657235}
   m_Father: {fileID: 6428397718215034728}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &8913780996969324084
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2119559175556153859}
+  - component: {fileID: 4682122210633535746}
+  m_Layer: 22
+  m_Name: "Weight \u2696\uFE0F"
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2119559175556153859
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8913780996969324084}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1438186108084557261}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4682122210633535746
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8913780996969324084}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a09b724090801864192192e4edddb5e0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  characterBaseManager: {fileID: 1759811369383153655}
 --- !u!1 &8914632698530094606
 GameObject:
   m_ObjectHideFlags: 0

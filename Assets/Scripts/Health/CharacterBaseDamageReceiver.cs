@@ -73,8 +73,33 @@ namespace AF
         public abstract void HandleIncomingDamage(CharacterBaseManager attacker, UnityAction<Damage> onTakeDamage);
 
         public abstract void TakeDamage(Damage damage);
-        public abstract void TakeDamage(Damage damage, bool callOnDamageReceivedEvent);
-        public abstract void ApplyDamage(Damage damage);
+
+        public void TakeDamage(Damage damage, bool callOnDamageReceivedEvent)
+        {
+            if (hasFlatulence)
+            {
+                onAttackedWhileWithFlatulence?.Invoke();
+            }
+
+            if (!CanTakeDamage(null))
+            {
+                return;
+            }
+
+            ApplyDamage(damage, callOnDamageReceivedEvent);
+        }
+
+        /// <summary>
+        /// Unity Event
+        /// Bypass the CanTakeDamage check
+        /// </summary>
+        /// <param name="damage"></param>
+        public void ApplyDamage(Damage damage)
+        {
+            ApplyDamage(damage, true);
+        }
+
+        public abstract void ApplyDamage(Damage damage, bool callOnDamageReceivedEvent);
         public abstract void SetCanTakeDamage(bool value);
 
         public virtual bool CanTakeDamage(CharacterBaseManager attacker)
@@ -334,8 +359,6 @@ namespace AF
                         combatNotificationsController.ShowDamage(incomingDamage.physical);
                     }
                 }
-
-                HandlePhysicalDamageEffect(incomingDamage);
             }
 
             if (incomingDamage.fire > 0)
@@ -397,27 +420,89 @@ namespace AF
 
                 onWaterDamage?.Invoke();
             }
+
+            HandleDamageEffects(incomingDamage);
         }
 
-        void HandlePhysicalDamageEffect(Damage incomingDamage)
+        void HandleDamageEffects(Damage incomingDamage)
         {
-            if (incomingDamage.weaponAttackType == WeaponAttackType.Pierce)
+            if (incomingDamage.physical > 0)
             {
-                PlayPierceVfx();
+                switch (incomingDamage.weaponAttackType)
+                {
+                    case WeaponAttackType.Blunt:
+                        PlayDamageVfx(ref bluntVfxInstance, bluntVfxPrefab);
+                        break;
+                    case WeaponAttackType.Slash:
+                        PlayDamageVfx(ref slashVfxInstance, slashVfxPrefab);
+                        break;
+                    case WeaponAttackType.Pierce:
+                        PlayDamageVfx(ref pierceVfxInstance, pierceVfxPrefab);
+                        break;
+                }
+            }
+
+            if (incomingDamage.fire > 0)
+            {
+                PlayDamageVfx(ref fireVfxInstance, fireVfxPrefab);
+            }
+            if (incomingDamage.frost > 0)
+            {
+                PlayDamageVfx(ref frostVfxInstance, frostVfxPrefab);
+            }
+            if (incomingDamage.magic > 0)
+            {
+                PlayDamageVfx(ref magicVfxInstance, magicVfxPrefab);
+            }
+            if (incomingDamage.lightning > 0)
+            {
+                PlayDamageVfx(ref lightningVfxInstance, lightningVfxPrefab);
+            }
+            if (incomingDamage.darkness > 0)
+            {
+                PlayDamageVfx(ref darknessVfxInstance, darknessVfxPrefab);
+            }
+            if (incomingDamage.water > 0)
+            {
+                PlayDamageVfx(ref waterVfxInstance, waterVfxPrefab);
             }
         }
 
-        void PlayPierceVfx()
+        void PlayDamageVfx(ref GameObject vfxInstance, GameObject vfxPrefab)
         {
-            if (pierceVfxInstance == null)
+            if (vfxPrefab == null || characterVfxRoot == null)
+                return;
+
+            if (vfxInstance == null)
             {
-                pierceVfxInstance = Instantiate(pierceVfxPrefab, characterVfxRoot);
+                vfxInstance = Instantiate(vfxPrefab, characterVfxRoot);
             }
 
-            pierceVfxInstance.transform.localPosition = Vector3.zero;
-            pierceVfxInstance.transform.localRotation = Quaternion.identity;
-            pierceVfxInstance.SetActive(false);
-            pierceVfxInstance.SetActive(true);
+            vfxInstance.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
+            vfxInstance.SetActive(false);
+            vfxInstance.SetActive(true);
+        }
+
+        public void TakeDamagePercentage(float damagePercentage)
+        {
+            int damageAmount = (int)damagePercentage * GetCharacter().health.GetMaxHealth() / 100;
+
+            ApplyDamage(
+                new(
+                    physical: damageAmount,
+                    fire: 0,
+                    frost: 0,
+                    magic: 0,
+                    lightning: 0,
+                    darkness: 0,
+                    water: 0,
+                    poiseDamage: 1,
+                    postureDamage: 2,
+                    weaponAttackType: WeaponAttackType.Slash,
+                    statusEffects: null,
+                    pushForce: 0,
+                    canNotBeParried: false,
+                    ignoreBlocking: false));
         }
     }
 }

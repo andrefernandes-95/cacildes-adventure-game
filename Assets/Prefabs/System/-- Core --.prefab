@@ -48848,6 +48848,52 @@ SkinnedMeshRenderer:
     m_Center: {x: 45.997803, y: 0.04106188, z: -1.1475437}
     m_Extent: {x: 15.190453, y: 6.805248, z: 7.5897417}
   m_DirtyAABB: 0
+--- !u!1 &4074864182448167111
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7803000114367705956}
+  - component: {fileID: 5868724825279742955}
+  m_Layer: 8
+  m_Name: "\u2696\uFE0F Player Weight"
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7803000114367705956
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4074864182448167111}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6558083026297358713}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5868724825279742955
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4074864182448167111}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 04ffb5f1b87d2bf4fb01e51bf3d2b9a3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  characterBaseManager: {fileID: 4363140735506542586}
+  currentCarryingWeight: 0
 --- !u!1 &4084236746103550149
 GameObject:
   m_ObjectHideFlags: 0
@@ -71926,6 +71972,7 @@ Transform:
   - {fileID: 1663577802540082676}
   - {fileID: 5984783374128112861}
   - {fileID: 4867610773713198300}
+  - {fileID: 7803000114367705956}
   m_Father: {fileID: 9198782313407061788}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6123862019772100323
@@ -96564,6 +96611,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f196ccc206e291409be6a4daf4488b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  combatant: {fileID: 11400000, guid: 01ef470a8fbfef544aae10ac4d837c4f, type: 2}
   animator: {fileID: 2974784862855873894}
   agent: {fileID: 0}
   characterController: {fileID: 8422702628398843308}
@@ -96588,6 +96636,7 @@ MonoBehaviour:
   characterBaseStats: {fileID: 3968264623967708969}
   statsBonusController: {fileID: 6020033262264106722}
   characterBaseDefenseManager: {fileID: 6483446869199026619}
+  characterBaseWeight: {fileID: 5868724825279742955}
   thirdPersonController: {fileID: 5122672870407089929}
   playerWeaponsManager: {fileID: 16161443765438513}
   climbController: {fileID: 4336404304033871157}
@@ -96798,16 +96847,16 @@ MonoBehaviour:
   pushForceAbsorption: 1
   canBeBackstabbed: 1
   combatNotificationsController: {fileID: 5200957334068746001}
-  characterVfxRoot: {fileID: 1286357315057066493}
-  bluntVfxPrefab: {fileID: 0}
-  slashVfxPrefab: {fileID: 0}
+  characterVfxRoot: {fileID: 5309569914534136765}
+  bluntVfxPrefab: {fileID: 7226583673155636401, guid: a2ab56839e1c9504ea9d141e95d0b16b, type: 3}
+  slashVfxPrefab: {fileID: 2955623459812423943, guid: 1599640f9b7839344b11d833a9acb3cf, type: 3}
   pierceVfxPrefab: {fileID: 2955623459812423943, guid: 67ecc724a936ac74bb98ac7c9f1f337a, type: 3}
-  fireVfxPrefab: {fileID: 0}
-  frostVfxPrefab: {fileID: 0}
-  lightningVfxPrefab: {fileID: 0}
-  magicVfxPrefab: {fileID: 0}
-  darknessVfxPrefab: {fileID: 0}
-  waterVfxPrefab: {fileID: 0}
+  fireVfxPrefab: {fileID: 174222, guid: 7ddfcb4a528e9534885ef03034e9d79e, type: 3}
+  frostVfxPrefab: {fileID: 100264, guid: 00e94e6e46315b641a15d9fe1bb4c80a, type: 3}
+  lightningVfxPrefab: {fileID: 108168, guid: f42842a15a8957c499187a02e40dbe81, type: 3}
+  magicVfxPrefab: {fileID: 175624, guid: b40d6d996002ccd4e8644f5ef79a941a, type: 3}
+  darknessVfxPrefab: {fileID: 167926, guid: cebfa4dc2701e884f9f0aa89d39eade5, type: 3}
+  waterVfxPrefab: {fileID: 124858, guid: 4c77a03a983260049a6f46c388dfc30f, type: 3}
   onDamageReceived:
     m_PersistentCalls:
       m_Calls: []
@@ -104074,6 +104123,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2754274318189135765}
   - component: {fileID: 7513142749045417841}
+  - component: {fileID: 1462404610040672513}
   m_Layer: 0
   m_Name: ViewEquipment - Item Tooltip
   m_TagString: Untagged
@@ -104968,9 +105018,24 @@ MonoBehaviour:
     m_FallbackState: 0
     m_WaitForCompletion: 0
     m_LocalVariables: []
+  armorTooltip: {fileID: 1462404610040672513}
   references:
     version: 2
     RefIds: []
+--- !u!114 &1462404610040672513
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9136521502558565786}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 368ea95557a231a46b6a2cb924eb28ec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemTooltip: {fileID: 7513142749045417841}
+  GUIIconsDatabase: {fileID: 11400000, guid: 6abbe4a5e22b2ee42b53db69bb5f07e4, type: 2}
 --- !u!1 &9137817750590369714
 GameObject:
   m_ObjectHideFlags: 0

@@ -14,6 +14,8 @@ namespace AF
 {
     public abstract class CharacterBaseManager : MonoBehaviour
     {
+        [Header("Combatant Info")]
+        public Combatant combatant;
 
         [Header("Components")]
         public Animator animator;
@@ -48,6 +50,7 @@ namespace AF
         public CharacterBaseStats characterBaseStats;
         public StatsBonusController statsBonusController;
         public CharacterBaseDefenseManager characterBaseDefenseManager;
+        public CharacterBaseWeight characterBaseWeight;
         public abstract void ResetStates();
 
         public bool IsBusy()
