@@ -49,6 +49,7 @@ namespace AF
         public CharacterBaseInventory characterBaseInventory;
         public CharacterBaseStats characterBaseStats;
         public StatsBonusController statsBonusController;
+        public CharacterBaseAttackManager characterBaseAttackManager;
         public CharacterBaseDefenseManager characterBaseDefenseManager;
         public CharacterBaseWeight characterBaseWeight;
         public abstract void ResetStates();

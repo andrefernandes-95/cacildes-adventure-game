@@ -130,11 +130,11 @@ namespace AF
                 if (scaleWithIntelligence)
                 {
                     damage.ScaleSpell(
-                        playerManager.attackStatManager, playerManager.attackStatManager.equipmentDatabase.GetCurrentWeapon(), 0, false, false, false);
+                        playerManager.characterBaseAttackManager, playerManager.characterBaseAttackManager.equipmentDatabase.GetCurrentWeapon(), 0, false, false, false);
                 }
-                else if (playerManager.attackStatManager.HasRangeWeaponEquipped())
+                else if (playerManager.characterBaseAttackManager.HasRangeWeaponEquipped())
                 {
-                    damage.ScaleProjectile(playerManager.attackStatManager, playerManager.attackStatManager.equipmentDatabase.GetCurrentWeapon());
+                    damage.ScaleProjectile(playerManager.characterBaseAttackManager, playerManager.characterBaseAttackManager.equipmentDatabase.GetCurrentWeapon());
                 }
             }
             else if (shooter is CharacterManager enemy)

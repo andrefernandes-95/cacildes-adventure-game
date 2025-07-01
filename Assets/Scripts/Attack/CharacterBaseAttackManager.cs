@@ -1,11 +1,11 @@
-﻿using UnityEngine;
-using System.Collections.Generic;
-using System.Linq;
-using AF.Health;
-
-namespace AF
+﻿namespace AF
 {
-    public class AttackStatManager : MonoBehaviour
+    using UnityEngine;
+    using System.Collections.Generic;
+    using System.Linq;
+    using AF.Health;
+
+    public abstract class CharacterBaseAttackManager : MonoBehaviour
     {
         // RECOMMENDED ATTACK FORMULA:
         // STR LEVEL * levelMultiplier * weaponScaling
@@ -21,6 +21,7 @@ namespace AF
         [Header("Status attack bonus")]
         [Tooltip("Increased by buffs like potions, or equipment like accessories")]
         public float physicalAttackBonus = 0f;
+        [SerializeField] int heavyAttackBonusDamage = 50;
 
         [Header("Unarmed Attack Options")]
         public int unarmedLightAttackPostureDamage = 18;
@@ -43,10 +44,14 @@ namespace AF
         public PlayerStatsDatabase playerStatsDatabase;
         public EquipmentDatabase equipmentDatabase;
 
-        [Header("Components")]
-        public PlayerManager playerManager;
+        [Header("Current Damage")]
+        public Damage rightWeaponCurrentDamage;
+        public Damage leftWeaponCurrentDamage;
+        bool isAttackingWithLeftHand = false;
 
-        Weapon currentAttackingWeapon;
+        [Header("Unarmed Hitboxes")]
+        [SerializeField] UnarmedHitbox unarmedRightWeapon;
+        [SerializeField] UnarmedHitbox unarmedLeftWeapon;
 
         public enum AttackSource
         {
@@ -76,15 +81,11 @@ namespace AF
             damageBonus = null;
         }
 
-        public bool IsHeavyAttacking()
-        {
-            return playerManager.playerCombatController.isHeavyAttacking;
-        }
+        public abstract bool IsHeavyAttacking();
 
-        public bool IsJumpAttacking()
-        {
-            return playerManager.playerCombatController.isJumpAttacking;
-        }
+        public abstract bool IsJumpAttacking();
+
+        public abstract bool IsInAir();
 
         public bool HasRangeWeaponEquipped()
         {
@@ -93,27 +94,36 @@ namespace AF
 
         public Damage GetAttackDamage()
         {
-            Damage damage = CalculateCurrentDamage(currentAttackingWeapon);
-            damage = GetNextAttackBonusDamage(damage);
-            return damage;
+            if (isAttackingWithLeftHand)
+            {
+                return leftWeaponCurrentDamage;
+            }
+
+            return rightWeaponCurrentDamage;
         }
 
-        public Damage CalculateCurrentDamage(Weapon weapon)
+        public void CalculateRightWeaponDamage(Weapon weapon)
         {
+            if (weapon == null)
+            {
+                CalculateUnarmedDamage(true);
+            }
+            else
+            {
+                CalculateWeaponDamageForWeapon(weapon, true);
+            }
 
-            int rageBonus = playerManager.rageManager.GetRageBonus();
-
-
-            if (weapon != null && playerManager.playerCombatController.isAttackingWithFoot == false)
+            /*
+            if (weapon != null)
             {
                 Damage weaponDamage = new(
-                    physical: GetWeaponAttack(weapon) + rageBonus,
-                    fire: (int)weapon.GetWeaponFireAttack(playerManager.attackStatManager),
-                    frost: (int)weapon.GetWeaponFrostAttack(playerManager.attackStatManager),
-                    magic: (int)weapon.GetWeaponMagicAttack(playerManager.attackStatManager),
-                    lightning: (int)weapon.GetWeaponLightningAttack(playerManager.playerStatsDatabase.GetCurrentReputation(), playerManager.attackStatManager),
-                    darkness: (int)weapon.GetWeaponDarknessAttack(playerManager.playerStatsDatabase.GetCurrentReputation(), playerManager.attackStatManager),
-                    water: (int)weapon.GetWeaponWaterAttack(playerManager.attackStatManager),
+                    physical: GetWeaponAttack(weapon),
+                    fire: (int)weapon.GetWeaponFireAttack(GetCharacter().characterBaseAttackManager),
+                    frost: (int)weapon.GetWeaponFrostAttack(GetCharacter().characterBaseAttackManager),
+                    magic: (int)weapon.GetWeaponMagicAttack(GetCharacter().characterBaseAttackManager),
+                    lightning: (int)weapon.GetWeaponLightningAttack(GetCharacter().playerStatsDatabase.GetCurrentReputation(), GetCharacter().characterBaseAttackManager),
+                    darkness: (int)weapon.GetWeaponDarknessAttack(GetCharacter().playerStatsDatabase.GetCurrentReputation(), GetCharacter().characterBaseAttackManager),
+                    water: (int)weapon.GetWeaponWaterAttack(GetCharacter().characterBaseAttackManager),
                     postureDamage: (IsHeavyAttacking() || IsJumpAttacking())
                     ? (int)(weapon.damage.postureDamage * 1.1f)
                     : weapon.damage.postureDamage,
@@ -130,7 +140,7 @@ namespace AF
                     weaponDamage.damageType = DamageType.ENRAGED;
                 }
 
-                if (!weapon.AreRequirementsMet(playerManager))
+                if (!weapon.AreRequirementsMet(GetCharacter()))
                 {
                     weaponDamage.Multiply(.1f);
                 }
@@ -141,35 +151,44 @@ namespace AF
                     damageBonus = null;
                 }
 
-                return playerManager.playerWeaponsManager.GetBuffedDamage(weaponDamage);
-            }
+                return GetCharacter().playerWeaponsManager.GetBuffedDamage(weaponDamage); */
+        }
 
-
-            Damage unarmedDamage = new(
-                physical: GetUnarmedPhysicalDamage() + rageBonus,
-                fire: 0,
-                frost: 0,
-                magic: 0,
-                lightning: 0,
-                darkness: 0,
-                water: 0,
-                postureDamage: (IsHeavyAttacking() || IsJumpAttacking())
-                    ? unarmedLightAttackPostureDamage + unarmedPostureDamageBonus
-                    : unarmedLightAttackPostureDamage,
-                poiseDamage: 1,
-                weaponAttackType: WeaponAttackType.Blunt,
-                statusEffects: unarmedStatusEffects,
-                pushForce: 0,
-                canNotBeParried: false,
-                ignoreBlocking: false
-            );
-
-            if (rageBonus > 0)
+        void CalculateUnarmedDamage(bool isRightHand)
+        {
+            if (isRightHand)
             {
-                unarmedDamage.damageType = DamageType.ENRAGED;
+                if (unarmedRightWeapon == null)
+                {
+                    rightWeaponCurrentDamage = new Damage();
+                }
+                else
+                {
+                    rightWeaponCurrentDamage = unarmedRightWeapon.damage;
+                }
             }
+            else
+            {
+                if (unarmedLeftWeapon == null)
+                {
+                    leftWeaponCurrentDamage = new Damage();
+                }
+                else
+                {
+                    leftWeaponCurrentDamage = unarmedLeftWeapon.damage;
+                }
+            }
+        }
 
-            return unarmedDamage;
+        void CalculateWeaponDamageForWeapon(Weapon weapon, bool isRightHand)
+        {
+            Damage weaponDamage = new();
+            weaponDamage.physical =
+                weapon.GetCurrentPhysicalAttackForLevel(weapon.level);
+
+            if (isRightHand)
+            {
+            }
         }
 
         public int GetCurrentAttackForWeapon(Weapon weapon)
@@ -183,7 +202,7 @@ namespace AF
         {
             int attackValue = GetCurrentPhysicalAttack();
 
-            if (playerManager.thirdPersonController.Grounded == false || IsJumpAttacking())
+            if (IsInAir() || IsJumpAttacking())
             {
                 attackValue = Mathf.FloorToInt(attackValue * jumpAttackMultiplier);
 
@@ -198,9 +217,9 @@ namespace AF
         {
             int heavyAttackBonus = 0;
 
-            if (equipmentDatabase.GetCurrentWeapon() == null && playerManager.playerCombatController.isHeavyAttacking)
+            if (equipmentDatabase.GetCurrentWeapon() == null && IsHeavyAttacking())
             {
-                heavyAttackBonus = playerManager.playerCombatController.unarmedHeavyAttackBonus;
+                heavyAttackBonus += heavyAttackBonusDamage;
             }
 
             var value = basePhysicalAttack;
@@ -210,8 +229,8 @@ namespace AF
                     value
                         + (playerStatsDatabase.strength * Formulas.levelMultiplier)
                         + (playerStatsDatabase.dexterity * Formulas.levelMultiplier)
-                        + (playerManager.statsBonusController.strengthBonus * Formulas.levelMultiplier)
-                        + (playerManager.statsBonusController.dexterityBonus * Formulas.levelMultiplier)
+                        + (GetCharacter().statsBonusController.strengthBonus * Formulas.levelMultiplier)
+                        + (GetCharacter().statsBonusController.dexterityBonus * Formulas.levelMultiplier)
                     ) + physicalAttackBonus + heavyAttackBonus
                 );
         }
@@ -292,12 +311,12 @@ namespace AF
                 value += GetTwoHandAttackBonus(weapon);
             }
 
-            if (playerManager.playerCombatController.isHeavyAttacking)
+            if (IsHeavyAttacking())
             {
                 value = (int)(value * heavyAttackBonusMultiplier);
             }
 
-            if (playerManager.thirdPersonController.Grounded == false || IsJumpAttacking())
+            if (IsInAir() || IsJumpAttacking())
             {
                 value = Mathf.FloorToInt(value * jumpAttackMultiplier);
 
@@ -329,7 +348,7 @@ namespace AF
             // + Attack the lower the health
             if (equipmentDatabase.accessories.FirstOrDefault(x => x != null && x.increaseAttackPowerWithLowerHealth) != null)
             {
-                int extraAttackPower = (int)(value * (playerManager.health as PlayerHealth).GetExtraAttackBasedOnCurrentHealth());
+                int extraAttackPower = (int)(value * (GetCharacter().health as PlayerHealth).GetExtraAttackBasedOnCurrentHealth());
 
                 value += extraAttackPower;
             }
@@ -339,9 +358,9 @@ namespace AF
             value += attackBonuses;
 
             // Bonus for guard counters and parry attacks
-            if (playerManager.characterBlockController.IsWithinCounterAttackWindow())
+            if (GetCharacter().characterBlockController.IsWithinCounterAttackWindow())
             {
-                value = (int)(value * playerManager.characterBlockController.counterAttackMultiplier);
+                value = (int)(value * GetCharacter().characterBlockController.counterAttackMultiplier);
             }
 
             float attackMultiplierBonuses = 1;
@@ -349,14 +368,14 @@ namespace AF
             // Bonus for two handing attack accessories
             if (equipmentDatabase.isTwoHanding)
             {
-                attackMultiplierBonuses += playerManager.statsBonusController.twoHandAttackBonusMultiplier;
+                attackMultiplierBonuses += GetCharacter().statsBonusController.twoHandAttackBonusMultiplier;
             }
 
             Weapon currentWeapon = equipmentDatabase.GetCurrentWeapon();
 
             if (currentWeapon == null)
             {
-                if (playerManager.statsBonusController.increaseAttackPowerWhenUnarmed)
+                if (GetCharacter().statsBonusController.increaseAttackPowerWhenUnarmed)
                 {
                     attackMultiplierBonuses *= 1.65f;
                 }
@@ -365,22 +384,23 @@ namespace AF
             {
                 if (currentWeapon.damage.weaponAttackType == WeaponAttackType.Pierce)
                 {
-                    attackMultiplierBonuses += playerManager.statsBonusController.pierceDamageMultiplier;
+                    attackMultiplierBonuses += GetCharacter().statsBonusController.pierceDamageMultiplier;
                 }
                 else if (currentWeapon.damage.weaponAttackType == WeaponAttackType.Slash)
                 {
-                    attackMultiplierBonuses += playerManager.statsBonusController.slashDamageMultiplier;
+                    attackMultiplierBonuses += GetCharacter().statsBonusController.slashDamageMultiplier;
                 }
                 else if (currentWeapon.damage.weaponAttackType == WeaponAttackType.Blunt)
                 {
-                    attackMultiplierBonuses += playerManager.statsBonusController.bluntDamageMultiplier;
+                    attackMultiplierBonuses += GetCharacter().statsBonusController.bluntDamageMultiplier;
                 }
             }
 
-            if (playerManager.playerCombatController.isAttackingWithFoot)
+            /*
+            if (GetCharacter().playerCombatController.isAttackingWithFoot)
             {
-                value = (int)(value * (footDamageMultiplier + playerManager.statsBonusController.footDamageMultiplier));
-            }
+                value = (int)(value * (footDamageMultiplier + GetCharacter().statsBonusController.footDamageMultiplier));
+            } */
 
             value = (int)(value * attackMultiplierBonuses);
 
@@ -396,7 +416,7 @@ namespace AF
             }
 
             return Formulas.GetBonusFromWeapon(
-                playerManager.characterBaseStats.GetStrength(),
+                GetCharacter().characterBaseStats.GetStrength(),
                  scalingDictionary[weapon.strengthScaling.ToString()]
             );
         }
@@ -409,7 +429,7 @@ namespace AF
             }
 
             return Formulas.GetBonusFromWeapon(
-                playerManager.characterBaseStats.GetDexterity(),
+                GetCharacter().characterBaseStats.GetDexterity(),
                  scalingDictionary[weapon.dexterityScaling.ToString()]
             );
         }
@@ -417,7 +437,7 @@ namespace AF
         public float GetIntelligenceBonusFromWeapon(Weapon weapon)
         {
             return Formulas.GetBonusFromWeapon(
-                playerManager.characterBaseStats.GetIntelligence(),
+                GetCharacter().characterBaseStats.GetIntelligence(),
                  scalingDictionary[weapon.intelligenceScaling.ToString()]
             );
         }
@@ -494,10 +514,26 @@ namespace AF
             return damage;
         }
 
-        public void SetCurrentAttackingWeapon(Weapon weapon)
+        public void SetIsAttackingWithLeftHand(bool isAttackingWithLeftHand)
         {
-            this.currentAttackingWeapon = weapon;
+            this.isAttackingWithLeftHand = isAttackingWithLeftHand;
         }
 
+        public abstract CharacterBaseManager GetCharacter();
+
+        public int GetStrengthBonusForScale(Scaling scale)
+        {
+            return (int)(GetCharacter().characterBaseStats.GetStrength() * scalingDictionary[scale.ToString()]);
+        }
+
+        public int GetDexterityBonusForScale(Scaling scale)
+        {
+            return (int)(GetCharacter().characterBaseStats.GetDexterity() * scalingDictionary[scale.ToString()]);
+        }
+
+        public int GetIntelligenceBonusForScale(Scaling scale)
+        {
+            return (int)(GetCharacter().characterBaseStats.GetDexterity() * scalingDictionary[scale.ToString()]);
+        }
     }
 }

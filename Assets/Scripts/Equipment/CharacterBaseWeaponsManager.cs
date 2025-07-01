@@ -184,8 +184,6 @@ namespace AF
                 return;
             }
 
-            characterWeaponHitbox.character = GetCharacter();
-
             if (characterWeaponHitbox.TryGetComponent(out CharacterTwoHandRef twoHandRef))
             {
                 twoHandRef.characterBaseManager = GetCharacter();

@@ -76,6 +76,18 @@ namespace AF
         //        [Range(0, 100)] public int blockAbsorption = 75;
         //        public float blockStaminaCost = 30f;
 
+        [Header("Weapon Sounds")]
+        public WeaponSound weaponSound;
+
+        public enum WeaponSize
+        {
+            SMALL,
+            LARGE,
+            COLOSSAL
+        }
+
+        public WeaponSize weaponSize = WeaponSize.SMALL;
+
         [Header("Requirements")]
         public int strengthRequired = 0;
         public int dexterityRequired = 0;
@@ -216,37 +228,37 @@ namespace AF
         {
             return CalculateValue(this.level).physical;
         }
-        public int GetWeaponAttack(AttackStatManager attackStatManager)
+        public int GetWeaponAttack(CharacterBaseAttackManager attackStatManager)
         {
             int strengthBonus = (int)attackStatManager.GetStrengthBonusFromWeapon(this);
             int dexterityBonus = (int)attackStatManager.GetDexterityBonusFromWeapon(this);
 
             return GetWeaponBaseAttack() + strengthBonus + dexterityBonus;
         }
-        public int GetWeaponAttackForLevel(AttackStatManager attackStatManager, int level)
+        public int GetWeaponAttackForLevel(CharacterBaseAttackManager attackStatManager, int level)
         {
             int strengthBonus = (int)attackStatManager.GetStrengthBonusFromWeapon(this);
             int dexterityBonus = (int)attackStatManager.GetDexterityBonusFromWeapon(this);
 
             return CalculateValue(level).physical + strengthBonus + dexterityBonus;
         }
-        public int GetWeaponFireAttack(AttackStatManager attackStatManager)
+        public int GetWeaponFireAttack(CharacterBaseAttackManager attackStatManager)
         {
             return CalculateValue(this.level).fire;
         }
-        public int GetWeaponFireAttackForLevel(AttackStatManager attackStatManager, int level)
+        public int GetWeaponFireAttackForLevel(CharacterBaseAttackManager attackStatManager, int level)
         {
             return (int)CalculateValue(level).fire;
         }
-        public int GetWeaponFrostAttack(AttackStatManager attackStatManager)
+        public int GetWeaponFrostAttack(CharacterBaseAttackManager attackStatManager)
         {
             return (int)CalculateValue(this.level).frost;
         }
-        public int GetWeaponFrostAttackForLevel(AttackStatManager attackStatManager, int level)
+        public int GetWeaponFrostAttackForLevel(CharacterBaseAttackManager attackStatManager, int level)
         {
             return (int)CalculateValue(level).frost;
         }
-        public int GetWeaponLightningAttack(int playerReputation, AttackStatManager attackStatManager)
+        public int GetWeaponLightningAttack(int playerReputation, CharacterBaseAttackManager attackStatManager)
         {
             int lightingDamage = CalculateValue(this.level).lightning;
 
@@ -263,7 +275,7 @@ namespace AF
             return CalculateValue(this.level).lightning;
         }
 
-        public int GetWeaponLightningAttackForLevel(int level, int playerReputation, AttackStatManager attackStatManager)
+        public int GetWeaponLightningAttackForLevel(int level, int playerReputation, CharacterBaseAttackManager attackStatManager)
         {
             int lightingDamage = CalculateValue(level).lightning;
 
@@ -279,7 +291,7 @@ namespace AF
         {
             return CalculateValue(this.level).darkness;
         }
-        public int GetWeaponDarknessAttack(int playerReputation, AttackStatManager attackStatManager)
+        public int GetWeaponDarknessAttack(int playerReputation, CharacterBaseAttackManager attackStatManager)
         {
             int darknessDamage = CalculateValue(this.level).darkness;
 
@@ -291,7 +303,7 @@ namespace AF
             return (int)darknessDamage;
         }
 
-        public int GetWeaponDarknessAttackForLevel(int level, int playerReputation, AttackStatManager attackStatManager)
+        public int GetWeaponDarknessAttackForLevel(int level, int playerReputation, CharacterBaseAttackManager attackStatManager)
         {
             int darknessDamage = CalculateValue(level).darkness;
 
@@ -303,12 +315,12 @@ namespace AF
             return (int)darknessDamage;
         }
 
-        public int GetWeaponWaterAttack(AttackStatManager attackStatManager)
+        public int GetWeaponWaterAttack(CharacterBaseAttackManager attackStatManager)
         {
             return (int)CalculateValue(this.level).water;
         }
 
-        public int GetWeaponWaterAttackForLevel(int level, AttackStatManager attackStatManager)
+        public int GetWeaponWaterAttackForLevel(int level, CharacterBaseAttackManager attackStatManager)
         {
             return (int)CalculateValue(level).water;
         }
@@ -317,7 +329,7 @@ namespace AF
         {
             return (int)CalculateValue(this.level).magic;
         }
-        public int GetWeaponMagicAttack(AttackStatManager attackStatManager)
+        public int GetWeaponMagicAttack(CharacterBaseAttackManager attackStatManager)
         {
             int baseMagicDamage = (int)CalculateValue(this.level).magic;
 
@@ -329,7 +341,7 @@ namespace AF
             return baseMagicDamage;
         }
 
-        public int GetWeaponMagicAttackForLevel(int level, AttackStatManager attackStatManager)
+        public int GetWeaponMagicAttackForLevel(int level, CharacterBaseAttackManager attackStatManager)
         {
             int baseMagicDamage = (int)CalculateValue(level).magic;
 
@@ -341,11 +353,11 @@ namespace AF
             return baseMagicDamage;
         }
 
-        public Damage GetWeaponDamage(AttackStatManager attackStatManager)
+        public Damage GetWeaponDamage(CharacterBaseAttackManager attackStatManager)
         {
             Damage baseDamage = CalculateValue(this.level);
 
-            if (!AreRequirementsMet(attackStatManager.playerManager))
+            if (!AreRequirementsMet(attackStatManager.GetCharacter()))
             {
                 baseDamage.Multiply(.1f);
             }
@@ -506,6 +518,29 @@ namespace AF
             var animations = twoHandOverrides.ToList();
             animations.AddRange(blockOverrides);
             return animations;
+        }
+
+        public int GetCurrentPhysicalAttackForLevel(int level)
+        {
+            if (damage.physical <= 0)
+            {
+                return 0;
+            }
+
+            return damage.physical + GetBonusPerLevel(level);
+        }
+
+        public int GetFireAttackForLevel(int level) => GetElementalAttackForLevel(damage.fire, level);
+        public int GetFrostAttackForLevel(int level) => GetElementalAttackForLevel(damage.frost, level);
+        public int GetLightningAttackForLevel(int level) => GetElementalAttackForLevel(damage.lightning, level);
+        public int GetDarknessAttackForLevel(int level) => GetElementalAttackForLevel(damage.darkness, level);
+        public int GetWaterAttackForLevel(int level) => GetElementalAttackForLevel(damage.water, level);
+        public int GetMagicAttackForLevel(int level) => GetElementalAttackForLevel(damage.magic, level);
+
+
+        public int GetElementalAttackForLevel(int baseElementalDamage, int level)
+        {
+            return baseElementalDamage + GetBonusPerLevel(level);
         }
     }
 }

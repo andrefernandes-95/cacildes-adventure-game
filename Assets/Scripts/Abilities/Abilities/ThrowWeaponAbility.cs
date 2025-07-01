@@ -69,7 +69,7 @@ namespace AF
         {
             damage.Multiply(playerManager.playerAbilityManager.GetChargingAmountMultiplier());
             ApplyDamageScaling(playerManager);
-            playerManager.attackStatManager.damageBonus = damage;
+            playerManager.characterBaseAttackManager.damageBonus = damage;
 
             CombatUtils.ThrowWeapon(
                 playerManager.playerWeaponsManager.currentWeaponInstance,

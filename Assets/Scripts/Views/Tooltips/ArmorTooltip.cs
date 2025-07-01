@@ -100,167 +100,70 @@ namespace AF
 
             CreateAdditionalGoldTooltip(armor.additionalCoinPercentage);
 
-            if (armor.vitalityBonus > 0)
-            {
-                string label = "Vitality";
+            ShowStatTooltip(
+                armor.vitalityBonus,
+                "Vitality",
+                "Vitalidade",
+                StatsUtils.GetVitalityDescription(),
+                GUIIconsDatabase.vitality);
 
-                if (Utils.IsPortuguese())
-                {
-                    label = "Vitalidade";
-                }
-                label += "\n";
-                label += $"<i><size=80%>{StatsUtils.GetVitalityDescription()}";
+            ShowStatTooltip(
+                armor.enduranceBonus,
+                "Endurance",
+                "Resistência",
+                StatsUtils.GetEnduranceDescription(),
+                GUIIconsDatabase.endurance);
 
-                CreateStatTooltip(armor.vitalityBonus, label, GUIIconsDatabase.vitality);
-            }
-            CreateStatTooltip(armor.enduranceBonus, Utils.IsPortuguese() ? "Resistência" : "Endurance", GUIIconsDatabase.endurance);
-            CreateStatTooltip(armor.intelligenceBonus, Utils.IsPortuguese() ? "Inteligência" : "Intelligence", GUIIconsDatabase.intelligence);
-            CreateStatTooltip(armor.strengthBonus, Utils.IsPortuguese() ? "Força" : "Strength", GUIIconsDatabase.strength);
-            CreateStatTooltip(armor.dexterityBonus, Utils.IsPortuguese() ? "Destreza" : "Dexterity", GUIIconsDatabase.dexterity);
+            ShowStatTooltip(
+                armor.intelligenceBonus,
+                "Intelligence",
+                "Inteligência",
+                StatsUtils.GetIntelligenceDescription(),
+                GUIIconsDatabase.intelligence);
 
-            /*
+            ShowStatTooltip(
+                armor.strengthBonus,
+                "Strength",
+                "Força",
+                StatsUtils.GetStrengthDescription(),
+                GUIIconsDatabase.strength);
 
-            CreateStatTooltip(armor.vitalityBonus, vitalityBonus.GetLocalizedString(), vitalitySprite);
-            CreateStatTooltip(armor.enduranceBonus, enduranceBonus.GetLocalizedString(), enduranceSprite);
-            CreateStatTooltip(armor.intelligenceBonus, intelligenceBonus.GetLocalizedString(), intelligenceSprite);
-            CreateStatTooltip(armor.strengthBonus, strengthBonus.GetLocalizedString(), strengthSprite);
-            CreateStatTooltip(armor.dexterityBonus, dexterityBonus.GetLocalizedString(), dexteritySprite);
-
-            if (armor.reputationBonus > 0)
-            {
-                itemTooltip.CreateTooltip(
-                    reputationSprite,
-                    Color.white,
-                    String.Format(
-                        reputationBonus.GetLocalizedString(),
-                        $"+{armor.reputationBonus}"));
-            }
-            else if (armor.reputationBonus < 0)
-            {
-                itemTooltip.CreateTooltip(
-                    reputationSprite,
-                    Color.white,
-                    String.Format(
-                        reputationBonus.GetLocalizedString(),
-                        $"{armor.reputationBonus}"));
-            }
+            ShowStatTooltip(
+                armor.dexterityBonus,
+                "Dexterity",
+                "Destreza",
+                StatsUtils.GetDexterityDescription(),
+                GUIIconsDatabase.dexterity);
 
             if (armor.discountPercentage > 0)
             {
+                int discountPercentage = armor.GetDiscountPercentageAtShops();
+                string label = $"{discountPercentage}% discount at shops";
+
+                if (Utils.IsPortuguese())
+                {
+                    label = $"{discountPercentage}% disconto nas lojas";
+                }
+
                 itemTooltip.CreateTooltip(
-                    barterSprite,
+                    GUIIconsDatabase.gold,
                     Color.white,
-                    String.Format(
-                        betterPrices.GetLocalizedString(),
-                        Math.Round(armor.discountPercentage * 100, 2)
-                ));
+                    label);
             }
-
-            if (armor.canDamageEnemiesUponAttack)
-            {
-                if (armor.damageDealtToEnemiesUponAttacked.physical != 0)
-                {
-                    itemTooltip.CreateTooltip(
-                        weaponPhysicalAttackSprite,
-                        Color.white,
-                        String.Format(
-                            physicalDamageDealtToAttackingEnemies.GetLocalizedString(),
-                            armor.damageDealtToEnemiesUponAttacked.physical
-                    ));
-                }
-
-                if (armor.damageDealtToEnemiesUponAttacked.fire != 0)
-                {
-
-                    itemTooltip.CreateTooltip(
-                        fireSprite,
-                        fire,
-                        String.Format(
-                            fireDamageDealtToAttackingEnemies.GetLocalizedString(),
-                            armor.damageDealtToEnemiesUponAttacked.fire
-                    ));
-
-                }
-
-                if (armor.damageDealtToEnemiesUponAttacked.frost != 0)
-                {
-
-                    itemTooltip.CreateTooltip(
-                        frostSprite,
-                        frost,
-                        String.Format(
-                            frostDamageDealtToAttackingEnemies.GetLocalizedString(),
-                            armor.damageDealtToEnemiesUponAttacked.frost
-                    ));
-
-                }
-
-                if (armor.damageDealtToEnemiesUponAttacked.lightning != 0)
-                {
-                    itemTooltip.CreateTooltip(
-                        lightningSprite,
-                        lightning,
-                        String.Format(
-                            lightningDamageDealtToAttackingEnemies.GetLocalizedString(),
-                            armor.damageDealtToEnemiesUponAttacked.lightning
-                    ));
-
-                }
-
-                if (armor.damageDealtToEnemiesUponAttacked.magic != 0)
-                {
-                    itemTooltip.CreateTooltip(
-                        magicSprite,
-                        magic,
-                        String.Format(
-                            magicDamageDealtToAttackingEnemies.GetLocalizedString(),
-                            armor.damageDealtToEnemiesUponAttacked.magic
-                    ));
-
-                }
-
-                if (armor.damageDealtToEnemiesUponAttacked.darkness != 0)
-                {
-                    itemTooltip.CreateTooltip(
-                        darknessSprite,
-                        darkness,
-                        String.Format(
-                            darknessDamageDealtToAttackingEnemies.GetLocalizedString(),
-                            armor.damageDealtToEnemiesUponAttacked.darkness
-                    ));
-
-                }
-
-                if (armor.damageDealtToEnemiesUponAttacked.water != 0)
-                {
-                    itemTooltip.CreateTooltip(
-                        waterSprite,
-                        water,
-                        String.Format(
-                            magicDamageDealtToAttackingEnemies.GetLocalizedString(),
-                            armor.damageDealtToEnemiesUponAttacked.water
-                    ));
-
-                }
-
-                if (armor.damageDealtToEnemiesUponAttacked.statusEffects != null && armor.damageDealtToEnemiesUponAttacked.statusEffects.Length > 0)
-                {
-                    itemTooltip.CreateTooltip(statusEffectsSprite, Color.white, armor.GetFormattedDamageDealtToEnemiesUpponAttacked());
-                }
-            }
-
-            if (armor.projectileMultiplierBonus > 0)
-            {
-                itemTooltip.CreateTooltip(
-                    projectileSprite,
-                    Color.white,
-                    String.Format(
-                        damageOnProjectilesBonus.GetLocalizedString(),
-                        armor.projectileMultiplierBonus
-                ));
-            }*/
         }
 
+        private void ShowStatTooltip(int bonusValue, string statNameEnglish, string statNamePortuguese, string description, Texture2D icon)
+        {
+            if (bonusValue <= 0) return;
+
+            bool isPT = Utils.IsPortuguese();
+
+            string label = isPT ? statNamePortuguese : statNameEnglish;
+            label += "\n";
+            label += $"<i><size=80%>{description}</size></i>";
+
+            CreateStatTooltip(bonusValue, label, icon);
+        }
 
         void CreateAdditionalGoldTooltip(float additionalCoinPercentage)
         {
@@ -284,10 +187,9 @@ namespace AF
 
         void CreateStatTooltip(int statBonus, string label, Texture2D statSprite)
         {
-            if (statBonus != 0)
-            {
-                itemTooltip.CreateTooltip(statSprite, Color.white, label);
-            }
+            string finalLabel = $"+{statBonus} {label}";
+
+            itemTooltip.CreateTooltip(statSprite, Color.white, finalLabel);
         }
     }
 }

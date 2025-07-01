@@ -4,23 +4,11 @@ namespace AF
 
     public class CharacterTwoHandRef : MonoBehaviour
     {
-
-        public bool useTwoHandingTransform = true;
-
-        [Header("Idle Settings")]
-        public Vector3 twoHandingPosition;
-        public Vector3 twoHandingRotation;
-
-        [Header("Block Settings")]
-        public bool useCustomBlockRefs = false;
-        public Vector3 blockPosition;
-        public Vector3 blockRotation;
-
         Vector3 originalPosition;
         Quaternion originalRotation;
 
         [Header("Components")]
-        public CharacterBaseManager characterBaseManager;
+        [HideInInspector] public CharacterBaseManager characterBaseManager;
 
         public void SetOriginalPositionAndRotation(Vector3 initialLocalPosition, Quaternion initialLocalRotation)
         {

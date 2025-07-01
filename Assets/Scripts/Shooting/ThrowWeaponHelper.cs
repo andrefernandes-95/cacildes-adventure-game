@@ -9,11 +9,8 @@ namespace AF
         [HideInInspector] public CharacterWeaponHitbox characterWeaponHitbox;
 
         public float rotationDuration = 0.5f;
-        private bool rotateTowardsTargetBriefly = false;
 
         [Header("Settings")]
-        float rotationTimer = 2f;
-        float rotationSpeed = 25f;
         float launchForce = 15f;
         float upwardArcForce = 3f;
 
@@ -58,7 +55,7 @@ namespace AF
             else
             {
                 // Throw toward target with arc
-                Vector3 toTarget = (target.position - transform.position);
+                Vector3 toTarget = target.position - transform.position;
                 toTarget.y = 0f;
 
                 Vector3 direction = toTarget.normalized;

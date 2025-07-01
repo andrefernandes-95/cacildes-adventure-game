@@ -12,7 +12,7 @@ namespace AF
         [Header("Components")]
         public PlayerManager playerManager;
         public EquipmentGraphicsHandler equipmentGraphicsHandler;
-        public AttackStatManager attackStatManager;
+        public CharacterBaseAttackManager attackStatManager;
         public DefenseStatManager defenseStatManager;
 
         [Header("UI Documents")]
@@ -242,9 +242,9 @@ namespace AF
         private void SetAttackLabels(Weapon item, string labelName, WeaponElementType elementType)
         {
             int baseValue = EquipmentUtils.GetElementalAttackForCurrentWeapon(
-                equipmentDatabase.GetCurrentWeapon(), elementType, playerManager.attackStatManager, playerManager.playerStats.GetReputation());
+                equipmentDatabase.GetCurrentWeapon(), elementType, playerManager.characterBaseAttackManager, playerManager.playerStats.GetReputation());
             int itemValue = EquipmentUtils.GetElementalAttackForCurrentWeapon(
-                item, elementType, playerManager.attackStatManager, playerManager.playerStats.GetReputation());
+                item, elementType, playerManager.characterBaseAttackManager, playerManager.playerStats.GetReputation());
 
             SetStatLabel(labelName, baseValue, itemValue);
         }

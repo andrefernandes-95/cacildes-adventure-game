@@ -1,35 +1,32 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using AF.Combat;
-using AF.Health;
-using UnityEngine;
-using UnityEngine.Events;
-
 namespace AF
 {
-    public class CharacterWeaponHitbox : MonoBehaviour
+    using System.Collections.Generic;
+    using System.Linq;
+    using AF.Combat;
+    using Cinemachine;
+    using UnityEngine;
+    using UnityEngine.Events;
+
+    [RequireComponent(typeof(CinemachineImpulseSource))]
+    [RequireComponent(typeof(AudioSource))]
+    public abstract class Hitbox : MonoBehaviour
     {
-        [Header("Weapon")]
-        public Weapon weapon;
+        [Header("Owner")]
+        [HideInInspector] public CharacterBaseManager character;
 
         [Header("Trails")]
-        public TrailRenderer trailRenderer;
+        [HideInInspector] public TrailRenderer trailRenderer;
         public BoxCollider hitCollider => GetComponent<BoxCollider>();
-
-        [Header("Components")]
-        public CharacterBaseManager character;
-        PlayerManager playerManager;
 
         [Header("Tags To Ignore")]
         public List<string> tagsToIgnore = new();
 
         [Header("SFX")]
-        public AudioClip swingSfx;
-        public AudioClip hitSfx;
-        public AudioSource combatAudioSource;
-
+        AudioSource combatAudioSource => GetComponent<AudioSource>();
         readonly List<IDamageable> damageReceiversHit = new();
+
+        // Camera Shake
+        CinemachineImpulseSource cinemachineImpulseSource => GetComponent<CinemachineImpulseSource>();
 
         [Header("Events")]
         public UnityEvent onOpenHitbox;
@@ -38,8 +35,8 @@ namespace AF
         public UnityEvent onWeaponSpecial;
 
         [Header("Character Weapon Addons")]
-        public CharacterTwoHandRef characterTwoHandRef;
-        public CharacterWeaponBuffs characterWeaponBuffs;
+        [HideInInspector] public CharacterTwoHandRef characterTwoHandRef;
+        [HideInInspector] public CharacterWeaponBuffs characterWeaponBuffs;
 
         // Scene References
         Soundbank soundbank;
@@ -48,15 +45,39 @@ namespace AF
         // Internal flags
         bool canPlayHitSfx = true;
 
-        List<BoxCollider> ownColliders = new();
+        List<BoxCollider> ownColliders => GetComponents<BoxCollider>()?.ToList();
 
         // Useful for throwable weapon situation
         [HideInInspector] public bool shouldDisableHitboxOnStart = true;
 
         private void Awake()
         {
-            ownColliders = GetComponents<BoxCollider>()?.ToList();
-            playerManager = character as PlayerManager;
+            SetupRefs();
+        }
+
+        void SetupRefs()
+        {
+            character = GetComponentInParent<CharacterBaseManager>();
+
+            AssignTrailRenderer();
+
+            characterWeaponBuffs = GetComponent<CharacterWeaponBuffs>();
+
+            characterTwoHandRef = GetComponent<CharacterTwoHandRef>();
+            if (characterTwoHandRef != null)
+            {
+                characterTwoHandRef.characterBaseManager = character;
+            }
+        }
+
+        void AssignTrailRenderer()
+        {
+            trailRenderer = GetComponent<TrailRenderer>();
+
+            if (trailRenderer == null)
+            {
+                trailRenderer = GetComponentInChildren<TrailRenderer>(true);
+            }
         }
 
         void Start()
@@ -98,12 +119,12 @@ namespace AF
                 hitCollider.enabled = true;
             }
 
-            if (swingSfx != null && HasSoundbank())
+            if (GetSwingSFX() != null && HasSoundbank())
             {
                 combatAudioSource.pitch = Random.Range(0.9f, 1.1f);
                 combatAudioSource.Stop();
 
-                soundbank.PlaySound(swingSfx, combatAudioSource);
+                soundbank.PlaySound(GetSwingSFX(), combatAudioSource);
             }
 
             onOpenHitbox?.Invoke();
@@ -149,28 +170,24 @@ namespace AF
             {
                 damageReceiversHit.Add(damageable);
 
-                if (playerManager != null)
-                {
-                    playerManager.attackStatManager.SetCurrentAttackingWeapon(weapon);
-                }
-
                 damageable.OnDamage(character, () =>
                 {
                     onDamageInflicted?.Invoke();
 
-                    if (hitSfx != null && canPlayHitSfx && character != null)
+                    PlayCameraShake();
+
+                    if (GetImpactSFX() != null && canPlayHitSfx && character != null)
                     {
                         canPlayHitSfx = false;
                         PlayHitSound();
                     }
                 });
 
-                if (playerManager != null)
-                {
-                    playerManager.playerCombatController.HandlePlayerAttack(damageable, weapon);
-                }
+                HandleCharacterAttack(damageable);
             }
         }
+
+        protected abstract void HandleCharacterAttack(IDamageable damageable);
 
         private bool ShouldIgnoreCollision(Collider other)
         {
@@ -187,7 +204,7 @@ namespace AF
             if (HasSoundbank() && combatAudioSource != null)
             {
                 combatAudioSource.pitch = Random.Range(0.9f, 1.1f);
-                soundbank.PlaySound(hitSfx, combatAudioSource);
+                soundbank.PlaySound(GetImpactSFX(), combatAudioSource);
             }
         }
 
@@ -219,5 +236,16 @@ namespace AF
 
             return true;
         }
+
+        void PlayCameraShake()
+        {
+            cinemachineImpulseSource.GenerateImpulse(GetWeaponImpactImpulse());
+        }
+
+        public abstract float GetWeaponImpactImpulse();
+
+        public abstract AudioClip GetSwingSFX();
+        public abstract AudioClip GetImpactSFX();
+
     }
 }

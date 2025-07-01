@@ -75,7 +75,7 @@ namespace AF
             return currentPosture + itemPostureBonus;
         }
 
-        public static int GetElementalAttackForCurrentWeapon(Weapon weapon, WeaponElementType elementType, AttackStatManager attackStatManager, int playerCurrentReputation)
+        public static int GetElementalAttackForCurrentWeapon(Weapon weapon, WeaponElementType elementType, CharacterBaseAttackManager attackStatManager, int playerCurrentReputation)
         {
             if (weapon == null) return 0;
 

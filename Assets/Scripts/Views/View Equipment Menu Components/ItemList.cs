@@ -799,7 +799,7 @@ namespace AF.UI.EquipmentMenu
             int value = 0;
             if (item is Weapon weapon)
             {
-                value = playerManager.attackStatManager.CompareWeapon(weapon);
+                value = playerManager.characterBaseAttackManager.CompareWeapon(weapon);
                 shouldReturn = true;
             }
             else if (item is Helmet helmet)

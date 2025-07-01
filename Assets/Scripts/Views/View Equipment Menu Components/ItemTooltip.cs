@@ -25,7 +25,7 @@ namespace AF.UI.EquipmentMenu
         public VisualTreeAsset itemEffectTooltipEntry;
 
         [Header("Components")]
-        public AttackStatManager attackStatManager;
+        public CharacterBaseAttackManager attackStatManager;
         public RecipesDatabase recipesDatabase;
 
         [Header("UI Documents")]
@@ -229,7 +229,9 @@ namespace AF.UI.EquipmentMenu
         public LocalizedString jumpingDamageLabel;
 
         [Header("Components")]
+        [SerializeField] WeaponTooltip weaponTooltip;
         [SerializeField] ArmorTooltip armorTooltip;
+        [SerializeField] AccessoryTooltip accessoryTooltip;
 
         private void OnEnable()
         {
@@ -304,7 +306,7 @@ namespace AF.UI.EquipmentMenu
 
                 if (item is Accessory accessory)
                 {
-                    DrawAccessory(accessory);
+                    accessoryTooltip.DrawAccessory(accessory);
                 }
             }
             else if (item is Consumable consumable)
@@ -354,22 +356,6 @@ namespace AF.UI.EquipmentMenu
             tooltip.style.display = DisplayStyle.Flex;
         }
 
-        void CreateEquipLoadTooltip(float speedPenalty)
-        {
-            if (speedPenalty <= 0)
-            {
-                return;
-            }
-
-            CreateTooltip(
-                weightPenaltySprite,
-                Color.white,
-                String.Format(
-                    equipLoadTooltip_Label.GetLocalizedString(),
-                    Math.Round(speedPenalty * 100, 2))
-            );
-        }
-
         void CreatePoiseTooltip(int poiseBonus)
         {
             if (poiseBonus <= 0)
@@ -393,27 +379,6 @@ namespace AF.UI.EquipmentMenu
                 postureSprite,
                 Color.white,
                 String.Format(postureTooltip_Label.GetLocalizedString(), postureBonus));
-        }
-
-        void CreateAdditionalGoldTooltip(float additionalCoinPercentage)
-        {
-            if (additionalCoinPercentage <= 0)
-            {
-                return;
-            }
-
-            CreateTooltip(
-                goldCoinSprite,
-                Color.white,
-                String.Format(goldFoundOnEnemiesTooltip_Label.GetLocalizedString(), additionalCoinPercentage));
-        }
-
-        void CreateStatTooltip(int statBonus, string statName, Texture2D statSprite)
-        {
-            if (statBonus != 0)
-            {
-                CreateTooltip(statSprite, Color.white, String.Format(statName, statBonus));
-            }
         }
 
         void DrawWeaponEffects(Weapon weapon)
@@ -496,7 +461,6 @@ namespace AF.UI.EquipmentMenu
 
             DrawStatusEffects(weapon.damage);
 
-            CreateEquipLoadTooltip(weapon.speedPenalty);
 
             if (weapon.isHolyWeapon)
             {
@@ -822,8 +786,6 @@ namespace AF.UI.EquipmentMenu
                         staminaRegenSpeedBonus.GetLocalizedString(),
                         shield.staminaRegenBonus));
             }
-
-            CreateEquipLoadTooltip(shield.speedPenalty);
         }
 
 
@@ -1126,7 +1088,7 @@ namespace AF.UI.EquipmentMenu
             }
         }
 
-        void DrawStatusEffects(Damage damage)
+        public void DrawStatusEffects(Damage damage)
         {
             if (damage.statusEffects != null && damage.statusEffects.Length > 0)
             {

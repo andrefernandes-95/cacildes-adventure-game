@@ -622,7 +622,7 @@ namespace AF.Shooting
                 {
                     bool shouldDoubleDamage = false;
 
-                    Weapon currentWeapon = GetPlayerManager().attackStatManager.equipmentDatabase.GetCurrentWeapon();
+                    Weapon currentWeapon = GetPlayerManager().characterBaseAttackManager.equipmentDatabase.GetCurrentWeapon();
 
                     if (currentWeapon != null)
                     {
@@ -632,7 +632,7 @@ namespace AF.Shooting
                     }
 
                     onDamageCollisionAbstractManager.damage.ScaleSpell(
-                        GetPlayerManager().attackStatManager,
+                        GetPlayerManager().characterBaseAttackManager,
                         currentWeapon,
                         playerStatsDatabase.GetCurrentReputation(),
                         currentSpell.isFaithSpell,
@@ -655,8 +655,8 @@ namespace AF.Shooting
                 if (currentSpell != null)
                 {
                     onChildDamageCollisionAbstractManager.damage.ScaleSpell(
-                        GetPlayerManager().attackStatManager,
-                        GetPlayerManager().attackStatManager.equipmentDatabase.GetCurrentWeapon(),
+                        GetPlayerManager().characterBaseAttackManager,
+                        GetPlayerManager().characterBaseAttackManager.equipmentDatabase.GetCurrentWeapon(),
                         playerStatsDatabase.GetCurrentReputation(),
                         currentSpell.isFaithSpell,
                         currentSpell.isHexSpell,

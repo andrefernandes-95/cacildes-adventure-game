@@ -31,6 +31,8 @@ namespace AF
         public Texture2D blunt;
         public Texture2D pierce;
         public Texture2D slash;
+        public Texture2D range;
+        public Texture2D feetAttack;
         [Header("Attributes & Stats")]
         public Texture2D vitality;
         public Texture2D endurance;
@@ -42,6 +44,7 @@ namespace AF
         public Texture2D pushForce;
         public Texture2D posture;
         public Texture2D statusEffects;
+        public Texture2D bonusStats;
         public Texture2D heavyAttack;
         public Texture2D staminaCost;
         public Texture2D bossToken;
@@ -59,5 +62,8 @@ namespace AF
         public Color darknessColor;
         public Color waterColor;
         public Color requirementsNotMetColor;
+        public Color healthColor;
+        public Color manaColor;
+        public Color staminaColor;
     }
 }

@@ -113,7 +113,7 @@ namespace AF.Health
         }
 
         public void ScaleSpell(
-            AttackStatManager attackStatManager,
+            CharacterBaseAttackManager attackStatManager,
             Weapon currentWeapon,
             int playerReputation,
             bool isFaithSpell,
@@ -197,14 +197,14 @@ namespace AF.Health
             }
         }
 
-        public void ScaleProjectile(AttackStatManager attackStatManager, Weapon currentWeapon)
+        public void ScaleProjectile(CharacterBaseAttackManager attackStatManager, Weapon currentWeapon)
         {
             // Steel arrow might inherit magic from a magical bow, hence don't check if base values are greater than zero
             this.physical += (int)currentWeapon.GetWeaponAttack(attackStatManager);
 
-            if (attackStatManager.playerManager.statsBonusController.projectileMultiplierBonus > 0f)
+            if (attackStatManager.GetCharacter().statsBonusController.projectileMultiplierBonus > 0f)
             {
-                this.physical = (int)(this.physical * attackStatManager.playerManager.statsBonusController.projectileMultiplierBonus);
+                this.physical = (int)(this.physical * attackStatManager.GetCharacter().statsBonusController.projectileMultiplierBonus);
             }
 
             this.fire += (int)currentWeapon.GetWeaponFireAttack(attackStatManager);

@@ -3048,6 +3048,123 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &395263072354442358
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2380051755025580241}
+  - component: {fileID: 7696134753367752523}
+  m_Layer: 22
+  m_Name: "Attack Manager \u2694\uFE0F"
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2380051755025580241
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 395263072354442358}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1438186108084557261}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7696134753367752523
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 395263072354442358}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b20663c4ac9a14640ac632a1dcce4237, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  physicalAttackBonus: 0
+  heavyAttackBonusDamage: 50
+  unarmedLightAttackPostureDamage: 18
+  unarmedPostureDamageBonus: 10
+  basePhysicalAttack: 100
+  jumpAttackMultiplier: 1.25
+  twoHandAttackBonusMultiplier: 1.25
+  heavyAttackBonusMultiplier: 1.35
+  footDamageMultiplier: 1.2
+  increaseNextAttackDamageFX: {fileID: 0}
+  playerStatsDatabase: {fileID: 0}
+  equipmentDatabase: {fileID: 0}
+  rightWeaponCurrentDamage:
+    physical: 0
+    fire: 0
+    frost: 0
+    magic: 0
+    lightning: 0
+    darkness: 0
+    water: 0
+    postureDamage: 0
+    poiseDamage: 0
+    pushForce: 0
+    weaponAttackType: 0
+    statusEffects: []
+    ignoreBlocking: 0
+    canNotBeParried: 0
+    damageType: 0
+    strengthScaling: 5
+    dexterityScaling: 5
+    intelligenceScaling: 5
+  leftWeaponCurrentDamage:
+    physical: 0
+    fire: 0
+    frost: 0
+    magic: 0
+    lightning: 0
+    darkness: 0
+    water: 0
+    postureDamage: 0
+    poiseDamage: 0
+    pushForce: 0
+    weaponAttackType: 0
+    statusEffects: []
+    ignoreBlocking: 0
+    canNotBeParried: 0
+    damageType: 0
+    strengthScaling: 5
+    dexterityScaling: 5
+    intelligenceScaling: 5
+  unarmedRightWeapon: {fileID: 0}
+  unarmedLeftWeapon: {fileID: 0}
+  attackSource: 2
+  damageBonus:
+    physical: 0
+    fire: 0
+    frost: 0
+    magic: 0
+    lightning: 0
+    darkness: 0
+    water: 0
+    postureDamage: 0
+    poiseDamage: 0
+    pushForce: 0
+    weaponAttackType: 0
+    statusEffects: []
+    ignoreBlocking: 0
+    canNotBeParried: 0
+    damageType: 0
+    strengthScaling: 5
+    dexterityScaling: 5
+    intelligenceScaling: 5
+  characterManager: {fileID: 1759811369383153655}
 --- !u!1 &406322157276825770
 GameObject:
   m_ObjectHideFlags: 0
@@ -3606,31 +3723,28 @@ MonoBehaviour:
   m_GameObject: {fileID: 428938019957438451}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2dd29b7d2ab7447e197e24809d8d5108, type: 3}
+  m_Script: {fileID: 11500000, guid: 8b8b9b9b19d8139469e983fc2855e452, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weapon: {fileID: 0}
-  trailRenderer: {fileID: 0}
-  character: {fileID: 1759811369383153655}
-  tagsToIgnore: []
-  swingSfx: {fileID: 8300000, guid: d5cc1159b3057f946a3a21a6ddce614d, type: 3}
-  hitSfx: {fileID: 8300000, guid: a9585f4690c172d479399ec7d78420bb, type: 3}
-  combatAudioSource: {fileID: 6363769051905563577}
-  onOpenHitbox:
-    m_PersistentCalls:
-      m_Calls: []
-  onCloseHitbox:
-    m_PersistentCalls:
-      m_Calls: []
-  onDamageInflicted:
-    m_PersistentCalls:
-      m_Calls: []
-  onWeaponSpecial:
-    m_PersistentCalls:
-      m_Calls: []
-  characterTwoHandRef: {fileID: 0}
-  characterWeaponBuffs: {fileID: 0}
-  shouldDisableHitboxOnStart: 1
+  damage:
+    physical: 0
+    fire: 0
+    frost: 0
+    magic: 0
+    lightning: 0
+    darkness: 0
+    water: 0
+    postureDamage: 0
+    poiseDamage: 0
+    pushForce: 0
+    weaponAttackType: 0
+    statusEffects: []
+    ignoreBlocking: 0
+    canNotBeParried: 0
+    damageType: 0
+    strengthScaling: 5
+    dexterityScaling: 5
+    intelligenceScaling: 5
 --- !u!1 &440025735259756196
 GameObject:
   m_ObjectHideFlags: 0
@@ -20257,31 +20371,28 @@ MonoBehaviour:
   m_GameObject: {fileID: 2152176804536256658}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2dd29b7d2ab7447e197e24809d8d5108, type: 3}
+  m_Script: {fileID: 11500000, guid: 8b8b9b9b19d8139469e983fc2855e452, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weapon: {fileID: 0}
-  trailRenderer: {fileID: 0}
-  character: {fileID: 1759811369383153655}
-  tagsToIgnore: []
-  swingSfx: {fileID: 8300000, guid: d5cc1159b3057f946a3a21a6ddce614d, type: 3}
-  hitSfx: {fileID: 8300000, guid: a9585f4690c172d479399ec7d78420bb, type: 3}
-  combatAudioSource: {fileID: 6363769051905563577}
-  onOpenHitbox:
-    m_PersistentCalls:
-      m_Calls: []
-  onCloseHitbox:
-    m_PersistentCalls:
-      m_Calls: []
-  onDamageInflicted:
-    m_PersistentCalls:
-      m_Calls: []
-  onWeaponSpecial:
-    m_PersistentCalls:
-      m_Calls: []
-  characterTwoHandRef: {fileID: 0}
-  characterWeaponBuffs: {fileID: 0}
-  shouldDisableHitboxOnStart: 1
+  damage:
+    physical: 0
+    fire: 0
+    frost: 0
+    magic: 0
+    lightning: 0
+    darkness: 0
+    water: 0
+    postureDamage: 0
+    poiseDamage: 0
+    pushForce: 0
+    weaponAttackType: 0
+    statusEffects: []
+    ignoreBlocking: 0
+    canNotBeParried: 0
+    damageType: 0
+    strengthScaling: 5
+    dexterityScaling: 5
+    intelligenceScaling: 5
 --- !u!1 &2167038006246093580
 GameObject:
   m_ObjectHideFlags: 0
@@ -35290,6 +35401,7 @@ Transform:
   - {fileID: 3724974250028495229}
   - {fileID: 4569028400353981414}
   - {fileID: 2119559175556153859}
+  - {fileID: 2380051755025580241}
   m_Father: {fileID: 6242450190264014007}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3705549246472038351
@@ -38309,6 +38421,7 @@ MonoBehaviour:
   characterBaseInventory: {fileID: 803880670546321203}
   characterBaseStats: {fileID: 8576874672740754404}
   statsBonusController: {fileID: 3075981457721325637}
+  characterBaseAttackManager: {fileID: 7696134753367752523}
   characterBaseDefenseManager: {fileID: 5636885518856347443}
   characterBaseWeight: {fileID: 4682122210633535746}
   companionID: {fileID: 0}
@@ -46098,16 +46211,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 4785883332531310934}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2dd29b7d2ab7447e197e24809d8d5108, type: 3}
+  m_Script: {fileID: 11500000, guid: 48b71f737eedd534fb283f3bda6cf56c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   weapon: {fileID: 0}
   trailRenderer: {fileID: 0}
-  character: {fileID: 1759811369383153655}
+  character: {fileID: 0}
   tagsToIgnore: []
-  swingSfx: {fileID: 8300000, guid: d5cc1159b3057f946a3a21a6ddce614d, type: 3}
-  hitSfx: {fileID: 8300000, guid: a9585f4690c172d479399ec7d78420bb, type: 3}
-  combatAudioSource: {fileID: 6363769051905563577}
+  swingSfx: {fileID: 0}
+  hitSfx: {fileID: 0}
+  combatAudioSource: {fileID: 0}
   onOpenHitbox:
     m_PersistentCalls:
       m_Calls: []
@@ -46944,12 +47057,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 4929214698707332456}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2dd29b7d2ab7447e197e24809d8d5108, type: 3}
+  m_Script: {fileID: 11500000, guid: 48b71f737eedd534fb283f3bda6cf56c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   weapon: {fileID: 0}
-  trailRenderer: {fileID: 2977559487578134999}
-  character: {fileID: 1759811369383153655}
+  trailRenderer: {fileID: 0}
+  character: {fileID: 0}
   tagsToIgnore: []
   swingSfx: {fileID: 0}
   hitSfx: {fileID: 0}
@@ -48127,12 +48240,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 5096080073923502155}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2dd29b7d2ab7447e197e24809d8d5108, type: 3}
+  m_Script: {fileID: 11500000, guid: 48b71f737eedd534fb283f3bda6cf56c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   weapon: {fileID: 0}
-  trailRenderer: {fileID: 5248596627983852701}
-  character: {fileID: 1759811369383153655}
+  trailRenderer: {fileID: 0}
+  character: {fileID: 0}
   tagsToIgnore: []
   swingSfx: {fileID: 0}
   hitSfx: {fileID: 0}
@@ -59336,31 +59449,28 @@ MonoBehaviour:
   m_GameObject: {fileID: 6323651783797539211}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2dd29b7d2ab7447e197e24809d8d5108, type: 3}
+  m_Script: {fileID: 11500000, guid: 8b8b9b9b19d8139469e983fc2855e452, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weapon: {fileID: 0}
-  trailRenderer: {fileID: 0}
-  character: {fileID: 1759811369383153655}
-  tagsToIgnore: []
-  swingSfx: {fileID: 8300000, guid: d5cc1159b3057f946a3a21a6ddce614d, type: 3}
-  hitSfx: {fileID: 8300000, guid: a9585f4690c172d479399ec7d78420bb, type: 3}
-  combatAudioSource: {fileID: 6363769051905563577}
-  onOpenHitbox:
-    m_PersistentCalls:
-      m_Calls: []
-  onCloseHitbox:
-    m_PersistentCalls:
-      m_Calls: []
-  onDamageInflicted:
-    m_PersistentCalls:
-      m_Calls: []
-  onWeaponSpecial:
-    m_PersistentCalls:
-      m_Calls: []
-  characterTwoHandRef: {fileID: 0}
-  characterWeaponBuffs: {fileID: 0}
-  shouldDisableHitboxOnStart: 1
+  damage:
+    physical: 0
+    fire: 0
+    frost: 0
+    magic: 0
+    lightning: 0
+    darkness: 0
+    water: 0
+    postureDamage: 0
+    poiseDamage: 0
+    pushForce: 0
+    weaponAttackType: 0
+    statusEffects: []
+    ignoreBlocking: 0
+    canNotBeParried: 0
+    damageType: 0
+    strengthScaling: 5
+    dexterityScaling: 5
+    intelligenceScaling: 5
 --- !u!114 &3522772319926636852
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -85212,6 +85322,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   characterBaseManager: {fileID: 1759811369383153655}
+  currentCarryingWeight: 0
 --- !u!1 &8914632698530094606
 GameObject:
   m_ObjectHideFlags: 0

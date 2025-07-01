@@ -174,5 +174,10 @@ namespace AF
         public virtual void OnUnequip(CharacterBaseManager character)
         {
         }
+
+        public int GetDiscountPercentageAtShops()
+        {
+            return Mathf.Clamp((int)Math.Round(discountPercentage * 100, 2), 0, 100);
+        }
     }
 }

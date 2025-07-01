@@ -434,11 +434,11 @@ namespace AF
 
             if (weapon != null)
             {
-                playerManager.attackStatManager.attackSource = AttackStatManager.AttackSource.WEAPON;
+                playerManager.characterBaseAttackManager.attackSource = CharacterBaseAttackManager.AttackSource.WEAPON;
             }
             else
             {
-                playerManager.attackStatManager.attackSource = AttackStatManager.AttackSource.UNARMED;
+                playerManager.characterBaseAttackManager.attackSource = CharacterBaseAttackManager.AttackSource.UNARMED;
             }
         }
 

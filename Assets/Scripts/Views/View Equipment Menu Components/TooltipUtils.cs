@@ -7,7 +7,7 @@ namespace AF
 
         public static string GetWeaponPhysicalDamageExplanation(PlayerManager playerManager, Weapon weapon)
         {
-            AttackStatManager attackStatManager = playerManager.attackStatManager;
+            CharacterBaseAttackManager attackStatManager = playerManager.characterBaseAttackManager;
             int totalPhysicalDamage = attackStatManager.GetWeaponAttack(weapon);
             int strengthAttackBonus = attackStatManager.GetStrengthBonusFromWeapon(weapon);
             int dexterityAttackBonus = (int)attackStatManager.GetDexterityBonusFromWeapon(weapon);
@@ -97,7 +97,7 @@ namespace AF
 
             if (!playerManager.thirdPersonController.Grounded)
             {
-                int jumpAttackBonus = (int)(attackStatManager.GetWeaponAttack(weapon) - attackStatManager.GetWeaponAttack(weapon) / playerManager.attackStatManager.jumpAttackMultiplier);
+                int jumpAttackBonus = (int)(attackStatManager.GetWeaponAttack(weapon) - attackStatManager.GetWeaponAttack(weapon) / playerManager.characterBaseAttackManager.jumpAttackMultiplier);
 
                 if (jumpAttackBonus > 0)
                 {
@@ -196,7 +196,7 @@ namespace AF
 
         public static string GetMagicDamageExplanation(PlayerManager playerManager, Weapon weapon)
         {
-            AttackStatManager attackStatManager = playerManager.attackStatManager;
+            CharacterBaseAttackManager attackStatManager = playerManager.characterBaseAttackManager;
             int totalMagicDamage = weapon.GetWeaponMagicAttack(attackStatManager);
             int baseMagicDamage = weapon.GetWeaponBaseMagicAttack();
             int damageFromIntelligenceScaling = (int)attackStatManager.GetIntelligenceBonusFromWeapon(weapon);

@@ -12,7 +12,7 @@ In Dev:
 - Attack Stat Manager to store current damage for right and left weapon, we should also store bonus damage from str, dex and int into separate variables for consultation (for right and left hand)
 - Rework stat scale to work with module operators for every 2 or 3 levels (25 bonus to health every level)
 - Create AI Damage Receiver class
-
+- Add Damage Type Label to weapons (Slash, Blunt, etc)
 - accessories can be equipped on other slots
 
 To Do:
@@ -39,6 +39,7 @@ To Do:
 - TH when unarmed is not adding extra bonus
 - Fix gold dupping by not reloading save data, we need to check boss story events to not use monobehaviour ids, and rely on quest progress instead
 - Buff weapons made easier
+- PS4 Gamepad not showing correct icns 
 
 Low:
 
@@ -75,6 +76,9 @@ Low:
 - Weapon crafting should be earlier
 - Ring that checks if enemy is hit with arrow, there's 50% chances of recovering that arrow upon enemy death
 - Version save files
+- Ring that enhances defense when all armor pieces are equipped
+- Ring that enhances charged spells damages
+
 
 BACKLOG:
 

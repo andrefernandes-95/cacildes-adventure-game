@@ -28,7 +28,6 @@ namespace AF
         public StaminaStatManager staminaStatManager;
         public ManaManager manaManager;
         public DefenseStatManager defenseStatManager;
-        public AttackStatManager attackStatManager;
         public PlayerInventory playerInventory;
         public FavoriteItemsManager favoriteItemsManager;
         public PlayerShooter playerShootingManager;
@@ -51,7 +50,6 @@ namespace AF
         public UIDocumentPlayerHUDV2 uIDocumentPlayerHUDV2;
         public UIDocumentAlert uIDocumentAlert;
         public PlayerAbilityManager playerAbilityManager;
-        public PlayerThrowWeaponManager playerThrowWeaponManager;
         public PlayerStats playerStats;
 
         [Header("Databases")]
@@ -121,14 +119,14 @@ namespace AF
 
             playerBlockController.ResetStates();
 
-            attackStatManager.ResetStates();
+            characterBaseAttackManager.ResetStates();
 
             playerAbilityManager.ResetStates();
         }
 
         public override Damage GetAttackDamage()
         {
-            Damage attackDamage = attackStatManager.GetAttackDamage();
+            Damage attackDamage = characterBaseAttackManager.GetAttackDamage();
 
             if (playerBlockController.isCounterAttacking)
             {

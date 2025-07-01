@@ -18,7 +18,6 @@ namespace AF
 		public Vector2 look;
 		public bool jump;
 		public bool sprint;
-		public bool toggleWalk;
 
 		public bool consumeFavoriteItem;
 		public UnityEvent onConsumeFavoriteItem;
@@ -219,8 +218,6 @@ namespace AF
 
 		public void OnToggleWalk(InputValue value)
 		{
-			toggleWalk = !toggleWalk;
-
 		}
 
 		public void OnMenu(InputValue value)
