@@ -51,5 +51,14 @@ namespace AF
             }
         }
 
+        public int GetCraftingMaterialAmount(Item item)
+        {
+            return GetCraftingMaterials().Count(craftingMaterial => craftingMaterial.name.Replace("(Clone)", "") == item.name);
+        }
+        public int GetUpgradeMaterialAmount(Item item)
+        {
+            return GetUpgradeMaterials().Count(upgradeMaterial => upgradeMaterial.name.Replace("(Clone)", "") == item.name);
+        }
+
     }
 }

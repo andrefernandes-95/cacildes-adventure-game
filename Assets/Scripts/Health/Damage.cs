@@ -25,6 +25,7 @@ namespace AF.Health
     [System.Serializable]
     public class Damage
     {
+        [HideInInspector] public int basePhysicalDamage;
         public int physical;
         public int fire;
         public int frost;
@@ -98,6 +99,47 @@ namespace AF.Health
             return physical + fire + frost + magic + lightning + darkness + water;
         }
 
+
+        public int GetStrengthBonus(CharacterBaseManager characterBaseManager)
+        {
+            if (this.physical <= 0)
+            {
+                return 0;
+            }
+
+            // Apply bonus damage based on scaling and stats
+            int bonusFromSTR = GetBonusFromStrength(characterBaseManager.characterBaseStats.GetStrength());
+
+            return bonusFromSTR;
+        }
+
+        public int GetDexterityBonus(CharacterBaseManager characterBaseManager)
+        {
+            if (this.physical <= 0)
+            {
+                return 0;
+            }
+
+            // Apply bonus damage based on scaling and stats
+            int bonusFromDEX = GetBonusFromDexterity(characterBaseManager.characterBaseStats.GetDexterity());
+
+            return bonusFromDEX;
+        }
+
+        public int GetIntelligenceBonus(CharacterBaseManager characterBaseManager)
+        {
+            if (this.fire <= 0 && this.frost <= 0 && this.lightning <= 0 && this.magic <= 0 && this.darkness <= 0 && this.water <= 0)
+            {
+                return 0;
+            }
+
+            // Apply bonus damage based on scaling and stats
+            int bonusFromINT = GetBonusFromIntelligence(characterBaseManager.characterBaseStats.GetIntelligence());
+
+            return bonusFromINT;
+        }
+
+
         public void Multiply(float multiplier)
         {
             this.physical = (int)(this.physical * multiplier);
@@ -124,34 +166,34 @@ namespace AF.Health
 
             if (this.fire > 0)
             {
-                this.fire += (int)(currentWeapon.GetWeaponFireAttack(attackStatManager) + attackStatManager.GetIntelligenceBonusFromWeapon(currentWeapon) * multiplier);
+                this.fire += (int)(currentWeapon.GetWeaponFireAttack(attackStatManager) + GetIntelligenceBonus(attackStatManager.GetCharacter()) * multiplier);
             }
 
             if (this.frost > 0)
             {
-                this.frost += (int)(currentWeapon.GetWeaponFrostAttack(attackStatManager) + attackStatManager.GetIntelligenceBonusFromWeapon(currentWeapon) * multiplier);
+                this.frost += (int)(currentWeapon.GetWeaponFrostAttack(attackStatManager) + GetIntelligenceBonus(attackStatManager.GetCharacter()) * multiplier);
             }
 
             if (this.magic > 0)
             {
-                this.magic += (int)(currentWeapon.GetWeaponMagicAttack(attackStatManager) + attackStatManager.GetIntelligenceBonusFromWeapon(currentWeapon) * multiplier);
+                this.magic += (int)(currentWeapon.GetWeaponMagicAttack(attackStatManager) + GetIntelligenceBonus(attackStatManager.GetCharacter()) * multiplier);
             }
 
             if (this.lightning > 0)
             {
                 this.lightning += (int)(
-                    currentWeapon.GetWeaponLightningAttack(playerReputation, attackStatManager) + attackStatManager.GetIntelligenceBonusFromWeapon(currentWeapon) * multiplier);
+                    currentWeapon.GetWeaponLightningAttack(playerReputation, attackStatManager) + GetIntelligenceBonus(attackStatManager.GetCharacter()) * multiplier);
             }
 
             if (this.darkness > 0)
             {
                 this.darkness += (int)(currentWeapon.GetWeaponDarknessAttack(playerReputation, attackStatManager)
-                    + attackStatManager.GetIntelligenceBonusFromWeapon(currentWeapon) * multiplier);
+                    + GetIntelligenceBonus(attackStatManager.GetCharacter()) * multiplier);
             }
 
             if (this.water > 0)
             {
-                this.water += (int)(currentWeapon.GetWeaponWaterAttack(attackStatManager) + attackStatManager.GetIntelligenceBonusFromWeapon(currentWeapon) * multiplier);
+                this.water += (int)(currentWeapon.GetWeaponWaterAttack(attackStatManager) + GetIntelligenceBonus(attackStatManager.GetCharacter()) * multiplier);
             }
 
             if (this.pushForce > 0 && isFaithSpell)
@@ -210,8 +252,8 @@ namespace AF.Health
             this.fire += (int)currentWeapon.GetWeaponFireAttack(attackStatManager);
             this.frost += (int)currentWeapon.GetWeaponFrostAttack(attackStatManager);
             this.magic += (int)currentWeapon.GetWeaponMagicAttack(attackStatManager);
-            this.lightning += (int)currentWeapon.GetWeaponLightningAttack(attackStatManager.playerStatsDatabase.GetCurrentReputation(), attackStatManager);
-            this.darkness += (int)currentWeapon.GetWeaponDarknessAttack(attackStatManager.playerStatsDatabase.GetCurrentReputation(), attackStatManager);
+            this.lightning += (int)currentWeapon.GetWeaponLightningAttack(attackStatManager.GetCharacter().characterBaseStats.GetReputation(), attackStatManager);
+            this.darkness += (int)currentWeapon.GetWeaponDarknessAttack(attackStatManager.GetCharacter().characterBaseStats.GetReputation(), attackStatManager);
             this.water += (int)currentWeapon.GetWeaponWaterAttack(attackStatManager);
         }
 
@@ -258,54 +300,58 @@ namespace AF.Health
             return newDamage;
         }
 
-        public void ScaleWithStats(int STR, int DEX, int INT)
+        public Damage ScaleWithStats(int STR, int DEX, int INT)
         {
+            Damage copy = this.Clone();
+
             // Apply bonus damage based on scaling and stats
             int bonusFromSTR = GetBonusFromStrength(STR);
             int bonusFromDEX = GetBonusFromDexterity(DEX);
             int bonusFromINT = GetBonusFromIntelligence(INT);
 
-            if (this.physical > 0)
+            if (copy.physical > 0)
             {
-                this.physical += bonusFromSTR + bonusFromDEX;
+                copy.physical += bonusFromSTR + bonusFromDEX;
             }
-            if (this.magic > 0)
+            if (copy.magic > 0)
             {
-                this.magic += bonusFromINT;
+                copy.magic += bonusFromINT;
             }
-            if (this.fire > 0)
+            if (copy.fire > 0)
             {
-                this.fire += bonusFromINT;
+                copy.fire += bonusFromINT;
             }
-            if (this.frost > 0)
+            if (copy.frost > 0)
             {
-                this.frost += bonusFromINT;
+                copy.frost += bonusFromINT;
             }
-            if (this.lightning > 0)
+            if (copy.lightning > 0)
             {
-                this.lightning += bonusFromINT;
+                copy.lightning += bonusFromINT;
             }
-            if (this.darkness > 0)
+            if (copy.darkness > 0)
             {
-                this.darkness += bonusFromINT;
+                copy.darkness += bonusFromINT;
             }
-            if (this.water > 0)
+            if (copy.water > 0)
             {
-                this.water += bonusFromINT;
+                copy.water += bonusFromINT;
             }
+
+            return copy;
         }
 
-        public int GetBonusFromStrength(int STR)
+        int GetBonusFromStrength(int STR)
         {
             return (int)(STR * SCALING_LEVEL_MULTIPLIER * GetStrengthScaling());
         }
 
-        public int GetBonusFromDexterity(int DEX)
+        int GetBonusFromDexterity(int DEX)
         {
             return (int)(DEX * SCALING_LEVEL_MULTIPLIER * GetDexterityScaling());
         }
 
-        public int GetBonusFromIntelligence(int INT)
+        int GetBonusFromIntelligence(int INT)
         {
             return (int)(INT * SCALING_LEVEL_MULTIPLIER * GetIntelligenceScaling());
         }

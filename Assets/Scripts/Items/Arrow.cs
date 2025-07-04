@@ -14,5 +14,11 @@ namespace AF
         [Header("Options")]
         [Tooltip("Applicable to arrows like blood soaked arrow which causes bleed build up to the user upon firing")]
         public StatusEffectEntry[] statusEffectsInflictedUponShootingArrow;
+
+        [Header("Graphics")]
+        public GameObject arrowPlaceholderPrefab;
+
+        [Header("Sounds")]
+        public AudioClip drawArrowSfx;
     }
 }

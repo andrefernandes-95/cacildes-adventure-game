@@ -36,6 +36,8 @@ namespace AF
         [Header("Databases")]
         public PickupDatabase pickupDatabase;
 
+        bool hasPlayedSound = false;
+
 
         Soundbank GetSoundbank()
         {
@@ -69,6 +71,8 @@ namespace AF
 
         public override IEnumerator Dispatch()
         {
+            hasPlayedSound = false;
+
             if (monoBehaviourID != null && pickupDatabase.ContainsPickup(monoBehaviourID.ID))
             {
                 yield break;
@@ -108,7 +112,12 @@ namespace AF
         {
             if (showNotificationText)
             {
-                GetSoundbank().PlaySound(GetSoundbank().uiItemReceived);
+                if (!hasPlayedSound)
+                {
+                    GetSoundbank().PlaySound(GetSoundbank().uiItemReceived);
+                    hasPlayedSound = true;
+                }
+
                 GetNotificationManager().ShowNotification(
                     LocalizationSettings.StringDatabase.GetLocalizedString("UIDocuments", "Found x") + _amount + " " + _item.GetName() + "", _item.sprite);
             }

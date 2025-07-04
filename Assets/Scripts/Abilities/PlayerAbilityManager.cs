@@ -14,15 +14,8 @@ namespace AF
         public override void ResetStates()
         {
             // Clear current ability
+            currentAbility?.OnFinished(playerManager);
             currentAbility = null;
-
-            // Clean Warmup Spell Effects
-            CleanupChargingAbilitySpell();
-
-            // Reset Charging Settings
-            SetIsCharging(false);
-            chargingAbilityAmount = 0f;
-            ResetChargeAnimations(playerManager);
         }
 
         public override void OnPrepareAbility()
@@ -62,6 +55,14 @@ namespace AF
             {
                 selectedAbility.OnPrepare(playerManager);
             }
+        }
+
+        public void ClearChargingEffects()
+        {
+            playerManager.animator.SetBool("isCharging", false);
+            playerManager.playerAbilityManager.chargingAbilityAmount = 0f;
+            playerManager.playerAbilityManager.ResetChargeAnimations(playerManager);
+            playerManager.playerAbilityManager.CleanupChargingAbilitySpell();
         }
     }
 }

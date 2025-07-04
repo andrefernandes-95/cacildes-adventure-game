@@ -1,6 +1,7 @@
 
 namespace AF
 {
+    using AF.Health;
     using AF.Stats;
     using AF.StatusEffects;
     using UnityEngine;
@@ -12,7 +13,6 @@ namespace AF
         [Header("Components")]
         public PlayerManager playerManager;
         public EquipmentGraphicsHandler equipmentGraphicsHandler;
-        public CharacterBaseAttackManager attackStatManager;
         public DefenseStatManager defenseStatManager;
 
         [Header("UI Documents")]
@@ -42,16 +42,13 @@ namespace AF
             root = uIDocument.rootVisualElement;
         }
 
-        public void DrawStats(Item item)
+        public void DrawStats(Item item, bool equippingOnRightHand)
         {
             root.Q<VisualElement>("PlayerName").Q<Label>().text = playerManager.gameSettings.playerName;
 
             root.Q<VisualElement>("Level").Q<Label>("Value").text = playerStatsDatabase.GetCurrentLevel().ToString();
             root.Q<VisualElement>("Gold").Q<Label>("Value").text = playerStatsDatabase.gold.ToString();
             SetGoldForNextLevelLabel();
-
-            int baseAttack = attackStatManager.GetCurrentAttackForWeapon(equipmentDatabase.GetCurrentWeapon());
-            int itemAttack = GetItemAttack(item, baseAttack);
 
             // Physical and Elemental Defenses
             int basePhysicalDefense = (int)defenseStatManager.GetDefenseAbsorption();
@@ -76,7 +73,6 @@ namespace AF
             SetStatLabel("Dexterity", playerBaseStats.dexterity, itemBonusStats.dexterity);
             SetStatLabel("Intelligence", playerBaseStats.intelligence, itemBonusStats.intelligence);
 
-
             SetStatLabel("Health",
                 playerManager.health.GetMaxHealth(), itemBonusStats.healthBonus, "" + (int)playerManager.health.GetCurrentHealth());
             SetStatLabel("Stamina",
@@ -90,15 +86,7 @@ namespace AF
 
             SetWeightLoadLabel("WeightLoad", baseEquipLoad, itemEquipLoad);
 
-            SetStatLabel("PhysicalAttack", baseAttack, itemAttack);
-
-            Weapon weapon = item as Weapon;
-            SetAttackLabels(weapon, "FireAttack", WeaponElementType.Fire);
-            SetAttackLabels(weapon, "FrostAttack", WeaponElementType.Frost);
-            SetAttackLabels(weapon, "LightningAttack", WeaponElementType.Lightning);
-            SetAttackLabels(weapon, "MagicAttack", WeaponElementType.Magic);
-            SetAttackLabels(weapon, "DarknessAttack", WeaponElementType.Darkness);
-            SetAttackLabels(weapon, "WaterAttack", WeaponElementType.Water);
+            DrawAttackStats(item as Weapon, equippingOnRightHand);
 
             SetStatLabel("PhysicalDefense", basePhysicalDefense, itemDefenses.physical);
             SetStatLabel("FireDefense", (int)playerManager.defenseStatManager.GetFireDefense(), itemDefenses.fire);
@@ -116,6 +104,40 @@ namespace AF
             DrawStatusEffectLabel("Fear", fear, item);
             DrawStatusEffectLabel("Curse", curse, item);
             DrawStatusEffectLabel("Drowning", drowning, item);
+        }
+
+        void DrawAttackStats(Weapon weapon, bool equippingOnRightHand)
+        {
+            var newDamage = weapon != null ? playerManager.characterBaseAttackManager.CalculateWeaponDamageForWeapon(weapon).weaponDamage : new Damage();
+            var rightDamage = playerManager.characterBaseAttackManager.rightWeaponCurrentDamage;
+            var leftDamage = playerManager.characterBaseAttackManager.leftWeaponCurrentDamage;
+
+            var statNames = new[] { "PhysicalAttack", "FireAttack", "FrostAttack", "LightningAttack" };
+
+            foreach (var stat in statNames)
+            {
+                int rightCurrent = GetStatValue(rightDamage, stat);
+                int leftCurrent = GetStatValue(leftDamage, stat);
+                int newValue = GetStatValue(newDamage, stat);
+
+                SetStatLabel($"Right{stat}", rightCurrent, equippingOnRightHand ? newValue : rightCurrent);
+                SetStatLabel($"Left{stat}", leftCurrent, !equippingOnRightHand ? newValue : leftCurrent);
+            }
+        }
+
+        int GetStatValue(Damage damage, string statName)
+        {
+            return statName switch
+            {
+                "PhysicalAttack" => damage.physical,
+                "FireAttack" => damage.fire,
+                "FrostAttack" => damage.frost,
+                "LightningAttack" => damage.lightning,
+                "MagicAttack" => damage.magic,
+                "DarknessAttack" => damage.darkness,
+                "WaterAttack" => damage.water,
+                _ => 0
+            };
         }
 
         void DrawStatusEffectLabel(string elementName, StatusEffect statusEffect, Item item)
@@ -230,7 +252,7 @@ namespace AF
         {
             if (item is Weapon weapon)
             {
-                return (int)attackStatManager.GetWeaponAttack(weapon);
+                return playerManager.characterBaseAttackManager.CalculateWeaponDamageForWeapon(weapon).weaponDamage.GetTotalDamage();
             }
             else if (item is Accessory accessory && equipmentDatabase.IsAccessoryEquiped(accessory))
             {
@@ -239,15 +261,6 @@ namespace AF
             return 0;
         }
 
-        private void SetAttackLabels(Weapon item, string labelName, WeaponElementType elementType)
-        {
-            int baseValue = EquipmentUtils.GetElementalAttackForCurrentWeapon(
-                equipmentDatabase.GetCurrentWeapon(), elementType, playerManager.characterBaseAttackManager, playerManager.playerStats.GetReputation());
-            int itemValue = EquipmentUtils.GetElementalAttackForCurrentWeapon(
-                item, elementType, playerManager.characterBaseAttackManager, playerManager.playerStats.GetReputation());
-
-            SetStatLabel(labelName, baseValue, itemValue);
-        }
 
         private (int physical, int fire, int frost, int lightning, int magic, int darkness, int water) GetItemDefenses(Item item)
         {

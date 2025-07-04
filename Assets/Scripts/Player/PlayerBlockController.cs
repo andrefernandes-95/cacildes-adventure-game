@@ -15,8 +15,10 @@ namespace AF
 
         public bool isCounterAttacking = false;
 
-        public void ResetStates()
+        public override void ResetStates()
         {
+            base.ResetStates();
+
             canCounterAttack = false;
             isCounterAttacking = false;
         }

@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29f6615060006497390447487ac3fd5f, type: 3}
   m_Name: Horned Shield
   m_EditorClassIdentifier: 
+  itemID: 
   nameLocalized:
     m_TableReference:
       m_TableCollectionName: GUID:bfeeac13f16b59940b4195364a8d9ed7
@@ -40,13 +41,17 @@ MonoBehaviour:
     m_WaitForCompletion: 0
     m_LocalVariables: []
   sprite: {fileID: 21300000, guid: 8b5e794c0edd1644b809b8b7ee9e1af3, type: 3}
+  itemValue: {fileID: 0}
   value: 300
+  itemWeight: {fileID: 0}
   isRenewable: 0
   tradingItemRequirements:
     _serializedList: []
+  dropRateOnEnemies: 0.2
   notes: 
   location: Found in Crystal Tower after traps, near Celes 2nd boss fight
-  weaponID: 
+  canBeUpgraded: 1
+  level: 1
   damage:
     physical: 90
     fire: 0
@@ -65,9 +70,13 @@ MonoBehaviour:
     ignoreBlocking: 0
     canNotBeParried: 0
     damageType: 0
-  canBeUpgraded: 1
-  level: 1
+    strengthScaling: 5
+    dexterityScaling: 5
+    intelligenceScaling: 5
   weaponUpgrades: []
+  weaponSound: {fileID: 0}
+  weaponSize: 0
+  weaponPrefab: {fileID: 2149460783893126172, guid: a54750ab454ca734d830427a5a6d73f6, type: 3}
   strengthRequired: 0
   dexterityRequired: 0
   intelligenceRequired: 0
@@ -161,6 +170,9 @@ MonoBehaviour:
     ignoreBlocking: 0
     canNotBeParried: 0
     damageType: 0
+    strengthScaling: 5
+    dexterityScaling: 5
+    intelligenceScaling: 5
   parryWindowBonus: 0
   parryPostureDamageBonus: 0
   references:

@@ -44,7 +44,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8aa3f3cae44ad24590de72453d413b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  uIDocumentDialogueWindow: {fileID: 0}
   character: {fileID: 11400000, guid: f33307f434879de43aaab010e52d9b19, type: 2}
   message: Running low on eggs? That's not good. Hugo loves his breakfast pancakes...
     I love our breakfast pancakes!
@@ -94,7 +93,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   duration: 1
-  fadeManager: {fileID: 0}
   duringFadeTransitionsEventCallback:
     m_PersistentCalls:
       m_Calls:
@@ -171,7 +169,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8aa3f3cae44ad24590de72453d413b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  uIDocumentDialogueWindow: {fileID: 0}
   character: {fileID: 11400000, guid: 010cdcff78f063d4ea1df01d206d0623, type: 2}
   message: Ah. Look's who's up. Here, take this with you...
   responses: []
@@ -189,11 +186,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   item: {fileID: 11400000, guid: 9a2c31c86050f5c4c8997f401e3db4d9, type: 2}
   amount: 1
+  itemsToAdd: []
   monoBehaviourID: {fileID: 880732748834015155}
-  soundbank: {fileID: 0}
-  playerManager: {fileID: 0}
   showNotificationText: 1
-  notificationManager: {fileID: 0}
   pickupDatabase: {fileID: 11400000, guid: b6fddea60ce7ee3489c86ef80e06148e, type: 2}
 --- !u!114 &880732748834015155
 MonoBehaviour:
@@ -254,7 +249,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8aa3f3cae44ad24590de72453d413b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  uIDocumentDialogueWindow: {fileID: 0}
   character: {fileID: 11400000, guid: 010cdcff78f063d4ea1df01d206d0623, type: 2}
   message: Still here? We're running low on eggs, Cacildes. If we can't find our
     chickens, we'll be switching to cornflakes for breakfast, I'm afraid.
@@ -271,7 +265,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8aa3f3cae44ad24590de72453d413b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  uIDocumentDialogueWindow: {fileID: 0}
   character: {fileID: 11400000, guid: f33307f434879de43aaab010e52d9b19, type: 2}
   message: Oh, no way. I'll find our chickens before cornflakes become a permanent
     part of our menu.
@@ -320,7 +313,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8aa3f3cae44ad24590de72453d413b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  uIDocumentDialogueWindow: {fileID: 0}
   character: {fileID: 11400000, guid: 010cdcff78f063d4ea1df01d206d0623, type: 2}
   message: I need you to go outside and find out why our chickens are disappearing.
     It's been going on for a while, and I'm starting to run low on eggs.
@@ -438,6 +430,9 @@ MonoBehaviour:
         m_CallState: 2
   key: E
   action: Talk
+  item: {fileID: 0}
+  requiredItemToOpen: {fileID: 0}
+  inventoryDatabase: {fileID: 0}
 --- !u!135 &164232420698686249
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -503,7 +498,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8aa3f3cae44ad24590de72453d413b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  uIDocumentDialogueWindow: {fileID: 0}
   character: {fileID: 11400000, guid: f33307f434879de43aaab010e52d9b19, type: 2}
   message: Only one chicken left? That's not a lot of eggs... oh well, no time to
     waste. I'll track down our chickens and get to the  bottom of this.
@@ -552,7 +546,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8aa3f3cae44ad24590de72453d413b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  uIDocumentDialogueWindow: {fileID: 0}
   character: {fileID: 11400000, guid: 010cdcff78f063d4ea1df01d206d0623, type: 2}
   message: That's the problem with you both. You only worry about helping your mother
     out when food is on the line... Your little brother even took the initiative
@@ -662,7 +655,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8aa3f3cae44ad24590de72453d413b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  uIDocumentDialogueWindow: {fileID: 0}
   character: {fileID: 11400000, guid: f33307f434879de43aaab010e52d9b19, type: 2}
   message: I'm back, mom! I brought our chickens back to the coop... It wasn't easy...
     and you wouldn't believe the fight I was in... let's just say that bear will
@@ -680,7 +672,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8aa3f3cae44ad24590de72453d413b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  uIDocumentDialogueWindow: {fileID: 0}
   character: {fileID: 11400000, guid: 010cdcff78f063d4ea1df01d206d0623, type: 2}
   message: Ah, finally some good news... well done, son. I guess you're just in time.
     You've got mail. From the king. Read it at once... let's see what it says!
@@ -697,7 +688,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8aa3f3cae44ad24590de72453d413b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  uIDocumentDialogueWindow: {fileID: 0}
   character: {fileID: 11400000, guid: f33307f434879de43aaab010e52d9b19, type: 2}
   message: Finally! I was starting to worry that the courier lost my application...
     alright, here we go. Unfolding the royal decree...
@@ -729,7 +719,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8aa3f3cae44ad24590de72453d413b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  uIDocumentDialogueWindow: {fileID: 0}
   character: {fileID: 0}
   message: 'Dear Cacildes,
 
@@ -762,7 +751,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8aa3f3cae44ad24590de72453d413b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  uIDocumentDialogueWindow: {fileID: 0}
   character: {fileID: 11400000, guid: 010cdcff78f063d4ea1df01d206d0623, type: 2}
   message: Orcs? Near Cecily Town? Are we getting orcish neighbors all of a sudden?
   responses: []
@@ -778,7 +766,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8aa3f3cae44ad24590de72453d413b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  uIDocumentDialogueWindow: {fileID: 0}
   character: {fileID: 11400000, guid: f33307f434879de43aaab010e52d9b19, type: 2}
   message: The king's words don't radiate with joy. If anything, there's an urgency
     in the air. I should make my way to Cecily Town at once, Mom.
@@ -795,7 +782,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8aa3f3cae44ad24590de72453d413b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  uIDocumentDialogueWindow: {fileID: 0}
   character: {fileID: 11400000, guid: 010cdcff78f063d4ea1df01d206d0623, type: 2}
   message: "Right... off you go, my dear. Head north, through the Mountainpass, onwards
     to Snailcliff, and you'll be in Cecily Town in no time. Oh, and don't forget
@@ -813,7 +799,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8aa3f3cae44ad24590de72453d413b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  uIDocumentDialogueWindow: {fileID: 0}
   character: {fileID: 11400000, guid: f33307f434879de43aaab010e52d9b19, type: 2}
   message: Alright, mom. See you later!
   responses: []
@@ -830,7 +815,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   duration: 1
-  fadeManager: {fileID: 0}
   duringFadeTransitionsEventCallback:
     m_PersistentCalls:
       m_Calls:
@@ -955,7 +939,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8aa3f3cae44ad24590de72453d413b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  uIDocumentDialogueWindow: {fileID: 0}
   character: {fileID: 11400000, guid: 010cdcff78f063d4ea1df01d206d0623, type: 2}
   message: "Off you go, my dear. Head north, through the Mountainpass, onwards to
     Snailcliff, and you'll be in Cecily Town in no time. Oh, and don't forget to
@@ -1105,7 +1088,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8aa3f3cae44ad24590de72453d413b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  uIDocumentDialogueWindow: {fileID: 0}
   character: {fileID: 11400000, guid: f33307f434879de43aaab010e52d9b19, type: 2}
   message: Uh... take with me where?
   responses: []
@@ -1251,6 +1233,9 @@ MonoBehaviour:
         m_CallState: 2
   key: E
   action: Talk
+  item: {fileID: 0}
+  requiredItemToOpen: {fileID: 0}
+  inventoryDatabase: {fileID: 0}
 --- !u!135 &3365737743412726684
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -1379,6 +1364,9 @@ MonoBehaviour:
         m_CallState: 2
   key: E
   action: Talk
+  item: {fileID: 0}
+  requiredItemToOpen: {fileID: 0}
+  inventoryDatabase: {fileID: 0}
 --- !u!135 &4653287392277636919
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -1507,6 +1495,9 @@ MonoBehaviour:
         m_CallState: 2
   key: E
   action: Talk
+  item: {fileID: 0}
+  requiredItemToOpen: {fileID: 0}
+  inventoryDatabase: {fileID: 0}
 --- !u!135 &1504596482437576050
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -1547,6 +1538,30 @@ PrefabInstance:
     - target: {fileID: 1576564352995890806, guid: 1d4ad8111310603419a605972d4f4d41, type: 3}
       propertyPath: _id.Value
       value: 71089269-0c4f-442b-a8bc-cc5567a89045
+      objectReference: {fileID: 0}
+    - target: {fileID: 1735373035742691761, guid: 1d4ad8111310603419a605972d4f4d41, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1735373035742691761, guid: 1d4ad8111310603419a605972d4f4d41, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1735373035742691761, guid: 1d4ad8111310603419a605972d4f4d41, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1735373035742691761, guid: 1d4ad8111310603419a605972d4f4d41, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1735373035742691761, guid: 1d4ad8111310603419a605972d4f4d41, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1735373035742691761, guid: 1d4ad8111310603419a605972d4f4d41, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2427722698797754149, guid: 1d4ad8111310603419a605972d4f4d41, type: 3}
       propertyPath: m_Name
@@ -1600,6 +1615,14 @@ PrefabInstance:
       propertyPath: 'questProgresses.Array.data[0]'
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5757216938643734427, guid: 1d4ad8111310603419a605972d4f4d41, type: 3}
+      propertyPath: isUsingSyntyModularFantasyHeroModel
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5962551311740631364, guid: 1d4ad8111310603419a605972d4f4d41, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5969973098975568950, guid: 1d4ad8111310603419a605972d4f4d41, type: 3}
       propertyPath: m_Name
       value: 'Moment:: Bear Quest Given But Not Completed'
@@ -1612,19 +1635,244 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 8126490264737824296, guid: 1d4ad8111310603419a605972d4f4d41, type: 3}
+      propertyPath: weapons.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8126490264737824296, guid: 1d4ad8111310603419a605972d4f4d41, type: 3}
+      propertyPath: 'weapons.Array.data[0]'
+      value: 
+      objectReference: {fileID: 633993751449910224}
+    m_RemovedComponents:
+    - {fileID: 5619372727836968618, guid: 1d4ad8111310603419a605972d4f4d41, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 4641681612408847674, guid: 1d4ad8111310603419a605972d4f4d41, type: 3}
       insertIndex: -1
       addedObject: {fileID: 477532191581377854}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8603375232192942614, guid: 1d4ad8111310603419a605972d4f4d41, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2028322398732963426}
+    - targetCorrespondingSourceObject: {fileID: 8603375232192942614, guid: 1d4ad8111310603419a605972d4f4d41, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 551057352802296028}
+    - targetCorrespondingSourceObject: {fileID: 8603375232192942614, guid: 1d4ad8111310603419a605972d4f4d41, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 633993751449910224}
   m_SourcePrefab: {fileID: 100100000, guid: 1d4ad8111310603419a605972d4f4d41, type: 3}
 --- !u!4 &1657020186668164547 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4641681612408847674, guid: 1d4ad8111310603419a605972d4f4d41, type: 3}
   m_PrefabInstance: {fileID: 6238747456567679225}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &2445788784778250991 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8603375232192942614, guid: 1d4ad8111310603419a605972d4f4d41, type: 3}
+  m_PrefabInstance: {fileID: 6238747456567679225}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2028322398732963426
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2445788784778250991}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 180ecf9b41d478f468eb3e9083753217, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ImpulseDefinition:
+    m_ImpulseChannel: 1
+    m_ImpulseShape: 2
+    m_CustomImpulseShape:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    m_ImpulseDuration: 0.2
+    m_ImpulseType: 0
+    m_DissipationRate: 0.25
+    m_RawSignal: {fileID: 0}
+    m_AmplitudeGain: 1
+    m_FrequencyGain: 1
+    m_RepeatMode: 0
+    m_Randomize: 1
+    m_TimeEnvelope:
+      m_AttackShape:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      m_DecayShape:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      m_AttackTime: 0
+      m_SustainTime: 0.2
+      m_DecayTime: 0.7
+      m_ScaleWithImpact: 1
+      m_HoldForever: 0
+    m_ImpactRadius: 100
+    m_DirectionMode: 0
+    m_DissipationMode: 2
+    m_DissipationDistance: 100
+    m_PropagationSpeed: 343
+  m_DefaultVelocity: {x: 0, y: -1, z: 0}
+--- !u!82 &551057352802296028
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2445788784778250991}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+--- !u!114 &633993751449910224
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2445788784778250991}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b8b9b9b19d8139469e983fc2855e452, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  character: {fileID: 0}
+  trailRenderer: {fileID: 0}
+  tagsToIgnore: []
+  onOpenHitbox:
+    m_PersistentCalls:
+      m_Calls: []
+  onCloseHitbox:
+    m_PersistentCalls:
+      m_Calls: []
+  onDamageInflicted:
+    m_PersistentCalls:
+      m_Calls: []
+  onWeaponSpecial:
+    m_PersistentCalls:
+      m_Calls: []
+  characterTwoHandRef: {fileID: 0}
+  characterWeaponBuffs: {fileID: 0}
+  shouldDisableHitboxOnStart: 1
+  damage:
+    basePhysicalDamage: 0
+    physical: 5
+    fire: 0
+    frost: 0
+    magic: 0
+    lightning: 0
+    darkness: 0
+    water: 0
+    postureDamage: 0
+    poiseDamage: 0
+    pushForce: 0
+    weaponAttackType: 0
+    statusEffects: []
+    ignoreBlocking: 0
+    canNotBeParried: 0
+    damageType: 0
+    strengthScaling: 5
+    dexterityScaling: 5
+    intelligenceScaling: 5
+  weaponSound: {fileID: 0}
+  hitboxImpactImpulse: 0.2
 --- !u!114 &3385957261396587386 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8676516671929985923, guid: 1d4ad8111310603419a605972d4f4d41, type: 3}

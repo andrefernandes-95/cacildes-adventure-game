@@ -1,8 +1,10 @@
 using System.Collections.Generic;
 using System.Linq;
+using AF.Events;
 using AF.Inventory;
 using AF.Music;
 using GameAnalyticsSDK;
+using TigerForge;
 using UnityEngine;
 using UnityEngine.Localization;
 using UnityEngine.Localization.Settings;
@@ -177,6 +179,7 @@ namespace AF
         {
             string targetActivityTitleText = "";
             StyleBackground targetBackground = null;
+
             if (craftActivity == CraftActivity.ALCHEMY)
             {
                 targetActivityTitleText = CraftingTable_LocalizedString.GetLocalizedString();
@@ -320,7 +323,6 @@ namespace AF
                 },
                 () =>
                 {
-
                 },
                 true,
                 soundbank);
@@ -329,7 +331,6 @@ namespace AF
 
                 i++;
             }
-
         }
 
         void PopulateWeaponsScrollView()
@@ -356,13 +357,13 @@ namespace AF
                 var craftLabel = scrollItem.Q<Label>("CraftLabel");
                 craftLabel.text = GetCraftLabel();
 
-                craftBtn.style.opacity = CraftingUtils.CanImproveWeapon(inventoryDatabase, weapon, playerStatsDatabase.gold) ? 1f : 0.25f;
+                craftBtn.style.opacity = CraftingUtils.CanImproveWeapon(playerManager, weapon, playerStatsDatabase.gold) ? 1f : 0.25f;
 
                 UIUtils.SetupButton(craftBtn, () =>
                 {
                     lastScrollElementIndex = currentIndex;
 
-                    if (!CraftingUtils.CanImproveWeapon(inventoryDatabase, weapon, playerStatsDatabase.gold))
+                    if (!CraftingUtils.CanImproveWeapon(playerManager, weapon, playerStatsDatabase.gold))
                     {
                         HandleCraftError(LocalizationSettings.StringDatabase.GetLocalizedString("UIDocuments", "Missing ingredients!"));
                         return;
@@ -377,7 +378,9 @@ namespace AF
                     ShowRequirements(weapon);
                     scrollView.ScrollTo(craftBtn);
                 },
-                () => { },
+                () =>
+                {
+                },
                 true,
                 soundbank);
 
@@ -444,7 +447,7 @@ namespace AF
 
         bool ShouldSkipUpgrade(Weapon wp, int nextLevel)
         {
-            return wp.canBeUpgraded == false || nextLevel >= wp.weaponUpgrades.Count();
+            return wp.canBeUpgraded == false || wp.upgradeMaterialData == null || nextLevel >= wp.upgradeMaterialData.upgradeMaterials.Count();
         }
 
         string GetWeaponName(Weapon wp)
@@ -467,6 +470,40 @@ namespace AF
                 (goldUsed) => uIDocumentPlayerGold.LoseGold(goldUsed),
                 (upgradeMaterialUsed) => playerManager.playerInventory.RemoveItem(upgradeMaterialUsed.Key, upgradeMaterialUsed.Value)
             );
+
+            // when we upgrade the weapon, we need to force the item to be reequiped in order for the cloned weapon to receive the update as well
+            foreach (Weapon equippedWeapon in playerManager.equipmentDatabase.weapons)
+            {
+                if (equippedWeapon != null && equippedWeapon.itemID == wp.itemID)
+                {
+                    if (playerManager.playerWeaponsManager.currentWeaponInstance != null
+                    && playerManager.playerWeaponsManager.currentWeaponInstance.weapon != null &&
+                    playerManager.playerWeaponsManager.currentWeaponInstance.weapon.itemID == wp.itemID)
+                    {
+                        playerManager.playerWeaponsManager.currentWeaponInstance.weapon.level = wp.level;
+                    }
+
+                    equippedWeapon.level = wp.level;
+                    EventManager.EmitEvent(EventMessages.ON_EQUIPMENT_CHANGED);
+                }
+            }
+
+
+            foreach (Weapon equippedShield in playerManager.equipmentDatabase.shields)
+            {
+                if (equippedShield != null && equippedShield.itemID == wp.itemID)
+                {
+                    if (playerManager.playerWeaponsManager.currentShieldInstance != null
+                    && playerManager.playerWeaponsManager.currentShieldInstance.weapon != null &&
+                    playerManager.playerWeaponsManager.currentShieldInstance.weapon.itemID == wp.itemID)
+                    {
+                        playerManager.playerWeaponsManager.currentShieldInstance.weapon.level = wp.level;
+                    }
+
+                    equippedShield.level = wp.level;
+                    EventManager.EmitEvent(EventMessages.ON_EQUIPMENT_CHANGED);
+                }
+            }
         }
 
         void ShowRequiredIngredients(CraftingRecipe recipe)
@@ -500,9 +537,10 @@ namespace AF
         }
         void ShowRequirements(Weapon weapon)
         {
-            WeaponUpgradeLevel weaponUpgradeLevel = weapon.weaponUpgrades.ElementAtOrDefault(weapon.level - 1);
 
-            if (weaponUpgradeLevel == null)
+            UpgradeMaterialData.UpgradeMaterialEntry upgradeData = weapon.upgradeMaterialData.upgradeMaterials.ElementAtOrDefault(weapon.level);
+
+            if (upgradeData == null)
             {
                 return;
             }
@@ -519,79 +557,103 @@ namespace AF
             root.Q<Label>("MagicAttack").style.display = DisplayStyle.None;
             root.Q<Label>("DarknessAttack").style.display = DisplayStyle.None;
 
-            if (weapon.GetWeaponAttackForLevel(playerManager.characterBaseAttackManager, nextLevel) > 0)
+
+            int currentPhysicalAttack = weapon.GetCurrentPhysicalAttackForLevel(weapon.level);
+            int nextPhysicalAttack = weapon.GetCurrentPhysicalAttackForLevel(nextLevel);
+
+            int currentFireAttack = weapon.GetFireAttackForLevel(weapon.level);
+            int nextFireAttack = weapon.GetFireAttackForLevel(nextLevel);
+
+            int currentFrostAttack = weapon.GetFrostAttackForLevel(weapon.level);
+            int nextFrostAttack = weapon.GetFrostAttackForLevel(nextLevel);
+
+            int currentLightningAttack = weapon.GetLightningAttackForLevel(weapon.level);
+            int nextLightningAttack = weapon.GetLightningAttackForLevel(nextLevel);
+
+            int currentMagicAttack = weapon.GetMagicAttackForLevel(weapon.level);
+            int nextMagicAttack = weapon.GetMagicAttackForLevel(nextLevel);
+
+            int currentDarknessAttack = weapon.GetDarknessAttackForLevel(weapon.level);
+            int nextDarknessAttack = weapon.GetDarknessAttackForLevel(nextLevel);
+
+            int currentWaterAttack = weapon.GetWaterAttackForLevel(weapon.level);
+            int nextWaterAttack = weapon.GetWaterAttackForLevel(nextLevel);
+
+            if (currentPhysicalAttack != 0)
             {
                 root.Q<Label>("PhysicalAttack").style.display = DisplayStyle.Flex;
-                root.Q<Label>("PhysicalAttack").text = NextPhysicalDamage_LocalizedString.GetLocalizedString() + " "
-                    + weapon.GetWeaponAttackForLevel(playerManager.characterBaseAttackManager, weapon.level) + " > " + weapon.GetWeaponAttackForLevel(playerManager.characterBaseAttackManager, nextLevel);
+                root.Q<Label>("PhysicalAttack").text =
+                    Utils.IsPortuguese()
+                        ? $"Ataque Físico: {currentPhysicalAttack} > {nextPhysicalAttack}"
+                        : $"Physical Attack: {currentPhysicalAttack} > {nextPhysicalAttack}";
             }
-            if (weapon.GetWeaponFireAttackForLevel(playerManager.characterBaseAttackManager, nextLevel) > 0)
+            if (currentFireAttack != 0)
             {
                 root.Q<Label>("FireAttack").style.display = DisplayStyle.Flex;
-                root.Q<Label>("FireAttack").text = NextFireBonus_LocalizedString.GetLocalizedString() + " "
-                    + weapon.GetWeaponFireAttackForLevel(playerManager.characterBaseAttackManager, weapon.level) + " > " + weapon.GetWeaponFireAttackForLevel(playerManager.characterBaseAttackManager, nextLevel);
+                root.Q<Label>("FireAttack").text =
+                    Utils.IsPortuguese()
+                        ? $"Ataque de Fogo: {currentFireAttack} > {nextFireAttack}"
+                        : $"Fire Attack: {currentFireAttack} > {nextFireAttack}";
             }
-            if (weapon.GetWeaponFrostAttackForLevel(playerManager.characterBaseAttackManager, nextLevel) > 0)
+            if (currentFrostAttack != 0)
             {
                 root.Q<Label>("FrostAttack").style.display = DisplayStyle.Flex;
-                root.Q<Label>("FrostAttack").text = NextFrostBonus_LocalizedString.GetLocalizedString() + " "
-                    + weapon.GetWeaponFrostAttackForLevel(playerManager.characterBaseAttackManager, weapon.level) + " > " + weapon.GetWeaponFrostAttackForLevel(playerManager.characterBaseAttackManager, nextLevel);
+                root.Q<Label>("FrostAttack").text =
+                    Utils.IsPortuguese()
+                        ? $"Ataque de Gelo: {currentFrostAttack} > {nextFrostAttack}"
+                        : $"Frost Attack: {currentFrostAttack} > {nextFrostAttack}";
             }
-
-            int playerReputation = playerStatsDatabase.GetCurrentReputation();
-            if (weapon.GetWeaponLightningAttackForLevel(nextLevel, playerReputation, playerManager.characterBaseAttackManager) > 0)
+            if (currentLightningAttack != 0)
             {
                 root.Q<Label>("LightningAttack").style.display = DisplayStyle.Flex;
-                root.Q<Label>("LightningAttack").text = NextLightningBonus_LocalizedString.GetLocalizedString() + " "
-                    + weapon.GetWeaponLightningAttackForLevel(weapon.level, playerReputation, playerManager.characterBaseAttackManager) + " > " + weapon.GetWeaponLightningAttackForLevel(nextLevel, playerReputation, playerManager.characterBaseAttackManager);
+                root.Q<Label>("LightningAttack").text =
+                    Utils.IsPortuguese()
+                        ? $"Ataque Elétrico: {currentLightningAttack} > {nextLightningAttack}"
+                        : $"Lightning Attack: {currentLightningAttack} > {nextLightningAttack}";
             }
-            if (weapon.GetWeaponMagicAttackForLevel(nextLevel, playerManager.characterBaseAttackManager) > 0)
+            if (currentMagicAttack != 0)
             {
                 root.Q<Label>("MagicAttack").style.display = DisplayStyle.Flex;
-                root.Q<Label>("MagicAttack").text = NextMagicBonus_LocalizedString.GetLocalizedString() + " "
-                    + weapon.GetWeaponMagicAttackForLevel(weapon.level, playerManager.characterBaseAttackManager) + " > " + weapon.GetWeaponMagicAttackForLevel(nextLevel, playerManager.characterBaseAttackManager);
+                root.Q<Label>("MagicAttack").text =
+                    Utils.IsPortuguese()
+                        ? $"Ataque Mágico: {currentMagicAttack} > {nextMagicAttack}"
+                        : $"Magic Attack: {currentMagicAttack} > {nextMagicAttack}";
             }
-            if (weapon.GetWeaponDarknessAttackForLevel(nextLevel, playerReputation, playerManager.characterBaseAttackManager) > 0)
+            if (currentDarknessAttack != 0)
             {
                 root.Q<Label>("DarknessAttack").style.display = DisplayStyle.Flex;
-                root.Q<Label>("DarknessAttack").text = NextDarknessBonus_LocalizedString.GetLocalizedString() + " "
-                    + weapon.GetWeaponDarknessAttackForLevel(weapon.level, playerReputation, playerManager.characterBaseAttackManager) + " > " + weapon.GetWeaponDarknessAttackForLevel(nextLevel, playerReputation, playerManager.characterBaseAttackManager);
+                root.Q<Label>("DarknessAttack").text =
+                    Utils.IsPortuguese()
+                        ? $"Ataque das Sombras: {currentDarknessAttack} > {nextDarknessAttack}"
+                        : $"Darkness Attack: {currentDarknessAttack} > {nextDarknessAttack}";
             }
-
-            if (weapon.GetWeaponWaterAttackForLevel(nextLevel, playerManager.characterBaseAttackManager) > 0)
+            if (currentWaterAttack != 0)
             {
                 root.Q<Label>("WaterAttack").style.display = DisplayStyle.Flex;
-                root.Q<Label>("WaterAttack").text = NextWaterBonus_LocalizedString.GetLocalizedString() + " "
-                    + weapon.GetWeaponWaterAttackForLevel(weapon.level, playerManager.characterBaseAttackManager) + " > " + weapon.GetWeaponWaterAttackForLevel(nextLevel, playerManager.characterBaseAttackManager);
+                root.Q<Label>("WaterAttack").text =
+                    Utils.IsPortuguese()
+                        ? $"Ataque de Água: {currentWaterAttack} > {nextWaterAttack}"
+                        : $"Water Attack: {currentWaterAttack} > {nextWaterAttack}";
             }
+
             // Requirements
 
             root.Q<VisualElement>("ItemInfo").Clear();
 
-            foreach (var upgradeMaterial in weaponUpgradeLevel.upgradeMaterials)
-            {
-                UpgradeMaterial upgradeMaterialItem = upgradeMaterial.Key;
-                int amountRequiredFoUpgrade = upgradeMaterial.Value;
+            UpgradeMaterial upgradeMaterialItem = upgradeData.upgradeMaterial;
+            int amountRequiredFoUpgrade = upgradeData.amount;
 
-                var ingredientItemEntry = ingredientItem.CloneTree();
-                ingredientItemEntry.Q<IMGUIContainer>("ItemIcon").style.backgroundImage = new StyleBackground(upgradeMaterialItem.sprite);
-                ingredientItemEntry.Q<Label>("Title").text = upgradeMaterialItem.GetName();
+            var ingredientItemEntry = ingredientItem.CloneTree();
+            ingredientItemEntry.Q<IMGUIContainer>("ItemIcon").style.backgroundImage = new StyleBackground(upgradeMaterialItem.sprite);
+            ingredientItemEntry.Q<Label>("Title").text = upgradeMaterialItem.GetName();
 
-                var playerOwnedIngredient = inventoryDatabase.HasItem(upgradeMaterialItem)
-                    ? inventoryDatabase.ownedItems[upgradeMaterialItem]
-                    : null;
+            var playerOwnedIngredientAmount = playerManager.characterBaseInventory.GetUpgradeMaterialAmount(upgradeMaterialItem);
 
-                var playerOwnedIngredientAmount = 0;
-                if (playerOwnedIngredient != null)
-                {
-                    playerOwnedIngredientAmount = playerOwnedIngredient.amount;
-                }
-                ingredientItemEntry.Q<Label>("Amount").text = playerOwnedIngredientAmount + " / " + amountRequiredFoUpgrade;
-                ingredientItemEntry.Q<Label>("Amount").style.opacity =
-                    playerOwnedIngredient != null && playerOwnedIngredientAmount >= amountRequiredFoUpgrade ? 1 : 0.25f;
+            ingredientItemEntry.Q<Label>("Amount").text = playerOwnedIngredientAmount + " / " + amountRequiredFoUpgrade;
+            ingredientItemEntry.Q<Label>("Amount").style.opacity =
+                playerOwnedIngredientAmount >= amountRequiredFoUpgrade ? 1 : 0.25f;
 
-                root.Q<VisualElement>("ItemInfo").Add(ingredientItemEntry);
-            }
+            root.Q<VisualElement>("ItemInfo").Add(ingredientItemEntry);
 
             // Add Gold
 
@@ -599,8 +661,8 @@ namespace AF
             goldItemEntry.Q<IMGUIContainer>("ItemIcon").style.backgroundImage = new StyleBackground(goldSprite);
             goldItemEntry.Q<Label>("Title").text = LocalizationSettings.StringDatabase.GetLocalizedString("UIDocuments", "Gold");
 
-            goldItemEntry.Q<Label>("Amount").text = playerStatsDatabase.gold + " / " + weaponUpgradeLevel.goldCostForUpgrade;
-            goldItemEntry.Q<Label>("Amount").style.opacity = playerStatsDatabase.gold >= weaponUpgradeLevel.goldCostForUpgrade ? 1 : 0.25f;
+            goldItemEntry.Q<Label>("Amount").text = playerStatsDatabase.gold + " / " + upgradeData.goldCostForUpgrade;
+            goldItemEntry.Q<Label>("Amount").style.opacity = playerStatsDatabase.gold >= upgradeData.goldCostForUpgrade ? 1 : 0.25f;
 
             root.Q<VisualElement>("ItemInfo").Add(goldItemEntry);
             root.Q<VisualElement>("IngredientsListPreview").style.opacity = 1;

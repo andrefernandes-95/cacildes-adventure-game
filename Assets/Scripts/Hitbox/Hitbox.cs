@@ -50,6 +50,8 @@ namespace AF
         // Useful for throwable weapon situation
         [HideInInspector] public bool shouldDisableHitboxOnStart = true;
 
+        [HideInInspector] public bool isOnRightHand;
+
         private void Awake()
         {
             SetupRefs();
@@ -168,6 +170,8 @@ namespace AF
 
             if (other.TryGetComponent(out IDamageable damageable) && !damageReceiversHit.Contains(damageable))
             {
+                character.characterBaseAttackManager.SetIsAttackingWithLeftHand(!isOnRightHand);
+
                 damageReceiversHit.Add(damageable);
 
                 damageable.OnDamage(character, () =>

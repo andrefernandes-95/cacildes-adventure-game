@@ -30,7 +30,6 @@ namespace AF.Animations
         public void DisableRotation();
         public void FaceTarget();
 
-        public void OnSpellCast();
         public void OnFireArrow();
         public void OnFireMultipleArrows();
         public void OnThrow();

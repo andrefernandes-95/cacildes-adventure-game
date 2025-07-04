@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9067d6c019b4643fc8651ed58d494bba, type: 3}
   m_Name: Warchief Axe
   m_EditorClassIdentifier: 
+  itemID: 
   nameLocalized:
     m_TableReference:
       m_TableCollectionName: GUID:bfeeac13f16b59940b4195364a8d9ed7
@@ -40,15 +41,19 @@ MonoBehaviour:
     m_WaitForCompletion: 0
     m_LocalVariables: []
   sprite: {fileID: 21300000, guid: 7ae91532746109040a20491d8a00a4c0, type: 3}
+  itemValue: {fileID: 0}
   value: 480
+  itemWeight: {fileID: 0}
   isRenewable: 0
   tradingItemRequirements:
     _serializedList:
     - Key: {fileID: 11400000, guid: 813c064ba43bf494381a4a9417940ff4, type: 2}
       Value: 1
+  dropRateOnEnemies: 0.2
   notes: 
   location: 
-  weaponID: 
+  canBeUpgraded: 0
+  level: 1
   damage:
     physical: 75
     fire: 0
@@ -65,9 +70,13 @@ MonoBehaviour:
     ignoreBlocking: 0
     canNotBeParried: 0
     damageType: 0
-  canBeUpgraded: 0
-  level: 1
+    strengthScaling: 5
+    dexterityScaling: 5
+    intelligenceScaling: 5
   weaponUpgrades: []
+  weaponSound: {fileID: 0}
+  weaponSize: 0
+  weaponPrefab: {fileID: 3143424878329213932, guid: 853194f4a3d3a07429216ef494021c58, type: 3}
   strengthRequired: 10
   dexterityRequired: 5
   intelligenceRequired: 0

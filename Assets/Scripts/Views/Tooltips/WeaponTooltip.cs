@@ -1,8 +1,10 @@
 namespace AF
 {
     using System.Collections.Generic;
+    using AF.Health;
     using AF.UI.EquipmentMenu;
     using UnityEngine;
+    using UnityEngine.UIElements;
 
     public class WeaponTooltip : MonoBehaviour
     {
@@ -10,40 +12,102 @@ namespace AF
         [SerializeField] GUIIconsDatabase GUIIconsDatabase;
         [SerializeField] PlayerManager playerManager;
 
-        void DrawWeaponEffects(Weapon weapon)
+        public void DrawWeaponEffects(Weapon weapon)
         {
-            Dictionary<string, (int value, Texture2D icon, Color color, string enText, string ptText)> elementalDamages = new()
+
+            (Damage weaponDamage, int STRBonus, int DEXBonus, int INTBonus, int TwoHandAttackBonus) = playerManager.characterBaseAttackManager.CalculateWeaponDamageForWeapon(weapon);
+
+            int totalDamage = weaponDamage.GetTotalDamage() + TwoHandAttackBonus;
+
+            string damageLabel = Utils.IsPortuguese()
+                ? $"Poder de Ataque: {totalDamage}\n"
+                : $"Attack Power: {totalDamage}\n";
+
+            Dictionary<string, (int value, string enText, string ptText, Color color)> damageTypes = new()
             {
-                { "Physical", (playerManager.characterBaseAttackManager.GetWeaponAttack(weapon), GUIIconsDatabase.physicalAttack, Color.white, "Physical Attack Power", "Poder de Ataque Físico") },
-                { "Fire", (weapon.GetWeaponFireAttack(playerManager.characterBaseAttackManager), GUIIconsDatabase.fire, GUIIconsDatabase.fireColor, "Fire Attack", "Ataque de Fogo") },
-                { "Frost", ((int)(weapon.GetWeaponFrostAttack(playerManager.characterBaseAttackManager) + playerManager.characterBaseAttackManager.GetIntelligenceBonusFromWeapon(weapon)), GUIIconsDatabase.frost, GUIIconsDatabase.frostColor, "Frost Attack", "Ataque de Gelo") },
-                { "Lightning", (weapon.GetWeaponLightningAttack(playerManager.playerStatsDatabase.GetCurrentReputation(), playerManager.characterBaseAttackManager), GUIIconsDatabase.lightning, GUIIconsDatabase.lightningColor, "Lightning Attack", "Ataque Elétrico") },
-                { "Magic", (weapon.GetWeaponMagicAttack(playerManager.characterBaseAttackManager), GUIIconsDatabase.magic, GUIIconsDatabase.magicColor, "Magic Attack", "Ataque Mágico") },
-                { "Darkness", (weapon.GetWeaponDarknessAttack(playerManager.playerStatsDatabase.GetCurrentReputation(), playerManager.characterBaseAttackManager), GUIIconsDatabase.darkness, GUIIconsDatabase.darknessColor, "Darkness Attack", "Ataque de Trevas") }
+                { "physical",  (weaponDamage.basePhysicalDamage,  "Physical Attack", "Dano Físico",    Color.white) },
+                { "fire",      (weaponDamage.fire,      "Fire Attack",     "Dano de Fogo",   GUIIconsDatabase.fireColor) },
+                { "frost",     (weaponDamage.frost,     "Frost Attack",    "Dano de Gelo",   GUIIconsDatabase.frostColor) },
+                { "lightning", (weaponDamage.lightning, "Lightning Attack","Dano Elétrico",  GUIIconsDatabase.lightningColor) },
+                { "magic",     (weaponDamage.magic,     "Magic Attack",    "Dano Mágico",    GUIIconsDatabase.magicColor) },
+                { "darkness",  (weaponDamage.darkness,  "Darkness Attack", "Dano de Trevas", GUIIconsDatabase.darknessColor) },
+                { "water",     (weaponDamage.water,     "Water Attack",    "Dano Aquático",  GUIIconsDatabase.waterColor) }
             };
 
-            foreach (var entry in elementalDamages)
+            foreach (var entry in damageTypes)
             {
-                if (entry.Value.value > 0)
+                int value = entry.Value.value;
+                if (value > 0)
                 {
-                    string label = Utils.IsPortuguese() ? $"{entry.Value.value} {entry.Value.ptText}" : $"{entry.Value.value} {entry.Value.enText}";
-                    itemTooltip.CreateTooltip(entry.Value.icon, entry.Value.color, label);
+                    string line = $"+{value} {(Utils.IsPortuguese() ? entry.Value.ptText : entry.Value.enText)}";
+
+                    // Apply color if defined
+
+                    string hexColor = ColorUtility.ToHtmlStringRGB(entry.Value.color);
+                    line = $"<color=#{hexColor}>{line}</color>";
+
+                    damageLabel += line + "\n";
                 }
             }
 
-            // === Attack Type (Slash, Blunt, Pierce) ===
-            Dictionary<WeaponAttackType, (Texture2D icon, string enText, string ptText)> attackTypes = new()
+            if (STRBonus > 0)
             {
-                { WeaponAttackType.Blunt, (GUIIconsDatabase.blunt, "Blunt Damage Type", "Tipo de Dano Contundente") },
-                { WeaponAttackType.Pierce, (GUIIconsDatabase.pierce, "Piercing Damage Type", "Tipo de Dano Perfurante") },
-                { WeaponAttackType.Slash, (GUIIconsDatabase.slash, "Slashing Damage Type", "Tipo de Dano Cortante") }
-            };
+                damageLabel += Utils.IsPortuguese()
+                ? $"<size=80%>+{STRBonus} Bónus de Força ({weapon.damage.strengthScaling})\n"
+                : $"<size=80%>+{STRBonus} Strength Bonus ({weapon.damage.strengthScaling})\n";
+            }
 
-            if (attackTypes.ContainsKey(weapon.damage.weaponAttackType))
+            if (DEXBonus > 0)
             {
-                var typeInfo = attackTypes[weapon.damage.weaponAttackType];
-                string label = Utils.IsPortuguese() ? typeInfo.ptText : typeInfo.enText;
-                itemTooltip.CreateTooltip(typeInfo.icon, Color.white, label);
+                damageLabel += Utils.IsPortuguese()
+                ? $"<size=80%>+{DEXBonus} Bónus de Destreza ({weapon.damage.dexterityScaling})\n"
+                : $"<size=80%>+{DEXBonus} Dexterity Bonus ({weapon.damage.dexterityScaling})\n";
+            }
+
+            if (INTBonus > 0)
+            {
+                damageLabel += Utils.IsPortuguese()
+                ? $"<size=80%>+{INTBonus} Bónus de Inteligência ({weapon.damage.intelligenceScaling})\n"
+                : $"<size=80%>+{INTBonus} Intelligence Bonus ({weapon.damage.intelligenceScaling})\n";
+            }
+
+            if (TwoHandAttackBonus > 0)
+            {
+                damageLabel += Utils.IsPortuguese()
+                ? $"<size=80%>+{TwoHandAttackBonus} Bónus de empunhar arma com as duas mãos ({TwoHandAttackBonus})\n"
+                : $"<size=80%>+{TwoHandAttackBonus} Bonus from two-handing weapon ({TwoHandAttackBonus})\n";
+            }
+
+            // Finally create the tooltip
+            itemTooltip.CreateTooltip(
+                GUIIconsDatabase.physicalAbsorption,
+                Color.white,
+                damageLabel);
+
+            // === Attack Type (Slash, Blunt, Pierce) ===
+            if (weaponDamage.weaponAttackType == WeaponAttackType.Blunt)
+            {
+                itemTooltip.weaponTypeLabel.text = Utils.IsPortuguese() ? "Dano Contundente" : "Blunt Damage";
+                itemTooltip.weaponTypeLabel.style.color = GUIIconsDatabase.bluntColor;
+                itemTooltip.weaponTypeLabel.style.display = DisplayStyle.Flex;
+            }
+            else if (weaponDamage.weaponAttackType == WeaponAttackType.Slash)
+            {
+                itemTooltip.weaponTypeLabel.text = Utils.IsPortuguese() ? "Dano Cortante" : "Slash Damage";
+                itemTooltip.weaponTypeLabel.style.color = GUIIconsDatabase.slashColor;
+                itemTooltip.weaponTypeLabel.style.display = DisplayStyle.Flex;
+            }
+            else if (weaponDamage.weaponAttackType == WeaponAttackType.Pierce)
+            {
+                itemTooltip.weaponTypeLabel.text = Utils.IsPortuguese() ? "Dano Perfurante" : "Pierce Damage";
+                itemTooltip.weaponTypeLabel.style.color = GUIIconsDatabase.pierceColor;
+                itemTooltip.weaponTypeLabel.style.display = DisplayStyle.Flex;
+            }
+            else if (weaponDamage.weaponAttackType == WeaponAttackType.Range)
+            {
+                itemTooltip.weaponTypeLabel.text = Utils.IsPortuguese() ? "Dano de Longo-Alcance" : "Ranged Damage";
+                itemTooltip.weaponTypeLabel.style.color = GUIIconsDatabase.rangeColor;
+                itemTooltip.weaponTypeLabel.style.display = DisplayStyle.Flex;
             }
 
             // === Status Effects ===
@@ -112,7 +176,7 @@ namespace AF
             // === Upgradeable ===
             if (weapon.canBeUpgraded && weapon.CanBeUpgradedFurther())
             {
-                itemTooltip.CreateTooltip(GUIIconsDatabase.upgradeItem, Color.white, weapon.GetMaterialCostForNextLevel());
+                itemTooltip.CreateTooltip(GUIIconsDatabase.upgradeItem, Color.white, weapon.GetMaterialCostForNextLevel(playerManager));
             }
 
             if (weapon.damage.ignoreBlocking)
@@ -135,7 +199,6 @@ namespace AF
 
             if (weapon.blockAbsorption != 1f)
             {
-
                 float absorptionPercentage = weapon.blockAbsorption * 100f;
                 float damageTaken = 100f - absorptionPercentage;
 

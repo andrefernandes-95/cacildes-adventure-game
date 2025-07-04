@@ -38,32 +38,21 @@ namespace AF
             return hasEnoughMaterial;
         }
 
-        public static bool CanImproveWeapon(InventoryDatabase inventoryDatabase, Weapon weapon, int ownedGold)
+        public static bool CanImproveWeapon(CharacterBaseManager characterBaseManager, Weapon weapon, int ownedGold)
         {
-            WeaponUpgradeLevel nextWeaponUpgradeLevel = weapon.weaponUpgrades.ElementAtOrDefault(weapon.level - 1);
+            UpgradeMaterialData.UpgradeMaterialEntry upgradeData = weapon.upgradeMaterialData.upgradeMaterials.ElementAtOrDefault(weapon.level);
 
-            if (nextWeaponUpgradeLevel == null)
+            if (upgradeData == null)
             {
                 return false;
             }
 
-            bool hasAllMaterialsRequired = true;
-
-            foreach (var upgradeMaterial in nextWeaponUpgradeLevel.upgradeMaterials)
-            {
-                if (!inventoryDatabase.HasItem(upgradeMaterial.Key) || inventoryDatabase.GetItemAmount(upgradeMaterial.Key) < upgradeMaterial.Value)
-                {
-                    hasAllMaterialsRequired = false;
-                    break;
-                }
-            }
-
-            if (!hasAllMaterialsRequired)
+            if (characterBaseManager.characterBaseInventory.GetUpgradeMaterialAmount(upgradeData.upgradeMaterial) < upgradeData.amount)
             {
                 return false;
             }
 
-            if (ownedGold < nextWeaponUpgradeLevel.goldCostForUpgrade)
+            if (ownedGold < upgradeData.goldCostForUpgrade)
             {
                 return false;
             }
@@ -79,14 +68,11 @@ namespace AF
         {
             var currentWeaponLevel = weapon.level;
 
-            WeaponUpgradeLevel weaponUpgradeForNextLevel = weapon.weaponUpgrades.ElementAtOrDefault(currentWeaponLevel - 1);
+            UpgradeMaterialData.UpgradeMaterialEntry upgradeData = weapon.upgradeMaterialData.upgradeMaterials.ElementAtOrDefault(currentWeaponLevel);
 
-            onUpgrade(weaponUpgradeForNextLevel.goldCostForUpgrade);
+            onUpgrade(upgradeData.goldCostForUpgrade);
 
-            foreach (var upgradeMaterial in weaponUpgradeForNextLevel.upgradeMaterials)
-            {
-                onUpgradeMaterialUsed(upgradeMaterial);
-            }
+            onUpgradeMaterialUsed(new KeyValuePair<UpgradeMaterial, int>(upgradeData.upgradeMaterial, upgradeData.amount));
 
             weapon.level++;
         }

@@ -7,6 +7,11 @@ namespace AF
     {
         [SerializeField] PlayerManager playerManager;
 
+        public override bool DoesCharacterMeetWeaponRequirements(Weapon weapon)
+        {
+            return weapon.AreRequirementsMet(playerManager);
+        }
+
         public override CharacterBaseManager GetCharacter()
         {
             return playerManager;

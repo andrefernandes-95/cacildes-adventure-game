@@ -117,6 +117,55 @@ namespace AF.Health
         {
             combatNotificationsController.ShowHealthRestored(healthRestored);
         }
+
+
+        public int GetExtraAttackBasedOnCurrentHealth()
+        {
+            var percentage = GetCurrentHealthPercentage();
+
+            if (percentage > 0.9)
+            {
+                return 0;
+            }
+            else if (percentage > 0.8)
+            {
+                return 5;
+            }
+            else if (percentage > 0.7)
+            {
+                return 15;
+            }
+            else if (percentage > 0.6)
+            {
+                return 30;
+            }
+            else if (percentage > 0.5)
+            {
+                return 50;
+            }
+            else if (percentage > 0.4)
+            {
+                return 65;
+            }
+            else if (percentage > 0.3)
+            {
+                return 90;
+            }
+            else if (percentage > 0.2)
+            {
+                return 120;
+            }
+            else if (percentage > 0.1)
+            {
+                return 150;
+            }
+            else if (percentage > 0)
+            {
+                return 200;
+            }
+
+            return 0;
+        }
     }
 
 }

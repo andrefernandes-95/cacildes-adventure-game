@@ -67,8 +67,6 @@ namespace AF
         [Header("Attack")]
         public Damage damage;
 
-        public WeaponUpgradeLevel[] weaponUpgrades;
-
         //        [Tooltip("How much block hit this weapon does on an enemy shield. Heavier weapons should do at least 2 or 3 hits.")]
         //        public int blockHitAmount = 1;
 
@@ -87,6 +85,9 @@ namespace AF
         }
 
         public WeaponSize weaponSize = WeaponSize.SMALL;
+
+        [Header("World Instance")]
+        public GameObject weaponPrefab;
 
         [Header("Requirements")]
         public int strengthRequired = 0;
@@ -214,13 +215,6 @@ namespace AF
         public Damage CalculateValue(int currentLevel)
         {
 
-            WeaponUpgradeLevel weaponUpgradeLevel = weaponUpgrades.ElementAtOrDefault(currentLevel - 2);
-
-            if (weaponUpgradeLevel != null)
-            {
-                return weaponUpgradeLevel.newDamage;
-            }
-
             return this.damage;
         }
 
@@ -230,17 +224,11 @@ namespace AF
         }
         public int GetWeaponAttack(CharacterBaseAttackManager attackStatManager)
         {
-            int strengthBonus = (int)attackStatManager.GetStrengthBonusFromWeapon(this);
-            int dexterityBonus = (int)attackStatManager.GetDexterityBonusFromWeapon(this);
-
-            return GetWeaponBaseAttack() + strengthBonus + dexterityBonus;
+            return 0;
         }
         public int GetWeaponAttackForLevel(CharacterBaseAttackManager attackStatManager, int level)
         {
-            int strengthBonus = (int)attackStatManager.GetStrengthBonusFromWeapon(this);
-            int dexterityBonus = (int)attackStatManager.GetDexterityBonusFromWeapon(this);
-
-            return CalculateValue(level).physical + strengthBonus + dexterityBonus;
+            return 0;
         }
         public int GetWeaponFireAttack(CharacterBaseAttackManager attackStatManager)
         {
@@ -333,11 +321,6 @@ namespace AF
         {
             int baseMagicDamage = (int)CalculateValue(this.level).magic;
 
-            if (baseMagicDamage > 0)
-            {
-                baseMagicDamage += (int)attackStatManager.GetIntelligenceBonusFromWeapon(this);
-            }
-
             return baseMagicDamage;
         }
 
@@ -345,10 +328,6 @@ namespace AF
         {
             int baseMagicDamage = (int)CalculateValue(level).magic;
 
-            if (baseMagicDamage > 0)
-            {
-                baseMagicDamage += (int)attackStatManager.GetIntelligenceBonusFromWeapon(this);
-            }
 
             return baseMagicDamage;
         }
@@ -367,25 +346,26 @@ namespace AF
 
         public bool CanBeUpgradedFurther()
         {
-            return canBeUpgraded && weaponUpgrades != null && weaponUpgrades.Length > 0 && this.level > 0 && this.level <= weaponUpgrades.Length - 1;
+            return canBeUpgraded && upgradeMaterialData != null && upgradeMaterialData.upgradeMaterials.Length > 0 && this.level <= upgradeMaterialData.upgradeMaterials.Length - 1;
         }
 
-        public string GetMaterialCostForNextLevel()
+        public string GetMaterialCostForNextLevel(CharacterBaseManager characterBaseManager)
         {
-            if (CanBeUpgradedFurther() && weaponUpgrades[this.level - 1] != null && weaponUpgrades[this.level - 1].upgradeMaterials != null)
+            if (CanBeUpgradedFurther() && upgradeMaterialData != null && upgradeMaterialData.upgradeMaterials[this.level] != null)
             {
-                WeaponUpgradeLevel nextWeaponUpgradeLevel = weaponUpgrades[this.level - 1];
-                string text = $"{LocalizationSettings.StringDatabase.GetLocalizedString("UIDocuments", "Next Weapon Level: ")}{this.level + 1}\n";
+                int nextLevel = this.level + 1;
+                string text = Utils.IsPortuguese() ? $"<size=80%>Itens necessários para melhorar arma para nível +{nextLevel}:" : $"<size=80%>Required items to upgrade weapon to level +{nextLevel}:";
+                text += "\n";
+                text += "<size=100%>";
 
-                text += $"{LocalizationSettings.StringDatabase.GetLocalizedString("UIDocuments", "Required Gold:")} {nextWeaponUpgradeLevel.goldCostForUpgrade} {LocalizationSettings.StringDatabase.GetLocalizedString("UIDocuments", "Coins")}\n";
-                text += $"{LocalizationSettings.StringDatabase.GetLocalizedString("UIDocuments", "Required Items:")} \n";
+                UpgradeMaterialData.UpgradeMaterialEntry upgradeData = upgradeMaterialData.upgradeMaterials[this.level];
 
-                foreach (var upgradeMat in weaponUpgrades[this.level - 1].upgradeMaterials)
+                if (upgradeData != null)
                 {
-                    if (upgradeMat.Key != null)
-                    {
-                        text += $"- {upgradeMat.Key.GetName()}: x{upgradeMat.Value}\n";
-                    }
+                    int amountOwned = characterBaseManager.characterBaseInventory.GetCraftingMaterialAmount(upgradeData.upgradeMaterial);
+                    text += $"x{upgradeData.amount} {upgradeData.upgradeMaterial.GetName()} ";
+                    text += Utils.IsPortuguese() ? $"(Possuis {amountOwned})" : $"(You Own {amountOwned})";
+                    text += "\n";
                 }
 
                 return text;
@@ -527,7 +507,7 @@ namespace AF
                 return 0;
             }
 
-            return damage.physical + GetBonusPerLevel(level);
+            return damage.physical + GetBonusAttackPerLevel(level);
         }
 
         public int GetFireAttackForLevel(int level) => GetElementalAttackForLevel(damage.fire, level);
@@ -537,10 +517,14 @@ namespace AF
         public int GetWaterAttackForLevel(int level) => GetElementalAttackForLevel(damage.water, level);
         public int GetMagicAttackForLevel(int level) => GetElementalAttackForLevel(damage.magic, level);
 
-
-        public int GetElementalAttackForLevel(int baseElementalDamage, int level)
+        int GetElementalAttackForLevel(int baseElementalDamage, int level)
         {
-            return baseElementalDamage + GetBonusPerLevel(level);
+            if (baseElementalDamage <= 0)
+            {
+                return 0;
+            }
+
+            return baseElementalDamage + GetBonusAttackPerLevel(level);
         }
     }
 }

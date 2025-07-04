@@ -260,7 +260,23 @@ namespace AF.Inventory
 
         public bool HasItem(Item itemToFind)
         {
-            return this.ownedItems.ContainsKey(itemToFind);
+            return itemToFind switch
+            {
+                Shield shield => ownedWeapons.Exists(x => x == itemToFind),
+                Weapon weapon => ownedWeapons.Exists(x => x == itemToFind),
+                Spell spell => ownedSpells.Exists(x => x == itemToFind),
+                Arrow arrow => ownedArrows.Exists(x => x == itemToFind),
+                Helmet helmet => ownedHelmets.Exists(x => x == itemToFind),
+                Gauntlet gauntlet => ownedGauntlets.Exists(x => x == itemToFind),
+                Armor armor => ownedArmors.Exists(x => x == itemToFind),
+                Legwear legwear => ownedLegwears.Exists(x => x == itemToFind),
+                Consumable consumable => ownedConsumables.Exists(x => x == itemToFind),
+                Accessory accessory => ownedAccessories.Exists(x => x == itemToFind),
+                UpgradeMaterial upgradeMaterial => ownedUpgradeMaterials.Exists(x => x == itemToFind),
+                CraftingMaterial craftingMaterial => ownedCraftingMaterials.Exists(x => x == itemToFind),
+                KeyItem keyItem => ownedKeyItems.Exists(x => x == itemToFind),
+                _ => false,
+            };
         }
 
         public int GetWeaponsCount()
@@ -271,6 +287,11 @@ namespace AF.Inventory
         public int GetSpellsCount()
         {
             return ownedItems.Count(x => x.Key is Spell);
+        }
+
+        public int GetArrowAmount(Arrow arrowToCheck)
+        {
+            return ownedArrows.Count(arrow => arrowToCheck.EqualsTo(arrow));
         }
     }
 }

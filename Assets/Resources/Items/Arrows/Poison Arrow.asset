@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b556469b909da6542ada28ae0a6ef963, type: 3}
   m_Name: Poison Arrow
   m_EditorClassIdentifier: 
+  itemID: 
   nameLocalized:
     m_TableReference:
       m_TableCollectionName: GUID:bfeeac13f16b59940b4195364a8d9ed7
@@ -40,16 +41,20 @@ MonoBehaviour:
     m_WaitForCompletion: 0
     m_LocalVariables: []
   sprite: {fileID: 21300000, guid: 8389428c21d0b4144a6e0a4648189221, type: 3}
+  itemValue: {fileID: 0}
   value: 70
+  itemWeight: {fileID: 0}
   isRenewable: 0
   tradingItemRequirements:
     _serializedList: []
+  dropRateOnEnemies: 0.2
   notes: 
   location: 
   projectileType: {fileID: 11400000, guid: 45202d18c939ecc4085e4ce1d85fad5d, type: 2}
   projectile: {fileID: 0}
   arrowProjectile: {fileID: 5122477816889489087, guid: dfd4e3516370620428d297dd6fd2d81d, type: 3}
   damage:
+    basePhysicalDamage: 0
     physical: 50
     fire: 0
     frost: 0
@@ -67,8 +72,13 @@ MonoBehaviour:
     ignoreBlocking: 0
     canNotBeParried: 0
     damageType: 0
+    strengthScaling: 5
+    dexterityScaling: 5
+    intelligenceScaling: 5
   loseUponFiring: 1
   statusEffectsInflictedUponShootingArrow: []
+  arrowPlaceholderPrefab: {fileID: 532561484697439743, guid: 41fd742f140c9a244996ebd6bb0fdb77, type: 3}
+  drawArrowSfx: {fileID: 8300000, guid: c1f700f335ad53448bb84f61fa3d1059, type: 3}
   references:
     version: 2
     RefIds: []

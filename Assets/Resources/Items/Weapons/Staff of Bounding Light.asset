@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9067d6c019b4643fc8651ed58d494bba, type: 3}
   m_Name: Staff of Bounding Light
   m_EditorClassIdentifier: 
+  itemID: 
   nameLocalized:
     m_TableReference:
       m_TableCollectionName: GUID:bfeeac13f16b59940b4195364a8d9ed7
@@ -40,13 +41,17 @@ MonoBehaviour:
     m_WaitForCompletion: 0
     m_LocalVariables: []
   sprite: {fileID: 21300000, guid: b7c0041a8d45f44438747c8f97285f93, type: 3}
+  itemValue: {fileID: 0}
   value: 150
+  itemWeight: {fileID: 0}
   isRenewable: 0
   tradingItemRequirements:
     _serializedList: []
+  dropRateOnEnemies: 0.2
   notes: 
   location: 
-  weaponID: 
+  canBeUpgraded: 1
+  level: 1
   damage:
     physical: 0
     fire: 0
@@ -65,8 +70,9 @@ MonoBehaviour:
     ignoreBlocking: 0
     canNotBeParried: 0
     damageType: 0
-  canBeUpgraded: 1
-  level: 1
+    strengthScaling: 5
+    dexterityScaling: 5
+    intelligenceScaling: 5
   weaponUpgrades:
   - goldCostForUpgrade: 100
     newDamage:
@@ -87,6 +93,9 @@ MonoBehaviour:
       ignoreBlocking: 0
       canNotBeParried: 0
       damageType: 0
+      strengthScaling: 5
+      dexterityScaling: 5
+      intelligenceScaling: 5
     upgradeMaterials:
       _serializedList:
       - Key: {fileID: 11400000, guid: 5aff7d77ec902374b864da3d137daf22, type: 2}
@@ -110,6 +119,9 @@ MonoBehaviour:
       ignoreBlocking: 0
       canNotBeParried: 0
       damageType: 0
+      strengthScaling: 5
+      dexterityScaling: 5
+      intelligenceScaling: 5
     upgradeMaterials:
       _serializedList:
       - Key: {fileID: 11400000, guid: 5aff7d77ec902374b864da3d137daf22, type: 2}
@@ -133,10 +145,16 @@ MonoBehaviour:
       ignoreBlocking: 0
       canNotBeParried: 0
       damageType: 0
+      strengthScaling: 5
+      dexterityScaling: 5
+      intelligenceScaling: 5
     upgradeMaterials:
       _serializedList:
       - Key: {fileID: 11400000, guid: 5aff7d77ec902374b864da3d137daf22, type: 2}
         Value: 6
+  weaponSound: {fileID: 0}
+  weaponSize: 0
+  weaponPrefab: {fileID: 4471419988217387065, guid: d83edf32a3144874c8457e668b9ccffc, type: 3}
   strengthRequired: 0
   dexterityRequired: 0
   intelligenceRequired: 20

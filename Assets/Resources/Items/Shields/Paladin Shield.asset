@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29f6615060006497390447487ac3fd5f, type: 3}
   m_Name: Paladin Shield
   m_EditorClassIdentifier: 
+  itemID: 
   nameLocalized:
     m_TableReference:
       m_TableCollectionName: GUID:bfeeac13f16b59940b4195364a8d9ed7
@@ -40,13 +41,17 @@ MonoBehaviour:
     m_WaitForCompletion: 0
     m_LocalVariables: []
   sprite: {fileID: 21300000, guid: 5d7de95ccde8dcb4691d2036803bce4d, type: 3}
+  itemValue: {fileID: 0}
   value: 750
+  itemWeight: {fileID: 0}
   isRenewable: 0
   tradingItemRequirements:
     _serializedList: []
+  dropRateOnEnemies: 0.2
   notes: 
   location: 
-  weaponID: 
+  canBeUpgraded: 1
+  level: 1
   damage:
     physical: 0
     fire: 0
@@ -65,9 +70,13 @@ MonoBehaviour:
     ignoreBlocking: 0
     canNotBeParried: 0
     damageType: 0
-  canBeUpgraded: 1
-  level: 1
+    strengthScaling: 5
+    dexterityScaling: 5
+    intelligenceScaling: 5
   weaponUpgrades: []
+  weaponSound: {fileID: 0}
+  weaponSize: 0
+  weaponPrefab: {fileID: 5687742527780301376, guid: 45b1e1dcc20fa8949b306fd113a17e1e, type: 3}
   strengthRequired: 0
   dexterityRequired: 0
   intelligenceRequired: 0
@@ -157,6 +166,9 @@ MonoBehaviour:
     ignoreBlocking: 0
     canNotBeParried: 0
     damageType: 0
+    strengthScaling: 5
+    dexterityScaling: 5
+    intelligenceScaling: 5
   parryWindowBonus: 0
   parryPostureDamageBonus: 0
   references:

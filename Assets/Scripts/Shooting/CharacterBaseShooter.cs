@@ -13,9 +13,9 @@ namespace AF.Shooting
         [Header("Components")]
         public CharacterBaseManager characterBaseManager;
 
-        public abstract bool CanShoot();
+        protected GameObject arrowPlaceholder;
 
-        public abstract void CastSpell();
+        public abstract bool CanShoot();
 
         public abstract void FireArrow();
 
@@ -35,6 +35,30 @@ namespace AF.Shooting
                 return;
             }
             rifleWeapon.gameObject.SetActive(false);
+        }
+
+        protected void ShowArrowPlaceholder()
+        {
+            DestroyArrowPlaceholder();
+
+            Arrow currentArrow = GetCurrentArrow();
+            if (currentArrow != null)
+            {
+                arrowPlaceholder = Instantiate(currentArrow.arrowPlaceholderPrefab, characterBaseManager.characterTransformHelper.rightHand);
+
+                characterBaseManager.combatAudioSource.PlayOneShot(currentArrow.drawArrowSfx);
+            }
+        }
+
+        public abstract Arrow GetCurrentArrow();
+
+        protected void DestroyArrowPlaceholder()
+        {
+            if (arrowPlaceholder != null)
+            {
+                Destroy(arrowPlaceholder);
+                arrowPlaceholder = null;
+            }
         }
     }
 }

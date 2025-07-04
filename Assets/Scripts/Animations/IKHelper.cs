@@ -73,6 +73,9 @@ namespace AF
 
         bool CanUseIK()
         {
+            return false;
+
+            // TODO: Remove this script
             if (!equipmentDatabase.isTwoHanding)
             {
                 return false;

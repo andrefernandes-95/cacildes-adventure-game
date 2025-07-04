@@ -503,7 +503,7 @@ namespace AF.UI.EquipmentMenu
                     }
                 };
 
-                SetupItemButton(instance, item);
+                SetupItemButton(instance, item, isRightHandSlot);
 
                 this.itemsScrollView.Add(instance);
             }
@@ -518,16 +518,18 @@ namespace AF.UI.EquipmentMenu
             var query = inventoryDatabase.ownedItems
                 .Where(item => ShouldShowItem<T>(item, slotIndex, showOnlyKeyItems));
 
-            Dictionary<Item, int> stackableItems = new();
-            Dictionary<Item, Label> stackableItemAmountLabels = new();
+            Dictionary<string, int> stackableItems = new();
+            Dictionary<string, Label> stackableItemAmountLabels = new();
 
             for (int i = 0; i < items.Count; i++)
             {
                 var item = items.ElementAt(i);
 
-                if (stackableItems.ContainsKey(item))
+                string itemFileName = item.name.Replace("(Clone)", "");
+                if (stackableItems.ContainsKey(itemFileName))
                 {
-                    stackableItemAmountLabels[item].text = $"${item.GetName()} ({stackableItems})";
+                    stackableItems[itemFileName]++;
+                    stackableItemAmountLabels[itemFileName].text = $"{item.GetName()} ({stackableItems[itemFileName]})";
                     continue;
                 }
 
@@ -544,10 +546,10 @@ namespace AF.UI.EquipmentMenu
 
                 if (item is Consumable || item is Arrow || showOnlyKeyItems)
                 {
-                    if (!stackableItems.ContainsKey(item))
+                    if (!stackableItems.ContainsKey(itemFileName))
                     {
-                        stackableItems.Add(item, 1);
-                        stackableItemAmountLabels.Add(item, itemName);
+                        stackableItems.Add(itemFileName, 1);
+                        stackableItemAmountLabels.Add(itemFileName, itemName);
                     }
                 }
 
@@ -724,7 +726,7 @@ namespace AF.UI.EquipmentMenu
                     //PopulateScrollView<T>(showOnlyKeyItems, slotIndex);
                 };
 
-                SetupItemButton(instance, item);
+                SetupItemButton(instance, item, false);
 
                 this.itemsScrollView.Add(instance);
             }
@@ -733,7 +735,7 @@ namespace AF.UI.EquipmentMenu
         }
 
 
-        void SetupItemButton(TemplateContainer instance, Item item)
+        void SetupItemButton(TemplateContainer instance, Item item, bool equippingOnRightHand)
         {
             Button btn = instance.Q<Button>("EquipButton");
             void ShowTooltipAndStats(Item item)
@@ -742,13 +744,13 @@ namespace AF.UI.EquipmentMenu
                 itemTooltip.PrepareTooltipForItem(item);
                 itemTooltip.DisplayTooltip(btn);
 
-                playerStatsAndAttributesUI.DrawStats(item);
+                playerStatsAndAttributesUI.DrawStats(item, equippingOnRightHand);
             }
 
             void HideTooltipAndClearStats()
             {
                 itemTooltip.gameObject.SetActive(false);
-                playerStatsAndAttributesUI.DrawStats(null);
+                playerStatsAndAttributesUI.DrawStats(null, false);
             }
 
             instance.RegisterCallback<MouseEnterEvent>(ev =>

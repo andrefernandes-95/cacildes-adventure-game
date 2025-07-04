@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9067d6c019b4643fc8651ed58d494bba, type: 3}
   m_Name: Halberd
   m_EditorClassIdentifier: 
+  itemID: 
   nameLocalized:
     m_TableReference:
       m_TableCollectionName: GUID:bfeeac13f16b59940b4195364a8d9ed7
@@ -40,13 +41,17 @@ MonoBehaviour:
     m_WaitForCompletion: 0
     m_LocalVariables: []
   sprite: {fileID: 21300000, guid: 50caa5e70f6be574fa3bfe4446427305, type: 3}
+  itemValue: {fileID: 0}
   value: 180
+  itemWeight: {fileID: 0}
   isRenewable: 0
   tradingItemRequirements:
     _serializedList: []
+  dropRateOnEnemies: 0.2
   notes: 
   location: 
-  weaponID: 
+  canBeUpgraded: 1
+  level: 1
   damage:
     physical: 60
     fire: 0
@@ -66,8 +71,6 @@ MonoBehaviour:
     strengthScaling: 5
     dexterityScaling: 5
     intelligenceScaling: 5
-  canBeUpgraded: 1
-  level: 1
   weaponUpgrades:
   - goldCostForUpgrade: 100
     newDamage:
@@ -189,6 +192,9 @@ MonoBehaviour:
       _serializedList:
       - Key: {fileID: 11400000, guid: aa13cb668cefc0941ada0756ef86bbf6, type: 2}
         Value: 1
+  weaponSound: {fileID: 0}
+  weaponSize: 0
+  weaponPrefab: {fileID: 8048190686991699661, guid: 6043641df16fbfc46b3139e32ed19f49, type: 3}
   strengthRequired: 6
   dexterityRequired: 8
   intelligenceRequired: 0

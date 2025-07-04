@@ -16,11 +16,21 @@ namespace AF
 
         public override AudioClip GetSwingSFX()
         {
+            if (weaponSound == null)
+            {
+                return null;
+            }
+
             return weaponSound.swing;
         }
 
         public override AudioClip GetImpactSFX()
         {
+            if (weaponSound == null)
+            {
+                return null;
+            }
+
             return weaponSound.impact;
         }
 

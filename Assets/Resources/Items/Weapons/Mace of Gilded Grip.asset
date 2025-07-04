@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9067d6c019b4643fc8651ed58d494bba, type: 3}
   m_Name: Mace of Gilded Grip
   m_EditorClassIdentifier: 
+  itemID: 
   nameLocalized:
     m_TableReference:
       m_TableCollectionName: GUID:bfeeac13f16b59940b4195364a8d9ed7
@@ -40,15 +41,19 @@ MonoBehaviour:
     m_WaitForCompletion: 0
     m_LocalVariables: []
   sprite: {fileID: 21300000, guid: 5d31759975de0bc4a9fa537dc17250e0, type: 3}
+  itemValue: {fileID: 0}
   value: 1000
+  itemWeight: {fileID: 0}
   isRenewable: 0
   tradingItemRequirements:
     _serializedList:
     - Key: {fileID: 11400000, guid: ec6f54f77d30be643b2d283223264196, type: 2}
       Value: 1
+  dropRateOnEnemies: 0.2
   notes: 
   location: Trade by Thrommond Token
-  weaponID: 
+  canBeUpgraded: 0
+  level: 1
   damage:
     physical: 0
     fire: 0
@@ -67,9 +72,13 @@ MonoBehaviour:
     ignoreBlocking: 0
     canNotBeParried: 0
     damageType: 0
-  canBeUpgraded: 0
-  level: 1
+    strengthScaling: 5
+    dexterityScaling: 5
+    intelligenceScaling: 5
   weaponUpgrades: []
+  weaponSound: {fileID: 0}
+  weaponSize: 0
+  weaponPrefab: {fileID: 8980119378357046532, guid: 135816d8b3b5ebf409c44651e62f7dac, type: 3}
   strengthRequired: 16
   dexterityRequired: 8
   intelligenceRequired: 0

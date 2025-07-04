@@ -7,7 +7,7 @@ namespace AF
     public class CharacterWeaponHitbox : Hitbox
     {
         [Header("Weapon")]
-        public Weapon weapon;
+        [HideInInspector] public Weapon weapon;
 
         public override AudioClip GetSwingSFX()
         {

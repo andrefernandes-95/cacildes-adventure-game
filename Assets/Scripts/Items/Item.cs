@@ -85,5 +85,12 @@ namespace AF
             }
             return 0.1f;
         }
+
+        public bool EqualsTo(Item b)
+        {
+            if (b == null) return false;
+
+            return name.Replace("(Clone)", "") == b.name.Replace("(Clone)", "");
+        }
     }
 }

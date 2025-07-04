@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b556469b909da6542ada28ae0a6ef963, type: 3}
   m_Name: Blood Soaked Arrow
   m_EditorClassIdentifier: 
+  itemID: 
   nameLocalized:
     m_TableReference:
       m_TableCollectionName: GUID:bfeeac13f16b59940b4195364a8d9ed7
@@ -40,18 +41,22 @@ MonoBehaviour:
     m_WaitForCompletion: 0
     m_LocalVariables: []
   sprite: {fileID: 21300000, guid: 2ff44966d36ada64fa554bb8138adc19, type: 3}
+  itemValue: {fileID: 0}
   value: 2000
+  itemWeight: {fileID: 0}
   isRenewable: 0
   tradingItemRequirements:
     _serializedList:
     - Key: {fileID: 11400000, guid: f4492f4fdb8e24945ae85902b0dde236, type: 2}
       Value: 1
+  dropRateOnEnemies: 0.2
   notes: 
   location: 
   projectileType: {fileID: 11400000, guid: 45202d18c939ecc4085e4ce1d85fad5d, type: 2}
   projectile: {fileID: 0}
   arrowProjectile: {fileID: 941538713055962546, guid: 7bb584d1fc04cd24bbe804cc2089ef61, type: 3}
   damage:
+    basePhysicalDamage: 0
     physical: 0
     fire: 0
     frost: 0
@@ -69,10 +74,15 @@ MonoBehaviour:
     ignoreBlocking: 0
     canNotBeParried: 0
     damageType: 0
+    strengthScaling: 5
+    dexterityScaling: 5
+    intelligenceScaling: 5
   loseUponFiring: 0
   statusEffectsInflictedUponShootingArrow:
   - statusEffect: {fileID: 11400000, guid: f7dd06633468f614eb39e316fece5345, type: 2}
     amountPerHit: 6
+  arrowPlaceholderPrefab: {fileID: 2627701435165284568, guid: 9e65bb9499b2dc24d8ac15390127ce4e, type: 3}
+  drawArrowSfx: {fileID: 8300000, guid: c1f700f335ad53448bb84f61fa3d1059, type: 3}
   references:
     version: 2
     RefIds: []

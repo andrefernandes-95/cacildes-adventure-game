@@ -41,6 +41,11 @@ namespace AF
                 return this;
             }
 
+            if (characterManager.characterCombatController.InCooldown())
+            {
+                return this;
+            }
+
             if (HasValidTarget())
             {
                 return HandleCombatWithTarget();

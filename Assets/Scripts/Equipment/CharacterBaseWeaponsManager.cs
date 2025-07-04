@@ -9,10 +9,10 @@ namespace AF
     {
 
         [Header("Unarmed Weapon References In-World")]
-        public CharacterWeaponHitbox leftHandHitbox;
-        public CharacterWeaponHitbox rightHandHitbox;
-        public CharacterWeaponHitbox leftFootHitbox;
-        public CharacterWeaponHitbox rightFootHitbox;
+        public Hitbox leftHandHitbox;
+        public Hitbox rightHandHitbox;
+        public Hitbox leftFootHitbox;
+        public Hitbox rightFootHitbox;
 
 
         [Header("Current Weapon")]
@@ -45,6 +45,8 @@ namespace AF
         {
             UpdateCurrentWeapon();
             UpdateCurrentLeftWeapon();
+
+            GetCharacter().characterBaseAttackManager.CalculateCurrentDamage();
         }
 
         public void ResetStates()
@@ -123,29 +125,41 @@ namespace AF
 
         void InstantiateWeapon(Weapon weapon, bool isRightHand)
         {
-            string weaponName = weapon.name.Replace("(Clone)", "");
-
-            // Find weapon in the weapons list
-            var weaponPrefab = weapon is Shield
-                    ? null
-                    : weaponsManager.weaponInstances.FirstOrDefault(weaponInstance => weaponInstance.name == weaponName);
-
-            if (weaponPrefab == null)
-            {
-                weaponPrefab = weaponsManager.shieldInstances.FirstOrDefault(shieldInstance => shieldInstance.name == weaponName);
-            }
-
             Transform grip = isRightHand ? rightHandGrip : leftHandGrip;
 
-            if (weaponPrefab != null && grip != null)
+            if (weapon.weaponPrefab != null && grip != null)
             {
                 foreach (Transform child in grip.transform)
                 {
                     Destroy(child.gameObject);
                 }
 
-                GameObject instantiatedWeapon = Instantiate(weaponPrefab, grip).gameObject;
+                GameObject instantiatedWeapon = Instantiate(weapon.weaponPrefab, grip).gameObject;
                 CharacterWeaponHitbox instatiatedCharacterWeaponHitbox = instantiatedWeapon.GetComponent<CharacterWeaponHitbox>();
+
+                // Important for dual wielding, to know which hitbox is hitting enemies
+                instatiatedCharacterWeaponHitbox.isOnRightHand = isRightHand;
+
+                // Replace the weapon from the prefab with the equipped one which contains itemIDs, level, etc.
+                instatiatedCharacterWeaponHitbox.weapon = weapon;
+
+
+                // TOOD: Remove this code, its just to always have ref positions up to date
+                Weapon weaponTemplate = Resources.Load<Weapon>("Items/Weapons/" + weapon.name.Replace("(Clone)", ""));
+                if (weaponTemplate != null)
+                {
+                    instatiatedCharacterWeaponHitbox.weapon.rightHandPosition = weaponTemplate.rightHandPosition;
+                    instatiatedCharacterWeaponHitbox.weapon.rightHandRotation = weaponTemplate.rightHandRotation;
+                    instatiatedCharacterWeaponHitbox.weapon.leftHandPosition = weaponTemplate.leftHandPosition;
+                    instatiatedCharacterWeaponHitbox.weapon.leftHandRotation = weaponTemplate.leftHandRotation;
+                    instatiatedCharacterWeaponHitbox.weapon.twoHandingPosition = weaponTemplate.twoHandingPosition;
+                    instatiatedCharacterWeaponHitbox.weapon.twoHandingRotation = weaponTemplate.twoHandingRotation;
+                    instatiatedCharacterWeaponHitbox.weapon.th_BlockPosition = weaponTemplate.th_BlockPosition;
+                    instatiatedCharacterWeaponHitbox.weapon.th_BlockRotation = weaponTemplate.th_BlockRotation;
+                    instatiatedCharacterWeaponHitbox.weapon.aimingPosition = weaponTemplate.aimingPosition;
+                    instatiatedCharacterWeaponHitbox.weapon.aimingRotation = weaponTemplate.aimingRotation;
+                }
+
                 UpdateWorldReferences(instatiatedCharacterWeaponHitbox);
 
                 if (isRightHand)
@@ -156,6 +170,7 @@ namespace AF
                 {
                     currentShieldInstance = instatiatedCharacterWeaponHitbox;
                 }
+
 
                 instantiatedWeapon.transform.localPosition = isRightHand ? weapon.rightHandPosition : weapon.leftHandPosition;
                 instantiatedWeapon.transform.localRotation = Quaternion.Euler(isRightHand ? weapon.rightHandRotation : weapon.leftHandRotation);

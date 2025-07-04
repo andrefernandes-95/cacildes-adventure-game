@@ -701,7 +701,7 @@ namespace AF.UI.EquipmentMenu
 
             DrawUI();
 
-            playerStatsAndAttributesUI.DrawStats(null);
+            playerStatsAndAttributesUI.DrawStats(null, false);
         }
     }
 }

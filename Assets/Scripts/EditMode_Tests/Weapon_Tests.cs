@@ -35,7 +35,6 @@ namespace AF
             };
             weaponUpgradeLevel2.upgradeMaterials.Add(iron, 3);
 
-            weapon.weaponUpgrades = new[] { weaponUpgradeLevel1, weaponUpgradeLevel2 };
         }
 
         /*[Test]
@@ -73,33 +72,6 @@ namespace AF
             // Assert
             Assert.AreEqual(expectedOutput, actualOutput);
         }*/
-
-        [Test]
-        public void GetMaterialCostForNextLevel_CannotBeUpgraded_ReturnsEmptyString()
-        {
-            // Arrange
-            weapon.level = 2; // Assuming the weapon is already at max level
-            weapon.canBeUpgraded = false;
-            // Act
-            string result = weapon.GetMaterialCostForNextLevel();
-
-            // Assert
-            Assert.AreEqual("", result);
-        }
-
-        [Test]
-        public void GetMaterialCostForNextLevel_UpgradeMaterialsIsNull_ReturnsEmptyString()
-        {
-            // Arrange
-            weapon.canBeUpgraded = true;
-            weapon.weaponUpgrades[0].upgradeMaterials = null;
-
-            // Act
-            string result = weapon.GetMaterialCostForNextLevel();
-
-            // Assert
-            Assert.AreEqual("", result);
-        }
     }
 
 }

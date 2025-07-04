@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9067d6c019b4643fc8651ed58d494bba, type: 3}
   m_Name: Wooden Staff
   m_EditorClassIdentifier: 
+  itemID: 
   nameLocalized:
     m_TableReference:
       m_TableCollectionName: GUID:bfeeac13f16b59940b4195364a8d9ed7
@@ -40,13 +41,17 @@ MonoBehaviour:
     m_WaitForCompletion: 0
     m_LocalVariables: []
   sprite: {fileID: 21300000, guid: 20fbb1445457cc744b28123c3dbb8cb9, type: 3}
+  itemValue: {fileID: 0}
   value: 90
+  itemWeight: {fileID: 0}
   isRenewable: 0
   tradingItemRequirements:
     _serializedList: []
+  dropRateOnEnemies: 0.2
   notes: 
   location: 
-  weaponID: 
+  canBeUpgraded: 1
+  level: 1
   damage:
     physical: 0
     fire: 0
@@ -63,8 +68,9 @@ MonoBehaviour:
     ignoreBlocking: 0
     canNotBeParried: 0
     damageType: 0
-  canBeUpgraded: 1
-  level: 1
+    strengthScaling: 5
+    dexterityScaling: 5
+    intelligenceScaling: 5
   weaponUpgrades:
   - goldCostForUpgrade: 100
     newDamage:
@@ -83,6 +89,9 @@ MonoBehaviour:
       ignoreBlocking: 0
       canNotBeParried: 0
       damageType: 0
+      strengthScaling: 5
+      dexterityScaling: 5
+      intelligenceScaling: 5
     upgradeMaterials:
       _serializedList:
       - Key: {fileID: 11400000, guid: 5aff7d77ec902374b864da3d137daf22, type: 2}
@@ -104,6 +113,9 @@ MonoBehaviour:
       ignoreBlocking: 0
       canNotBeParried: 0
       damageType: 0
+      strengthScaling: 5
+      dexterityScaling: 5
+      intelligenceScaling: 5
     upgradeMaterials:
       _serializedList:
       - Key: {fileID: 11400000, guid: 5aff7d77ec902374b864da3d137daf22, type: 2}
@@ -125,10 +137,16 @@ MonoBehaviour:
       ignoreBlocking: 0
       canNotBeParried: 0
       damageType: 0
+      strengthScaling: 5
+      dexterityScaling: 5
+      intelligenceScaling: 5
     upgradeMaterials:
       _serializedList:
       - Key: {fileID: 11400000, guid: 5aff7d77ec902374b864da3d137daf22, type: 2}
         Value: 6
+  weaponSound: {fileID: 0}
+  weaponSize: 0
+  weaponPrefab: {fileID: 405337806965467585, guid: 906c5161f006eba41a506e2eaabe0262, type: 3}
   strengthRequired: 0
   dexterityRequired: 0
   intelligenceRequired: 0

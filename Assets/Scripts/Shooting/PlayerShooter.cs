@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 using AF.Inventory;
 using Cinemachine;
 using UnityEngine;
@@ -31,7 +30,6 @@ namespace AF.Shooting
 
         public float bowAimCameraDistance = 1.25f;
         public float crossbowAimCameraDistance = 1.5f;
-        public float spellAimCameraDistance = 2.25f;
 
         [Header("Components")]
         public LockOnManager lockOnManager;
@@ -52,11 +50,7 @@ namespace AF.Shooting
         public ProjectileType boltProjectileType;
         public ProjectileType bulletProjectileType;
 
-        // For cache purposes
-        Spell previousSpell;
-
         [Header("Events")]
-        public UnityEvent onSpellAim_Begin;
         public UnityEvent onBowAim_Begin;
 
         [Header("Cinemachine")]
@@ -67,16 +61,12 @@ namespace AF.Shooting
         Coroutine FireDelayedProjectileCoroutine;
 
         public GameObject queuedProjectile;
-        public Spell queuedSpell;
 
         public bool hasAimShotCooldown = false;
 
         [Header("Sounds")]
         [SerializeField] AudioSource audioSource;
         [SerializeField] AudioClip drawArrowSfx;
-
-        [Header("Debug")]
-        [SerializeField] bool ignoreBowWeaponTransforms = false;
 
         void Awake()
         {
@@ -93,20 +83,9 @@ namespace AF.Shooting
             GetPlayerManager().starterAssetsInputs.onLightAttackInput.AddListener(() =>
             {
                 // Only allow shooting with bow if aiming, or if using magic staff
-                if (isAiming)
+                if (isAiming && equipmentDatabase.IsRangeWeaponEquipped())
                 {
-                    if (equipmentDatabase.IsStaffEquipped() && !equipmentDatabase.IsRangeWeaponEquipped())
-                    {
-                        OnFireSpellInput();
-                    }
-                    else if (equipmentDatabase.IsRangeWeaponEquipped())
-                    {
-                        OnFireBowInput();
-                    }
-                }
-                else if (equipmentDatabase.IsStaffEquipped())
-                {
-                    OnFireSpellInput();
+                    OnFireBowInput();
                 }
             });
 
@@ -118,7 +97,6 @@ namespace AF.Shooting
             isShooting = false;
 
             queuedProjectile = null;
-            queuedSpell = null;
         }
 
         void SetupCinemachine3rdPersonFollowReference()
@@ -214,57 +192,9 @@ namespace AF.Shooting
                         return;
                     }
 
-                    ShootBow(equipmentDatabase.GetCurrentArrow(), transform, lockOnManager.nearestLockOnTarget?.transform);
+                    ShootBow(equipmentDatabase.GetCurrentArrow(), lockOnManager.nearestLockOnTarget?.transform);
                     uIDocumentPlayerHUDV2.UpdateEquipment();
                 }
-            }
-        }
-
-
-        public void OnFireSpellInput()
-        {
-            if (CanShoot())
-            {
-                PlayerManager playerManager = GetPlayerManager();
-
-                if (
-                   equipmentDatabase.IsStaffEquipped()
-                   && equipmentDatabase.GetCurrentSpell() != null
-                   && playerManager.manaManager.HasEnoughManaForSpell(equipmentDatabase.GetCurrentSpell()))
-                {
-                    playerManager.manaManager.DecreaseMana(equipmentDatabase.GetCurrentSpell().manaCostPerCast);
-
-                    HandleSpellCastAnimationOverrides();
-
-                    playerManager.PlayBusyHashedAnimationWithRootMotion(hashCast);
-                }
-            }
-        }
-
-        void HandleSpellCastAnimationOverrides()
-        {
-            Spell currentSpell = equipmentDatabase.GetCurrentSpell();
-
-            if (currentSpell == previousSpell)
-            {
-                return;
-            }
-
-            previousSpell = currentSpell;
-
-            bool ignoreSpellsAnimationClips = false;
-            if (
-                currentSpell.animationCanNotBeOverriden == false &&
-                equipmentDatabase.GetCurrentWeapon() != null &&
-                equipmentDatabase.GetCurrentWeapon().ignoreSpellsAnimationClips)
-            {
-                ignoreSpellsAnimationClips = true;
-            }
-
-            if (currentSpell.castAnimationOverride != null && ignoreSpellsAnimationClips == false)
-            {
-                GetPlayerManager().UpdateAnimatorOverrideControllerClip("Cacildes - Spell - Cast", currentSpell.castAnimationOverride);
-                GetPlayerManager().RefreshAnimationOverrideState();
             }
         }
 
@@ -286,11 +216,6 @@ namespace AF.Shooting
             {
                 OnAimingBowBegin();
             }
-            else if (equipmentDatabase.IsStaffEquipped())
-            {
-                cinemachine3RdPersonFollow.CameraDistance = spellAimCameraDistance;
-                onSpellAim_Begin?.Invoke();
-            }
 
             GetPlayerManager().thirdPersonController.virtualCamera.gameObject.SetActive(false);
         }
@@ -309,39 +234,22 @@ namespace AF.Shooting
 
         void SetupEquipmentForAimingBegin()
         {
-            ShowArrowPlaceholder();
-            GetPlayerManager().playerWeaponsManager.HideRightWeapon();
-
-            if (!ignoreBowWeaponTransforms)
+            if (isAiming)
             {
-                GetPlayerManager().playerWeaponsManager.UpdateRangeWeaponTransformToAim();
+                ShowArrowPlaceholder();
             }
+            GetPlayerManager().playerWeaponsManager.HideRightWeapon();
+            GetPlayerManager().playerWeaponsManager.UpdateRangeWeaponTransformToAim();
         }
 
         void SetupEquipmentForAimingEnd()
         {
-            GetPlayerManager().projectileSpawner.HideArrowPlaceholders();
+            DestroyArrowPlaceholder();
+
             GetPlayerManager().playerWeaponsManager.ShowRightWeapon();
-
-            if (!ignoreBowWeaponTransforms)
-            {
-                GetPlayerManager().playerWeaponsManager.UpdateRangeWeaponTransformToIdle();
-            }
+            GetPlayerManager().playerWeaponsManager.UpdateRangeWeaponTransformToIdle();
         }
 
-
-        void ShowArrowPlaceholder()
-        {
-            if (equipmentDatabase.GetCurrentArrow() != null && isAiming)
-            {
-                GetPlayerManager().projectileSpawner.ShowArrowPlaceholder(equipmentDatabase.GetCurrentArrow());
-
-                if (drawArrowSfx != null)
-                {
-                    audioSource.PlayOneShot(drawArrowSfx);
-                }
-            }
-        }
 
         public void Aim_End()
         {
@@ -364,9 +272,10 @@ namespace AF.Shooting
             lookAtConstraint.constraintActive = isAiming && equipmentDatabase.IsRangeWeaponEquipped();
         }
 
-        public void ShootBow(Arrow arrow, Transform origin, Transform lockOnTarget)
+        public void ShootBow(Arrow arrow, Transform lockOnTarget)
         {
             SetupEquipmentForAimingBegin();
+            DestroyArrowPlaceholder();
 
             if (equipmentDatabase.GetCurrentArrow().loseUponFiring)
             {
@@ -375,7 +284,7 @@ namespace AF.Shooting
 
             GetPlayerManager().staminaStatManager.DecreaseStamina(minimumStaminaToShoot);
 
-            FireProjectile(arrow.arrowProjectile.gameObject, lockOnTarget, null);
+            FireProjectile(arrow.arrowProjectile.gameObject, lockOnTarget);
 
             if (equipmentDatabase.IsRangeWeaponEquipped())
             {
@@ -392,36 +301,11 @@ namespace AF.Shooting
             }
         }
 
-
-        /// <summary>
-        /// Unity Event
-        /// </summary>
-        public override void CastSpell()
-        {
-            ShootSpell(equipmentDatabase.GetCurrentSpell(), lockOnManager.nearestLockOnTarget?.transform);
-            OnShoot();
-        }
-
         public override void FireArrow()
         {
         }
 
-        public void ShootSpell(Spell spell, Transform lockOnTarget)
-        {
-            if (spell == null)
-            {
-                return;
-            }
-
-            GetPlayerManager().staminaStatManager.DecreaseStamina(minimumStaminaToShoot);
-
-            if (spell.projectile != null)
-            {
-                FireProjectile(spell.projectile.gameObject, lockOnTarget, spell);
-            }
-        }
-
-        public void FireProjectile(GameObject projectile, Transform lockOnTarget, Spell spell)
+        public void FireProjectile(GameObject projectile, Transform lockOnTarget)
         {
             if (lockOnTarget != null && lockOnManager.isLockedOn)
             {
@@ -431,7 +315,6 @@ namespace AF.Shooting
             }
 
             queuedProjectile = projectile;
-            queuedSpell = spell;
         }
 
         public void ShootWithoutClearingProjectilesAndSpells(bool ignoreSpawnFromCamera)
@@ -470,8 +353,6 @@ namespace AF.Shooting
                     queuedProjectile,
                     origin,
                     ray,
-                    0f,
-                    queuedSpell,
                     ignoreSpawnFromCamera);
             }
         }
@@ -483,7 +364,6 @@ namespace AF.Shooting
         {
             ShootWithoutClearingProjectilesAndSpells(false);
             queuedProjectile = null;
-            queuedSpell = null;
         }
 
         void HandleArrowProjectile(GameObject projectile)
@@ -530,12 +410,12 @@ namespace AF.Shooting
         }
 
 
-        void HandleProjectile(GameObject projectile, Vector3 origin, Ray ray, float delay, Spell spell, bool ignoreSpawnFromCamera)
+        void HandleProjectile(GameObject projectile, Vector3 origin, Ray ray, bool ignoreSpawnFromCamera)
         {
             Quaternion lookPosition = Quaternion.identity;
 
             // If shooting spell but not locked on, use player transform forward to direct the spell
-            if (lockOnManager.isLockedOn == false && isAiming == false || spell != null && spell.ignoreSpawnFromCamera || ignoreSpawnFromCamera)
+            if (lockOnManager.isLockedOn == false && isAiming == false || ignoreSpawnFromCamera)
             {
                 origin = lookAtConstraint.transform.position;
                 ray.direction = characterBaseManager.transform.forward;
@@ -545,52 +425,20 @@ namespace AF.Shooting
                 lookPosition = Quaternion.LookRotation(lookDir);
             }
 
-            if (spell != null)
-            {
-                if (lockOnManager.nearestLockOnTarget != null && spell.spawnOnLockedOnEnemies)
-                {
-                    origin = lockOnManager.nearestLockOnTarget.transform.position + lockOnManager.nearestLockOnTarget.transform.up;
-                }
-                else if (spell.spawnAtPlayerFeet)
-                {
-                    origin = playerFeetRef.transform.position + new Vector3(0, spell.playerFeetOffsetY, 0);
-                }
-
-                if (spell.statusEffects != null && spell.statusEffects.Length > 0)
-                {
-                    foreach (StatusEffect statusEffect in spell.statusEffects)
-                    {
-                        GetPlayerManager().statusController.statusEffectInstances.FirstOrDefault(x => x.Key == statusEffect).Value?.onConsumeStart?.Invoke();
-
-                        // For positive effects, we override the status effect resistance to be the duration of the consumable effect
-                        GetPlayerManager().statusController.statusEffectResistances[statusEffect] = spell.effectsDurationInSeconds;
-
-                        GetPlayerManager().statusController.InflictStatusEffect(statusEffect, spell.effectsDurationInSeconds, true);
-                    }
-                }
-            }
-
             if (projectile == null)
             {
                 return;
             }
 
             GameObject projectileInstance = Instantiate(projectile, origin, lookPosition);
-
-            if (spell != null && spell.parentToPlayer)
-            {
-                projectileInstance.transform.parent = GetPlayerManager().transform;
-            }
-
             IProjectile[] projectileComponents = GetProjectileComponentsInChildren(projectileInstance);
-
 
             foreach (IProjectile componentProjectile in projectileComponents)
             {
                 componentProjectile.Shoot(characterBaseManager, ray.direction * componentProjectile.GetForwardVelocity(), componentProjectile.GetForceMode());
             }
 
-            HandleProjectileDamageManagers(projectileInstance, spell);
+            HandleProjectileDamageManagers(projectileInstance, null);
         }
 
         IProjectile[] GetProjectileComponentsInChildren(GameObject obj)
@@ -617,33 +465,6 @@ namespace AF.Shooting
             if (projectileInstance.TryGetComponent(out OnDamageCollisionAbstractManager onDamageCollisionAbstractManager))
             {
                 onDamageCollisionAbstractManager.damageOwner = GetPlayerManager();
-
-                if (currentSpell != null)
-                {
-                    bool shouldDoubleDamage = false;
-
-                    Weapon currentWeapon = GetPlayerManager().characterBaseAttackManager.equipmentDatabase.GetCurrentWeapon();
-
-                    if (currentWeapon != null)
-                    {
-                        shouldDoubleDamage =
-                            currentWeapon.doubleDamageDuringNightTime && gameSession.IsNightTime() ||
-                            currentWeapon.doubleDamageDuringDayTime && !gameSession.IsNightTime();
-                    }
-
-                    onDamageCollisionAbstractManager.damage.ScaleSpell(
-                        GetPlayerManager().characterBaseAttackManager,
-                        currentWeapon,
-                        playerStatsDatabase.GetCurrentReputation(),
-                        currentSpell.isFaithSpell,
-                        currentSpell.isHexSpell,
-                        shouldDoubleDamage);
-                }
-
-                if (GetPlayerManager().statsBonusController.spellDamageBonusMultiplier > 0)
-                {
-                    onDamageCollisionAbstractManager.damage.Multiply(GetPlayerManager().statsBonusController.spellDamageBonusMultiplier);
-                }
             }
 
             // Assign the damage owner to all child OnDamageCollisionAbstractManagers of the projectile instance
@@ -651,22 +472,6 @@ namespace AF.Shooting
             foreach (var onChildDamageCollisionAbstractManager in onDamageCollisionAbstractManagers)
             {
                 onChildDamageCollisionAbstractManager.damageOwner = GetPlayerManager();
-
-                if (currentSpell != null)
-                {
-                    onChildDamageCollisionAbstractManager.damage.ScaleSpell(
-                        GetPlayerManager().characterBaseAttackManager,
-                        GetPlayerManager().characterBaseAttackManager.equipmentDatabase.GetCurrentWeapon(),
-                        playerStatsDatabase.GetCurrentReputation(),
-                        currentSpell.isFaithSpell,
-                        currentSpell.isHexSpell,
-                        gameSession);
-                }
-
-                if (GetPlayerManager().statsBonusController.spellDamageBonusMultiplier > 0)
-                {
-                    onChildDamageCollisionAbstractManager.damage.Multiply(GetPlayerManager().statsBonusController.spellDamageBonusMultiplier);
-                }
             }
         }
 
@@ -727,14 +532,14 @@ namespace AF.Shooting
                 return false;
             }
 
-            // If range weapon is equipped but has no ammo, do not allow shooting
-            if (equipmentDatabase.IsRangeWeaponEquipped() && !equipmentDatabase.HasEnoughCurrentArrows())
+            // If no range nor magic is equipped
+            if (!equipmentDatabase.IsRangeWeaponEquipped())
             {
                 return false;
             }
 
-            // If no range nor magic is equipped
-            if (!equipmentDatabase.IsRangeWeaponEquipped() && !equipmentDatabase.IsStaffEquipped())
+            // no ammo, do not allow shooting
+            if (!equipmentDatabase.HasEnoughCurrentArrows())
             {
                 return false;
             }
@@ -770,7 +575,6 @@ namespace AF.Shooting
 
             ShootWithoutClearingProjectilesAndSpells(true);
             queuedProjectile = null;
-            queuedSpell = null;
         }
 
         public void ResetHasAimShotCooldown()
@@ -832,6 +636,11 @@ namespace AF.Shooting
                     GetPlayerManager().playerAbilityManager.QueueAbility(ability);
                 }
             }
+        }
+
+        public override Arrow GetCurrentArrow()
+        {
+            return equipmentDatabase.GetCurrentArrow();
         }
     }
 }

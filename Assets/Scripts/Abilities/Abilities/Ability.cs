@@ -16,9 +16,12 @@ namespace AF
         public abstract void OnUse(CharacterManager characterManager);
         public abstract void OnUse(PlayerManager characterManager);
 
+        public abstract void OnFinished(CharacterManager characterManager);
+        public abstract void OnFinished(PlayerManager playerManager);
+
         public void ApplyDamageScaling(PlayerManager playerManager)
         {
-            damage.ScaleWithStats(
+            damage = damage.ScaleWithStats(
                 playerManager.playerStats.GetStrength(),
                 playerManager.playerStats.GetDexterity(),
                 playerManager.playerStats.GetIntelligence());

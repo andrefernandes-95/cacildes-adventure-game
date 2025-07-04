@@ -322,7 +322,7 @@ namespace AF
 
         protected void HandleDamageFromStatusEffects(Damage incomingDamage)
         {
-            if (incomingDamage.statusEffects.Length > 0)
+            if (incomingDamage.statusEffects != null && incomingDamage.statusEffects.Length > 0)
             {
                 foreach (var statusEffectToApply in incomingDamage.statusEffects)
                 {

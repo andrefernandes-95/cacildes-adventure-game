@@ -162,6 +162,9 @@ namespace AF
 
         public override void ApplyDamage(Damage damage, bool callOnDamageReceivedEvent)
         {
+            // Always clone damage before modifying it
+            damage = damage.Clone();
+
             HandlePushForce(damage);
             FilterDamageAbsorption(damage);
             HandleEquipmentPassiveFilterEffects(damage);

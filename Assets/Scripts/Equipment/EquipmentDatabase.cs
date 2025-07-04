@@ -143,9 +143,33 @@ public class EquipmentDatabase : ScriptableObject
     public void EquipShield(Weapon shield, int slotIndex)
     {
         shields[slotIndex] = shield;
+
+        CheckIfWeShouldAutoEquipAmmo(shield);
+
         EventManager.EmitEvent(EventMessages.ON_EQUIPMENT_CHANGED);
         EventManager.EmitEvent(EventMessages.ON_SHIELD_EQUIPMENT_CHANGED);
     }
+
+    void CheckIfWeShouldAutoEquipAmmo(Weapon weaponEquipped)
+    {
+        if (weaponEquipped.damage.weaponAttackType != WeaponAttackType.Range)
+        {
+            return;
+        }
+
+        if (arrows[currentArrowIndex] != null)
+        {
+            return;
+        }
+
+        Arrow potentialArrow = inventoryDatabase.ownedArrows.FirstOrDefault(arrow => arrow != null);
+        if (potentialArrow != null)
+        {
+            EquipArrow(potentialArrow, 0);
+        }
+
+    }
+
     public void UnequipShield(int slotIndex)
     {
         shields[slotIndex] = null;
@@ -354,7 +378,7 @@ public class EquipmentDatabase : ScriptableObject
             return false;
         }
 
-        return inventoryDatabase.GetItemAmount(currentArrow) > 0;
+        return inventoryDatabase.GetArrowAmount(currentArrow) > 0;
     }
 
     public bool IsPlayerNaked()

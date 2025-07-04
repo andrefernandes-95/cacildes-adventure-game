@@ -11,6 +11,9 @@ namespace AF.Shooting
         Transform queuedTransformOrigin;
         Projectile queuedProjectile;
 
+        [Header("Available Arrows")]
+        public Arrow[] arrows;
+
         /// <summary>
         /// Unity Event
         /// </summary>
@@ -31,14 +34,6 @@ namespace AF.Shooting
         CharacterManager GetCharacterManager()
         {
             return characterBaseManager as CharacterManager;
-        }
-
-        /// <summary>
-        /// Unity Event
-        /// </summary>
-        public override void CastSpell()
-        {
-            FireProjectile(queuedProjectile.gameObject, queuedTransformOrigin, GetCharacterManager().targetManager.currentTarget.transform);
         }
 
         /// <summary>
@@ -98,6 +93,16 @@ namespace AF.Shooting
         public override bool CanShoot()
         {
             return true;
+        }
+
+        public override Arrow GetCurrentArrow()
+        {
+            if (arrows == null || arrows.Length <= 0)
+            {
+                return null;
+            }
+
+            return arrows[0];
         }
     }
 

@@ -5,115 +5,6 @@ namespace AF
     public static class TooltipUtils
     {
 
-        public static string GetWeaponPhysicalDamageExplanation(PlayerManager playerManager, Weapon weapon)
-        {
-            CharacterBaseAttackManager attackStatManager = playerManager.characterBaseAttackManager;
-            int totalPhysicalDamage = attackStatManager.GetWeaponAttack(weapon);
-            int strengthAttackBonus = attackStatManager.GetStrengthBonusFromWeapon(weapon);
-            int dexterityAttackBonus = (int)attackStatManager.GetDexterityBonusFromWeapon(weapon);
-            int intelligenceAttackBonus = totalPhysicalDamage > 0 ? (int)attackStatManager.GetIntelligenceBonusFromWeapon(weapon) : 0;
-
-            string damageExplanation = "";
-
-            if (Utils.IsPortuguese())
-            {
-                damageExplanation += $"Dano Físico Total: {totalPhysicalDamage}\n";
-            }
-            else
-            {
-                damageExplanation += $"Total Physical Damage: {totalPhysicalDamage}\n";
-            }
-
-            if (Utils.IsPortuguese())
-            {
-                damageExplanation += "Explicação: \n";
-            }
-            else
-            {
-                damageExplanation += "Explanation: \n";
-            }
-
-            if (Utils.IsPortuguese())
-            {
-                damageExplanation += $"+{weapon.GetWeaponBaseAttack()} dano físico da arma\n";
-            }
-            else
-            {
-                damageExplanation += $"+{weapon.GetWeaponBaseAttack()} weapon physical damage\n";
-            }
-
-            if (strengthAttackBonus > 0)
-            {
-                if (Utils.IsPortuguese())
-                {
-                    damageExplanation += $"+{strengthAttackBonus} de bónus de Força ({weapon.strengthScaling} Escala)\n";
-                }
-                else
-                {
-                    damageExplanation += $"+{strengthAttackBonus} from Strength bonus ({weapon.strengthScaling} Scaling)\n";
-                }
-            }
-
-            if (dexterityAttackBonus > 0)
-            {
-                if (Utils.IsPortuguese())
-                {
-                    damageExplanation += $"+{dexterityAttackBonus} de bónus de Destreza ({weapon.dexterityScaling} Escala)\n";
-                }
-                else
-                {
-                    damageExplanation += $"+{dexterityAttackBonus} from Dexterity bonus ({weapon.dexterityScaling} Scaling)\n";
-                }
-            }
-
-            if (intelligenceAttackBonus > 0)
-            {
-                if (Utils.IsPortuguese())
-                {
-                    damageExplanation += $"+{intelligenceAttackBonus} de bónus de Inteligência ({weapon.intelligenceScaling} Escala)\n";
-                }
-                else
-                {
-                    damageExplanation += $"+{intelligenceAttackBonus} from Intelligence bonus ({weapon.intelligenceScaling} Scaling)\n";
-                }
-            }
-
-            if (playerManager.equipmentDatabase.isTwoHanding)
-            {
-                int twoHandBonus = attackStatManager.GetTwoHandAttackBonus(weapon);
-
-                if (twoHandBonus > 0)
-                {
-                    if (Utils.IsPortuguese())
-                    {
-                        damageExplanation += $"+{twoHandBonus} de empunhar arma com duas mãos\n";
-                    }
-                    else
-                    {
-                        damageExplanation += $"+{twoHandBonus} from two-handing weapon\n";
-                    }
-                }
-            }
-
-            if (!playerManager.thirdPersonController.Grounded)
-            {
-                int jumpAttackBonus = (int)(attackStatManager.GetWeaponAttack(weapon) - attackStatManager.GetWeaponAttack(weapon) / playerManager.characterBaseAttackManager.jumpAttackMultiplier);
-
-                if (jumpAttackBonus > 0)
-                {
-                    if (Utils.IsPortuguese())
-                    {
-                        damageExplanation += $"+{jumpAttackBonus} de bónus de ataque áereo\n";
-                    }
-                    else
-                    {
-                        damageExplanation += $"+{jumpAttackBonus} from jump attack bonus\n";
-                    }
-                }
-            }
-            return damageExplanation;
-        }
-
         public static string GetLightiningDamageExplanation(int baseLightningAttack, int holyDamageScaleFromReputation, int intelligenceBonusFromWeapon)
         {
             string damageExplained = "";
@@ -199,7 +90,7 @@ namespace AF
             CharacterBaseAttackManager attackStatManager = playerManager.characterBaseAttackManager;
             int totalMagicDamage = weapon.GetWeaponMagicAttack(attackStatManager);
             int baseMagicDamage = weapon.GetWeaponBaseMagicAttack();
-            int damageFromIntelligenceScaling = (int)attackStatManager.GetIntelligenceBonusFromWeapon(weapon);
+            int damageFromIntelligenceScaling = (int)weapon.damage.GetIntelligenceBonus(playerManager);
             string damageExplanation = "";
 
             if (LocalizationSettings.SelectedLocale.Identifier.Code == "en")

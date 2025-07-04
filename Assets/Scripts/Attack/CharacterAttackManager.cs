@@ -5,7 +5,6 @@ namespace AF
 
     public class CharacterAttackManager : CharacterBaseAttackManager
     {
-
         [SerializeField] CharacterManager characterManager;
 
         public override CharacterBaseManager GetCharacter()
@@ -28,5 +27,10 @@ namespace AF
             return characterManager.characterController.isGrounded == false;
         }
 
+        public override bool DoesCharacterMeetWeaponRequirements(Weapon weapon)
+        {
+            // AI Characters can always use any weapons
+            return true;
+        }
     }
 }

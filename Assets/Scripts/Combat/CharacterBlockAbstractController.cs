@@ -43,7 +43,7 @@ namespace AF
 
         public UnityAction onBlockChanged;
 
-        public void ResetStates()
+        public virtual void ResetStates()
         {
             isBlocking = false;
         }

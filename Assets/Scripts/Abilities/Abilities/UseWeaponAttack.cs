@@ -58,7 +58,6 @@ namespace AF
             ApplyDamageScaling(playerManager);
 
             playerManager.characterBaseAttackManager.damageBonus = damage;
-            playerManager.characterBaseAttackManager.SetIsAttackingWithLeftHand(isRightHand == false);
 
             if (isRightHand && playerManager.playerWeaponsManager.currentWeaponInstance != null)
             {
@@ -72,7 +71,6 @@ namespace AF
 
         public override void OnUse(CharacterManager characterManager)
         {
-            characterManager.characterBaseAttackManager.SetIsAttackingWithLeftHand(isRightHand == false);
         }
 
         public override bool CanUseAbility(CharacterBaseManager character)
@@ -102,6 +100,14 @@ namespace AF
             }
 
             return damage;
+        }
+
+        public override void OnFinished(CharacterManager characterManager)
+        {
+        }
+
+        public override void OnFinished(PlayerManager playerManager)
+        {
         }
     }
 }

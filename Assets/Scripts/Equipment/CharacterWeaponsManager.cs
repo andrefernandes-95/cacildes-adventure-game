@@ -1,3 +1,4 @@
+using System.Linq;
 using UnityEngine;
 
 namespace AF.Equipment
@@ -17,7 +18,7 @@ namespace AF.Equipment
         [SerializeField] bool isTwoHanding = false;
 
         [Header("Custom Weapons")]
-        public CharacterWeaponHitbox[] weapons;
+        public Hitbox[] weapons;
         public GameObject bow;
         public GameObject shield;
         public bool shouldHideShield = true;
@@ -131,12 +132,12 @@ namespace AF.Equipment
             }
         }
 
-        public void OpenCharacterWeaponHitbox(CharacterWeaponHitbox characterWeaponHitbox)
+        public void OpenCharacterWeaponHitbox(Hitbox characterWeaponHitbox)
         {
             characterWeaponHitbox?.EnableHitbox();
         }
 
-        public void CloseCharacterWeaponHitbox(CharacterWeaponHitbox characterWeaponHitbox)
+        public void CloseCharacterWeaponHitbox(Hitbox characterWeaponHitbox)
         {
             characterWeaponHitbox?.DisableHitbox();
         }
@@ -145,7 +146,7 @@ namespace AF.Equipment
         {
             base.CloseAllWeaponHitboxes();
 
-            foreach (CharacterWeaponHitbox characterWeaponHitbox in weapons)
+            foreach (Hitbox characterWeaponHitbox in weapons)
             {
                 characterWeaponHitbox?.DisableHitbox();
             }
@@ -155,7 +156,7 @@ namespace AF.Equipment
         {
             if (weapons.Length > 0)
             {
-                foreach (CharacterWeaponHitbox weapon in weapons)
+                foreach (Hitbox weapon in weapons)
                 {
                     if (weapon.gameObject.activeSelf)
                     {
@@ -231,5 +232,20 @@ namespace AF.Equipment
             characterManager.UpdateAnimationsBasedOnEquippedWeapons();
         }
 
+        public Weapon GetRangeWeapon() => leftHandWeapons.FirstOrDefault(leftHandWeapon => leftHandWeapon != null && leftHandWeapon.damage.weaponAttackType == WeaponAttackType.Range);
+
+        public void EquipWeapon(Weapon weapon, int slot, bool isRightHand)
+        {
+            if (isRightHand)
+            {
+                rightHandWeapons[slot] = weapon;
+            }
+            else
+            {
+                leftHandWeapons[slot] = weapon;
+            }
+
+            UpdateEquipment();
+        }
     }
 }

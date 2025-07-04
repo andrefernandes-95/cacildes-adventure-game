@@ -91,32 +91,54 @@ namespace AF
 
         public void AddItem(Item item, int quantity)
         {
-
-            if (item is Weapon weapon)
+            for (int i = 0; i < quantity; i++)
             {
-                if (weapon.tradingItemRequirements != null && weapon.tradingItemRequirements.Count > 0)
+                switch (item)
                 {
-                    // Special Weapon Found
-                    LogAnalytic(AnalyticsUtils.OnBossWeaponAcquired(weapon.name));
+                    case Shield shield:
+                        AddShield(shield);
+                        break;
+                    case Weapon weapon:
+                        AddWeapon(weapon);
+                        break;
+                    case Spell spell:
+                        AddSpell(spell);
+                        break;
+                    case Arrow arrow:
+                        AddArrow(arrow);
+                        break;
+                    case Helmet helmet:
+                        AddHelmet(helmet);
+                        break;
+                    case Gauntlet gauntlet:
+                        AddGauntlet(gauntlet);
+                        break;
+                    case Armor armor:
+                        AddArmor(armor);
+                        break;
+                    case Legwear legwear:
+                        AddLegwear(legwear);
+                        break;
+                    case Consumable consumable:
+                        AddConsumable(consumable);
+                        break;
+                    case Accessory accessory:
+                        AddAccessory(accessory);
+                        break;
+                    case UpgradeMaterial upgradeMaterial:
+                        AddUpgradeMaterial(upgradeMaterial);
+                        break;
+                    case CraftingMaterial craftingMaterial:
+                        AddCraftingMaterial(craftingMaterial);
+                        break;
+                    case KeyItem keyItem:
+                        AddKeyItem(keyItem);
+                        break;
+                    default:
+                        // Handle other item types if needed
+                        break;
                 }
-
-                HandleItemAchievements(item);
-                inventoryDatabase.AddWeapon(weapon, quantity);
-                uIDocumentPlayerHUDV2.UpdateEquipment();
-                return;
             }
-            else if (item is Armor armor)
-            {
-                LogAnalytic(AnalyticsUtils.OnArmorAcquired(armor.name));
-            }
-            else if (item is Spell spell)
-            {
-                LogAnalytic(AnalyticsUtils.OnSpellAcquired(spell.name));
-            }
-
-            HandleItemAchievements(item);
-            inventoryDatabase.AddItem(item, quantity);
-            uIDocumentPlayerHUDV2.UpdateEquipment();
         }
 
         public void RemoveItem(Item item, int quantity)

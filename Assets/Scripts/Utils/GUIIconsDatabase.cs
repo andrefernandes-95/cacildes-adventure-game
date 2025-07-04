@@ -65,5 +65,10 @@ namespace AF
         public Color healthColor;
         public Color manaColor;
         public Color staminaColor;
+        public Color slashColor;
+        public Color pierceColor;
+        public Color bluntColor;
+        public Color rangeColor;
+
     }
 }

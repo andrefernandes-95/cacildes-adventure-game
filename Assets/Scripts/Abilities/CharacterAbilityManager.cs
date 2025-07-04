@@ -10,10 +10,8 @@ namespace AF
 
         public override void ResetStates()
         {
+            currentAbility?.OnFinished(characterManager);
             currentAbility = null;
-            characterManager.animator.SetBool("isCharging", false);
-            chargingAbilityAmount = 0f;
-            ResetChargeAnimations(characterManager);
             DequeueAbilities();
         }
 
@@ -62,5 +60,14 @@ namespace AF
                 selectedAbility.OnPrepare(characterManager);
             }
         }
+
+        public void ClearChargingEffects()
+        {
+            characterManager.animator.SetBool("isCharging", false);
+            characterManager.characterAbilityManager.chargingAbilityAmount = 0f;
+            characterManager.characterAbilityManager.ResetChargeAnimations(characterManager);
+            characterManager.characterAbilityManager.CleanupChargingAbilitySpell();
+        }
+
     }
 }

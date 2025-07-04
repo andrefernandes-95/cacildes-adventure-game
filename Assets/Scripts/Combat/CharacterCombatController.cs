@@ -18,9 +18,12 @@ namespace AF.Combat
 
         [Header("Combat Actions")]
         public List<CombatAction> reactionsToTarget = new();
-        public List<Ability> combatAbilities = new();
         public List<CombatAction> combatActions = new();
         public List<CombatAction> chaseActions = new();
+
+        [Header("Abilities")]
+        public List<Ability> chaseCombatAbilities = new();
+        public List<Ability> combatAbilities = new();
 
         [Header("Directional")]
         public CombatAction reactionToTargetBehindBack;
@@ -59,6 +62,9 @@ namespace AF.Combat
         [Header("Pause Options")]
         [SerializeField] bool isPaused = false;
 
+        float timeSinceLastAttack;
+        [SerializeField] float waitTimeBetweenCombatActions = 1f;
+
         private void Awake()
         {
             characterManager.animator.SetFloat(AttackSpeedHash, 1f);
@@ -77,6 +83,8 @@ namespace AF.Combat
             onResetState?.Invoke();
 
             OnAttackEnd();
+
+            timeSinceLastAttack = Time.time;
         }
 
         bool CanReact()
@@ -142,11 +150,11 @@ namespace AF.Combat
             return null;
         }
 
-        Ability GetCombatAbility()
+        Ability GetCombatAbility(List<Ability> abilities)
         {
-            if (combatAbilities.Count > 0)
+            if (abilities.Count > 0)
             {
-                var shuffledAbilities = Randomize(combatAbilities.ToArray());
+                var shuffledAbilities = Randomize(abilities.ToArray());
 
                 foreach (Ability ability in shuffledAbilities)
                 {
@@ -160,9 +168,19 @@ namespace AF.Combat
             return null;
         }
 
+        public bool InCooldown()
+        {
+            return Time.time < timeSinceLastAttack + waitTimeBetweenCombatActions;
+        }
+
         public void UseCombatAction()
         {
-            Ability combatAbility = GetCombatAbility();
+            if (InCooldown())
+            {
+                return;
+            }
+
+            Ability combatAbility = GetCombatAbility(combatAbilities);
             if (combatAbility != null)
             {
                 characterManager.characterAbilityManager.QueueAbility(Instantiate(combatAbility));
@@ -187,6 +205,13 @@ namespace AF.Combat
 
         public void UseChaseAction()
         {
+            Ability combatAbility = GetCombatAbility(chaseCombatAbilities);
+            if (combatAbility != null)
+            {
+                characterManager.characterAbilityManager.QueueAbility(Instantiate(combatAbility));
+                return;
+            }
+
             CombatAction newCombatAction = null;
 
             // If target is aiming, let us try to dodge the aim

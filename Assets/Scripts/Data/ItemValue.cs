@@ -1,7 +1,4 @@
-using AF.Inventory;
-using AYellowpaper.SerializedCollections;
 using UnityEngine;
-using UnityEngine.Localization;
 
 namespace AF
 {

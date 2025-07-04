@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9067d6c019b4643fc8651ed58d494bba, type: 3}
   m_Name: Crossbow
   m_EditorClassIdentifier: 
+  itemID: 
   nameLocalized:
     m_TableReference:
       m_TableCollectionName: GUID:bfeeac13f16b59940b4195364a8d9ed7
@@ -40,15 +41,19 @@ MonoBehaviour:
     m_WaitForCompletion: 0
     m_LocalVariables: []
   sprite: {fileID: 21300000, guid: 2b1a1549e2f60704dbf9bad526d1e770, type: 3}
+  itemValue: {fileID: 0}
   value: 300
+  itemWeight: {fileID: 0}
   isRenewable: 0
   tradingItemRequirements:
     _serializedList:
     - Key: {fileID: 11400000, guid: 507d1af9072a3ae4182aa480c1c4022a, type: 2}
       Value: 1
+  dropRateOnEnemies: 0.2
   notes: 
   location: 
-  weaponID: 
+  canBeUpgraded: 1
+  level: 1
   damage:
     physical: 25
     fire: 0
@@ -65,8 +70,9 @@ MonoBehaviour:
     ignoreBlocking: 0
     canNotBeParried: 0
     damageType: 0
-  canBeUpgraded: 1
-  level: 1
+    strengthScaling: 5
+    dexterityScaling: 5
+    intelligenceScaling: 5
   weaponUpgrades:
   - goldCostForUpgrade: 100
     newDamage:
@@ -85,6 +91,9 @@ MonoBehaviour:
       ignoreBlocking: 0
       canNotBeParried: 0
       damageType: 0
+      strengthScaling: 5
+      dexterityScaling: 5
+      intelligenceScaling: 5
     upgradeMaterials:
       _serializedList:
       - Key: {fileID: 11400000, guid: aa134ad2e066ac64b9c730d6f924c095, type: 2}
@@ -106,6 +115,9 @@ MonoBehaviour:
       ignoreBlocking: 0
       canNotBeParried: 0
       damageType: 0
+      strengthScaling: 5
+      dexterityScaling: 5
+      intelligenceScaling: 5
     upgradeMaterials:
       _serializedList:
       - Key: {fileID: 11400000, guid: aa134ad2e066ac64b9c730d6f924c095, type: 2}
@@ -127,6 +139,9 @@ MonoBehaviour:
       ignoreBlocking: 0
       canNotBeParried: 0
       damageType: 0
+      strengthScaling: 5
+      dexterityScaling: 5
+      intelligenceScaling: 5
     upgradeMaterials:
       _serializedList:
       - Key: {fileID: 11400000, guid: aa134ad2e066ac64b9c730d6f924c095, type: 2}
@@ -148,6 +163,9 @@ MonoBehaviour:
       ignoreBlocking: 0
       canNotBeParried: 0
       damageType: 0
+      strengthScaling: 5
+      dexterityScaling: 5
+      intelligenceScaling: 5
     upgradeMaterials:
       _serializedList:
       - Key: {fileID: 11400000, guid: b3492d5ff4d527d449ff4cf1ef0a8688, type: 2}
@@ -169,10 +187,16 @@ MonoBehaviour:
       ignoreBlocking: 0
       canNotBeParried: 0
       damageType: 0
+      strengthScaling: 5
+      dexterityScaling: 5
+      intelligenceScaling: 5
     upgradeMaterials:
       _serializedList:
       - Key: {fileID: 11400000, guid: b3492d5ff4d527d449ff4cf1ef0a8688, type: 2}
         Value: 2
+  weaponSound: {fileID: 0}
+  weaponSize: 0
+  weaponPrefab: {fileID: 1666924704707724804, guid: a4a88e6bb90c739499720146adf746f3, type: 3}
   strengthRequired: 0
   dexterityRequired: 7
   intelligenceRequired: 0

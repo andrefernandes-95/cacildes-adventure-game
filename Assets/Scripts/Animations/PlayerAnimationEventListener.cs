@@ -162,11 +162,6 @@ namespace AF.Animations
             playerManager.animator.SetBool(parameterName, false);
         }
 
-        public void OnSpellCast()
-        {
-            playerManager.playerShootingManager.CastSpell();
-        }
-
         public void OnFireArrow()
         {
             playerManager.playerShootingManager.OnShoot();

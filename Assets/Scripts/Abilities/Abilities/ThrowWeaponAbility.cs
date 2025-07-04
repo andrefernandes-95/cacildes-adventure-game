@@ -109,5 +109,14 @@ namespace AF
             return damage;
         }
 
+        public override void OnFinished(CharacterManager characterManager)
+        {
+            characterManager.characterAbilityManager.ClearChargingEffects();
+        }
+
+        public override void OnFinished(PlayerManager playerManager)
+        {
+            playerManager.playerAbilityManager.ClearChargingEffects();
+        }
     }
 }

@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9067d6c019b4643fc8651ed58d494bba, type: 3}
   m_Name: Battle Axe
   m_EditorClassIdentifier: 
+  itemID: 
   nameLocalized:
     m_TableReference:
       m_TableCollectionName: GUID:bfeeac13f16b59940b4195364a8d9ed7
@@ -40,13 +41,17 @@ MonoBehaviour:
     m_WaitForCompletion: 0
     m_LocalVariables: []
   sprite: {fileID: 21300000, guid: a2c8f60416e635a42b9146f6136d0647, type: 3}
+  itemValue: {fileID: 0}
   value: 120
+  itemWeight: {fileID: 0}
   isRenewable: 0
   tradingItemRequirements:
     _serializedList: []
+  dropRateOnEnemies: 0.2
   notes: 
   location: 
-  weaponID: 
+  canBeUpgraded: 1
+  level: 1
   damage:
     physical: 90
     fire: 0
@@ -65,8 +70,9 @@ MonoBehaviour:
     ignoreBlocking: 0
     canNotBeParried: 0
     damageType: 0
-  canBeUpgraded: 1
-  level: 1
+    strengthScaling: 5
+    dexterityScaling: 5
+    intelligenceScaling: 5
   weaponUpgrades:
   - goldCostForUpgrade: 100
     newDamage:
@@ -87,6 +93,9 @@ MonoBehaviour:
       ignoreBlocking: 0
       canNotBeParried: 0
       damageType: 0
+      strengthScaling: 5
+      dexterityScaling: 5
+      intelligenceScaling: 5
     upgradeMaterials:
       _serializedList:
       - Key: {fileID: 11400000, guid: 972d348c035257f4282fc9a4bfda91ee, type: 2}
@@ -110,6 +119,9 @@ MonoBehaviour:
       ignoreBlocking: 0
       canNotBeParried: 0
       damageType: 0
+      strengthScaling: 5
+      dexterityScaling: 5
+      intelligenceScaling: 5
     upgradeMaterials:
       _serializedList:
       - Key: {fileID: 11400000, guid: 972d348c035257f4282fc9a4bfda91ee, type: 2}
@@ -133,6 +145,9 @@ MonoBehaviour:
       ignoreBlocking: 0
       canNotBeParried: 0
       damageType: 0
+      strengthScaling: 5
+      dexterityScaling: 5
+      intelligenceScaling: 5
     upgradeMaterials:
       _serializedList:
       - Key: {fileID: 11400000, guid: aaf2ac4a8ab9e6a4696b0aa4a4f5eed5, type: 2}
@@ -156,6 +171,9 @@ MonoBehaviour:
       ignoreBlocking: 0
       canNotBeParried: 0
       damageType: 0
+      strengthScaling: 5
+      dexterityScaling: 5
+      intelligenceScaling: 5
     upgradeMaterials:
       _serializedList:
       - Key: {fileID: 11400000, guid: a6ce8505d6a30a64dbab4d9c2f6bd140, type: 2}
@@ -179,10 +197,16 @@ MonoBehaviour:
       ignoreBlocking: 0
       canNotBeParried: 0
       damageType: 0
+      strengthScaling: 5
+      dexterityScaling: 5
+      intelligenceScaling: 5
     upgradeMaterials:
       _serializedList:
       - Key: {fileID: 11400000, guid: aa13cb668cefc0941ada0756ef86bbf6, type: 2}
         Value: 1
+  weaponSound: {fileID: 0}
+  weaponSize: 0
+  weaponPrefab: {fileID: 6590790287625955696, guid: 9a227ba89f977e8479567bb3be997eb9, type: 3}
   strengthRequired: 18
   dexterityRequired: 0
   intelligenceRequired: 0
@@ -252,6 +276,9 @@ MonoBehaviour:
   - animationName: Cacildes - Parrying
     animationClip: {fileID: 7400000, guid: 118861ff34cce98438a904a278539d65, type: 2}
   weaponAnimationData: {fileID: 11400000, guid: 7b52f34d6eeb13c4b9c53a6ed70e339b, type: 2}
+  weaponRangeAnimation: {fileID: 0}
+  oh_weaponAnimationOverrides: []
+  th_weaponAnimationOverrides: []
   lightAttackCombos: 2
   heavyAttackCombos: 1
   th_lightAttackCombos: 2
@@ -259,7 +286,9 @@ MonoBehaviour:
   halveDamage: 0
   speedPenalty: 0.05
   oneHandAttackSpeedPenalty: 1
+  oh_HeavyAttackSpeedPenalty: 1
   twoHandAttackSpeedPenalty: 1
+  th_HeavyAttackSpeedPenalty: 1
   amountOfGoldReceivedPerHit: 0
   doubleCoinsUponKillingEnemies: 0
   doubleDamageDuringNightTime: 0
@@ -282,6 +311,8 @@ MonoBehaviour:
   useCustomTwoHandingBlockTransforms: 1
   th_BlockPosition: {x: 2.44, y: -6.87, z: 79}
   th_BlockRotation: {x: 196, y: -274, z: 259.502}
+  aimingPosition: {x: 0, y: 0, z: 0}
+  aimingRotation: {x: 0, y: 0, z: 0}
   references:
     version: 2
     RefIds: []

@@ -25,12 +25,12 @@ namespace AF.UI.EquipmentMenu
         public VisualTreeAsset itemEffectTooltipEntry;
 
         [Header("Components")]
-        public CharacterBaseAttackManager attackStatManager;
         public RecipesDatabase recipesDatabase;
 
         [Header("UI Documents")]
         public UIDocument uIDocument;
         public VisualElement root;
+        [HideInInspector] public Label weaponTypeLabel;
 
         [HideInInspector] public bool shouldRerender = true;
 
@@ -265,6 +265,7 @@ namespace AF.UI.EquipmentMenu
             tooltipEffectsContainer = tooltip.Q<VisualElement>("ItemAttributes");
             itemWeightLabel = tooltip.Q<VisualElement>("WeightAndValueContainer").Q<VisualElement>("Weight").Q<Label>();
             itemValueLabel = tooltip.Q<VisualElement>("WeightAndValueContainer").Q<VisualElement>("Value").Q<Label>();
+            weaponTypeLabel = tooltip.Q<Label>("WeaponAttackType");
         }
 
         public void PrepareTooltipForItem(Item item)
@@ -281,6 +282,8 @@ namespace AF.UI.EquipmentMenu
             tooltipItemSprite.style.borderRightWidth = new StyleFloat(1);
             tooltipItemSprite.style.unityBackgroundScaleMode = ScaleMode.ScaleAndCrop;
 
+            weaponTypeLabel.style.display = DisplayStyle.None;
+
             string itemName = item.GetName().ToUpper();
 
 
@@ -294,7 +297,7 @@ namespace AF.UI.EquipmentMenu
 
             if (item is Weapon weapon)
             {
-                DrawWeaponEffects(weapon);
+                weaponTooltip.DrawWeaponEffects(weapon);
             }
             else if (item is Shield shield)
             {
@@ -391,35 +394,25 @@ namespace AF.UI.EquipmentMenu
                     weapon.DrawRequirements(playerManager));
             }
 
-            if (attackStatManager.GetWeaponAttack(weapon) > 0)
+            if (playerManager.characterBaseAttackManager.GetWeaponAttack(weapon) > 0)
             {
-                CreateTooltip(weaponPhysicalAttackSprite, Color.white, TooltipUtils.GetWeaponPhysicalDamageExplanation(playerManager, weapon));
             }
 
-            if (weapon.GetWeaponFireAttack(attackStatManager) > 0)
+            if (weapon.GetWeaponFireAttack(playerManager.characterBaseAttackManager) > 0)
             {
                 CreateTooltip(
                     fireSprite,
                     fire,
                     String.Format(
                         fireAttackLabel.GetLocalizedString(),
-                        weapon.GetWeaponFireAttack(attackStatManager)));
+                        weapon.GetWeaponFireAttack(playerManager.characterBaseAttackManager)));
             }
 
-            if (weapon.GetWeaponFrostAttack(attackStatManager) > 0)
-            {
-                CreateTooltip(
-                    frostSprite,
-                    frost,
-                    String.Format(
-                        frostAttackLabel.GetLocalizedString(),
-                        weapon.GetWeaponFrostAttack(attackStatManager) + attackStatManager.GetIntelligenceBonusFromWeapon(weapon)));
-            }
 
-            if (weapon.GetWeaponLightningAttack(playerManager.playerStatsDatabase.GetCurrentReputation(), attackStatManager) > 0)
+            if (weapon.GetWeaponLightningAttack(playerManager.playerStatsDatabase.GetCurrentReputation(), playerManager.characterBaseAttackManager) > 0)
             {
                 int baseLightningAttack = weapon.GetBaseWeaponLightningAttack();
-                int holyDamageScaleFromReputation = weapon.GetWeaponLightningAttack(playerManager.playerStatsDatabase.GetCurrentReputation(), attackStatManager) - baseLightningAttack;
+                int holyDamageScaleFromReputation = weapon.GetWeaponLightningAttack(playerManager.playerStatsDatabase.GetCurrentReputation(), playerManager.characterBaseAttackManager) - baseLightningAttack;
 
                 CreateTooltip(
                 lightningSprite,
@@ -427,7 +420,7 @@ namespace AF.UI.EquipmentMenu
                 TooltipUtils.GetLightiningDamageExplanation(baseLightningAttack, holyDamageScaleFromReputation, 0));
             }
 
-            if (weapon.GetWeaponMagicAttack(attackStatManager) > 0)
+            if (weapon.GetWeaponMagicAttack(playerManager.characterBaseAttackManager) > 0)
             {
                 CreateTooltip(
                 magicSprite,
@@ -435,10 +428,10 @@ namespace AF.UI.EquipmentMenu
                 TooltipUtils.GetMagicDamageExplanation(playerManager, weapon));
             }
 
-            if (weapon.GetWeaponDarknessAttack(attackStatManager.playerStatsDatabase.GetCurrentReputation(), attackStatManager) > 0)
+            if (weapon.GetWeaponDarknessAttack(playerManager.characterBaseStats.GetReputation(), playerManager.characterBaseAttackManager) > 0)
             {
                 int baseDarknessAttack = weapon.GetBaseWeaponDarknessAttack();
-                int holyDamageScaleFromReputation = weapon.GetWeaponDarknessAttack(playerManager.playerStatsDatabase.GetCurrentReputation(), attackStatManager) - baseDarknessAttack;
+                int holyDamageScaleFromReputation = weapon.GetWeaponDarknessAttack(playerManager.playerStatsDatabase.GetCurrentReputation(), playerManager.characterBaseAttackManager) - baseDarknessAttack;
 
                 CreateTooltip(
                 darknessSprite,
@@ -491,10 +484,11 @@ namespace AF.UI.EquipmentMenu
                 Color.white,
                 String.Format(staminaCostLabel.GetLocalizedString(), weapon.GetLightAttackStaminaCost(), weapon.GetHeavyAttackStaminaCost()));
 
-            if (weapon.canBeUpgraded && weapon.CanBeUpgradedFurther())
-            {
-                CreateTooltip(blacksmithSprite, Color.white, weapon.GetMaterialCostForNextLevel());
-            }
+            /*
+        if (weapon.canBeUpgraded && weapon.CanBeUpgradedFurther())
+        {
+            CreateTooltip(blacksmithSprite, Color.white, weapon.GetMaterialCostForNextLevel());
+        } */
 
             if (weapon.damage.ignoreBlocking)
             {
