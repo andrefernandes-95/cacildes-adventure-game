@@ -51,12 +51,9 @@ namespace AF
 
             this.shooter = shooter;
 
-            if (this.shooter is PlayerManager playerManager)
-            {
-                // Scale projectile based on current player stats
-                calculatedDamage = arrow.damage.Clone();
-                calculatedDamage.ScaleProjectile(playerManager.characterBaseAttackManager, playerManager.characterBaseWeaponsManager.GetCurrentLeftWeapon());
-            }
+            // Scale projectile based on current player stats
+            calculatedDamage = arrow.damage.Clone();
+            calculatedDamage.ScaleProjectile(shooter.characterBaseAttackManager, shooter.characterBaseWeaponsManager.GetCurrentLeftWeapon());
 
             rigidbody.AddForce(transform.forward * GetForwardVelocity(), forceMode);
         }

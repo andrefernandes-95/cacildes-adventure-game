@@ -157,7 +157,10 @@ namespace AF
             Weapon leftWeapon = characterWeaponsManager.GetCurrentLeftWeapon();
             if (leftWeapon != null && !characterWeaponsManager.IsTwoHanding())
             {
-                AddOrReplaceOverride(leftWeapon.weaponAnimationData.GetLeftHandAnimationsForAI(), overrides);
+                if (leftWeapon.weaponAnimationData != null)
+                {
+                    AddOrReplaceOverride(leftWeapon.weaponAnimationData.GetLeftHandAnimationsForAI(), overrides);
+                }
 
                 // If left weapons is a range weapon, override the animations for shooting
                 if (leftWeapon.weaponRangeAnimation != null)

@@ -7,7 +7,10 @@ namespace AF
     [CreateAssetMenu(menuName = "Items / Weapon / New Weapon Sound")]
     public class WeaponSound : ScriptableObject
     {
-        public AudioClip swing;
-        public AudioClip impact;
+        [SerializeField] AudioClip[] swing;
+        [SerializeField] AudioClip[] impact;
+
+        public AudioClip GetSwing() => swing[Random.Range(0, swing.Length)];
+        public AudioClip GetImpact() => impact[Random.Range(0, impact.Length)];
     }
 }

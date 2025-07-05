@@ -16,7 +16,7 @@ namespace AF
                 return null;
             }
 
-            return weapon.weaponSound.swing;
+            return weapon.weaponSound.GetSwing();
         }
 
         public override AudioClip GetImpactSFX()
@@ -26,7 +26,7 @@ namespace AF
                 return null;
             }
 
-            return weapon.weaponSound.impact;
+            return weapon.weaponSound.GetImpact();
         }
 
         protected override void HandleCharacterAttack(IDamageable damageable)

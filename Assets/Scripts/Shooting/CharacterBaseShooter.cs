@@ -37,7 +37,7 @@ namespace AF.Shooting
             rifleWeapon.gameObject.SetActive(false);
         }
 
-        protected void ShowArrowPlaceholder()
+        public void ShowArrowPlaceholder()
         {
             DestroyArrowPlaceholder();
 
@@ -52,7 +52,7 @@ namespace AF.Shooting
 
         public abstract Arrow GetCurrentArrow();
 
-        protected void DestroyArrowPlaceholder()
+        public void DestroyArrowPlaceholder()
         {
             if (arrowPlaceholder != null)
             {

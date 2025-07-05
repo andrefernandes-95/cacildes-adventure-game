@@ -9,6 +9,9 @@ namespace AF
         Weapon previouslyEquippedLeftHandWeapon;
         bool hasSuccessfullyEquippedRangeWeapon = false;
 
+        [Header("Animations")]
+        [SerializeField] string rangeAnimation = "Aim Idle";
+
         public override void OnPrepare(CharacterManager characterManager)
         {
             if (!characterManager.characterAbilityManager.CanUseAbility())
@@ -28,6 +31,10 @@ namespace AF
             {
                 characterManager.characterWeaponsManager.EquipWeapon(potentialWeapon, 0, false);
                 hasSuccessfullyEquippedRangeWeapon = true;
+
+                characterManager.PlayCrossFadeBusyAnimationWithRootMotion(rangeAnimation, 0.1f);
+                characterManager.characterBaseShooter.ShowArrowPlaceholder();
+                characterManager.characterWeaponsManager.HideRightWeapon();
             }
         }
 
@@ -43,6 +50,7 @@ namespace AF
         {
             ApplyDamageScaling(characterManager);
 
+            characterManager.characterBaseShooter.FireArrow();
         }
 
         public override bool CanUseAbility(CharacterBaseManager character)
@@ -69,6 +77,9 @@ namespace AF
             {
                 characterManager.characterWeaponsManager.EquipWeapon(previouslyEquippedLeftHandWeapon, 0, false);
             }
+
+            characterManager.characterWeaponsManager.ShowRightWeapon();
+            characterManager.characterBaseShooter.DestroyArrowPlaceholder();
         }
 
         public override void OnFinished(PlayerManager playerManager)

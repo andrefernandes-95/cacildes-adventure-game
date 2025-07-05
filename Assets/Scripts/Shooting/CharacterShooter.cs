@@ -5,31 +5,10 @@ namespace AF.Shooting
 {
     public class CharacterShooter : CharacterBaseShooter
     {
-
         public UnityEvent onShoot;
-
-        Transform queuedTransformOrigin;
-        Projectile queuedProjectile;
 
         [Header("Available Arrows")]
         public Arrow[] arrows;
-
-        /// <summary>
-        /// Unity Event
-        /// </summary>
-        public void SetTransformOriginForProjectile(Transform transform)
-        {
-            this.queuedTransformOrigin = transform;
-        }
-
-        /// <summary>
-        /// Unity Event
-        /// </summary>
-        public void Shoot(Projectile queuedProjectile)
-        {
-            this.queuedProjectile = queuedProjectile;
-        }
-
 
         CharacterManager GetCharacterManager()
         {
@@ -41,23 +20,21 @@ namespace AF.Shooting
         /// </summary>
         public override void FireArrow()
         {
-            if (
-                queuedProjectile == null || GetCharacterManager()?.targetManager?.currentTarget == null)
-            {
-                return;
-            }
-
-            FireProjectile(queuedProjectile?.gameObject, queuedTransformOrigin, GetCharacterManager()?.targetManager?.currentTarget?.transform);
+            FireProjectile();
         }
 
 
-        void FireProjectile(GameObject projectile, Transform origin, Transform lockOnTarget)
+        void FireProjectile()
         {
-            if (projectile == null || origin == null)
+            if (arrows == null || GetCurrentArrow() == null)
             {
                 return;
             }
 
+            GameObject projectile = GetCurrentArrow().arrowProjectile.gameObject;
+
+
+            Transform origin = characterBaseManager.characterTransformHelper.rightHand.transform;
             GameObject projectileInstance = Instantiate(projectile.gameObject, origin.position, Quaternion.identity);
             projectileInstance.TryGetComponent<Projectile>(out var projectileInstanceComponent);
             if (projectileInstanceComponent != null)
@@ -76,12 +53,12 @@ namespace AF.Shooting
                 return;
             }
 
-            if (lockOnTarget != null)
+            if (GetCharacterManager().targetManager.currentTarget != null)
             {
-                var rot = lockOnTarget.position + lockOnTarget.up - origin.position;
-                projectileInstance.transform.rotation = Quaternion.LookRotation(rot);
-
+                Transform target = GetCharacterManager().targetManager.currentTarget.transform;
+                var rot = target.position + target.up - origin.position;
                 rot.y = 0;
+                projectileInstance.transform.rotation = Quaternion.LookRotation(rot);
                 characterBaseManager.transform.rotation = Quaternion.LookRotation(rot);
             }
 
