@@ -42,7 +42,7 @@ namespace AF
             }
 
             playerManager.animator.SetBool(hashIsBlocking, true);
-            playerManager.characterBlockController.SetIsBlocking(true);
+            playerManager.characterAbstractBlockController.SetIsBlocking(true);
 
             onBlockStart?.Invoke();
 
@@ -52,7 +52,7 @@ namespace AF
         public void CancelBlock()
         {
             playerManager.animator.SetBool(hashIsBlocking, false);
-            playerManager.characterBlockController.SetIsBlocking(false);
+            playerManager.characterAbstractBlockController.SetIsBlocking(false);
 
             onBlockEnd?.Invoke();
         }
@@ -76,7 +76,7 @@ namespace AF
 
             if (CanBlock())
             {
-                playerManager.characterBlockController.parryTimer = 0f;
+                playerManager.characterAbstractBlockController.parryTimer = 0f;
             }
 
             BeginBlock();

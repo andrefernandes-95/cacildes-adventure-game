@@ -9,15 +9,15 @@ namespace AF
     {
         [Header("Components")]
         public CharacterBaseManager characterManager;
-        public string hashParried = "Parried";
         public string hashBlock = "Block";
 
         [Header("Parrying Settings")]
+        public string hashParrying = "Parrying";
+        public string hashParried = "Parried";
+        public string hashPrepareParry = "Prepare Parry";
         public UnityEvent onParryEvent;
         public float baseUnarmedParryWindow = .4f;
         public float parryTimer = Mathf.Infinity;
-        Coroutine parryTimerCoroutine;
-
         public UnityEvent onParriedEvent;
         public int basePostureDamageFromParry = 20;
 
@@ -44,7 +44,6 @@ namespace AF
 
         public UnityAction onBlockChanged;
 
-        Coroutine StartBlockingCoroutine;
 
         public virtual void ResetStates()
         {
@@ -80,46 +79,9 @@ namespace AF
             return (characterManager.characterPosture.currentPostureDamage + (int)(damage.postureDamage * blockMultiplier)) < characterManager.characterPosture.GetMaxPostureDamage();
         }
 
-        public void BeginParrying()
-        {
-            if (characterManager is CharacterManager)
-            {
-                parryTimer = 0f;
-            }
-
-            if (parryTimerCoroutine != null)
-            {
-                StopCoroutine(parryTimerCoroutine);
-            }
-
-            parryTimerCoroutine = StartCoroutine(HandleParryTimer());
-        }
-
-        IEnumerator HandleParryTimer()
-        {
-            while (parryTimer < GetUnarmedParryWindow())
-            {
-                parryTimer += Time.deltaTime;
-                yield return null;
-            }
-
-            parryTimer = Mathf.Infinity;
-        }
-
-        public bool IsWithinParryingWindow()
-        {
-            return parryTimer < GetUnarmedParryWindow();
-        }
-
-        public bool CanParry(Damage damage)
-        {
-            if (damage != null && damage.canNotBeParried)
-            {
-                return false;
-            }
-
-            return IsWithinParryingWindow();
-        }
+        public abstract void BeginParrying();
+        public abstract bool CanUseParrying();
+        public abstract bool IsAbleToParry(Damage damage);
 
         public void HandleParryEvent()
         {
@@ -164,33 +126,6 @@ namespace AF
 
         public abstract int GetPostureDamageFromParry();
 
-        public void StartBlocking()
-        {
-            if (StartBlockingCoroutine != null)
-            {
-                StopCoroutine(StartBlockingCoroutine);
-            }
 
-            StartBlockingCoroutine = StartCoroutine(HandleBlocking());
-        }
-
-        IEnumerator HandleBlocking()
-        {
-            SetIsBlocking(true);
-            characterManager.PlayCrossFadeBusyAnimationWithRootMotion(characterManager.characterBlockController.hashBlock, .1f);
-
-            HandleBlockStart();
-
-            float minBlockTime = Random.Range(1.5f, 5f);
-
-            yield return new WaitForSeconds(minBlockTime);
-
-            HandleBlockEnd();
-
-            SetIsBlocking(false);
-        }
-
-        public abstract void HandleBlockStart();
-        public abstract void HandleBlockEnd();
     }
 }

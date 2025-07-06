@@ -291,9 +291,9 @@
         // Call when applying counter-attack damage
         public int GetCounterAttackBonus(int baseAttack)
         {
-            if (GetCharacter().characterBlockController.IsWithinCounterAttackWindow())
+            if (GetCharacter().characterAbstractBlockController.IsWithinCounterAttackWindow())
             {
-                baseAttack = (int)(baseAttack * GetCharacter().characterBlockController.counterAttackMultiplier);
+                baseAttack = (int)(baseAttack * GetCharacter().characterAbstractBlockController.counterAttackMultiplier);
             }
 
             return baseAttack;

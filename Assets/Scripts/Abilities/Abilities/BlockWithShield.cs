@@ -11,17 +11,12 @@ namespace AF
 
         public override void OnPrepare(CharacterManager characterManager)
         {
-            if (!characterManager.characterAbilityManager.CanUseAbility())
-            {
-                return;
-            }
-
             previouslyEquippedLeftHandWeapon = characterManager.characterWeaponsManager.GetCurrentLeftWeapon();
 
             characterManager.characterAbilityManager.SetCurrentAbility(this);
             characterManager.RotateTowardsTarget(characterManager.rotationSpeed * 10f);
 
-            // Search ranged weapon
+            // Search ranged weapon 
             Weapon currentLeftWeapon = characterManager.characterWeaponsManager.GetCurrentLeftWeapon();
 
             if (currentLeftWeapon is not Shield)
@@ -67,8 +62,6 @@ namespace AF
             {
                 characterManager.characterWeaponsManager.EquipWeapon(previouslyEquippedLeftHandWeapon, 0, false);
             }
-
-            characterManager.characterBlockController.SetIsBlocking(false);
         }
 
         public override void OnFinished(PlayerManager playerManager)

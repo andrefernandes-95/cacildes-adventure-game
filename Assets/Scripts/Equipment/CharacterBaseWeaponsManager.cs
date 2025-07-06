@@ -672,5 +672,15 @@ namespace AF
 
             return GetCurrentRightWeapon().weaponType == GetCurrentLeftWeapon().weaponType;
         }
+
+        public bool IsAttacking()
+        {
+            if (currentWeaponInstance != null && currentWeaponInstance.IsHitboxOpen())
+            {
+                return true;
+            }
+
+            return currentShieldInstance != null && currentShieldInstance.IsHitboxOpen();
+        }
     }
 }

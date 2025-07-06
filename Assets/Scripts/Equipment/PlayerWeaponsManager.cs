@@ -84,7 +84,7 @@ namespace AF.Equipment
         {
             if (playerManager.playerWeaponsManager.currentShieldInstance == null)
             {
-                return playerManager.characterBlockController.unarmedStaminaCostPerBlock;
+                return playerManager.characterAbstractBlockController.unarmedStaminaCostPerBlock;
             }
 
             return base.GetCurrentBlockStaminaCost();
@@ -92,7 +92,7 @@ namespace AF.Equipment
 
         protected override float GetCharacterUnarmedDefenseAbsorption()
         {
-            return playerManager.characterBlockController.unarmedDefenseAbsorption;
+            return playerManager.characterAbstractBlockController.unarmedDefenseAbsorption;
         }
 
         public override Weapon GetCurrentRightWeapon()

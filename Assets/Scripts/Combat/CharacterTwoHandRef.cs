@@ -26,8 +26,8 @@ namespace AF
             if (characterBaseManager is PlayerManager playerManager)
             {
                 playerManager.twoHandingController.onTwoHandingModeChanged += EvaluateTwoHandingUpdate;
-                playerManager.characterBlockController.onBlockChanged += EvaluateTwoHandingUpdate;
-                playerManager.characterBlockController.onBlockChanged += UseBlockTransform;
+                playerManager.characterAbstractBlockController.onBlockChanged += EvaluateTwoHandingUpdate;
+                playerManager.characterAbstractBlockController.onBlockChanged += UseBlockTransform;
             }
 
             EvaluateTwoHandingUpdate();
@@ -39,8 +39,8 @@ namespace AF
             if (characterBaseManager is PlayerManager playerManager)
             {
                 playerManager.twoHandingController.onTwoHandingModeChanged -= EvaluateTwoHandingUpdate;
-                playerManager.characterBlockController.onBlockChanged -= EvaluateTwoHandingUpdate;
-                playerManager.characterBlockController.onBlockChanged -= UseBlockTransform;
+                playerManager.characterAbstractBlockController.onBlockChanged -= EvaluateTwoHandingUpdate;
+                playerManager.characterAbstractBlockController.onBlockChanged -= UseBlockTransform;
             }
         }
 
@@ -53,7 +53,7 @@ namespace AF
                 return;
             }
 
-            if (characterBaseManager.characterBlockController.isBlocking && characterBaseManager.characterBaseWeaponsManager.IsTwoHanding())
+            if (characterBaseManager.characterAbstractBlockController.isBlocking && characterBaseManager.characterBaseWeaponsManager.IsTwoHanding())
             {
                 UseBlockTransform();
                 return;
@@ -85,7 +85,7 @@ namespace AF
 
             if (
                 characterBaseManager.characterBaseWeaponsManager.IsTwoHanding() == false ||
-                characterBaseManager.characterBlockController.isBlocking == false ||
+                characterBaseManager.characterAbstractBlockController.isBlocking == false ||
                 currentWeapon == null ||
                 currentWeapon.useCustomTwoHandingBlockTransforms == false)
             {

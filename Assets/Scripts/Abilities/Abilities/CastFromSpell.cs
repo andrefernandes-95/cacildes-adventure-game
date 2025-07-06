@@ -26,11 +26,6 @@ namespace AF
 
         public override void OnPrepare(PlayerManager playerManager)
         {
-            if (!playerManager.playerAbilityManager.CanUseAbility())
-            {
-                return;
-            }
-
             playerManager.playerAbilityManager.SetCurrentAbility(this);
             playerManager.playerWeaponsManager.HideEquipment();
             playerManager.playerAbilityManager.SetIsCharging(true);

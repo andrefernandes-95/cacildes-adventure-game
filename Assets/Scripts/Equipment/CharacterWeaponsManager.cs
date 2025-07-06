@@ -207,7 +207,7 @@ namespace AF.Equipment
 
         protected override float GetCharacterUnarmedDefenseAbsorption()
         {
-            return characterManager.characterBlockController.unarmedDefenseAbsorption;
+            return characterManager.characterAbstractBlockController.unarmedDefenseAbsorption;
         }
 
         protected override void UpdateCurrentWeapon()

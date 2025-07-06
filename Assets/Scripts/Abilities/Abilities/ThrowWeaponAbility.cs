@@ -43,11 +43,6 @@ namespace AF
 
         public override void OnPrepare(PlayerManager playerManager)
         {
-            if (!playerManager.playerAbilityManager.CanUseAbility())
-            {
-                return;
-            }
-
             playerManager.playerAbilityManager.SetAnimations(playerManager, spellStart, spellHold, spellRelease);
             playerManager.playerAbilityManager.hasOverridenAnimations = true;
             playerManager.playerAbilityManager.SetIsCharging(true);

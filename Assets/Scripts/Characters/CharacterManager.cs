@@ -30,6 +30,7 @@ namespace AF
         public CharacterGravity characterGravity;
         public StateManager stateManager;
         public CharacterAbilityManager characterAbilityManager;
+        public CharacterBlockController characterBlockController;
         // Animator Overrides
         [HideInInspector] public AnimatorOverrideController animatorOverrideController;
 
@@ -107,7 +108,7 @@ namespace AF
             characterBaseDamageReceiver?.ResetStates();
             onResetStates?.Invoke();
 
-            characterBlockController.ResetStates();
+            characterAbstractBlockController.ResetStates();
 
             characterPoise.ResetStates();
 

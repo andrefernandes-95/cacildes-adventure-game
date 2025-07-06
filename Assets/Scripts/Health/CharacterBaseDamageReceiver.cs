@@ -179,10 +179,10 @@ namespace AF
 
         protected bool TryParryIncomingDamage(CharacterBaseManager attacker, Damage incomingDamage)
         {
-            if (GetCharacter().characterBlockController.CanParry(incomingDamage))
+            if (GetCharacter().characterAbstractBlockController.IsAbleToParry(incomingDamage))
             {
-                GetCharacter().characterBlockController.HandleParryEvent();
-                attacker.characterBlockController.HandleParriedEvent(GetCharacter().characterBlockController.GetPostureDamageFromParry());
+                GetCharacter().characterAbstractBlockController.HandleParryEvent();
+                attacker.characterAbstractBlockController.HandleParriedEvent(GetCharacter().characterAbstractBlockController.GetPostureDamageFromParry());
                 return true;
             }
 
@@ -191,18 +191,18 @@ namespace AF
 
         protected bool TryBlockIncomingDamageForAI(CharacterBaseManager attacker, Damage incomingDamage)
         {
-            if (!GetCharacter().characterBlockController.CanBlockDamage(incomingDamage))
+            if (!GetCharacter().characterAbstractBlockController.CanBlockDamage(incomingDamage))
             {
                 return false;
             }
 
-            GetCharacter().characterBlockController.BlockAttack(incomingDamage);
+            GetCharacter().characterAbstractBlockController.BlockAttack(incomingDamage);
             return true;
         }
 
         protected bool TryBlockIncomingDamageForPlayer(PlayerManager playerManager, CharacterBaseManager attacker, Damage incomingDamage)
         {
-            if (!GetCharacter().characterBlockController.CanBlockDamage(incomingDamage))
+            if (!GetCharacter().characterAbstractBlockController.CanBlockDamage(incomingDamage))
             {
                 return false;
             }
@@ -217,9 +217,9 @@ namespace AF
                 }
 
                 playerManager.staminaStatManager.DecreaseStamina((int)playerManager.playerWeaponsManager.GetCurrentBlockStaminaCost());
-                playerManager.characterBlockController.BlockAttack(incomingDamage);
+                playerManager.characterAbstractBlockController.BlockAttack(incomingDamage);
 
-                if (playerManager.characterBlockController is PlayerBlockController playerBlockController)
+                if (playerManager.characterAbstractBlockController is PlayerBlockController playerBlockController)
                 {
                     playerBlockController.SetCanCounterAttack(true);
                 }

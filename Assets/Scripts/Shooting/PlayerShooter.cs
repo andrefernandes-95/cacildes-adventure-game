@@ -527,7 +527,7 @@ namespace AF.Shooting
                 return false;
             }
 
-            if (GetPlayerManager().characterBlockController.isBlocking)
+            if (GetPlayerManager().characterAbstractBlockController.isBlocking)
             {
                 return false;
             }

@@ -111,7 +111,7 @@ namespace AF
         {
             var finalRegenerationRate = GetStaminaRegenerationRate();
 
-            if (playerManager.characterBlockController.isBlocking)
+            if (playerManager.characterAbstractBlockController.isBlocking)
             {
                 finalRegenerationRate = finalRegenerationRate / 4;
             }

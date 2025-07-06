@@ -15,11 +15,6 @@ namespace AF
 
         public override void OnPrepare(CharacterManager characterManager)
         {
-            if (!characterManager.characterAbilityManager.CanUseAbility())
-            {
-                return;
-            }
-
             characterManager.characterAbilityManager.SetCurrentAbility(this);
             characterManager.RotateTowardsTarget(characterManager.rotationSpeed * 10f);
 

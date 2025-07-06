@@ -171,6 +171,11 @@ namespace AF.Combat
 
         public bool InCooldown()
         {
+            if (characterManager.characterAbilityManager.currentAbility != null)
+            {
+                return true;
+            }
+
             return Time.time < timeSinceLastAttack + waitTimeBetweenCombatActions;
         }
 
@@ -184,7 +189,8 @@ namespace AF.Combat
             if (CanReact())
             {
                 Ability reactionAbility = GetCombatAbility(reactionsToTargetAbilities);
-                if (reactionAbility != null)
+
+                if (reactionAbility != null && reactionAbility.CanUseAbility(characterManager))
                 {
                     characterManager.characterAbilityManager.QueueAbility(Instantiate(reactionAbility));
                     return;

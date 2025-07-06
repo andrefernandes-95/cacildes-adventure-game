@@ -1,3 +1,5 @@
+using System.Collections;
+using AF.Health;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -14,6 +16,8 @@ namespace AF
         public UnityEvent onCounterAttack;
 
         public bool isCounterAttacking = false;
+
+        Coroutine parryTimerCoroutine;
 
         public override void ResetStates()
         {
@@ -53,13 +57,50 @@ namespace AF
             this.canCounterAttack = value;
         }
 
-        public override void HandleBlockStart()
+        public override void BeginParrying()
         {
+            if (characterManager is CharacterManager)
+            {
+                parryTimer = 0f;
+            }
+
+            if (parryTimerCoroutine != null)
+            {
+                StopCoroutine(parryTimerCoroutine);
+            }
+
+            parryTimerCoroutine = StartCoroutine(HandleParryTimer());
         }
 
-        public override void HandleBlockEnd()
+        IEnumerator HandleParryTimer()
         {
-            characterManager.PlayAnimationWithCrossFade("Idle Walk Run Blend");
+            while (parryTimer < GetUnarmedParryWindow())
+            {
+                parryTimer += Time.deltaTime;
+                yield return null;
+            }
+
+            parryTimer = Mathf.Infinity;
+        }
+
+        public bool IsWithinParryingWindow()
+        {
+            return parryTimer < GetUnarmedParryWindow();
+        }
+
+        public override bool CanUseParrying()
+        {
+            return true;
+        }
+
+        public override bool IsAbleToParry(Damage damage)
+        {
+            if (damage != null && damage.canNotBeParried)
+            {
+                return false;
+            }
+
+            return IsWithinParryingWindow();
         }
     }
 }

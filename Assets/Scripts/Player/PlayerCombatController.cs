@@ -369,7 +369,7 @@ namespace AF
                 return false;
             }
 
-            if (playerManager.characterBlockController.isBlocking)
+            if (playerManager.characterAbstractBlockController.isBlocking)
             {
                 return false;
             }

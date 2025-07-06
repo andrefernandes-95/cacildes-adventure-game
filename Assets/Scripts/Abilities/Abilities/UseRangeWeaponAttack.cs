@@ -14,11 +14,6 @@ namespace AF
 
         public override void OnPrepare(CharacterManager characterManager)
         {
-            if (!characterManager.characterAbilityManager.CanUseAbility())
-            {
-                return;
-            }
-
             previouslyEquippedLeftHandWeapon = characterManager.characterWeaponsManager.GetCurrentLeftWeapon();
 
             characterManager.characterAbilityManager.SetCurrentAbility(this);

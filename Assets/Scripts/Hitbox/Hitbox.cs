@@ -51,6 +51,7 @@ namespace AF
         [HideInInspector] public bool shouldDisableHitboxOnStart = true;
 
         [HideInInspector] public bool isOnRightHand;
+        bool isHitboxOpen = false;
 
         protected virtual void Awake()
         {
@@ -108,6 +109,7 @@ namespace AF
 
         public void EnableHitbox()
         {
+            isHitboxOpen = true;
             canPlayHitSfx = true;
 
             if (trailRenderer != null)
@@ -135,6 +137,7 @@ namespace AF
 
         public void DisableHitbox()
         {
+            isHitboxOpen = false;
             if (trailRenderer != null)
             {
                 trailRenderer.enabled = false;
@@ -251,6 +254,8 @@ namespace AF
 
         public abstract AudioClip GetSwingSFX();
         public abstract AudioClip GetImpactSFX();
+
+        public bool IsHitboxOpen() => isHitboxOpen;
 
     }
 }

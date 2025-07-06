@@ -38,7 +38,7 @@ namespace AF
         public CharacterBaseHealth health;
         public CharacterAbstractPosture characterPosture;
         public CharacterAbstractPoise characterPoise;
-        public CharacterAbstractBlockController characterBlockController;
+        public CharacterAbstractBlockController characterAbstractBlockController;
         public CharacterBaseDamageReceiver characterBaseDamageReceiver;
         public CharacterPushController characterPushController;
         public CharacterTransformHelper characterTransformHelper;
@@ -179,6 +179,7 @@ namespace AF
 
             if (combatant != null && combatant.isHumanoid)
             {
+                // Fixes issue where player and AI get underneath the ground because of animator override logic messing up the current animation playing
                 PlayBusyAnimationWithRootMotion("Switch Equipment");
             }
         }
