@@ -31,5 +31,17 @@ namespace AF
         {
             return baseUnarmedParryWindow;
         }
+
+        public override void HandleBlockStart()
+        {
+            (characterManager as CharacterManager).faceTarget = true;
+        }
+
+        public override void HandleBlockEnd()
+        {
+            (characterManager as CharacterManager).faceTarget = false;
+            characterManager.PlayAnimationWithCrossFade("Idle");
+        }
+
     }
 }

@@ -22,6 +22,7 @@ namespace AF.Combat
         public List<CombatAction> chaseActions = new();
 
         [Header("Abilities")]
+        public List<Ability> reactionsToTargetAbilities = new();
         public List<Ability> chaseCombatAbilities = new();
         public List<Ability> combatAbilities = new();
 
@@ -89,7 +90,7 @@ namespace AF.Combat
 
         bool CanReact()
         {
-            if (reactionsToTarget.Count <= 0)
+            if (reactionsToTarget.Count <= 0 && reactionsToTargetAbilities.Count <= 0)
             {
                 return false;
             }
@@ -178,6 +179,16 @@ namespace AF.Combat
             if (InCooldown())
             {
                 return;
+            }
+
+            if (CanReact())
+            {
+                Ability reactionAbility = GetCombatAbility(reactionsToTargetAbilities);
+                if (reactionAbility != null)
+                {
+                    characterManager.characterAbilityManager.QueueAbility(Instantiate(reactionAbility));
+                    return;
+                }
             }
 
             Ability combatAbility = GetCombatAbility(combatAbilities);

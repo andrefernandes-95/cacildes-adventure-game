@@ -234,6 +234,8 @@ namespace AF.Equipment
 
         public Weapon GetRangeWeapon() => leftHandWeapons.FirstOrDefault(leftHandWeapon => leftHandWeapon != null && leftHandWeapon.damage.weaponAttackType == WeaponAttackType.Range);
 
+        public Shield FindPotentialShield() => leftHandWeapons.FirstOrDefault(leftHandWeapon => leftHandWeapon != null && leftHandWeapon is Shield) as Shield;
+
         public void EquipWeapon(Weapon weapon, int slot, bool isRightHand)
         {
             if (isRightHand)

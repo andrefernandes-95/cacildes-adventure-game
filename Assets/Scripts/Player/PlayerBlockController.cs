@@ -53,5 +53,13 @@ namespace AF
             this.canCounterAttack = value;
         }
 
+        public override void HandleBlockStart()
+        {
+        }
+
+        public override void HandleBlockEnd()
+        {
+            characterManager.PlayAnimationWithCrossFade("Idle Walk Run Blend");
+        }
     }
 }

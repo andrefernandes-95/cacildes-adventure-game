@@ -16,8 +16,10 @@ namespace AF.Equipment
         [Header("Equipment Database")]
         public EquipmentDatabase equipmentDatabase;
 
-        private void Awake()
+        protected override void Awake()
         {
+            base.Awake();
+
             if (!shouldHide)
             {
                 return;

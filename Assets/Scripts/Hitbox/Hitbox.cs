@@ -52,14 +52,15 @@ namespace AF
 
         [HideInInspector] public bool isOnRightHand;
 
-        private void Awake()
+        protected virtual void Awake()
         {
+            character = GetComponentInParent<CharacterBaseManager>();
+
             SetupRefs();
         }
 
         void SetupRefs()
         {
-            character = GetComponentInParent<CharacterBaseManager>();
 
             AssignTrailRenderer();
 

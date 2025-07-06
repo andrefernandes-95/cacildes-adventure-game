@@ -125,7 +125,7 @@ namespace AF
             var clipOverrides = new AnimationClipOverrides(animatorOverrideController.overridesCount);
             animatorOverrideController.GetOverrides(clipOverrides);
             clipOverrides[animationName] = animationClip;
-            animatorOverrideController.ApplyOverrides(clipOverrides);
+            ApplyClipOverrides(clipOverrides);
         }
 
         public void UpdateAnimationsBasedOnEquippedWeapons()
@@ -191,8 +191,9 @@ namespace AF
             foreach (var animationOverride in clips)
             {
                 clipOverrides[animationOverride.animationName] = animationOverride.animationClip;
-                animatorOverrideController.ApplyOverrides(clipOverrides);
             }
+
+            ApplyClipOverrides(clipOverrides);
 
             animator.runtimeAnimatorController = animatorOverrideController;
         }

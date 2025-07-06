@@ -160,7 +160,8 @@ namespace AF
                 clipOverrides[clip.Key] = clip.Value;
             }
 
-            GetAnimatorOverrideController().ApplyOverrides(clipOverrides);
+            ApplyClipOverrides(clipOverrides);
+
             animator.runtimeAnimatorController = GetAnimatorOverrideController();
         }
 
@@ -170,6 +171,16 @@ namespace AF
         public bool IsUsingSyntyModularFantasyHeroModel()
         {
             return syntyCharacterModelManager.isUsingSyntyModularFantasyHeroModel;
+        }
+
+        protected void ApplyClipOverrides(AnimationClipOverrides clipOverrides)
+        {
+            GetAnimatorOverrideController().ApplyOverrides(clipOverrides);
+
+            if (combatant != null && combatant.isHumanoid)
+            {
+                PlayBusyAnimationWithRootMotion("Switch Equipment");
+            }
         }
     }
 }

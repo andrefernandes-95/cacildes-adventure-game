@@ -10,6 +10,7 @@ namespace AF
         [Header("Components")]
         public CharacterBaseManager characterManager;
         public string hashParried = "Parried";
+        public string hashBlock = "Block";
 
         [Header("Parrying Settings")]
         public UnityEvent onParryEvent;
@@ -42,6 +43,8 @@ namespace AF
         public bool isBlocking = false;
 
         public UnityAction onBlockChanged;
+
+        Coroutine StartBlockingCoroutine;
 
         public virtual void ResetStates()
         {
@@ -160,5 +163,34 @@ namespace AF
         public abstract float GetUnarmedParryWindow();
 
         public abstract int GetPostureDamageFromParry();
+
+        public void StartBlocking()
+        {
+            if (StartBlockingCoroutine != null)
+            {
+                StopCoroutine(StartBlockingCoroutine);
+            }
+
+            StartBlockingCoroutine = StartCoroutine(HandleBlocking());
+        }
+
+        IEnumerator HandleBlocking()
+        {
+            SetIsBlocking(true);
+            characterManager.PlayCrossFadeBusyAnimationWithRootMotion(characterManager.characterBlockController.hashBlock, .1f);
+
+            HandleBlockStart();
+
+            float minBlockTime = Random.Range(1.5f, 5f);
+
+            yield return new WaitForSeconds(minBlockTime);
+
+            HandleBlockEnd();
+
+            SetIsBlocking(false);
+        }
+
+        public abstract void HandleBlockStart();
+        public abstract void HandleBlockEnd();
     }
 }

@@ -146,6 +146,11 @@ namespace AF
 
                 // TOOD: Remove this code, its just to always have ref positions up to date
                 Weapon weaponTemplate = Resources.Load<Weapon>("Items/Weapons/" + weapon.name.Replace("(Clone)", ""));
+                if (weaponTemplate == null)
+                {
+                    weaponTemplate = Resources.Load<Weapon>("Items/Shields/" + weapon.name.Replace("(Clone)", ""));
+                }
+
                 if (weaponTemplate != null)
                 {
                     instatiatedCharacterWeaponHitbox.weapon.rightHandPosition = weaponTemplate.rightHandPosition;

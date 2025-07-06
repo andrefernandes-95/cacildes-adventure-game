@@ -10,6 +10,11 @@ namespace AF
         [Header("Components")]
         [HideInInspector] public CharacterBaseManager characterBaseManager;
 
+        private void Awake()
+        {
+            characterBaseManager = GetComponentInParent<CharacterBaseManager>();
+        }
+
         public void SetOriginalPositionAndRotation(Vector3 initialLocalPosition, Quaternion initialLocalRotation)
         {
             this.originalPosition = initialLocalPosition;
