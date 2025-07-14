@@ -52,6 +52,9 @@ namespace AF
         public CharacterBaseAttackManager characterBaseAttackManager;
         public CharacterBaseDefenseManager characterBaseDefenseManager;
         public CharacterBaseWeight characterBaseWeight;
+        public CharacterBaseDodgeController characterBaseDodgeController;
+        public CharacterAbilityBaseManager characterAbilityBaseManager;
+        public CharacterBaseActivityManager characterBaseActivityManager;
         public abstract void ResetStates();
 
         public bool IsBusy()
@@ -177,11 +180,22 @@ namespace AF
         {
             GetAnimatorOverrideController().ApplyOverrides(clipOverrides);
 
-            if (combatant != null && combatant.isHumanoid)
+            if (
+                combatant != null
+                && combatant.isHumanoid
+                // Only play switching animation if not in the middle of performing an ability
+                && characterAbilityBaseManager.currentAbility == null)
             {
                 // Fixes issue where player and AI get underneath the ground because of animator override logic messing up the current animation playing
                 PlayBusyAnimationWithRootMotion("Switch Equipment");
             }
+        }
+
+        public void FaceObject(Transform target)
+        {
+            Vector3 targetRotation = target.position - transform.position;
+            targetRotation.y = 0;
+            transform.rotation = Quaternion.LookRotation(targetRotation);
         }
     }
 }

@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using AF.Animations;
+using AF.Companions;
 using AF.Equipment;
 using AF.Events;
 using AF.Footsteps;
@@ -20,7 +21,7 @@ namespace AF
         public ThirdPersonController thirdPersonController;
         public PlayerWeaponsManager playerWeaponsManager;
         public ClimbController climbController;
-        public DodgeController dodgeController;
+        public PlayerDodgeController playerDodgeController;
         public PlayerLevelManager playerLevelManager;
         public PlayerAchievementsManager playerAchievementsManager;
         public CombatNotificationsController combatNotificationsController;
@@ -51,12 +52,15 @@ namespace AF
         public UIDocumentAlert uIDocumentAlert;
         public PlayerAbilityManager playerAbilityManager;
         public PlayerStats playerStats;
+        public CompanionsSceneManager companionsSceneManager;
+        public PlayerActivityManager playerActivityManager;
 
         [Header("Databases")]
         public PlayerStatsDatabase playerStatsDatabase;
 
         public EquipmentDatabase equipmentDatabase;
         public GameSettings gameSettings;
+        public CompanionsDatabase companionsDatabase;
 
         [Header("Other Components")]
         [SerializeField] UIDocumentCharacterCustomization uIDocumentCharacterCustomization;
@@ -102,7 +106,7 @@ namespace AF
             playerCombatController.ResetStates();
             playerShootingManager.ResetStates();
 
-            dodgeController.ResetStates();
+            playerDodgeController.ResetStates();
             playerInventory.ResetStates();
             characterPosture.ResetStates();
             characterPoise.ResetStates();
@@ -122,6 +126,7 @@ namespace AF
             characterBaseAttackManager.ResetStates();
 
             playerAbilityManager.ResetStates();
+            playerActivityManager.ResetStates();
         }
 
         public override Damage GetAttackDamage()
@@ -143,7 +148,7 @@ namespace AF
 
         private void OnTriggerStay(Collider other)
         {
-            if (!dodgeController.isDodging)
+            if (!playerDodgeController.isDodging)
             {
                 return;
             }

@@ -17,6 +17,7 @@ namespace AF
 
         [Header("Companion Settings")]
         public CompanionsDatabase companionsDatabase;
+        [SerializeField] float minIdleDurationForCompanions = 1f; // in seconds
 
         [Header("States")]
         public State chaseState;
@@ -27,6 +28,9 @@ namespace AF
         // Refs
         PlayerManager _playerManager;
 
+        float timeInState = 0f;
+
+
         private void Awake()
         {
         }
@@ -34,6 +38,7 @@ namespace AF
         public override void OnStateEnter(StateManager stateManager)
         {
             onStateEnter?.Invoke();
+            timeInState = 0f;
         }
 
         public override void OnStateExit(StateManager stateManager)
@@ -42,6 +47,8 @@ namespace AF
         }
         public override State Tick(StateManager stateManager)
         {
+            timeInState += Time.deltaTime;
+
             onStateUpdate?.Invoke();
 
             if (ShouldFollowPlayer())
@@ -59,6 +66,12 @@ namespace AF
         bool ShouldFollowPlayer()
         {
             if (characterManager.IsCompanion() == false)
+            {
+                return false;
+            }
+
+            // Ensure companion stays in idle state for at least X second before following
+            if (timeInState < minIdleDurationForCompanions)
             {
                 return false;
             }

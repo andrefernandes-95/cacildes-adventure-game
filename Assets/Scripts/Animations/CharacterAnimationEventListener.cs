@@ -96,7 +96,7 @@ namespace AF.Animations
             // Patrolling / Running / Fleeing
             else if (characterManager.agent.enabled && characterManager.agent.velocity.magnitude > 0.1f)
             {
-                float speed = characterManager.targetManager.currentTarget != null ? 1f : 0.5f;
+                float speed = characterManager.ShouldRun() ? 1f : 0.5f;
                 characterManager.animator.SetFloat(speedParameter, speed);
             }
             else
@@ -309,11 +309,14 @@ namespace AF.Animations
 
         public void StopIframes()
         {
+            characterManager.characterDodgeController.StopIframes();
         }
+
         public void EnableIframes()
         {
-
+            characterManager.characterDodgeController.EnableIframes();
         }
+
         public void OnCard()
         {
 
@@ -359,5 +362,25 @@ namespace AF.Animations
             characterManager.characterAbilityManager.OnUseAbility();
         }
 
+        public void OnActivityPerformed()
+        {
+        }
+
+
+        public void OpenHeadHitbox()
+        {
+            if (characterManager.characterWeaponsManager.headHitbox != null)
+            {
+                characterManager.characterWeaponsManager.headHitbox.EnableHitbox();
+            }
+        }
+
+        public void CloseHeadHitbox()
+        {
+            if (characterManager.characterWeaponsManager.headHitbox != null)
+            {
+                characterManager.characterWeaponsManager.headHitbox.DisableHitbox();
+            }
+        }
     }
 }

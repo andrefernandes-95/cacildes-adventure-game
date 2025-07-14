@@ -1,5 +1,7 @@
 namespace AF
 {
+    using System.Collections.Generic;
+    using AF.Inventory;
     using AYellowpaper.SerializedCollections;
     using UnityEngine;
     using UnityEngine.Localization;
@@ -66,6 +68,10 @@ namespace AF
 
         [Header("Sounds")]
         public AudioClip greeting;
+
+        [Header("Loot")]
+        public List<LootableItem> loot = new();
+        public CharacterGold characterGold;
 
 
         public int GetCurrentLevel()

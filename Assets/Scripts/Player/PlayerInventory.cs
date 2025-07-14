@@ -192,7 +192,7 @@ namespace AF
                 return false;
             }
 
-            if (playerManager.dodgeController.isDodging)
+            if (playerManager.playerDodgeController.isDodging)
             {
                 notificationManager.ShowNotification(
                     LocalizationSettings.StringDatabase.GetLocalizedString("UIDocuments", "Can't consume item at this time."),

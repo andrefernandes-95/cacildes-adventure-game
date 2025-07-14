@@ -13,6 +13,7 @@ namespace AF
         public Hitbox rightHandHitbox;
         public Hitbox leftFootHitbox;
         public Hitbox rightFootHitbox;
+        public Hitbox headHitbox;
 
 
         [Header("Current Weapon")]
@@ -23,10 +24,6 @@ namespace AF
         [SerializeField] WeaponsManager weaponsManager;
 
         public float DEFAULT_WEAPON_BUFF_DURATION = 120f;
-
-        [Header("Transform References")]
-        [SerializeField] Transform rightHandGrip;
-        [SerializeField] Transform leftHandGrip;
 
         void Awake()
         {
@@ -84,9 +81,9 @@ namespace AF
                 currentWeaponInstance = null;
             }
 
-            if (rightHandGrip != null && rightHandGrip.childCount > 0)
+            if (GetCharacter().characterTransformHelper.rightHand != null && GetCharacter().characterTransformHelper.rightHand.childCount > 0)
             {
-                foreach (Transform child in rightHandGrip.transform)
+                foreach (Transform child in GetCharacter().characterTransformHelper.rightHand.transform)
                 {
                     Destroy(child.gameObject);
                 }
@@ -109,9 +106,9 @@ namespace AF
                 currentShieldInstance = null;
             }
 
-            if (leftHandGrip != null && leftHandGrip.childCount > 0)
+            if (GetCharacter().characterTransformHelper.leftHand != null && GetCharacter().characterTransformHelper.leftHand.childCount > 0)
             {
-                foreach (Transform child in leftHandGrip.transform)
+                foreach (Transform child in GetCharacter().characterTransformHelper.leftHand.transform)
                 {
                     Destroy(child.gameObject);
                 }
@@ -125,7 +122,7 @@ namespace AF
 
         void InstantiateWeapon(Weapon weapon, bool isRightHand)
         {
-            Transform grip = isRightHand ? rightHandGrip : leftHandGrip;
+            Transform grip = isRightHand ? GetCharacter().characterTransformHelper.rightHand : GetCharacter().characterTransformHelper.leftHand;
 
             if (weapon.weaponPrefab != null && grip != null)
             {
@@ -138,7 +135,7 @@ namespace AF
                 CharacterWeaponHitbox instatiatedCharacterWeaponHitbox = instantiatedWeapon.GetComponent<CharacterWeaponHitbox>();
 
                 // Important for dual wielding, to know which hitbox is hitting enemies
-                instatiatedCharacterWeaponHitbox.isOnRightHand = isRightHand;
+                instatiatedCharacterWeaponHitbox.hitboxType = isRightHand ? HitboxType.RIGHT_HAND : HitboxType.LEFT_HAND;
 
                 // Replace the weapon from the prefab with the equipped one which contains itemIDs, level, etc.
                 instatiatedCharacterWeaponHitbox.weapon = weapon;

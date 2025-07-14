@@ -101,6 +101,7 @@ namespace AF
             clonedWeapon.transform.parent = null;
             clonedWeapon.transform.localScale = new Vector3(1, 1, 1);
 
+            clonedWeapon.GetComponent<Hitbox>().character = attacker;
             clonedWeapon.AddComponent<AttachCameraShakeToSpell>();
             clonedWeapon.AddComponent<Rigidbody>();
             clonedWeapon.AddComponent<ThrowWeaponHelper>().Initialize(attacker);

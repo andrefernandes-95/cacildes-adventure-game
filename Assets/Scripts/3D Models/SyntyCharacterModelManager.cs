@@ -25,6 +25,88 @@ namespace AF
         public List<string> femaleTorsos = new();
         SkinnedMeshRenderer[] renderers => GetComponentsInChildren<SkinnedMeshRenderer>(true).ToArray();
 
+        List<string> rigPiecesToAlwaysActivate = new()
+{
+    "Armature",
+    "Root",
+    "Hips",
+    "Hips_Attachment",
+    "Hips_Attachment_end",
+    "Spine_01",
+    "Spine_02",
+    "Spine_03",
+    "Back_Attachment",
+    "Cape_Attachment_01",
+    "Cape_Attachment_02",
+    "Cape_Attachment_03",
+    "Cape_Attachment_03_end",
+    "Chest_Attachment",
+    "Chest_Attachment_end",
+    "Clavicle_L",
+    "Shoulder_Attachment_L",
+    "Shoulder_Attachment_L_end",
+    "Shoulder_L",
+    "Elbow_L",
+    "Elbow_Attachment_L",
+    "Elbow_Attachment_L_end",
+    "Hand_L",
+    "Finger_01",
+    "Finger_02",
+    "Finger_03",
+    "Finger_03_end",
+    "IndexFinger_01",
+    "IndexFinger_02",
+    "IndexFinger_03",
+    "IndexFinger_03_end",
+    "Thumb_01",
+    "Thumb_02",
+    "Thumb_02_end",
+    "Clavicle_R",
+    "Shoulder_Attachment_R",
+    "Shoulder_Attachment_R_end",
+    "Shoulder_R",
+    "Elbow_R",
+    "Elbow_Attachment_R",
+    "Elbow_Attachment_R_end",
+    "Hand_R",
+    "Finger_01.001",
+    "Finger_02.001",
+    "Finger_03.001",
+    "Finger_03.001_end",
+    "IndexFinger_01.001",
+    "IndexFinger_02.001",
+    "IndexFinger_03.001",
+    "IndexFinger_03.001_end",
+    "Thumb_01.001",
+    "Thumb_02.001",
+    "Thumb_02.001_end",
+    "Neck",
+    "Head",
+    "Eyebrows",
+    "Eyebrows_end",
+    "Eyes",
+    "Eyes_end",
+    "Head_Attachment",
+    "Head_Attachment_end",
+    "Aiming Constraint",
+    "UpperLeg_L",
+    "LowerLeg_L",
+    "Ankle_L",
+    "Ball_L",
+    "Ball_L_end",
+    "Knee_Attachment_L",
+    "Knee_Attachment_L_end",
+    "UpperLeg_R",
+    "LowerLeg_R",
+    "Ankle_R",
+    "Ball_R",
+    "Ball_R_end",
+    "Knee_Attachment_R",
+    "Knee_Attachment_R_end",
+    "Exported Synty Character"
+};
+
+
         void Awake()
         {
             if (!isUsingSyntyModularFantasyHeroModel)
@@ -159,22 +241,21 @@ namespace AF
                 }
             }
 
-            if (syntyCharacterBodyParts.ContainsKey("Armature"))
-            {
-                // TODO: Improve this logic
+            ActivateRig();
+        }
 
-                syntyCharacterBodyParts["Armature"].SetActive(true);
-                foreach (Transform child in syntyCharacterBodyParts["Armature"].transform)
+        void ActivateRig()
+        {
+            foreach (string gameObjectName in rigPiecesToAlwaysActivate)
+            {
+                if (syntyCharacterBodyParts.ContainsKey(gameObjectName))
                 {
-                    SetActiveRecursively(child.gameObject, true);
+
+                    syntyCharacterBodyParts[gameObjectName].SetActive(true);
                 }
             }
-
-            if (syntyCharacterBodyParts.ContainsKey("Exported Synty Character"))
-            {
-                syntyCharacterBodyParts["Exported Synty Character"].SetActive(true);
-            }
         }
+
         void SetActiveRecursively(GameObject obj, bool isActive)
         {
             obj.SetActive(isActive);

@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using AF.Health;
 using UnityEngine;
 using UnityEngine.Events;
@@ -44,6 +45,12 @@ namespace AF
 
         public UnityAction onBlockChanged;
 
+        // GameObject
+        Dictionary<Shield, GameObject> blockVisualEffects = new();
+        [SerializeField] GameObject unarmedBlockVfxPrefab;
+        GameObject unarmedBlockVfxInstance;
+        [SerializeField] GameObject parryVfxPrefab;
+        GameObject unarmedParryVfxInstance;
 
         public virtual void ResetStates()
         {
@@ -60,6 +67,8 @@ namespace AF
         public virtual void BlockAttack(Damage damage)
         {
             characterManager.characterPosture.TakePostureDamage((int)(damage.postureDamage * blockMultiplier));
+
+            PlayBlockVfx();
 
             onBlockDamageEvent?.Invoke();
         }
@@ -87,6 +96,8 @@ namespace AF
         {
             onParryEvent?.Invoke();
 
+            characterManager.PlayBusyAnimationWithRootMotion(hashParrying);
+
             if (characterManager is CharacterManager aiCharacter)
             {
                 aiCharacter.FaceTarget();
@@ -98,6 +109,8 @@ namespace AF
                 StopCoroutine(counterAttackWindowCoroutine);
             }
             counterAttackWindowCoroutine = StartCoroutine(HandleCounterAttackWindowCoroutine());
+
+            PlayParryVfx();
         }
 
         public void HandleParriedEvent(int receivedPostureDamageFromParry)
@@ -126,6 +139,49 @@ namespace AF
 
         public abstract int GetPostureDamageFromParry();
 
+        public void PlayBlockVfx()
+        {
+            Shield currentShield = characterManager.characterBaseWeaponsManager.GetCurrentLeftWeapon() as Shield;
 
+            if (currentShield != null)
+            {
+                if (blockVisualEffects.ContainsKey(currentShield))
+                {
+                    blockVisualEffects[currentShield].gameObject.SetActive(false);
+                    blockVisualEffects[currentShield].gameObject.SetActive(true);
+                }
+                else if (currentShield.blockFx != null)
+                {
+                    GameObject instance = Instantiate(currentShield.blockFx, characterManager.characterTransformHelper.leftHand);
+                    blockVisualEffects.Add(currentShield, instance);
+                    blockVisualEffects[currentShield].gameObject.SetActive(false);
+                    blockVisualEffects[currentShield].gameObject.SetActive(true);
+                }
+            }
+            else if (unarmedBlockVfxPrefab != null)
+            {
+                if (unarmedBlockVfxInstance == null)
+                {
+                    unarmedBlockVfxInstance = Instantiate(unarmedBlockVfxPrefab, characterManager.characterTransformHelper.leftHand);
+                }
+
+                unarmedBlockVfxInstance.SetActive(false);
+                unarmedBlockVfxInstance.SetActive(true);
+            }
+        }
+
+        public void PlayParryVfx()
+        {
+            if (parryVfxPrefab != null)
+            {
+                if (unarmedParryVfxInstance == null)
+                {
+                    unarmedParryVfxInstance = Instantiate(parryVfxPrefab, characterManager.characterTransformHelper.leftHand);
+                }
+
+                unarmedParryVfxInstance.SetActive(false);
+                unarmedParryVfxInstance.SetActive(true);
+            }
+        }
     }
 }

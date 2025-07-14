@@ -2,10 +2,10 @@ using System.Collections.Generic;
 using System.Linq;
 using AF.Events;
 using AYellowpaper.SerializedCollections;
+using CI.QuickSave;
 using TigerForge;
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 namespace AF.Companions
 {
@@ -157,6 +157,144 @@ namespace AF.Companions
         {
             count = companionsInParty.Where(x => !x.Value.isWaitingForPlayer).Count();
             return count > 0;
+        }
+
+        public void SaveCompanionStates(QuickSaveWriter quickSaveWriter)
+        {
+            List<SerializedCompanionState> serializedCompanionStates = new();
+
+            foreach (KeyValuePair<string, CompanionState> companionInParty in companionsInParty)
+            {
+                SerializedCompanionState serializedCompanionState = new();
+                serializedCompanionState.companionId = companionInParty.Key;
+
+                CompanionState state = companionInParty.Value;
+                serializedCompanionState.isWaitingForPlayer = state.isWaitingForPlayer;
+                serializedCompanionState.sceneNameWhereCompanionsIsWaitingForPlayer = state.sceneNameWhereCompanionsIsWaitingForPlayer;
+                serializedCompanionState.waitingPosition = state.waitingPosition;
+
+                List<string> rightWeaponsToSave = new();
+                foreach (Weapon wp in state.rightWeapons)
+                {
+                    string weaponPath = Utils.GetItemPath(wp).Replace("(Clone)", "");
+                    rightWeaponsToSave.Add(weaponPath);
+                }
+                serializedCompanionState.rightWeapons = rightWeaponsToSave.ToArray();
+
+                List<string> leftWeaponsToSave = new();
+                foreach (Weapon wp in state.leftWeapons)
+                {
+                    string weaponPath = Utils.GetItemPath(wp).Replace("(Clone)", "");
+                    leftWeaponsToSave.Add(weaponPath);
+                }
+                serializedCompanionState.leftWeapons = leftWeaponsToSave.ToArray();
+
+                List<string> accessoriesToSave = new();
+                foreach (Accessory acc in state.accessories)
+                {
+                    string accessoryPath = Utils.GetItemPath(acc).Replace("(Clone)", "");
+                    accessoriesToSave.Add(accessoryPath);
+                }
+                serializedCompanionState.accessories = accessoriesToSave.ToArray();
+
+                string helmetPath = Utils.GetItemPath(state.helmet).Replace("(Clone)", "");
+                serializedCompanionState.helmet = helmetPath;
+                string armorPath = Utils.GetItemPath(state.armor).Replace("(Clone)", "");
+                serializedCompanionState.armor = armorPath;
+                string gauntletPath = Utils.GetItemPath(state.gauntlet).Replace("(Clone)", "");
+                serializedCompanionState.gauntlet = gauntletPath;
+                string legwearPath = Utils.GetItemPath(state.legwear).Replace("(Clone)", "");
+                serializedCompanionState.legwear = legwearPath;
+
+                serializedCompanionStates.Add(serializedCompanionState);
+            }
+
+            quickSaveWriter.Write("companionsInParty", serializedCompanionStates);
+        }
+
+        public void LoadCompanionStates(QuickSaveReader quickSaveReader)
+        {
+            companionsInParty.Clear();
+
+            quickSaveReader.TryRead("companionsInParty", out List<SerializedCompanionState> savedCompanionsInParty);
+
+            if (savedCompanionsInParty != null && savedCompanionsInParty.Count > 0)
+            {
+                for (int idx = 0; idx < savedCompanionsInParty.Count; idx++)
+                {
+                    var savedState = savedCompanionsInParty.ElementAt(idx);
+
+                    CompanionState newState = new();
+                    newState.isWaitingForPlayer = savedState.isWaitingForPlayer;
+                    newState.sceneNameWhereCompanionsIsWaitingForPlayer = savedState.sceneNameWhereCompanionsIsWaitingForPlayer;
+                    newState.waitingPosition = savedState.waitingPosition;
+
+                    for (int i = 0; i < savedState.rightWeapons.Length - 1; i++)
+                    {
+                        Weapon weapon = Resources.Load<Weapon>(savedState.rightWeapons[i]);
+                        if (weapon != null)
+                        {
+                            newState.rightWeapons[i] = Instantiate(weapon);
+                        }
+                    }
+
+                    for (int i = 0; i < savedState.leftWeapons.Length - 1; i++)
+                    {
+                        Weapon weapon = Resources.Load<Weapon>(savedState.leftWeapons[i]);
+                        if (weapon != null)
+                        {
+                            newState.leftWeapons[i] = Instantiate(weapon);
+                        }
+                    }
+
+                    for (int i = 0; i < savedState.accessories.Length - 1; i++)
+                    {
+                        Accessory accessory = Resources.Load<Accessory>(savedState.accessories[i]);
+                        if (accessory != null)
+                        {
+                            newState.accessories[i] = Instantiate(accessory);
+                        }
+                    }
+
+                    if (!string.IsNullOrEmpty(savedState.helmet))
+                    {
+                        Helmet helmet = Resources.Load<Helmet>(savedState.helmet);
+                        if (helmet != null)
+                        {
+                            newState.helmet = Instantiate(helmet);
+                        }
+                    }
+
+                    if (!string.IsNullOrEmpty(savedState.gauntlet))
+                    {
+                        Gauntlet gauntlet = Resources.Load<Gauntlet>(savedState.gauntlet);
+                        if (gauntlet != null)
+                        {
+                            newState.gauntlet = Instantiate(gauntlet);
+                        }
+                    }
+
+                    if (!string.IsNullOrEmpty(savedState.armor))
+                    {
+                        Armor armor = Resources.Load<Armor>(savedState.armor);
+                        if (armor != null)
+                        {
+                            newState.armor = Instantiate(armor);
+                        }
+                    }
+
+                    if (!string.IsNullOrEmpty(savedState.legwear))
+                    {
+                        Legwear legwear = Resources.Load<Legwear>(savedState.legwear);
+                        if (legwear != null)
+                        {
+                            newState.legwear = Instantiate(legwear);
+                        }
+                    }
+
+                    companionsInParty.Add(savedState.companionId, newState);
+                }
+            }
         }
 
     }

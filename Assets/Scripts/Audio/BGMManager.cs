@@ -17,7 +17,7 @@ namespace AF.Music
         public float fadeDuration = 1f;
 
         [Header("Components")]
-        public SceneSettings sceneSettings;
+        [SerializeField] MusicPlayerHUD musicPlayerHUD;
 
         private Coroutine musicCoroutine;
         private Coroutine fadeCoroutine;
@@ -43,6 +43,8 @@ namespace AF.Music
 
             StopCoroutineSafe(ref musicCoroutine);
             musicCoroutine = StartCoroutine(TransitionMusicCoroutine(clip));
+
+            musicPlayerHUD.DisplayMusic(clip);
         }
 
         public void StopMusic() => FadeOutMusic(clearClip: true);

@@ -10,9 +10,6 @@ namespace AF
         public bool isHeavyAttack = false;
         public int attackIndex = 0;
 
-        [Header("AI Settings")]
-        public float cooldown = 5f;
-
         public override void OnPrepare(CharacterManager characterManager)
         {
             characterManager.characterAbilityManager.SetCurrentAbility(this);

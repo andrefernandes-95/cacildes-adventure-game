@@ -11,6 +11,9 @@ namespace AF
         public Ability next;
         public float chanceToCombo = 0.5f;
 
+        [Header("Cooldown")]
+        public float cooldown = 5f;
+
         public abstract void OnPrepare(CharacterManager characterManager);
         public abstract void OnPrepare(PlayerManager characterManager);
         public abstract void OnUse(CharacterManager characterManager);

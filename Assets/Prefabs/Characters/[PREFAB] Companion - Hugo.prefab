@@ -51,6 +51,7 @@ MonoBehaviour:
   comboClip3: {fileID: 0}
   minimumHealthToUse: 100
   dontUseBelowHalfHealth: 0
+  halfHealthThreshold: 0.5
   minimumDistanceToTarget: 0
   maximumDistanceToTarget: 15
   onAttack_Start:
@@ -87,6 +88,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   damage:
+    basePhysicalDamage: 0
     physical: 70
     fire: 0
     frost: 0
@@ -102,6 +104,10 @@ MonoBehaviour:
     ignoreBlocking: 0
     canNotBeParried: 0
     damageType: 0
+    strengthScaling: 5
+    dexterityScaling: 5
+    intelligenceScaling: 5
+  targetHitReaction: {fileID: 0}
   maxCooldown: 2
   frequency: 0.5
   animationSpeed: 1
@@ -210,6 +216,7 @@ MonoBehaviour:
   comboClip3: {fileID: 0}
   minimumHealthToUse: 100
   dontUseBelowHalfHealth: 0
+  halfHealthThreshold: 0.5
   minimumDistanceToTarget: 0
   maximumDistanceToTarget: 15
   onAttack_Start:
@@ -246,6 +253,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   damage:
+    basePhysicalDamage: 0
     physical: 70
     fire: 0
     frost: 0
@@ -261,6 +269,10 @@ MonoBehaviour:
     ignoreBlocking: 0
     canNotBeParried: 0
     damageType: 0
+    strengthScaling: 5
+    dexterityScaling: 5
+    intelligenceScaling: 5
+  targetHitReaction: {fileID: 0}
   maxCooldown: 2
   frequency: 0.5
   animationSpeed: 1
@@ -365,6 +377,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   greeting: What happens if we fall?
   duration: 5
+  gesture: {fileID: 0}
+  shouldFacePlayerWhenGreeting: 1
 --- !u!114 &3632669769561398111
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -507,7 +521,7 @@ MonoBehaviour:
   onMoment_Start:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 7066623641613147197}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: AF.Dialogue.GreetingMessageController, AF
         m_MethodName: HideGreetingMessage
         m_Mode: 1
@@ -543,7 +557,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 7259966955329190319}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
         m_MethodName: set_enabled
         m_Mode: 6
@@ -929,6 +943,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   greeting: Is it hot in here or it's just me?
   duration: 5
+  gesture: {fileID: 0}
+  shouldFacePlayerWhenGreeting: 1
 --- !u!114 &7295485891892621821
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1069,6 +1085,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   greeting: It's going to take some time to rebuild that bridge.
   duration: 5
+  gesture: {fileID: 0}
+  shouldFacePlayerWhenGreeting: 1
 --- !u!114 &5877373671279010652
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1157,6 +1175,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   greeting: We should check Pooja's shop for new outfits.
   duration: 5
+  gesture: {fileID: 0}
+  shouldFacePlayerWhenGreeting: 1
 --- !u!114 &3562928698986397722
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1389,6 +1409,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   greeting: Doing some prototyping, brother?
   duration: 5
+  gesture: {fileID: 0}
+  shouldFacePlayerWhenGreeting: 1
 --- !u!1 &1416267388390718885
 GameObject:
   m_ObjectHideFlags: 0
@@ -1436,6 +1458,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   greeting: Don't step on the elven flowers!
   duration: 5
+  gesture: {fileID: 0}
+  shouldFacePlayerWhenGreeting: 1
 --- !u!114 &2450091935605472429
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1576,6 +1600,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   greeting: Where's the bonfire?
   duration: 5
+  gesture: {fileID: 0}
+  shouldFacePlayerWhenGreeting: 1
 --- !u!114 &12072382069763042
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1941,6 +1967,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   greeting: Can you buy me an elven bow, brother?
   duration: 5
+  gesture: {fileID: 0}
+  shouldFacePlayerWhenGreeting: 1
 --- !u!114 &1303095672901829652
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2114,6 +2142,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   greeting: I'm lost...
   duration: 5
+  gesture: {fileID: 0}
+  shouldFacePlayerWhenGreeting: 1
 --- !u!114 &3240070681120956798
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2202,6 +2232,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   greeting: Careful with the shark!
   duration: 5
+  gesture: {fileID: 0}
+  shouldFacePlayerWhenGreeting: 1
 --- !u!114 &5848631514273928488
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2342,6 +2374,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   greeting: Never feel bad about beating up thieves!
   duration: 5
+  gesture: {fileID: 0}
+  shouldFacePlayerWhenGreeting: 1
 --- !u!114 &4743019497919753026
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2430,6 +2464,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   greeting: I'm so lost..
   duration: 5
+  gesture: {fileID: 0}
+  shouldFacePlayerWhenGreeting: 1
 --- !u!114 &8156556454846592038
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2818,6 +2854,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   greeting: Finally, a real battle awaits.
   duration: 5
+  gesture: {fileID: 0}
+  shouldFacePlayerWhenGreeting: 1
 --- !u!114 &1218098020009588089
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2912,7 +2950,7 @@ MonoBehaviour:
   onMoment_Start:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 7066623641613147197}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: AF.Dialogue.GreetingMessageController, AF
         m_MethodName: HideGreetingMessage
         m_Mode: 1
@@ -2948,7 +2986,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 7259966955329190319}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: UnityEngine.AI.NavMeshAgent, UnityEngine
         m_MethodName: set_speed
         m_Mode: 4
@@ -3264,6 +3302,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   greeting: What is this foul smell? I don't like it here.
   duration: 5
+  gesture: {fileID: 0}
+  shouldFacePlayerWhenGreeting: 1
 --- !u!114 &1658160853255467139
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3352,6 +3392,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   greeting: The king lives here? Wow. He must be so rich.
   duration: 5
+  gesture: {fileID: 0}
+  shouldFacePlayerWhenGreeting: 1
 --- !u!114 &5739267112028740297
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3440,6 +3482,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   greeting: This place smells like dead fish.
   duration: 5
+  gesture: {fileID: 0}
+  shouldFacePlayerWhenGreeting: 1
 --- !u!114 &7223358790770615764
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3580,6 +3624,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   greeting: I got some books I need to return to the library. But it can wait.
   duration: 5
+  gesture: {fileID: 0}
+  shouldFacePlayerWhenGreeting: 1
 --- !u!114 &488230787348825699
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3720,6 +3766,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   greeting: Someone died here a long time ago... I just know it.
   duration: 5
+  gesture: {fileID: 0}
+  shouldFacePlayerWhenGreeting: 1
 --- !u!114 &6603279658169389903
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3808,6 +3856,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   greeting: I've never wandered this far from home. Cool.
   duration: 5
+  gesture: {fileID: 0}
+  shouldFacePlayerWhenGreeting: 1
 --- !u!114 &1318003880938840968
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4054,6 +4104,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   greeting: We're home. Time to raid the pantry.
   duration: 5
+  gesture: {fileID: 0}
+  shouldFacePlayerWhenGreeting: 1
 --- !u!114 &8874920388520377107
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4142,6 +4194,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   greeting: Let's get out of the farm and explore some cavern!
   duration: 5
+  gesture: {fileID: 0}
+  shouldFacePlayerWhenGreeting: 1
 --- !u!114 &3963284012310476820
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4955,6 +5009,8 @@ MonoBehaviour:
   greeting: I saw a bee fight a slime for hours on end. The bee died first. Then
     the slime died to poison.
   duration: 5
+  gesture: {fileID: 0}
+  shouldFacePlayerWhenGreeting: 1
 --- !u!114 &7913877850782677618
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5379,6 +5435,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   greeting: Can't wait to fight something big.
   duration: 5
+  gesture: {fileID: 0}
+  shouldFacePlayerWhenGreeting: 1
 --- !u!114 &7957217738284147871
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5471,6 +5529,7 @@ MonoBehaviour:
   comboClip3: {fileID: 0}
   minimumHealthToUse: 100
   dontUseBelowHalfHealth: 0
+  halfHealthThreshold: 0.5
   minimumDistanceToTarget: 0
   maximumDistanceToTarget: 15
   onAttack_Start:
@@ -5507,6 +5566,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   damage:
+    basePhysicalDamage: 0
     physical: 70
     fire: 0
     frost: 0
@@ -5522,6 +5582,10 @@ MonoBehaviour:
     ignoreBlocking: 0
     canNotBeParried: 0
     damageType: 0
+    strengthScaling: 5
+    dexterityScaling: 5
+    intelligenceScaling: 5
+  targetHitReaction: {fileID: 0}
   maxCooldown: 2
   frequency: 0.5
   animationSpeed: 1
@@ -5626,6 +5690,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   greeting: This ship is sinking.. I can feel it.
   duration: 5
+  gesture: {fileID: 0}
+  shouldFacePlayerWhenGreeting: 1
 --- !u!114 &3543779275486892896
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5714,6 +5780,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   greeting: How can it be winter of all the sudden?
   duration: 5
+  gesture: {fileID: 0}
+  shouldFacePlayerWhenGreeting: 1
 --- !u!114 &5499589103455807353
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5910,6 +5978,7 @@ MonoBehaviour:
   comboClip3: {fileID: 0}
   minimumHealthToUse: 100
   dontUseBelowHalfHealth: 0
+  halfHealthThreshold: 0.5
   minimumDistanceToTarget: 0
   maximumDistanceToTarget: 15
   onAttack_Start:
@@ -5946,6 +6015,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   damage:
+    basePhysicalDamage: 0
     physical: 70
     fire: 0
     frost: 0
@@ -5961,6 +6031,10 @@ MonoBehaviour:
     ignoreBlocking: 0
     canNotBeParried: 0
     damageType: 0
+    strengthScaling: 5
+    dexterityScaling: 5
+    intelligenceScaling: 5
+  targetHitReaction: {fileID: 0}
   maxCooldown: 2
   frequency: 0.5
   animationSpeed: 1
@@ -6030,6 +6104,14 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 225859762729189445, guid: 0dc023b7099ec0d4382589bad3b1d108, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 300238013235221382, guid: 0dc023b7099ec0d4382589bad3b1d108, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 334036953776459404, guid: 0dc023b7099ec0d4382589bad3b1d108, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -6038,6 +6120,62 @@ PrefabInstance:
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 06400d1c9c2deae4088023b20c0570ca, type: 2}
+    - target: {fileID: 619362838819889252, guid: 0dc023b7099ec0d4382589bad3b1d108, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 674710316498689898, guid: 0dc023b7099ec0d4382589bad3b1d108, type: 3}
+      propertyPath: eyeColor.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 674710316498689898, guid: 0dc023b7099ec0d4382589bad3b1d108, type: 3}
+      propertyPath: eyeColor.b
+      value: 0.29142934
+      objectReference: {fileID: 0}
+    - target: {fileID: 674710316498689898, guid: 0dc023b7099ec0d4382589bad3b1d108, type: 3}
+      propertyPath: eyeColor.g
+      value: 0.5566038
+      objectReference: {fileID: 0}
+    - target: {fileID: 674710316498689898, guid: 0dc023b7099ec0d4382589bad3b1d108, type: 3}
+      propertyPath: eyeColor.r
+      value: 0.32096222
+      objectReference: {fileID: 0}
+    - target: {fileID: 674710316498689898, guid: 0dc023b7099ec0d4382589bad3b1d108, type: 3}
+      propertyPath: hairColor.b
+      value: 0.14509805
+      objectReference: {fileID: 0}
+    - target: {fileID: 674710316498689898, guid: 0dc023b7099ec0d4382589bad3b1d108, type: 3}
+      propertyPath: hairColor.g
+      value: 0.68235296
+      objectReference: {fileID: 0}
+    - target: {fileID: 674710316498689898, guid: 0dc023b7099ec0d4382589bad3b1d108, type: 3}
+      propertyPath: hairColor.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 674710316498689898, guid: 0dc023b7099ec0d4382589bad3b1d108, type: 3}
+      propertyPath: tattooColor.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 674710316498689898, guid: 0dc023b7099ec0d4382589bad3b1d108, type: 3}
+      propertyPath: tattooColor.b
+      value: 0.68235296
+      objectReference: {fileID: 0}
+    - target: {fileID: 674710316498689898, guid: 0dc023b7099ec0d4382589bad3b1d108, type: 3}
+      propertyPath: tattooColor.g
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 674710316498689898, guid: 0dc023b7099ec0d4382589bad3b1d108, type: 3}
+      propertyPath: tattooColor.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 674710316498689898, guid: 0dc023b7099ec0d4382589bad3b1d108, type: 3}
+      propertyPath: hairs.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 674710316498689898, guid: 0dc023b7099ec0d4382589bad3b1d108, type: 3}
+      propertyPath: 'hairs.Array.data[0]'
+      value: Chr_Hair_04
+      objectReference: {fileID: 0}
     - target: {fileID: 744093990693856504, guid: 0dc023b7099ec0d4382589bad3b1d108, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
@@ -6087,6 +6225,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1759811369383153655, guid: 0dc023b7099ec0d4382589bad3b1d108, type: 3}
+      propertyPath: combatant
+      value: 
+      objectReference: {fileID: 11400000, guid: 67e93b90e3fb9cf408ddbfbc82a64d57, type: 2}
+    - target: {fileID: 1759811369383153655, guid: 0dc023b7099ec0d4382589bad3b1d108, type: 3}
       propertyPath: characterID
       value: Hugo
       objectReference: {fileID: 0}
@@ -6103,6 +6245,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 11400000, guid: a1389acb444469c4e958de3626b800cf, type: 2}
     - target: {fileID: 1759811369383153655, guid: 0dc023b7099ec0d4382589bad3b1d108, type: 3}
+      propertyPath: characterBaseEquipment
+      value: 
+      objectReference: {fileID: 1576485966858523606}
+    - target: {fileID: 1759811369383153655, guid: 0dc023b7099ec0d4382589bad3b1d108, type: 3}
       propertyPath: characterFactions.Array.size
       value: 1
       objectReference: {fileID: 0}
@@ -6115,6 +6261,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 2100000, guid: c624a3d16e2ba1a43b8f5ff296ae5434, type: 2}
     - target: {fileID: 2097905559925885637, guid: 0dc023b7099ec0d4382589bad3b1d108, type: 3}
+      propertyPath: m_Center.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2097905559925885637, guid: 0dc023b7099ec0d4382589bad3b1d108, type: 3}
       propertyPath: m_ExcludeLayers.m_Bits
       value: 256
       objectReference: {fileID: 0}
@@ -6123,6 +6273,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 2100000, guid: 9af0cca3370fbad47ac241337c8551e7, type: 2}
     - target: {fileID: 2198806595687648332, guid: 0dc023b7099ec0d4382589bad3b1d108, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2257100007996335824, guid: 0dc023b7099ec0d4382589bad3b1d108, type: 3}
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
@@ -6150,10 +6304,22 @@ PrefabInstance:
       propertyPath: lootTable._serializedList.Array.data[0].Value.chanceToGet
       value: 95
       objectReference: {fileID: 0}
+    - target: {fileID: 2361713697337747750, guid: 0dc023b7099ec0d4382589bad3b1d108, type: 3}
+      propertyPath: m_Avatar
+      value: 
+      objectReference: {fileID: 9000000, guid: 85c81c44f13a71747a25a191f79f9485, type: 3}
     - target: {fileID: 2482530061673312860, guid: 0dc023b7099ec0d4382589bad3b1d108, type: 3}
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2563225944303201291, guid: 0dc023b7099ec0d4382589bad3b1d108, type: 3}
+      propertyPath: arrows.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2563225944303201291, guid: 0dc023b7099ec0d4382589bad3b1d108, type: 3}
+      propertyPath: 'arrows.Array.data[0]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 9881a089ea52e2849bf4a53816eb6e20, type: 2}
     - target: {fileID: 2612560913140358175, guid: 0dc023b7099ec0d4382589bad3b1d108, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -6206,6 +6372,10 @@ PrefabInstance:
       propertyPath: eventToInvoke.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
+    - target: {fileID: 2884349262221232586, guid: 0dc023b7099ec0d4382589bad3b1d108, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2961917905131786786, guid: 0dc023b7099ec0d4382589bad3b1d108, type: 3}
       propertyPath: m_Enabled
       value: 0
@@ -6229,6 +6399,10 @@ PrefabInstance:
     - target: {fileID: 3609678830498744512, guid: 0dc023b7099ec0d4382589bad3b1d108, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3635069363218449070, guid: 0dc023b7099ec0d4382589bad3b1d108, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3911165767748567406, guid: 0dc023b7099ec0d4382589bad3b1d108, type: 3}
       propertyPath: m_IsActive
@@ -6270,6 +6444,18 @@ PrefabInstance:
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 06400d1c9c2deae4088023b20c0570ca, type: 2}
+    - target: {fileID: 4513844493327915581, guid: 0dc023b7099ec0d4382589bad3b1d108, type: 3}
+      propertyPath: defaultArmor
+      value: 
+      objectReference: {fileID: 11400000, guid: 45475bcd21ce73449b6542d541672011, type: 2}
+    - target: {fileID: 4513844493327915581, guid: 0dc023b7099ec0d4382589bad3b1d108, type: 3}
+      propertyPath: defaultLegwear
+      value: 
+      objectReference: {fileID: 11400000, guid: 24777605fa8cd8c4d9b46d2ba552ad82, type: 2}
+    - target: {fileID: 4513844493327915581, guid: 0dc023b7099ec0d4382589bad3b1d108, type: 3}
+      propertyPath: defaultGauntlet
+      value: 
+      objectReference: {fileID: 11400000, guid: 2eca9abeae4900a4a86545961c749c23, type: 2}
     - target: {fileID: 4520927278652045599, guid: 0dc023b7099ec0d4382589bad3b1d108, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
@@ -6530,6 +6716,14 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6464420556616154692, guid: 0dc023b7099ec0d4382589bad3b1d108, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6584152055783255905, guid: 0dc023b7099ec0d4382589bad3b1d108, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6659463286913209292, guid: 0dc023b7099ec0d4382589bad3b1d108, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -6556,12 +6750,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7353292270462359461, guid: 0dc023b7099ec0d4382589bad3b1d108, type: 3}
       propertyPath: weapons.Array.size
-      value: 3
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7353292270462359461, guid: 0dc023b7099ec0d4382589bad3b1d108, type: 3}
       propertyPath: 'weapons.Array.data[0]'
       value: 
-      objectReference: {fileID: 8289557775419937860}
+      objectReference: {fileID: 0}
     - target: {fileID: 7353292270462359461, guid: 0dc023b7099ec0d4382589bad3b1d108, type: 3}
       propertyPath: 'weapons.Array.data[1]'
       value: 
@@ -6570,6 +6764,18 @@ PrefabInstance:
       propertyPath: 'weapons.Array.data[2]'
       value: 
       objectReference: {fileID: 8016072038282828811}
+    - target: {fileID: 7353292270462359461, guid: 0dc023b7099ec0d4382589bad3b1d108, type: 3}
+      propertyPath: 'leftHandWeapons.Array.data[0]'
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 7353292270462359461, guid: 0dc023b7099ec0d4382589bad3b1d108, type: 3}
+      propertyPath: 'leftHandWeapons.Array.data[1]'
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 7353292270462359461, guid: 0dc023b7099ec0d4382589bad3b1d108, type: 3}
+      propertyPath: 'rightHandWeapons.Array.data[0]'
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 7355565787872598697, guid: 0dc023b7099ec0d4382589bad3b1d108, type: 3}
       propertyPath: m_IsActive
       value: 1
@@ -6610,13 +6816,29 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 8290855092690766603, guid: 0dc023b7099ec0d4382589bad3b1d108, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8326747327268446916, guid: 0dc023b7099ec0d4382589bad3b1d108, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8338684120524380410, guid: 0dc023b7099ec0d4382589bad3b1d108, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 06400d1c9c2deae4088023b20c0570ca, type: 2}
     - target: {fileID: 8518529533467014141, guid: 0dc023b7099ec0d4382589bad3b1d108, type: 3}
+      propertyPath: chaseActions.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8518529533467014141, guid: 0dc023b7099ec0d4382589bad3b1d108, type: 3}
       propertyPath: combatActions.Array.size
-      value: 5
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8518529533467014141, guid: 0dc023b7099ec0d4382589bad3b1d108, type: 3}
+      propertyPath: combatAbilities.Array.size
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 8518529533467014141, guid: 0dc023b7099ec0d4382589bad3b1d108, type: 3}
       propertyPath: 'combatActions.Array.data[1]'
@@ -6634,7 +6856,39 @@ PrefabInstance:
       propertyPath: 'combatActions.Array.data[4]'
       value: 
       objectReference: {fileID: 4210268008874051539}
+    - target: {fileID: 8518529533467014141, guid: 0dc023b7099ec0d4382589bad3b1d108, type: 3}
+      propertyPath: reactionsToTarget.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8518529533467014141, guid: 0dc023b7099ec0d4382589bad3b1d108, type: 3}
+      propertyPath: 'combatAbilities.Array.data[1]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 4c1c8ec3244703641addf3ec9f2467e8, type: 2}
+    - target: {fileID: 8518529533467014141, guid: 0dc023b7099ec0d4382589bad3b1d108, type: 3}
+      propertyPath: 'combatAbilities.Array.data[2]'
+      value: 
+      objectReference: {fileID: 11400000, guid: c43b7bd0787fe3d4989e0410d2a20e9a, type: 2}
+    - target: {fileID: 8518529533467014141, guid: 0dc023b7099ec0d4382589bad3b1d108, type: 3}
+      propertyPath: 'combatAbilities.Array.data[3]'
+      value: 
+      objectReference: {fileID: 11400000, guid: a6a797b5b95d2024c8ffea5083e54a2e, type: 2}
+    - target: {fileID: 8518529533467014141, guid: 0dc023b7099ec0d4382589bad3b1d108, type: 3}
+      propertyPath: reactionsToTargetAbilities.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8518529533467014141, guid: 0dc023b7099ec0d4382589bad3b1d108, type: 3}
+      propertyPath: 'reactionsToTargetAbilities.Array.data[0]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 56308fed74daf37489a4c5d0f9a22a65, type: 2}
+    - target: {fileID: 8518529533467014141, guid: 0dc023b7099ec0d4382589bad3b1d108, type: 3}
+      propertyPath: 'reactionsToTargetAbilities.Array.data[1]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 67283ad74fa6a8a4e83ba895b463f191, type: 2}
     - target: {fileID: 8661189403594601060, guid: 0dc023b7099ec0d4382589bad3b1d108, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8838916818114513305, guid: 0dc023b7099ec0d4382589bad3b1d108, type: 3}
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
@@ -6670,12 +6924,17 @@ PrefabInstance:
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 06400d1c9c2deae4088023b20c0570ca, type: 2}
+    - target: {fileID: 9192746846883307220, guid: 0dc023b7099ec0d4382589bad3b1d108, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 9215466412528068148, guid: 0dc023b7099ec0d4382589bad3b1d108, type: 3}
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 6999222073624261655, guid: 0dc023b7099ec0d4382589bad3b1d108, type: 3}
+    - {fileID: 4513844493327915581, guid: 0dc023b7099ec0d4382589bad3b1d108, type: 3}
     m_RemovedGameObjects:
     - {fileID: 6342642133912336871, guid: 0dc023b7099ec0d4382589bad3b1d108, type: 3}
     m_AddedGameObjects:
@@ -6779,6 +7038,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1300293038511090173, guid: 0dc023b7099ec0d4382589bad3b1d108, type: 3}
       insertIndex: -1
       addedObject: {fileID: 6567950868653898976}
+    - targetCorrespondingSourceObject: {fileID: 7967144338933811037, guid: 0dc023b7099ec0d4382589bad3b1d108, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1576485966858523606}
   m_SourcePrefab: {fileID: 100100000, guid: 0dc023b7099ec0d4382589bad3b1d108, type: 3}
 --- !u!114 &303963881464272846 stripped
 MonoBehaviour:
@@ -6872,7 +7134,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2dd29b7d2ab7447e197e24809d8d5108, type: 3}
+  m_Script: {fileID: 11500000, guid: 8b8b9b9b19d8139469e983fc2855e452, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &4051576050477898720 stripped
@@ -6902,22 +7164,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad1ee64f39703ac48a19d80004d137e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &7066623641613147197 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4775993929164867626, guid: 0dc023b7099ec0d4382589bad3b1d108, type: 3}
+--- !u!1 &5676495405510808394 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7967144338933811037, guid: 0dc023b7099ec0d4382589bad3b1d108, type: 3}
   m_PrefabInstance: {fileID: 2330065174992638999}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+--- !u!114 &1576485966858523606
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5676495405510808394}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2f73e7d13eb68004a8b998684453e595, type: 3}
+  m_Script: {fileID: 11500000, guid: d91f25a46d4bdc945b723d5758bbd74a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!195 &7259966955329190319 stripped
-NavMeshAgent:
-  m_CorrespondingSourceObject: {fileID: 4942305408674540984, guid: 0dc023b7099ec0d4382589bad3b1d108, type: 3}
-  m_PrefabInstance: {fileID: 2330065174992638999}
-  m_PrefabAsset: {fileID: 0}
+  defaultHelmet: {fileID: 0}
+  defaultArmor: {fileID: 11400000, guid: 45475bcd21ce73449b6542d541672011, type: 2}
+  defaultGauntlet: {fileID: 11400000, guid: 2eca9abeae4900a4a86545961c749c23, type: 2}
+  defaultLegwear: {fileID: 11400000, guid: 24777605fa8cd8c4d9b46d2ba552ad82, type: 2}
+  defaultAccessories:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  characterManager: {fileID: 4051576050477898720}
+  companionsDatabase: {fileID: 11400000, guid: 304c7a15385a5904b83eaaa8ed072aa2, type: 2}
 --- !u!114 &8016072038282828811 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5722037603788376092, guid: 0dc023b7099ec0d4382589bad3b1d108, type: 3}
@@ -6926,7 +7200,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2dd29b7d2ab7447e197e24809d8d5108, type: 3}
+  m_Script: {fileID: 11500000, guid: 8b8b9b9b19d8139469e983fc2855e452, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &8128361178277169165 stripped
@@ -6943,11 +7217,6 @@ MonoBehaviour:
 --- !u!4 &8572512493978534048 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6242450190264014007, guid: 0dc023b7099ec0d4382589bad3b1d108, type: 3}
-  m_PrefabInstance: {fileID: 2330065174992638999}
-  m_PrefabAsset: {fileID: 0}
---- !u!82 &8648789053271265198 stripped
-AudioSource:
-  m_CorrespondingSourceObject: {fileID: 6363769051905563577, guid: 0dc023b7099ec0d4382589bad3b1d108, type: 3}
   m_PrefabInstance: {fileID: 2330065174992638999}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &8746074331694650239 stripped
@@ -7030,9 +7299,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 125176, guid: 9119d186ed5f8824da8756f69a439a82, type: 3}
       insertIndex: -1
       addedObject: {fileID: 9076766074587770129}
-    - targetCorrespondingSourceObject: {fileID: 125176, guid: 9119d186ed5f8824da8756f69a439a82, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 8289557775419937860}
   m_SourcePrefab: {fileID: 100100000, guid: 9119d186ed5f8824da8756f69a439a82, type: 3}
 --- !u!4 &4100290490899366665 stripped
 Transform:
@@ -7065,40 +7331,3 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.17, y: 0.79, z: 0.35}
   m_Center: {x: 0.0000037058799, y: 0.21, z: 0.051383983}
---- !u!114 &8289557775419937860
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4100290490899833861}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2dd29b7d2ab7447e197e24809d8d5108, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  weapon: {fileID: 0}
-  trailRenderer: {fileID: 3070106048450179063}
-  character: {fileID: 4051576050477898720}
-  tagsToIgnore: []
-  swingSfx: {fileID: 8300000, guid: d5cc1159b3057f946a3a21a6ddce614d, type: 3}
-  hitSfx: {fileID: 8300000, guid: 24540aeaa09c95d48bb0d997e547dc2b, type: 3}
-  combatAudioSource: {fileID: 8648789053271265198}
-  onOpenHitbox:
-    m_PersistentCalls:
-      m_Calls: []
-  onCloseHitbox:
-    m_PersistentCalls:
-      m_Calls: []
-  onDamageInflicted:
-    m_PersistentCalls:
-      m_Calls: []
-  onWeaponSpecial:
-    m_PersistentCalls:
-      m_Calls: []
-  onEnvironmentCollision:
-    m_PersistentCalls:
-      m_Calls: []
-  characterTwoHandRef: {fileID: 0}
-  characterWeaponBuffs: {fileID: 0}
-  shouldDisableHitboxOnStart: 1

@@ -92,5 +92,15 @@ namespace AF
         {
             return characterManager;
         }
+
+        public override void EquipWeapon(Weapon weapon, int slotIndex, bool rightHand)
+        {
+            characterManager.characterWeaponsManager.EquipWeapon(weapon, slotIndex, rightHand);
+        }
+
+        public override void UnequipWeapon(int slotIndex, bool rightHand)
+        {
+            characterManager.characterWeaponsManager.EquipWeapon(null, slotIndex, rightHand);
+        }
     }
 }

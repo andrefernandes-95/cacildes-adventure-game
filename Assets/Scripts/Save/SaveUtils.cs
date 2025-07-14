@@ -365,7 +365,7 @@ namespace AF
 
         public static void SaveItems(QuickSaveWriter quickSaveWriter, InventoryDatabase inventoryDatabase)
         {
-            SerializeAndWriteForUpgradeableItem(quickSaveWriter, "ownedWeapons", inventoryDatabase.ownedSpells);
+            SerializeAndWriteForUpgradeableItem(quickSaveWriter, "ownedWeapons", inventoryDatabase.ownedWeapons);
             SerializeAndWriteForUpgradeableItem(quickSaveWriter, "ownedSpells", inventoryDatabase.ownedSpells);
             SerializeAndWriteForUpgradeableItem(quickSaveWriter, "ownedHelmets", inventoryDatabase.ownedHelmets);
             SerializeAndWriteForUpgradeableItem(quickSaveWriter, "ownedArmors", inventoryDatabase.ownedArmors);
@@ -411,79 +411,81 @@ namespace AF
             quickSaveWriter.Write(key, serializedItems);
         }
 
-        public static void LoadItems(QuickSaveReader quickSaveReader, CharacterBaseManager characterBaseManager)
+        public static void LoadItems(QuickSaveReader quickSaveReader, PlayerManager playerManager)
         {
             // Loading Upgradable Items
             List<Weapon> weaponsToLoad = LoadUpgradeableItems<Weapon>(quickSaveReader, "ownedWeapons");
             foreach (Weapon weapon in weaponsToLoad)
             {
-                characterBaseManager.characterBaseInventory.AddWeapon(weapon);
+                // we use inventory database and access the lists directly because we already prepared the item's id and level previously,
+                // and because we dont want to generate ids or resetting the level by using inventory.AddWeapon() methods
+                playerManager.playerInventory.inventoryDatabase.ownedWeapons.Add(weapon);
             }
 
             List<Spell> spellsToLoad = LoadUpgradeableItems<Spell>(quickSaveReader, "ownedSpells");
             foreach (Spell spell in spellsToLoad)
             {
-                characterBaseManager.characterBaseInventory.AddSpell(spell);
+                playerManager.playerInventory.inventoryDatabase.ownedSpells.Add(spell);
             }
 
             List<Helmet> helmetsToLoad = LoadUpgradeableItems<Helmet>(quickSaveReader, "ownedHelmets");
             foreach (Helmet helmet in helmetsToLoad)
             {
-                characterBaseManager.characterBaseInventory.AddHelmet(helmet);
+                playerManager.playerInventory.inventoryDatabase.ownedHelmets.Add(helmet);
             }
 
             List<Armor> armorsToLoad = LoadUpgradeableItems<Armor>(quickSaveReader, "ownedArmors");
             foreach (Armor armor in armorsToLoad)
             {
-                characterBaseManager.characterBaseInventory.AddArmor(armor);
+                playerManager.playerInventory.inventoryDatabase.ownedArmors.Add(armor);
             }
 
             List<Legwear> legwearsToLoad = LoadUpgradeableItems<Legwear>(quickSaveReader, "ownedLegwears");
             foreach (Legwear legwear in legwearsToLoad)
             {
-                characterBaseManager.characterBaseInventory.AddLegwear(legwear);
+                playerManager.playerInventory.inventoryDatabase.ownedLegwears.Add(legwear);
             }
 
             List<Gauntlet> gauntletsToLoad = LoadUpgradeableItems<Gauntlet>(quickSaveReader, "ownedGauntlets");
             foreach (Gauntlet gauntlet in gauntletsToLoad)
             {
-                characterBaseManager.characterBaseInventory.AddGauntlet(gauntlet);
+                playerManager.playerInventory.inventoryDatabase.ownedGauntlets.Add(gauntlet);
             }
 
             List<Accessory> accessoriesToLoad = LoadUpgradeableItems<Accessory>(quickSaveReader, "ownedAccessories");
             foreach (Accessory accessory in accessoriesToLoad)
             {
-                characterBaseManager.characterBaseInventory.AddAccessory(accessory);
+                playerManager.playerInventory.inventoryDatabase.ownedAccessories.Add(accessory);
             }
 
             List<Arrow> arrowsToLoad = LoadSerializedItem<Arrow>(quickSaveReader, "ownedArrows");
             foreach (Arrow arrow in arrowsToLoad)
             {
-                characterBaseManager.characterBaseInventory.AddArrow(arrow);
+                playerManager.playerInventory.inventoryDatabase.ownedArrows.Add(arrow);
             }
 
             List<Consumable> consumablesToLoad = LoadSerializedItem<Consumable>(quickSaveReader, "ownedConsumables");
             foreach (Consumable consumable in consumablesToLoad)
             {
-                characterBaseManager.characterBaseInventory.AddConsumable(consumable);
+                playerManager.playerInventory.inventoryDatabase.ownedConsumables.Add(consumable);
             }
 
             List<KeyItem> keyItemsToLoad = LoadSerializedItem<KeyItem>(quickSaveReader, "ownedKeyItems");
             foreach (KeyItem keyItem in keyItemsToLoad)
             {
-                characterBaseManager.characterBaseInventory.AddKeyItem(keyItem);
+                playerManager.playerInventory.inventoryDatabase.ownedKeyItems.Add(keyItem);
             }
 
             List<CraftingMaterial> craftingMaterialsToLoad = LoadSerializedItem<CraftingMaterial>(quickSaveReader, "ownedCraftingMaterials");
             foreach (CraftingMaterial material in craftingMaterialsToLoad)
             {
-                characterBaseManager.characterBaseInventory.AddCraftingMaterial(material);
+                playerManager.playerInventory.inventoryDatabase.ownedCraftingMaterials.Add(material);
             }
 
             List<UpgradeMaterial> upgradeMaterialsToLoad = LoadSerializedItem<UpgradeMaterial>(quickSaveReader, "ownedUpgradeMaterials");
             foreach (UpgradeMaterial material in upgradeMaterialsToLoad)
             {
-                characterBaseManager.characterBaseInventory.AddUpgradeMaterial(material);
+                playerManager.playerInventory.inventoryDatabase.ownedUpgradeMaterials.Add(material);
             }
         }
 
@@ -722,8 +724,8 @@ namespace AF
         {
             if (serializedWeapon != null)
             {
-                Weapon match = characterBaseInventory.GetWeapons().First(
-                    ownedWeapon => ownedWeapon.itemID == serializedWeapon.itemID);
+                Weapon match = characterBaseInventory.GetWeapons().FirstOrDefault(
+                    ownedWeapon => ownedWeapon != null && ownedWeapon.itemID == serializedWeapon.itemID);
 
                 if (match != null)
                 {

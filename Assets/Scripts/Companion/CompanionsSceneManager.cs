@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using AF.Events;
+using AF.Inventory;
+using AYellowpaper.SerializedCollections;
 using TigerForge;
 using UnityEngine;
 using UnityEngine.AI;
@@ -126,6 +128,65 @@ namespace AF.Companions
             HandleWaitingCompanions();
 
             HandleActiveCompanions();
+        }
+
+        public CharacterManager GetCompanionInScene(string companionID)
+        {
+            if (companionInstancesInScene.ContainsKey(companionID))
+            {
+                return companionInstancesInScene[companionID].GetComponent<CharacterManager>();
+            }
+            return null;
+        }
+
+
+        public void GiveLootToCompanions(List<Item> items)
+        {
+
+            foreach (var companion in playerManager.companionsDatabase.companionsInParty)
+            {
+                CharacterManager companionInScene = playerManager.companionsSceneManager.GetCompanionInScene(companion.Key);
+                if (companionInScene == null)
+                {
+                    continue;
+                }
+
+                foreach (Item item in items)
+                {
+                    bool isRightHand = Random.Range(0, 1f) > 0.5;
+                    if (item is Weapon weapon)
+                    {
+                        // If bow, always equip on left hand weapon
+                        if (weapon.damage.weaponAttackType == WeaponAttackType.Range)
+                        {
+                            if (companionInScene.characterBaseAttackManager.CompareWeapon(weapon, false) > 0)
+                            {
+                                companionInScene.characterBaseEquipment.EquipWeapon(Instantiate(weapon), 0, false);
+                            }
+                        }
+                        else if (companionInScene.characterBaseAttackManager.CompareWeapon(weapon, isRightHand) > 0)
+                        {
+                            companionInScene.characterBaseEquipment.EquipWeapon(Instantiate(weapon), 0, isRightHand);
+                        }
+                    }
+                    else if (item is Helmet helmet && companionInScene.characterBaseDefenseManager.CompareHelmet(helmet) > 0)
+                    {
+                        companionInScene.characterBaseEquipment.EquipHelmet(Instantiate(helmet));
+                    }
+                    else if (item is Armor armor && companionInScene.characterBaseDefenseManager.CompareArmor(armor) > 0)
+                    {
+                        companionInScene.characterBaseEquipment.EquipArmor(Instantiate(armor));
+                    }
+                    else if (item is Gauntlet gauntlet && companionInScene.characterBaseDefenseManager.CompareGauntlets(gauntlet) > 0)
+                    {
+                        companionInScene.characterBaseEquipment.EquipGauntlets(Instantiate(gauntlet));
+                    }
+                    else if (item is Legwear legwear && companionInScene.characterBaseDefenseManager.CompareLegwears(legwear) > 0)
+                    {
+                        companionInScene.characterBaseEquipment.EquipLegwear(Instantiate(legwear));
+                    }
+                }
+            }
         }
     }
 }

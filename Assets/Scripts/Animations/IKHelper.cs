@@ -86,7 +86,7 @@ namespace AF
                 return false;
             }
 
-            if (playerManager.dodgeController.isDodging)
+            if (playerManager.playerDodgeController.isDodging)
             {
                 return false;
             }

@@ -83,5 +83,29 @@ namespace AF
         {
             return playerManager;
         }
+
+        public override void EquipWeapon(Weapon weapon, int slotIndex, bool rightHand)
+        {
+            if (rightHand)
+            {
+                playerManager.equipmentDatabase.EquipWeapon(weapon, slotIndex);
+            }
+            else
+            {
+                playerManager.equipmentDatabase.EquipShield(weapon, slotIndex);
+            }
+        }
+
+        public override void UnequipWeapon(int slotIndex, bool rightHand)
+        {
+            if (rightHand)
+            {
+                playerManager.equipmentDatabase.UnequipWeapon(slotIndex);
+            }
+            else
+            {
+                playerManager.equipmentDatabase.UnequipShield(slotIndex);
+            }
+        }
     }
 }

@@ -9,7 +9,6 @@ using UnityEngine;
 using UnityEngine.Events;
 using AF.Companions;
 using UnityEngine.AI;
-using UnityEditorInternal;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -31,6 +30,9 @@ namespace AF
         public StateManager stateManager;
         public CharacterAbilityManager characterAbilityManager;
         public CharacterBlockController characterBlockController;
+        public CharacterDodgeController characterDodgeController;
+        public CharacterActivityManager characterActivityManager;
+
         // Animator Overrides
         [HideInInspector] public AnimatorOverrideController animatorOverrideController;
 
@@ -114,6 +116,7 @@ namespace AF
 
             executionManager.ResetStates();
             characterAbilityManager.ResetStates();
+            characterActivityManager.ResetStates();
         }
 
         public void UpdateAnimatorOverrideControllerClips(string animationName, AnimationClip animationClip)
@@ -144,7 +147,7 @@ namespace AF
 
             // Apply right-hand weapon overrides
             Weapon currentWeapon = characterWeaponsManager.GetCurrentRightWeapon();
-            if (currentWeapon != null)
+            if (currentWeapon != null && currentWeapon.weaponAnimationData != null)
             {
                 AddOrReplaceOverride(currentWeapon.weaponAnimationData.GetRightHandAnimationsForAI(), overrides);
 
@@ -216,9 +219,9 @@ namespace AF
 
                     Vector3 direction = worldDeltaPosition.normalized + Physics.gravity;
 
-                    float speed = targetManager.currentTarget != null ? chaseSpeed : patrolSpeed;
+                    float speed = ShouldRun() ? chaseSpeed : patrolSpeed;
 
-                    characterController.Move(direction * speed * Time.deltaTime);
+                    characterController.Move(speed * Time.deltaTime * direction);
 
                     // Manually rotate to face agent's path direction
                     Vector3 toTarget = agent.steeringTarget - transform.position;
@@ -306,9 +309,24 @@ namespace AF
         /// </summary>
         public void FacePlayer()
         {
+            if (!CanFacePlayer())
+            {
+                return;
+            }
+
             var lookPos = GetPlayerManager().transform.position - transform.position;
             lookPos.y = 0;
             transform.rotation = Quaternion.LookRotation(lookPos);
+        }
+
+        bool CanFacePlayer()
+        {
+            if (characterActivityManager.currentActivity != null)
+            {
+                return false;
+            }
+
+            return true;
         }
 
         PlayerManager GetPlayerManager()
@@ -381,12 +399,14 @@ namespace AF
             Vector3 desiredPosition = GetPlayerManager().transform.position + (GetPlayerManager().transform.forward * -4.5f);
             NavMesh.SamplePosition(desiredPosition, out NavMeshHit hit, 15f, NavMesh.AllAreas);
 
+            bool agentEnabledCachedValue = agent.enabled;
             if (IsValidPosition(hit.position))
             {
                 characterController.enabled = false;
                 agent.enabled = false;
                 transform.position = hit.position;
                 characterController.enabled = true;
+                agent.enabled = agentEnabledCachedValue;
             }
         }
 
@@ -473,6 +493,11 @@ namespace AF
         public override CharacterBaseManager GetTarget()
         {
             return targetManager.currentTarget;
+        }
+
+        public bool ShouldRun()
+        {
+            return GetTarget() != null || IsCompanion();
         }
     }
 }

@@ -1,37 +1,30 @@
 namespace AF
 {
     using AF.Combat;
-    using AF.Health;
     using UnityEngine;
 
     public class UnarmedHitbox : Hitbox
     {
-        public Damage damage;
-
-        [Header("Sounds")]
-        public WeaponSound weaponSound;
-
-        [Header("Camera Shake Impact Force")]
-        public float hitboxImpactImpulse = 0.2f;
+        public UnarmedWeapon unarmedWeapon;
 
         public override AudioClip GetSwingSFX()
         {
-            if (weaponSound == null)
+            if (unarmedWeapon.weaponSound == null)
             {
                 return null;
             }
 
-            return weaponSound.GetSwing();
+            return unarmedWeapon.weaponSound.GetSwing();
         }
 
         public override AudioClip GetImpactSFX()
         {
-            if (weaponSound == null)
+            if (unarmedWeapon.weaponSound == null)
             {
                 return null;
             }
 
-            return weaponSound.GetImpact();
+            return unarmedWeapon.weaponSound.GetImpact();
         }
 
         protected override void HandleCharacterAttack(IDamageable damageable)
@@ -40,7 +33,7 @@ namespace AF
 
         public override float GetWeaponImpactImpulse()
         {
-            return hitboxImpactImpulse;
+            return unarmedWeapon.hitboxImpactImpulse;
         }
     }
 }

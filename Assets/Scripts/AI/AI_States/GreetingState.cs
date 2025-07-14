@@ -48,6 +48,11 @@ namespace AF
 
         public bool CanGreet()
         {
+            if (characterManager.characterActivityManager.currentActivity != null)
+            {
+                return false;
+            }
+
             if (greetingMessageController.IsGreeting())
             {
                 return false;

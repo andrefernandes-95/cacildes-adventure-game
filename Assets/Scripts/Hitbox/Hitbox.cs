@@ -4,6 +4,7 @@ namespace AF
     using System.Linq;
     using AF.Combat;
     using Cinemachine;
+    using EditorAttributes;
     using UnityEngine;
     using UnityEngine.Events;
 
@@ -50,12 +51,19 @@ namespace AF
         // Useful for throwable weapon situation
         [HideInInspector] public bool shouldDisableHitboxOnStart = true;
 
-        [HideInInspector] public bool isOnRightHand;
+        [Header("Hitbox Type")]
+        [HelpBox("Weapon hitboxes will have their type assigned automatically upon equip. Only add a value for Unarmed Hitboxes")]
+        public HitboxType hitboxType = HitboxType.NONE;
+
         bool isHitboxOpen = false;
 
         protected virtual void Awake()
         {
-            character = GetComponentInParent<CharacterBaseManager>();
+            // may not be null because of Throw Weapon Helper
+            if (character == null)
+            {
+                character = GetComponentInParent<CharacterBaseManager>();
+            }
 
             SetupRefs();
         }
@@ -174,7 +182,7 @@ namespace AF
 
             if (other.TryGetComponent(out IDamageable damageable) && !damageReceiversHit.Contains(damageable))
             {
-                character.characterBaseAttackManager.SetIsAttackingWithLeftHand(!isOnRightHand);
+                character.characterBaseAttackManager.attackingHitboxType = hitboxType;
 
                 damageReceiversHit.Add(damageable);
 

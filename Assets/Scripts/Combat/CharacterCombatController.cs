@@ -1,3 +1,4 @@
+
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,6 +36,7 @@ namespace AF.Combat
         [Range(0, 100f)] public float chanceToReact = 90f;
 
         public List<CombatAction> usedCombatActions = new();
+        public Dictionary<Ability, float> usedAbilities = new();
 
         [Header("Animation Settings")]
         public string ANIMATION_CLIP_TO_OVERRIDE_NAME = "Cacildes - Light Attack - 1";
@@ -159,6 +161,11 @@ namespace AF.Combat
 
                 foreach (Ability ability in shuffledAbilities)
                 {
+                    if (usedAbilities.ContainsKey(ability))
+                    {
+                        continue;
+                    }
+
                     if (ability != null && ability.CanUseAbility(characterManager))
                     {
                         return ability;
@@ -186,6 +193,8 @@ namespace AF.Combat
                 return;
             }
 
+            CheckAbilityCooldowns();
+
             if (CanReact())
             {
                 Ability reactionAbility = GetCombatAbility(reactionsToTargetAbilities);
@@ -193,6 +202,7 @@ namespace AF.Combat
                 if (reactionAbility != null && reactionAbility.CanUseAbility(characterManager))
                 {
                     characterManager.characterAbilityManager.QueueAbility(Instantiate(reactionAbility));
+                    AddAbilityToUsedAbilities(reactionAbility);
                     return;
                 }
             }
@@ -201,6 +211,7 @@ namespace AF.Combat
             if (combatAbility != null)
             {
                 characterManager.characterAbilityManager.QueueAbility(Instantiate(combatAbility));
+                AddAbilityToUsedAbilities(combatAbility);
                 return;
             }
 
@@ -272,7 +283,6 @@ namespace AF.Combat
             {
                 return;
             }
-
 
             if (currentCombatAction != reactionToTargetBehindBack)
             {
@@ -439,6 +449,37 @@ namespace AF.Combat
         public void SetIsPaused(bool value)
         {
             this.isPaused = value;
+        }
+
+        void AddAbilityToUsedAbilities(Ability combatAbility)
+        {
+            if (usedAbilities.ContainsKey(combatAbility))
+            {
+                return;
+            }
+
+            usedAbilities.Add(combatAbility, Time.time + combatAbility.cooldown);
+        }
+
+        void CheckAbilityCooldowns()
+        {
+            List<Ability> abilitiesToRemove = new();
+
+            foreach (var usedAbility in usedAbilities)
+            {
+                if (Time.time > usedAbility.Value)
+                {
+                    abilitiesToRemove.Add(usedAbility.Key);
+                }
+            }
+
+            foreach (Ability abilityToRemove in abilitiesToRemove)
+            {
+                if (usedAbilities.ContainsKey(abilityToRemove))
+                {
+                    usedAbilities.Remove(abilityToRemove);
+                }
+            }
         }
     }
 }

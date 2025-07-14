@@ -55,7 +55,10 @@ namespace AF.Equipment
             {
                 foreach (var weapon in weapons)
                 {
-                    weapon.gameObject.SetActive(true);
+                    if (weapon != null)
+                    {
+                        weapon.gameObject.SetActive(true);
+                    }
                 }
             }
         }
@@ -65,7 +68,10 @@ namespace AF.Equipment
             {
                 foreach (var weapon in weapons)
                 {
-                    weapon.gameObject.SetActive(false);
+                    if (weapon != null)
+                    {
+                        weapon.gameObject.SetActive(false);
+                    }
                 }
             }
         }

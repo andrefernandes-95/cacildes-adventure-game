@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace AF
@@ -19,7 +17,7 @@ namespace AF
             if (other.gameObject.tag == "Player")
             {
                 var finalStatusAmount = amount;
-                if (other.GetComponent<DodgeController>().isDodging)
+                if (other.GetComponent<CharacterBaseDodgeController>().isDodging)
                 {
                     finalStatusAmount *= dodgeBonusMultiplier;
                 }

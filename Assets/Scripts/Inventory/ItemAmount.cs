@@ -19,4 +19,11 @@ namespace AF.Inventory
     {
         public bool ignoreIfPlayerOwns = false;
     }
+
+    [System.Serializable]
+    public class LootableItem
+    {
+        public Item item;
+        public int amount;
+    }
 }

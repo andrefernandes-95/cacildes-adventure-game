@@ -141,25 +141,26 @@ namespace AF.Inventory
             ownedUpgradeMaterials.Clear();
         }
 
-        public void SetDefaultItems()
+        public void SetDefaultItems(PlayerManager playerManager)
         {
             Clear();
 
             foreach (var defaultItem in defaultItems)
             {
-                ownedItems.Add(defaultItem.Key, defaultItem.Value);
-
                 if (defaultItem.Key is Armor armor)
                 {
-                    equipmentDatabase.EquipArmor(armor, false);
+                    Armor addedArmor = playerManager.playerInventory.AddArmor(armor);
+                    playerManager.characterBaseEquipment.EquipArmor(addedArmor);
                 }
                 else if (defaultItem.Key is Legwear legwear)
                 {
-                    equipmentDatabase.EquipLegwear(legwear, false);
+                    Legwear addedLegwear = playerManager.playerInventory.AddLegwear(legwear);
+                    playerManager.characterBaseEquipment.EquipLegwear(addedLegwear);
                 }
                 else if (defaultItem.Key is Spell spell)
                 {
-                    equipmentDatabase.EquipSpell(spell, 0);
+                    Spell addedSpell = playerManager.playerInventory.AddSpell(spell);
+                    equipmentDatabase.EquipSpell(addedSpell, 0, false);
                 }
             }
         }

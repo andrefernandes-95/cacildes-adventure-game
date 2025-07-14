@@ -202,11 +202,14 @@ public class EquipmentDatabase : ScriptableObject
         EventManager.EmitEvent(EventMessages.ON_EQUIPMENT_CHANGED);
     }
 
-    public void EquipSpell(Spell spell, int slotIndex)
+    public void EquipSpell(Spell spell, int slotIndex, bool emitEvent = true)
     {
         spells[slotIndex] = spell;
 
-        EventManager.EmitEvent(EventMessages.ON_EQUIPMENT_CHANGED);
+        if (emitEvent)
+        {
+            EventManager.EmitEvent(EventMessages.ON_EQUIPMENT_CHANGED);
+        }
     }
     public void UnequipSpell(int slotIndex)
     {

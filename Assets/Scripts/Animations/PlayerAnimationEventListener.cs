@@ -286,14 +286,14 @@ namespace AF.Animations
         {
         }
 
-
         public void StopIframes()
         {
-            playerManager.dodgeController.StopIframes();
+            playerManager.playerDodgeController.StopIframes();
         }
+
         public void EnableIframes()
         {
-            playerManager.dodgeController.EnableIframes();
+            playerManager.playerDodgeController.EnableIframes();
         }
 
         public void OnCard()
@@ -336,6 +336,26 @@ namespace AF.Animations
 
         public void OnCombo()
         {
+        }
+
+        public void OnActivityPerformed()
+        {
+        }
+
+        public void OpenHeadHitbox()
+        {
+            if (playerManager.playerWeaponsManager.headHitbox != null)
+            {
+                playerManager.playerWeaponsManager.headHitbox.EnableHitbox();
+            }
+        }
+
+        public void CloseHeadHitbox()
+        {
+            if (playerManager.playerWeaponsManager.headHitbox != null)
+            {
+                playerManager.playerWeaponsManager.headHitbox.DisableHitbox();
+            }
         }
     }
 }

@@ -93,7 +93,7 @@ namespace AF.Triggers
             {
                 if (playerManager != null)
                 {
-                    return playerManager.dodgeController.isDodging;
+                    return playerManager.playerDodgeController.isDodging;
 
                 }
             }

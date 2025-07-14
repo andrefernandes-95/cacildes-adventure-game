@@ -104,6 +104,11 @@ namespace AF
 
         public static string GetItemPath(Item item)
         {
+            if (item == null)
+            {
+                return "";
+            }
+
             var prefix = "Items/";
 
             var subFolder = "";

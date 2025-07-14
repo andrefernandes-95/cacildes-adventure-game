@@ -19,8 +19,7 @@ namespace AF
 
         public void OnDamage(CharacterBaseManager attacker, Action onDamageInflicted)
         {
-            // Don't allow character to hit itself if not confused
-            if (character?.isConfused == false && attacker == character)
+            if (!CanTakeDamage(attacker))
             {
                 return;
             }
@@ -52,7 +51,6 @@ namespace AF
 
         public override void HandleIncomingDamage(CharacterBaseManager attacker, UnityAction<Damage> onTakeDamage)
         {
-            character.characterBaseWeaponsManager.CloseAllWeaponHitboxes();
 
             HandleAttackWhileFlatulent();
 
@@ -65,6 +63,8 @@ namespace AF
 
             if (character != null)
             {
+                character.characterBaseWeaponsManager.CloseAllWeaponHitboxes();
+
                 if (character.targetManager != null)
                 {
                     character.targetManager.SetTarget(attacker);

@@ -15,6 +15,7 @@ namespace AF
 
         [SerializedDictionary("Item", "Chance To Get")]
         public SerializedDictionary<Item, LootItemAmount> lootTable;
+        [SerializeField] bool useLootTable = false;
 
         public int baseGold = 100;
         public int bonusGold = 0;
@@ -43,7 +44,11 @@ namespace AF
 
         public IEnumerator GiveLoot_Coroutine()
         {
-            int goldToReceive = baseGold + bonusGold;
+            int goldBasis = lootOwner.combatant != null && lootOwner.combatant.characterGold != null
+                ? lootOwner.combatant.characterGold.gold
+                : baseGold;
+
+            int goldToReceive = goldBasis + bonusGold;
 
             yield return new WaitForSeconds(1f);
 
@@ -73,30 +78,52 @@ namespace AF
 
         private void GetLoot()
         {
-            var itemsToReceive = new SerializedDictionary<Item, ItemAmount>();
+            var itemsToReceive = new SerializedDictionary<Item, int>();
 
             bool hasPlayedFanfare = false;
 
-            foreach (var dropCurrency in lootTable)
+            if (useLootTable)
             {
-                if (dropCurrency.Value.ignoreIfPlayerOwns && playerManager.playerInventory.inventoryDatabase.HasItem(dropCurrency.Key))
+                foreach (var dropCurrency in lootTable)
                 {
-                    continue;
-                }
-
-                float calc_dropChance = Random.Range(0, 100f);
-
-                if (calc_dropChance <= dropCurrency.Value.chanceToGet)
-                {
-                    if (hasPlayedFanfare == false)
+                    if (dropCurrency.Value.ignoreIfPlayerOwns && playerManager.playerInventory.inventoryDatabase.HasItem(dropCurrency.Key))
                     {
-                        GetSoundbank().PlaySound(GetSoundbank().uiItemReceived);
-                        hasPlayedFanfare = true;
+                        continue;
                     }
 
-                    itemsToReceive.Add(dropCurrency.Key, dropCurrency.Value);
+                    float calc_dropChance = Random.Range(0, 100f);
+
+                    if (calc_dropChance <= dropCurrency.Value.chanceToGet)
+                    {
+                        if (hasPlayedFanfare == false)
+                        {
+                            GetSoundbank().PlaySound(GetSoundbank().uiItemReceived);
+                            hasPlayedFanfare = true;
+                        }
+
+                        itemsToReceive.Add(dropCurrency.Key, dropCurrency.Value.amount);
+                    }
                 }
             }
+            else if (lootOwner.combatant != null && lootOwner.combatant.loot.Count > 0)
+            {
+                foreach (LootableItem lootableItem in lootOwner.combatant.loot)
+                {
+                    float calc_dropChance = Random.Range(0, 1f);
+
+                    if (calc_dropChance <= lootableItem.item.dropRateOnEnemies)
+                    {
+                        if (hasPlayedFanfare == false)
+                        {
+                            GetSoundbank().PlaySound(GetSoundbank().uiItemReceived);
+                            hasPlayedFanfare = true;
+                        }
+
+                        itemsToReceive.Add(lootableItem.item, lootableItem.amount);
+                    }
+                }
+            }
+
 
             bool isBoss = lootOwner.characterBossController.IsBoss();
 
@@ -105,7 +132,7 @@ namespace AF
 
             foreach (var item in itemsToReceive)
             {
-                GetPlayerManager().playerInventory.AddItem(item.Key, item.Value.amount);
+                GetPlayerManager().playerInventory.AddItem(item.Key, item.Value);
 
                 if (isBoss && GetUIDocumentReceivedItemPrompt() != null)
                 {
@@ -136,6 +163,9 @@ namespace AF
             {
                 StartCoroutine(DisplayCardsWithDelay(cardsToDisplay));
             }
+
+            // Distribute to companions
+            GiveLootToCompanions();
 
         }
 
@@ -215,6 +245,38 @@ namespace AF
             }
 
             return uIDocumentReceivedItemPrompt;
+        }
+
+        void GiveLootToCompanions()
+        {
+            var itemsToReceive = new SerializedDictionary<Item, int>();
+
+            if (useLootTable)
+            {
+                foreach (var dropCurrency in lootTable)
+                {
+                    float calc_dropChance = Random.Range(0, 100f);
+
+                    if (calc_dropChance <= dropCurrency.Value.chanceToGet)
+                    {
+                        itemsToReceive.Add(dropCurrency.Key, dropCurrency.Value.amount);
+                    }
+                }
+            }
+            else if (lootOwner.combatant != null && lootOwner.combatant.loot.Count > 0)
+            {
+                foreach (LootableItem lootableItem in lootOwner.combatant.loot)
+                {
+                    float calc_dropChance = Random.Range(0, 1f);
+
+                    if (calc_dropChance <= lootableItem.item.dropRateOnEnemies)
+                    {
+                        itemsToReceive.Add(lootableItem.item, lootableItem.amount);
+                    }
+                }
+            }
+
+            playerManager.companionsSceneManager.GiveLootToCompanions(itemsToReceive.Select(x => x.Key).ToList());
         }
     }
 }

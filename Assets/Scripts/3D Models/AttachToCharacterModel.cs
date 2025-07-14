@@ -15,7 +15,9 @@ namespace AF
         [SerializeField] Vector3 localPositionWhenParenting;
         [SerializeField] Vector3 localRotationWhenParenting;
 
-        void Awake()
+        // We neeed to attach OnStart because
+        // of SyntyCharacterModelManager.Awake, which disables all character pieces inside the armature
+        void Start()
         {
             if (boneToAssignAsParent != null)
             {
@@ -53,11 +55,6 @@ namespace AF
         {
             foreach (Transform child in parent)
             {
-                if (!child.gameObject.activeSelf)
-                {
-                    continue;
-                }
-
                 if (child.name.Equals(name, System.StringComparison.Ordinal))
                     return child;
 

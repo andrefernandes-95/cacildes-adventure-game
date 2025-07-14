@@ -21093,6 +21093,7 @@ MonoBehaviour:
     strengthScaling: 5
     dexterityScaling: 5
     intelligenceScaling: 5
+  attackingHitboxType: 0
   unarmedRightWeapon: {fileID: 3542960098340223104}
   unarmedLeftWeapon: {fileID: 2523063691366733877}
   attackSource: 2
@@ -29119,29 +29120,8 @@ MonoBehaviour:
   characterTwoHandRef: {fileID: 0}
   characterWeaponBuffs: {fileID: 0}
   shouldDisableHitboxOnStart: 1
-  isOnRightHand: 0
-  damage:
-    basePhysicalDamage: 0
-    physical: 0
-    fire: 0
-    frost: 0
-    magic: 0
-    lightning: 0
-    darkness: 0
-    water: 0
-    postureDamage: 0
-    poiseDamage: 0
-    pushForce: 0
-    weaponAttackType: 0
-    statusEffects: []
-    ignoreBlocking: 0
-    canNotBeParried: 0
-    damageType: 0
-    strengthScaling: 5
-    dexterityScaling: 5
-    intelligenceScaling: 5
-  weaponSound: {fileID: 11400000, guid: 822831f9b4fc8b147b498732e2275161, type: 2}
-  hitboxImpactImpulse: 0.2
+  hitboxType: 0
+  unarmedWeapon: {fileID: 11400000, guid: fe42ec688fed5144ca1d728243ddb02c, type: 2}
 --- !u!114 &7451658886232413564
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -36367,11 +36347,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 90aafa9d011af4c42b788fa38404d253, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  thirdPersonController: {fileID: 5122672870407089929}
-  playerCombatController: {fileID: 1688620459228595376}
-  dodgeController: {fileID: 4155049968494615075}
-  playerParryManager: {fileID: 6154612153591458018}
-  characterController: {fileID: 8422702628398843308}
+  playerManager: {fileID: 4363140735506542586}
   isInTutorial: 0
   isInBonfire: 0
   regainControlOnResetState: 0
@@ -39479,29 +39455,8 @@ MonoBehaviour:
   characterTwoHandRef: {fileID: 0}
   characterWeaponBuffs: {fileID: 0}
   shouldDisableHitboxOnStart: 1
-  isOnRightHand: 0
-  damage:
-    basePhysicalDamage: 0
-    physical: 0
-    fire: 0
-    frost: 0
-    magic: 0
-    lightning: 0
-    darkness: 0
-    water: 0
-    postureDamage: 0
-    poiseDamage: 0
-    pushForce: 0
-    weaponAttackType: 0
-    statusEffects: []
-    ignoreBlocking: 0
-    canNotBeParried: 0
-    damageType: 0
-    strengthScaling: 5
-    dexterityScaling: 5
-    intelligenceScaling: 5
-  weaponSound: {fileID: 11400000, guid: 822831f9b4fc8b147b498732e2275161, type: 2}
-  hitboxImpactImpulse: 0.2
+  hitboxType: 0
+  unarmedWeapon: {fileID: 11400000, guid: fe42ec688fed5144ca1d728243ddb02c, type: 2}
 --- !u!114 &2504121050860874647
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -41517,18 +41472,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
-      - m_Target: {fileID: 2458265967765106151}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
   onDisable:
     m_PersistentCalls:
       m_Calls:
@@ -41560,6 +41503,18 @@ MonoBehaviour:
         m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
         m_MethodName: SetActive
         m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 2458265967765105689}
+        m_TargetAssemblyTypeName: Cinemachine.CinemachineVirtualCameraBase, Cinemachine
+        m_MethodName: set_Priority
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -58964,6 +58919,7 @@ Transform:
   - {fileID: 3255134844828009201}
   - {fileID: 801701640929726437}
   - {fileID: 5101956037723855366}
+  - {fileID: 2049817246757541254}
   m_Father: {fileID: 5309569914379906045}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &7631411710013860570
@@ -62214,6 +62170,52 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.7060547, y: -1.0241699, z: -0.17278671}
     m_Extent: {x: 8.797852, y: 2.169983, z: 1.5835805}
   m_DirtyAABB: 0
+--- !u!1 &5707855177099119147
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 9163787852272810793}
+  - component: {fileID: 1119324190507528163}
+  m_Layer: 8
+  m_Name: Player Activity Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &9163787852272810793
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5707855177099119147}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6558083026297358713}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1119324190507528163
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5707855177099119147}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a95f0b335b2e5c48bf915c56cb2826a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentActivity: {fileID: 0}
+  playerManager: {fileID: 4363140735506542586}
 --- !u!1 &5714184995308750535
 GameObject:
   m_ObjectHideFlags: 0
@@ -63687,7 +63689,7 @@ MonoBehaviour:
   sfxAudioSource: {fileID: 2935662827862404608}
   gameSettings: {fileID: 11400000, guid: c45719dc8e6e81947b7f2a5be9b2993a, type: 2}
   fadeDuration: 1
-  sceneSettings: {fileID: 8446632806595815852}
+  musicPlayerHUD: {fileID: 8250134912164277134}
 --- !u!1 &6016224245865381520
 GameObject:
   m_ObjectHideFlags: 0
@@ -64874,6 +64876,7 @@ Transform:
   - {fileID: 1292857798401039077}
   - {fileID: 4867610773713198300}
   - {fileID: 7803000114367705956}
+  - {fileID: 9163787852272810793}
   m_Father: {fileID: 9198782313407061788}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6123862019772100323
@@ -68297,6 +68300,73 @@ Transform:
   - {fileID: 2746950365456358167}
   m_Father: {fileID: 4638342127884238307}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &6717124412292301077
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2049817246757541254}
+  - component: {fileID: 8250134912164277134}
+  - component: {fileID: 6569491782361789694}
+  m_Layer: 0
+  m_Name: UI Document - Music Player
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2049817246757541254
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6717124412292301077}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5309569914645903897}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8250134912164277134
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6717124412292301077}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4500852d498974f43ba35bf62ea22298, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  uiDocument: {fileID: 6569491782361789694}
+  duration: 6
+  initialDelay: 1
+--- !u!114 &6569491782361789694
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6717124412292301077}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 19102, guid: 0000000000000000e000000000000000, type: 0}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_PanelSettings: {fileID: 11400000, guid: a595fafaba9c5fe47b549bc9c4500ea0, type: 2}
+  m_ParentUI: {fileID: 0}
+  sourceAsset: {fileID: 9197481963319205126, guid: e5775ce3058b7fe479e31cd3c20beada, type: 3}
+  m_SortingOrder: 10
+  m_WorldSpaceSizeMode: 1
+  m_WorldSpaceWidth: 1920
+  m_WorldSpaceHeight: 1080
 --- !u!1 &6719564964591253357
 GameObject:
   m_ObjectHideFlags: 0
@@ -75932,7 +76002,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4453154322396823377}
-  - component: {fileID: 4155049968494615075}
+  - component: {fileID: 2218044900908397060}
   m_Layer: 8
   m_Name: Player Dodge Controller
   m_TagString: Untagged
@@ -75955,7 +76025,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 6558083026297358713}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4155049968494615075
+--- !u!114 &2218044900908397060
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -75964,56 +76034,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 7425953039526675548}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 55e2e910514e29a47bd67c3780bdf51a, type: 3}
+  m_Script: {fileID: 11500000, guid: 48dc45d233ab3e64c8187a76508f84b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isDodging: 0
   playerManager: {fileID: 4363140735506542586}
   lockOnManager: {fileID: 5309569913858928647}
   uIManager: {fileID: 7631411710013860570}
-  dodgeCost: 50
-  isDodging: 0
-  maxRequestForRollDuration: 0.54
-  currentRequestForRollDuration: 0
+  dodgeCost: 15
   dodgeAttackBonus: 30
   onDodge:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 6154612153591458018}
-        m_TargetAssemblyTypeName: AF.PlayerBlockInput, AF
-        m_MethodName: OnBlockInput_Cancelled
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 6982558639531093206}
-        m_TargetAssemblyTypeName: AF.Shooting.PlayerShooter, AF
-        m_MethodName: Aim_End
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: AF.DamageReceiver, AF
-        m_MethodName: SetCanTakeDamage
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!1 &7430239145599373322
 GameObject:
   m_ObjectHideFlags: 0
@@ -77001,6 +77033,7 @@ MonoBehaviour:
   rightHandHitbox: {fileID: 3542960098340223104}
   leftFootHitbox: {fileID: 3546131080975820427}
   rightFootHitbox: {fileID: 5253317344766710119}
+  headHitbox: {fileID: 0}
   currentWeaponInstance: {fileID: 0}
   currentShieldInstance: {fileID: 0}
   weaponsManager: {fileID: 2380862994442302396}
@@ -78802,29 +78835,8 @@ MonoBehaviour:
   characterTwoHandRef: {fileID: 0}
   characterWeaponBuffs: {fileID: 0}
   shouldDisableHitboxOnStart: 1
-  isOnRightHand: 0
-  damage:
-    basePhysicalDamage: 0
-    physical: 30
-    fire: 0
-    frost: 0
-    magic: 0
-    lightning: 0
-    darkness: 0
-    water: 0
-    postureDamage: 0
-    poiseDamage: 0
-    pushForce: 0
-    weaponAttackType: 2
-    statusEffects: []
-    ignoreBlocking: 0
-    canNotBeParried: 0
-    damageType: 0
-    strengthScaling: 5
-    dexterityScaling: 5
-    intelligenceScaling: 5
-  weaponSound: {fileID: 11400000, guid: 822831f9b4fc8b147b498732e2275161, type: 2}
-  hitboxImpactImpulse: 0.2
+  hitboxType: 0
+  unarmedWeapon: {fileID: 11400000, guid: 2dc00ec92b5992442a05b8784922123c, type: 2}
 --- !u!114 &5319499538443614934
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -87020,10 +87032,13 @@ MonoBehaviour:
   characterBaseAttackManager: {fileID: 8775177064721715314}
   characterBaseDefenseManager: {fileID: 6483446869199026619}
   characterBaseWeight: {fileID: 5868724825279742955}
+  characterBaseDodgeController: {fileID: 2218044900908397060}
+  characterAbilityBaseManager: {fileID: 6010106734401224786}
+  characterBaseActivityManager: {fileID: 1119324190507528163}
   thirdPersonController: {fileID: 5122672870407089929}
   playerWeaponsManager: {fileID: 16161443765438513}
   climbController: {fileID: 4336404304033871157}
-  dodgeController: {fileID: 4155049968494615075}
+  playerDodgeController: {fileID: 2218044900908397060}
   playerLevelManager: {fileID: 3621585904677834844}
   playerAchievementsManager: {fileID: 5689008741502995564}
   combatNotificationsController: {fileID: 5200957334068746001}
@@ -87054,9 +87069,12 @@ MonoBehaviour:
   uIDocumentAlert: {fileID: 2323535824834436681}
   playerAbilityManager: {fileID: 6010106734401224786}
   playerStats: {fileID: 3968264623967708969}
+  companionsSceneManager: {fileID: 7341997086875672031}
+  playerActivityManager: {fileID: 1119324190507528163}
   playerStatsDatabase: {fileID: 11400000, guid: 5700f759ff00d104a97ef4af25190ddd, type: 2}
   equipmentDatabase: {fileID: 11400000, guid: a2bf3141e1e696a48952a3479a4a9742, type: 2}
   gameSettings: {fileID: 11400000, guid: c45719dc8e6e81947b7f2a5be9b2993a, type: 2}
+  companionsDatabase: {fileID: 11400000, guid: 304c7a15385a5904b83eaaa8ed072aa2, type: 2}
   uIDocumentCharacterCustomization: {fileID: 7173039414540753141}
   oh_unarmedAnimationOverrides:
   - animationName: Cacildes - Light Attack - 1
@@ -88735,8 +88753,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8619754588792639567}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -6.691, y: 1.904, z: -4}
+  m_LocalRotation: {x: 0.06536081, y: -0.9270979, z: 0.3147808, w: 0.19269292}
+  m_LocalPosition: {x: -15.163224, y: 7.0651445, z: -10.967541}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -92773,29 +92791,8 @@ MonoBehaviour:
   characterTwoHandRef: {fileID: 0}
   characterWeaponBuffs: {fileID: 0}
   shouldDisableHitboxOnStart: 1
-  isOnRightHand: 0
-  damage:
-    basePhysicalDamage: 0
-    physical: 30
-    fire: 0
-    frost: 0
-    magic: 0
-    lightning: 0
-    darkness: 0
-    water: 0
-    postureDamage: 0
-    poiseDamage: 0
-    pushForce: 0
-    weaponAttackType: 2
-    statusEffects: []
-    ignoreBlocking: 0
-    canNotBeParried: 0
-    damageType: 0
-    strengthScaling: 5
-    dexterityScaling: 5
-    intelligenceScaling: 5
-  weaponSound: {fileID: 11400000, guid: 822831f9b4fc8b147b498732e2275161, type: 2}
-  hitboxImpactImpulse: 0.2
+  hitboxType: 0
+  unarmedWeapon: {fileID: 11400000, guid: 2dc00ec92b5992442a05b8784922123c, type: 2}
 --- !u!114 &4195392078535947949
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -100865,7 +100862,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2070925441746177913, guid: a1a802ecaf6775746bb2a929fb554ad8, type: 3}
       propertyPath: m_Priority
-      value: 999
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2070925441746177913, guid: a1a802ecaf6775746bb2a929fb554ad8, type: 3}
       propertyPath: m_Transitions.m_BlendHint
@@ -100901,6 +100898,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2070925441746177912, guid: a1a802ecaf6775746bb2a929fb554ad8, type: 3}
   m_PrefabInstance: {fileID: 4512857962012451680}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &2458265967765105689 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2070925441746177913, guid: a1a802ecaf6775746bb2a929fb554ad8, type: 3}
+  m_PrefabInstance: {fileID: 4512857962012451680}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2458265967765106151}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 45e653bab7fb20e499bda25e1b646fea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2458265967765106151 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2070925441746177671, guid: a1a802ecaf6775746bb2a929fb554ad8, type: 3}
@@ -107036,6 +107044,14 @@ PrefabInstance:
     - target: {fileID: 2619820618389404909, guid: 7d2ced60704aa15449ad6458590467c6, type: 3}
       propertyPath: m_Name
       value: Exported Synty Character
+      objectReference: {fileID: 0}
+    - target: {fileID: 3314908219443974316, guid: 7d2ced60704aa15449ad6458590467c6, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3627262874611963579, guid: 7d2ced60704aa15449ad6458590467c6, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4107839651530046002, guid: 7d2ced60704aa15449ad6458590467c6, type: 3}
       propertyPath: character

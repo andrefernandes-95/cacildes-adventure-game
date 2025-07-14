@@ -14,9 +14,45 @@ namespace AF
         [SerializeField] Legwear defaultLegwear;
         [SerializeField] Accessory[] defaultAccessories = new Accessory[4];
 
-        private void Awake()
+        protected virtual void Start()
         {
             SetupDefaultEquipment();
+            CallOnEquipEventsForEquippedItemsOnStart();
+        }
+
+        void CallOnEquipEventsForEquippedItemsOnStart()
+        {
+            Helmet possibleEquippedHelmet = GetEquippedHelmet();
+            if (possibleEquippedHelmet != null)
+            {
+                possibleEquippedHelmet.OnEquip(GetCharacter());
+            }
+
+            Armor possibleEquippedArmor = GetEquippedArmor();
+            if (possibleEquippedArmor != null)
+            {
+                possibleEquippedArmor.OnEquip(GetCharacter());
+            }
+
+            Gauntlet possibleEquippedGauntlets = GetEquippedGauntlet();
+            if (possibleEquippedGauntlets != null)
+            {
+                possibleEquippedGauntlets.OnEquip(GetCharacter());
+            }
+
+            Legwear possibleEquippedLegwears = GetEquippedLegwear();
+            if (possibleEquippedLegwears != null)
+            {
+                possibleEquippedLegwears.OnEquip(GetCharacter());
+            }
+
+            foreach (Accessory accessory in GetEquippedAccessories())
+            {
+                if (accessory != null)
+                {
+                    accessory.OnEquip(GetCharacter());
+                }
+            }
         }
 
         public void SetupDefaultEquipment()
@@ -257,6 +293,9 @@ namespace AF
             return accessories[slot];
         }
 
+        public abstract void EquipWeapon(Weapon weapon, int slotIndex, bool rightHand);
+        public abstract void UnequipWeapon(int slotIndex, bool rightHand);
+
         public bool IsNaked()
         {
             return
@@ -265,6 +304,8 @@ namespace AF
                 && GetEquippedGauntlet() == null
                 && GetEquippedLegwear() == null;
         }
+
+
 
         public abstract CharacterBaseManager GetCharacter();
 

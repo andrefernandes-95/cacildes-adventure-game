@@ -5,6 +5,9 @@ In Dev:
 - Create specific tooltip scripts for equipments
 - BUG: TH when unarmed is not adding extra bonus
 
+- Block state permanent in companions and ai
+- Companions can find weapons on fallen enemies, and we should store the weapons
+
 
 Next:
 - Inventory weight, if too heavy, do heavy roll ( do not hinder jump )
@@ -38,8 +41,10 @@ To Do:
 - Buff weapons made easier
 - PS4 Gamepad not showing correct icns 
 - Review enemies
+- Backpack accessory - allow more items in th eback
 
 Low:
+
 
 - Ability should consume stamina and mana
 - Requirements for spells can still exist, but damage will be lessen

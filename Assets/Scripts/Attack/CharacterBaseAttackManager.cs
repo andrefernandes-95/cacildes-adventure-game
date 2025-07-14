@@ -35,7 +35,8 @@
         [Header("Current Damage")]
         public Damage rightWeaponCurrentDamage;
         public Damage leftWeaponCurrentDamage;
-        bool isAttackingWithLeftHand = false;
+
+        [HideInInspector] public HitboxType attackingHitboxType;
 
         [Header("Unarmed Hitboxes")]
         [SerializeField] UnarmedHitbox unarmedRightWeapon;
@@ -83,7 +84,7 @@
 
         public Damage GetAttackDamage()
         {
-            if (isAttackingWithLeftHand)
+            if (attackingHitboxType == HitboxType.LEFT_HAND)
             {
                 return leftWeaponCurrentDamage;
             }
@@ -99,7 +100,7 @@
             }
             else if (unarmedRightWeapon != null)
             {
-                rightWeaponCurrentDamage = unarmedRightWeapon.damage;
+                rightWeaponCurrentDamage = unarmedRightWeapon.unarmedWeapon.damage;
             }
 
             if (GetCharacter().characterBaseWeaponsManager.currentShieldInstance != null)
@@ -108,7 +109,7 @@
             }
             else if (unarmedLeftWeapon != null)
             {
-                leftWeaponCurrentDamage = unarmedRightWeapon.damage;
+                leftWeaponCurrentDamage = unarmedRightWeapon.unarmedWeapon.damage;
             }
         }
 
@@ -250,79 +251,25 @@
             return GetCharacter().characterBaseEquipment.GetEquippedAccessories();
         }
 
-        public int GetCurrentAttackForWeapon(Weapon weapon)
-        {
-            return weapon != null
-                ? GetWeaponAttack(weapon)
-                : GetCurrentPhysicalAttack();
-        }
-
-        // Call when applying damage to target        
-        public int GetAirAttackBonus(int baseAttack)
-        {
-            int bonus = 0;
-
-            if (IsInAir() || IsJumpAttacking())
-            {
-                bonus = Mathf.FloorToInt(baseAttack * jumpAttackMultiplier);
-
-                var jumpAttackBonuses = GetAccessories().Sum(x => x != null ? x.jumpAttackBonus : 0);
-                baseAttack += jumpAttackBonuses;
-            }
-
-            return baseAttack;
-        }
-
-        // Call when applying damage to target        
-        public int GetHeavyAttackBonus(int baseAttack)
-        {
-            int bonus = 0;
-
-            if (IsHeavyAttacking())
-            {
-                float multiplier = heavyAttackBonusMultiplier + GetCharacter().statsBonusController.heavyAttackBonusMultiplier;
-
-                bonus = Mathf.FloorToInt(baseAttack * multiplier);
-            }
-
-            return bonus;
-        }
-
-        // Call when applying counter-attack damage
-        public int GetCounterAttackBonus(int baseAttack)
-        {
-            if (GetCharacter().characterAbstractBlockController.IsWithinCounterAttackWindow())
-            {
-                baseAttack = (int)(baseAttack * GetCharacter().characterAbstractBlockController.counterAttackMultiplier);
-            }
-
-            return baseAttack;
-        }
-
-        int GetUnarmedPhysicalDamage()
-        {
-            return 0;
-        }
-
-        int GetCurrentPhysicalAttack()
-        {
-            return 0;
-        }
-
         public int GetCurrentPhysicalAttackForGivenStrengthAndDexterity(int strength, int dexterity)
         {
             return 0;
         }
 
-        public int CompareWeapon(Weapon weaponToCompare)
+        public int CompareWeapon(Weapon weaponToCompare, bool isRightHand)
         {
-            if (GetCharacter().characterBaseWeaponsManager.GetCurrentRightWeapon() == null)
+            if (isRightHand && GetCharacter().characterBaseWeaponsManager.GetCurrentRightWeapon() == null)
+            {
+                return 1;
+            }
+            if (!isRightHand && GetCharacter().characterBaseWeaponsManager.GetCurrentLeftWeapon() == null)
             {
                 return 1;
             }
 
             var weaponToCompareAttack = GetWeaponAttack(weaponToCompare);
-            var currentWeaponAttack = GetWeaponAttack(GetCharacter().characterBaseWeaponsManager.GetCurrentRightWeapon());
+            var currentWeaponAttack = GetWeaponAttack(isRightHand
+                ? GetCharacter().characterBaseWeaponsManager.GetCurrentRightWeapon() : GetCharacter().characterBaseWeaponsManager.GetCurrentLeftWeapon());
 
             if (weaponToCompareAttack > currentWeaponAttack)
             {
@@ -337,43 +284,15 @@
             return -1;
         }
 
-        int GetWeaponBaseDamage(Weapon weapon)
-        {
-            int playerBaseAttackValue = GetCurrentPhysicalAttack();
-
-            if (weapon.damage.weaponAttackType == WeaponAttackType.Range)
-            {
-                playerBaseAttackValue = 0;
-            }
-            else if (weapon.damage.physical <= 0)
-            {
-                playerBaseAttackValue = 0;
-            }
-
-            playerBaseAttackValue += weapon.GetWeaponAttack(this);
-
-            return playerBaseAttackValue;
-        }
-
-        public int GetTwoHandAttackBonus(Weapon weapon)
-        {
-            int weaponDamage = GetWeaponBaseDamage(weapon);
-
-            if (HasRangeWeaponEquipped())
-            {
-                return 0;
-            }
-
-            int enhancedWeaponDamage = (int)(weaponDamage * twoHandAttackBonusMultiplier);
-            return Mathf.Max(enhancedWeaponDamage - weaponDamage, 0);
-        }
-
         public int GetWeaponAttack(Weapon weapon)
         {
-            int value = GetWeaponBaseDamage(weapon);
+            Damage damage = CalculateWeaponDamageForWeapon(weapon).weaponDamage;
+            if (damage != null)
+            {
+                return damage.GetTotalDamage();
+            }
 
-
-            return 1;
+            return 0;
         }
 
         /// <summary>
@@ -445,11 +364,6 @@
             }
 
             return damage;
-        }
-
-        public void SetIsAttackingWithLeftHand(bool isAttackingWithLeftHand)
-        {
-            this.isAttackingWithLeftHand = isAttackingWithLeftHand;
         }
 
         public abstract CharacterBaseManager GetCharacter();

@@ -80,7 +80,7 @@ namespace AF
 
             if (other.CompareTag("Player") && other.TryGetComponent<PlayerManager>(out var playerManager))
             {
-                if (playerManager.dodgeController.isDodging)
+                if (playerManager.playerDodgeController.isDodging)
                 {
                     hasBeenHit = true;
                 }

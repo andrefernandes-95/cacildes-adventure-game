@@ -446,14 +446,14 @@ namespace AF.UI.EquipmentMenu
 
                 itemType.style.display = DisplayStyle.Flex;
 
-                var equipmentColorIndicator = GetEquipmentColorIndicator(item);
+                var equipmentColorIndicator = GetEquipmentColorIndicator(item, isRightHandSlot);
                 if (equipmentColorIndicator == Color.black)
                 {
                     instance.Q<VisualElement>("Indicator").style.display = DisplayStyle.None;
                 }
                 else
                 {
-                    instance.Q<VisualElement>("Indicator").style.unityBackgroundImageTintColor = GetEquipmentColorIndicator(item);
+                    instance.Q<VisualElement>("Indicator").style.unityBackgroundImageTintColor = GetEquipmentColorIndicator(item, isRightHandSlot);
                     instance.Q<VisualElement>("Indicator").style.display = DisplayStyle.Flex;
                 }
 
@@ -577,14 +577,14 @@ namespace AF.UI.EquipmentMenu
                     itemType.style.display = DisplayStyle.Flex;
                 }
 
-                var equipmentColorIndicator = GetEquipmentColorIndicator(item);
+                var equipmentColorIndicator = GetEquipmentColorIndicator(item, false);
                 if (equipmentColorIndicator == Color.black)
                 {
                     instance.Q<VisualElement>("Indicator").style.display = DisplayStyle.None;
                 }
                 else
                 {
-                    instance.Q<VisualElement>("Indicator").style.unityBackgroundImageTintColor = GetEquipmentColorIndicator(item);
+                    instance.Q<VisualElement>("Indicator").style.unityBackgroundImageTintColor = GetEquipmentColorIndicator(item, false);
                     instance.Q<VisualElement>("Indicator").style.display = DisplayStyle.Flex;
                 }
 
@@ -795,13 +795,13 @@ namespace AF.UI.EquipmentMenu
 
         }
 
-        public Color GetEquipmentColorIndicator<T>(T item) where T : Item
+        public Color GetEquipmentColorIndicator<T>(T item, bool isRightHandSlot) where T : Item
         {
             bool shouldReturn = false;
             int value = 0;
             if (item is Weapon weapon)
             {
-                value = playerManager.characterBaseAttackManager.CompareWeapon(weapon);
+                value = playerManager.characterBaseAttackManager.CompareWeapon(weapon, isRightHandSlot);
                 shouldReturn = true;
             }
             else if (item is Helmet helmet)

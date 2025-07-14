@@ -11,6 +11,8 @@ namespace AF
 
         [Header("Localization")]
         public LocalizedString nameLocalized;
+
+        [Header("Descriptions")]
         public LocalizedString descriptionLocalized;
         public LocalizedString shortDescriptionLocalized;
 

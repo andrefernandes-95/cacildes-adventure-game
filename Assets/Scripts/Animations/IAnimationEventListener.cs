@@ -21,6 +21,8 @@ namespace AF.Animations
         public void CloseLeftFootHitbox();
         public void OpenRightFootHitbox();
         public void CloseRightFootHitbox();
+        public void OpenHeadHitbox();
+        public void CloseHeadHitbox();
         public void OnBuff();
 
         // Locomotion
@@ -73,6 +75,8 @@ namespace AF.Animations
         public void OnPrepareAbility();
 
         public void OnUseAbility();
+
+        public void OnActivityPerformed();
 
     }
 }

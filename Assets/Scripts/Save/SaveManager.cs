@@ -86,7 +86,7 @@ namespace AF
         {
             playerStatsDatabase.Clear(isFromGameOver);
             equipmentDatabase.Clear();
-            inventoryDatabase.SetDefaultItems();
+            inventoryDatabase.SetDefaultItems(playerManager);
             pickupDatabase.Clear();
             questsDatabase.Clear();
             companionsDatabase.Clear();
@@ -240,7 +240,7 @@ namespace AF
         }
         void SaveCompanions(QuickSaveWriter quickSaveWriter)
         {
-            quickSaveWriter.Write("companionsInParty", companionsDatabase.companionsInParty);
+            companionsDatabase.SaveCompanionStates(quickSaveWriter);
         }
 
         void SaveBonfires(QuickSaveWriter quickSaveWriter)
@@ -359,8 +359,7 @@ namespace AF
 
         void LoadPlayerInventory(QuickSaveReader quickSaveReader)
         {
-            inventoryDatabase.ownedItems.Clear();
-            inventoryDatabase.ownedWeapons.Clear();
+            inventoryDatabase.Clear();
 
             quickSaveReader.TryRead("ownedItems", out SerializedDictionary<string, ItemAmount> ownedItems);
 
@@ -478,28 +477,7 @@ namespace AF
 
         void LoadCompanions(QuickSaveReader quickSaveReader)
         {
-            companionsDatabase.companionsInParty.Clear();
-
-            quickSaveReader.TryRead("companionsInParty", out SerializedDictionary<string, CompanionState> savedCompanionsInParty);
-
-            if (savedCompanionsInParty != null && savedCompanionsInParty.Count > 0)
-            {
-                for (int idx = 0; idx < savedCompanionsInParty.Count; idx++)
-                {
-                    var itemEntry = savedCompanionsInParty.ElementAt(idx);
-
-                    if (!string.IsNullOrEmpty(itemEntry.Key))
-                    {
-                        companionsDatabase.companionsInParty.Add(itemEntry.Key, new()
-                        {
-                            isWaitingForPlayer = itemEntry.Value.isWaitingForPlayer,
-                            waitingPosition = itemEntry.Value.waitingPosition,
-                            sceneNameWhereCompanionsIsWaitingForPlayer = itemEntry.Value.sceneNameWhereCompanionsIsWaitingForPlayer
-                        });
-                    }
-                }
-
-            }
+            companionsDatabase.LoadCompanionStates(quickSaveReader);
         }
 
         void LoadBonfires(QuickSaveReader quickSaveReader)

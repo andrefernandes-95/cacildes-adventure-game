@@ -510,7 +510,7 @@ namespace AF
                 if (
                     lockOnManager.nearestLockOnTarget != null
                     && lockOnManager.isLockedOn
-                    && playerManager.dodgeController.isDodging == false)
+                    && playerManager.playerDodgeController.isDodging == false)
                 {
 
                     Vector3 targetRot = lockOnManager.nearestLockOnTarget.transform.position - playerManager.characterController.transform.position;
@@ -645,7 +645,7 @@ namespace AF
                 playerManager.climbController.Climb(_speed * Time.deltaTime * direction);
             }
 
-            if (playerManager.dodgeController.isDodging || playerManager.IsBusy())
+            if (playerManager.playerDodgeController.isDodging || playerManager.IsBusy())
             {
                 targetDirection = Vector3.zero;
             }
@@ -836,7 +836,7 @@ namespace AF
             }
 
             return playerManager.staminaStatManager.HasEnoughStaminaForAction(jumpStaminaCost) &&
-                        playerManager.dodgeController.isDodging == false &&
+                        playerManager.playerDodgeController.isDodging == false &&
                         playerManager.playerCombatController.isCombatting == false
                         && canMove;
         }

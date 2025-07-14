@@ -53,6 +53,8 @@ namespace AF.Pickups
             GetUIDocumentReceivedItemPrompt().DisplayItemsReceived(itemsToDisplay);
 
             GetSoundbank().PlaySound(GetSoundbank().uiItemReceived);
+
+            playerInventory.playerManager.companionsSceneManager.GiveLootToCompanions(itemsToAdd.Select(x => x.Key).ToList());
         }
 
         UIDocumentReceivedItemPrompt GetUIDocumentReceivedItemPrompt()

@@ -62,6 +62,8 @@ namespace AF
         [Header("Parry Bonus")]
         public float parryWindowBonus = 0f;
         public int parryPostureDamageBonus = 0;
+        [Header("VFX")]
+        public GameObject blockFx;
 
         public Damage FilterDamage(Damage originalDamage)
         {

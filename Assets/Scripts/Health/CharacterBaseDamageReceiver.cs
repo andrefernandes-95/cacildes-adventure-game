@@ -126,6 +126,12 @@ namespace AF
                 {
                     return false;
                 }
+
+                if (GetCharacter().characterBaseDodgeController.isDodging)
+                {
+                    return false;
+                }
+
             }
 
             if (ignoreDamage)

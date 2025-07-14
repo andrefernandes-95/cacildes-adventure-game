@@ -51,6 +51,7 @@ MonoBehaviour:
   comboClip3: {fileID: 0}
   minimumHealthToUse: 100
   dontUseBelowHalfHealth: 0
+  halfHealthThreshold: 0.5
   minimumDistanceToTarget: 2
   maximumDistanceToTarget: 15
   onAttack_Start:
@@ -87,12 +88,14 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   damage:
+    basePhysicalDamage: 0
     physical: 125
     fire: 0
     frost: 0
     magic: 0
     lightning: 0
     darkness: 0
+    water: 0
     postureDamage: 35
     poiseDamage: 5
     pushForce: 0
@@ -101,9 +104,14 @@ MonoBehaviour:
     ignoreBlocking: 0
     canNotBeParried: 0
     damageType: 0
+    strengthScaling: 5
+    dexterityScaling: 5
+    intelligenceScaling: 5
+  targetHitReaction: {fileID: 0}
   maxCooldown: 8
   frequency: 0.5
   animationSpeed: 1
+  hasHyperArmor: 0
   characterManager: {fileID: 8145147418009658821}
 --- !u!1 &1226555441131341812
 GameObject:
@@ -156,6 +164,7 @@ MonoBehaviour:
   comboClip3: {fileID: 0}
   minimumHealthToUse: 100
   dontUseBelowHalfHealth: 0
+  halfHealthThreshold: 0.5
   minimumDistanceToTarget: 0
   maximumDistanceToTarget: 15
   onAttack_Start:
@@ -164,7 +173,7 @@ MonoBehaviour:
   onAttack_HitboxOpen:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4195413631315962465}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: AF.CharacterWeaponHitbox, AF
         m_MethodName: EnableHitbox
         m_Mode: 1
@@ -192,12 +201,14 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   damage:
+    basePhysicalDamage: 0
     physical: 100
     fire: 0
     frost: 0
     magic: 0
     lightning: 0
     darkness: 0
+    water: 0
     postureDamage: 30
     poiseDamage: 5
     pushForce: 0
@@ -206,9 +217,14 @@ MonoBehaviour:
     ignoreBlocking: 0
     canNotBeParried: 0
     damageType: 0
+    strengthScaling: 5
+    dexterityScaling: 5
+    intelligenceScaling: 5
+  targetHitReaction: {fileID: 0}
   maxCooldown: 11
   frequency: 0.5
   animationSpeed: 1
+  hasHyperArmor: 0
   characterManager: {fileID: 8145147418009658821}
 --- !u!1 &3224544705207387464
 GameObject:
@@ -261,6 +277,7 @@ MonoBehaviour:
   comboClip3: {fileID: 0}
   minimumHealthToUse: 50
   dontUseBelowHalfHealth: 0
+  halfHealthThreshold: 0.5
   minimumDistanceToTarget: 0
   maximumDistanceToTarget: 15
   onAttack_Start:
@@ -269,7 +286,7 @@ MonoBehaviour:
   onAttack_HitboxOpen:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4195413631315962465}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: AF.CharacterWeaponHitbox, AF
         m_MethodName: EnableHitbox
         m_Mode: 1
@@ -297,12 +314,14 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   damage:
+    basePhysicalDamage: 0
     physical: 60
     fire: 0
     frost: 0
     magic: 0
     lightning: 0
     darkness: 0
+    water: 0
     postureDamage: 90
     poiseDamage: 25
     pushForce: 0
@@ -311,9 +330,14 @@ MonoBehaviour:
     ignoreBlocking: 0
     canNotBeParried: 0
     damageType: 0
+    strengthScaling: 5
+    dexterityScaling: 5
+    intelligenceScaling: 5
+  targetHitReaction: {fileID: 0}
   maxCooldown: 20
   frequency: 0.5
   animationSpeed: 1
+  hasHyperArmor: 0
   characterManager: {fileID: 8145147418009658821}
 --- !u!1 &3560289894619725308
 GameObject:
@@ -366,6 +390,7 @@ MonoBehaviour:
   comboClip3: {fileID: 0}
   minimumHealthToUse: 75
   dontUseBelowHalfHealth: 0
+  halfHealthThreshold: 0.5
   minimumDistanceToTarget: 0
   maximumDistanceToTarget: 15
   onAttack_Start:
@@ -374,7 +399,7 @@ MonoBehaviour:
   onAttack_HitboxOpen:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4195413631315962465}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: AF.CharacterWeaponHitbox, AF
         m_MethodName: EnableHitbox
         m_Mode: 1
@@ -402,12 +427,14 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   damage:
+    basePhysicalDamage: 0
     physical: 85
     fire: 0
     frost: 0
     magic: 0
     lightning: 0
     darkness: 0
+    water: 0
     postureDamage: 25
     poiseDamage: 1
     pushForce: 0
@@ -416,9 +443,14 @@ MonoBehaviour:
     ignoreBlocking: 0
     canNotBeParried: 0
     damageType: 0
+    strengthScaling: 5
+    dexterityScaling: 5
+    intelligenceScaling: 5
+  targetHitReaction: {fileID: 0}
   maxCooldown: 20
   frequency: 0.5
   animationSpeed: 1
+  hasHyperArmor: 0
   characterManager: {fileID: 8145147418009658821}
 --- !u!1 &3830262017484627530
 GameObject:
@@ -471,6 +503,7 @@ MonoBehaviour:
   comboClip3: {fileID: 0}
   minimumHealthToUse: 100
   dontUseBelowHalfHealth: 0
+  halfHealthThreshold: 0.5
   minimumDistanceToTarget: 0
   maximumDistanceToTarget: 15
   onAttack_Start:
@@ -479,7 +512,7 @@ MonoBehaviour:
   onAttack_HitboxOpen:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4195413631315962465}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: AF.CharacterWeaponHitbox, AF
         m_MethodName: EnableHitbox
         m_Mode: 1
@@ -507,12 +540,14 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   damage:
+    basePhysicalDamage: 0
     physical: 110
     fire: 0
     frost: 0
     magic: 0
     lightning: 0
     darkness: 0
+    water: 0
     postureDamage: 30
     poiseDamage: 5
     pushForce: 0
@@ -521,9 +556,14 @@ MonoBehaviour:
     ignoreBlocking: 0
     canNotBeParried: 0
     damageType: 0
+    strengthScaling: 5
+    dexterityScaling: 5
+    intelligenceScaling: 5
+  targetHitReaction: {fileID: 0}
   maxCooldown: 6
   frequency: 0.5
   animationSpeed: 1
+  hasHyperArmor: 0
   characterManager: {fileID: 8145147418009658821}
 --- !u!1 &7551967096109352555
 GameObject:
@@ -576,6 +616,7 @@ MonoBehaviour:
   comboClip3: {fileID: 0}
   minimumHealthToUse: 100
   dontUseBelowHalfHealth: 0
+  halfHealthThreshold: 0.5
   minimumDistanceToTarget: 4
   maximumDistanceToTarget: 15
   onAttack_Start:
@@ -660,12 +701,14 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   damage:
+    basePhysicalDamage: 0
     physical: 70
     fire: 0
     frost: 0
     magic: 0
     lightning: 0
     darkness: 0
+    water: 0
     postureDamage: 20
     poiseDamage: 1
     pushForce: 0
@@ -674,9 +717,14 @@ MonoBehaviour:
     ignoreBlocking: 0
     canNotBeParried: 0
     damageType: 0
+    strengthScaling: 5
+    dexterityScaling: 5
+    intelligenceScaling: 5
+  targetHitReaction: {fileID: 0}
   maxCooldown: 5
   frequency: 0.5
   animationSpeed: 1
+  hasHyperArmor: 0
   characterManager: {fileID: 8145147418009658821}
 --- !u!1 &7661977606520505342
 GameObject:
@@ -729,6 +777,7 @@ MonoBehaviour:
   comboClip3: {fileID: 0}
   minimumHealthToUse: 69
   dontUseBelowHalfHealth: 0
+  halfHealthThreshold: 0.5
   minimumDistanceToTarget: 0
   maximumDistanceToTarget: 15
   onAttack_Start:
@@ -737,7 +786,7 @@ MonoBehaviour:
   onAttack_HitboxOpen:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4195413631315962465}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: AF.CharacterWeaponHitbox, AF
         m_MethodName: EnableHitbox
         m_Mode: 1
@@ -765,12 +814,14 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   damage:
+    basePhysicalDamage: 0
     physical: 75
     fire: 0
     frost: 0
     magic: 0
     lightning: 0
     darkness: 0
+    water: 0
     postureDamage: 25
     poiseDamage: 1
     pushForce: 0
@@ -779,9 +830,14 @@ MonoBehaviour:
     ignoreBlocking: 0
     canNotBeParried: 0
     damageType: 0
+    strengthScaling: 5
+    dexterityScaling: 5
+    intelligenceScaling: 5
+  targetHitReaction: {fileID: 0}
   maxCooldown: 17
   frequency: 0.5
   animationSpeed: 1
+  hasHyperArmor: 0
   characterManager: {fileID: 8145147418009658821}
 --- !u!1 &9168779424786703181
 GameObject:
@@ -834,6 +890,7 @@ MonoBehaviour:
   comboClip3: {fileID: 0}
   minimumHealthToUse: 92
   dontUseBelowHalfHealth: 0
+  halfHealthThreshold: 0.5
   minimumDistanceToTarget: 0
   maximumDistanceToTarget: 15
   onAttack_Start:
@@ -842,7 +899,7 @@ MonoBehaviour:
   onAttack_HitboxOpen:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4195413631315962465}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: AF.CharacterWeaponHitbox, AF
         m_MethodName: EnableHitbox
         m_Mode: 1
@@ -870,12 +927,14 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   damage:
+    basePhysicalDamage: 0
     physical: 35
     fire: 0
     frost: 0
     magic: 0
     lightning: 0
     darkness: 0
+    water: 0
     postureDamage: 35
     poiseDamage: 1
     pushForce: 0
@@ -884,9 +943,14 @@ MonoBehaviour:
     ignoreBlocking: 0
     canNotBeParried: 0
     damageType: 0
+    strengthScaling: 5
+    dexterityScaling: 5
+    intelligenceScaling: 5
+  targetHitReaction: {fileID: 0}
   maxCooldown: 13
   frequency: 0.5
   animationSpeed: 1
+  hasHyperArmor: 0
   characterManager: {fileID: 8145147418009658821}
 --- !u!1001 &5274689985273986597
 PrefabInstance:
@@ -1807,17 +1871,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 8915449136010778005, guid: a665256810f20a14792d234e5bf23080, type: 3}
   m_PrefabInstance: {fileID: 5274689985273986597}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &4195413631315962465 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8289557775419937860, guid: a665256810f20a14792d234e5bf23080, type: 3}
-  m_PrefabInstance: {fileID: 5274689985273986597}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2dd29b7d2ab7447e197e24809d8d5108, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &4272935315760204759 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8250579809303475698, guid: a665256810f20a14792d234e5bf23080, type: 3}

@@ -389,7 +389,7 @@ namespace AF
                 return false;
             }
 
-            if (playerManager.dodgeController.isDodging)
+            if (playerManager.playerDodgeController.isDodging)
             {
                 return false;
             }
@@ -425,12 +425,18 @@ namespace AF
                 playerManager.playerBlockController.onCounterAttack?.Invoke();
             }
 
-            damageReceiver?.GetCharacter().health?.onDamageFromPlayer?.Invoke();
+            CharacterBaseManager damageReceiverTarget = damageReceiver.GetCharacter();
 
-            if (weapon != null && damageReceiver?.GetCharacter()?.health?.weaponRequiredToKill != null && damageReceiver.GetCharacter().health.weaponRequiredToKill == weapon)
+            if (damageReceiverTarget != null)
             {
-                damageReceiver.GetCharacter().health.hasBeenHitWithRequiredWeapon = true;
+                damageReceiverTarget.health?.onDamageFromPlayer.Invoke();
+
+                if (weapon != null && damageReceiverTarget.health.weaponRequiredToKill != null && damageReceiverTarget.health.weaponRequiredToKill == weapon)
+                {
+                    damageReceiverTarget.health.hasBeenHitWithRequiredWeapon = true;
+                }
             }
+
 
             if (weapon != null)
             {
