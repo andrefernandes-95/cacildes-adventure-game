@@ -145,17 +145,17 @@ namespace AF
 
             if (currentShield != null)
             {
-                if (blockVisualEffects.ContainsKey(currentShield))
+                if (blockVisualEffects.ContainsKey(currentShield) && blockVisualEffects[currentShield] != null)
                 {
-                    blockVisualEffects[currentShield].gameObject.SetActive(false);
-                    blockVisualEffects[currentShield].gameObject.SetActive(true);
+                    blockVisualEffects[currentShield].SetActive(false);
+                    blockVisualEffects[currentShield].SetActive(true);
                 }
                 else if (currentShield.blockFx != null)
                 {
                     GameObject instance = Instantiate(currentShield.blockFx, characterManager.characterTransformHelper.leftHand);
                     blockVisualEffects.Add(currentShield, instance);
-                    blockVisualEffects[currentShield].gameObject.SetActive(false);
-                    blockVisualEffects[currentShield].gameObject.SetActive(true);
+                    blockVisualEffects[currentShield].SetActive(false);
+                    blockVisualEffects[currentShield].SetActive(true);
                 }
             }
             else if (unarmedBlockVfxPrefab != null)

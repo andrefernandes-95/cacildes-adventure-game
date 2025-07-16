@@ -158,5 +158,19 @@ namespace AF
             ownedKeyItems.Add(clone);
             return clone;
         }
+
+        public override int GetConsumableAmount(Consumable consumable)
+        {
+            return ownedConsumables.Count(ownedConsumable => ownedConsumable.EqualsTo(consumable));
+        }
+
+        public override void RemoveConsumable(Consumable consumable)
+        {
+            int idx = ownedConsumables.FindIndex(x => x.Equals(consumable));
+            if (idx != -1)
+            {
+                ownedConsumables.RemoveAt(idx);
+            }
+        }
     }
 }

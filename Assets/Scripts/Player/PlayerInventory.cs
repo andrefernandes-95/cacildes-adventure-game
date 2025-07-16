@@ -513,5 +513,33 @@ namespace AF
             inventoryDatabase.ownedKeyItems.Add(clone);
             return clone;
         }
+
+        public override void RemoveConsumable(Consumable consumable)
+        {
+            if (consumable.shouldNotRemoveOnUse == false)
+            {
+                if (playerManager.statsBonusController.chanceToNotLoseItemUponConsumption && UnityEngine.Random.Range(0f, 1f) > 0.8f)
+                {
+                    notificationManager.ShowNotification(
+                        LocalizationSettings.StringDatabase.GetLocalizedString("UIDocuments", "Consumable depleted"),
+                        notificationManager.notEnoughSpells);
+
+
+                    notificationManager.ShowNotification(
+                        LocalizationSettings.StringDatabase.GetLocalizedString("UIDocuments", "The item has been preserved for future use.")
+                    );
+                }
+                else
+                {
+                    inventoryDatabase.RemoveConsumable(consumable);
+                }
+            }
+        }
+
+        public override int GetConsumableAmount(Consumable consumable)
+        {
+            return inventoryDatabase.GetConsumableAmount(consumable);
+        }
+
     }
 }

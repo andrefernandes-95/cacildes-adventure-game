@@ -54,6 +54,7 @@ namespace AF
         public PlayerStats playerStats;
         public CompanionsSceneManager companionsSceneManager;
         public PlayerActivityManager playerActivityManager;
+        public PlayerConsumableManager playerConsumableManager;
 
         [Header("Databases")]
         public PlayerStatsDatabase playerStatsDatabase;
@@ -127,6 +128,7 @@ namespace AF
 
             playerAbilityManager.ResetStates();
             playerActivityManager.ResetStates();
+            playerConsumableManager.ResetStates();
         }
 
         public override Damage GetAttackDamage()

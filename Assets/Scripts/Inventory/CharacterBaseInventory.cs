@@ -60,5 +60,8 @@ namespace AF
             return GetUpgradeMaterials().Count(upgradeMaterial => upgradeMaterial.name.Replace("(Clone)", "") == item.name);
         }
 
+        public abstract int GetConsumableAmount(Consumable consumable);
+
+        public abstract void RemoveConsumable(Consumable consumable);
     }
 }

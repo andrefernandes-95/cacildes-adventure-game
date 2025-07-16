@@ -32,6 +32,7 @@ namespace AF
         public CharacterBlockController characterBlockController;
         public CharacterDodgeController characterDodgeController;
         public CharacterActivityManager characterActivityManager;
+        public CharacterConsumableManager characterConsumableManager;
 
         // Animator Overrides
         [HideInInspector] public AnimatorOverrideController animatorOverrideController;
@@ -73,6 +74,10 @@ namespace AF
 
         public GameSession gameSession;
 
+
+        [Header("Unarmed Animations Overrides")]
+        [SerializeField] List<AnimationOverride> oh_unarmedAnimationOverrides = new();
+        [SerializeField] List<AnimationOverride> th_unarmedAnimationOverrides = new();
 
         private void Awake()
         {
@@ -117,6 +122,7 @@ namespace AF
             executionManager.ResetStates();
             characterAbilityManager.ResetStates();
             characterActivityManager.ResetStates();
+            characterConsumableManager.ResetStates();
         }
 
         public void UpdateAnimatorOverrideControllerClips(string animationName, AnimationClip animationClip)
@@ -144,6 +150,14 @@ namespace AF
             animatorOverrideController.GetOverrides(clipOverrides);
 
             Dictionary<string, AnimationOverride> overrides = new();
+
+            // Always apply unarmed first
+            AddOrReplaceOverride(oh_unarmedAnimationOverrides, overrides);
+
+            if (characterWeaponsManager.IsTwoHanding())
+            {
+                AddOrReplaceOverride(th_unarmedAnimationOverrides, overrides);
+            }
 
             // Apply right-hand weapon overrides
             Weapon currentWeapon = characterWeaponsManager.GetCurrentRightWeapon();

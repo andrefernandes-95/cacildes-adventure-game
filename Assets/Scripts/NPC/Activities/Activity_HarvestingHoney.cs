@@ -6,7 +6,7 @@ namespace AF
     {
         [SerializeField] Transform beeHiveLookReference;
         [SerializeField] Transform transformRef;
-
+        [SerializeField] GameObject beeHiveFxPrefab;
 
         public override void OnActivityStart(CharacterBaseManager activityTarget)
         {
@@ -17,6 +17,7 @@ namespace AF
 
         public override void OnActivityPerformed(CharacterBaseManager activityTarget)
         {
+            Instantiate(beeHiveFxPrefab, activityTarget.characterTransformHelper.rightHand);
         }
 
         public override void OnActivityEnd(CharacterBaseManager activityTarget)

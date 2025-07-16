@@ -29,6 +29,7 @@ namespace AF.Health
             set
             {
                 m_currentHealth = Mathf.Clamp(value, 0, GetMaxHealth());
+                UpdateHealthbar();
             }
         }
 
@@ -43,6 +44,9 @@ namespace AF.Health
 
         // Components
         LockOnRef _characterLockOnRef;
+
+        [Header("Non-Boss Health Bar")]
+        [SerializeField] CharacterHealthUI characterHealthUI;
 
         public void Awake()
         {
@@ -82,8 +86,11 @@ namespace AF.Health
 
         public override void TakeDamage(float value)
         {
+            ShowHealthbar();
+
             if (value <= 0 || CurrentHealth <= 0)
             {
+                HideHealthbar();
                 return;
             }
 
@@ -117,6 +124,7 @@ namespace AF.Health
 
             // Disable enemy colliders so they don't block doors and other places
             HandleCollisions(false);
+            HideHealthbar();
         }
 
         public override int GetMaxHealth()
@@ -148,6 +156,8 @@ namespace AF.Health
             onRevive?.Invoke();
 
             HandleCollisions(true);
+
+            HideHealthbar();
         }
 
         void HandleCollisions(bool activate)
@@ -191,6 +201,26 @@ namespace AF.Health
             }
 
             return _characterLockOnRef;
+        }
+
+        void UpdateHealthbar()
+        {
+            if (characterManager.characterBossController.IsBoss())
+            {
+                return;
+            }
+
+            characterHealthUI.UpdateUI();
+        }
+
+        void ShowHealthbar()
+        {
+            characterHealthUI.gameObject.SetActive(true);
+        }
+
+        void HideHealthbar()
+        {
+            characterHealthUI.gameObject.SetActive(false);
         }
     }
 

@@ -29,5 +29,13 @@ namespace AF
             this.currentActivity = activity;
             this.currentActivity.OnActivityStart(GetCharacter());
         }
+
+        public void OnActivityPerformed()
+        {
+            if (currentActivity != null)
+            {
+                currentActivity.OnActivityPerformed(GetCharacter());
+            }
+        }
     }
 }

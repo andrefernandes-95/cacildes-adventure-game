@@ -22,6 +22,9 @@ namespace AF
         public StatusEffect[] statusEffectsWhenConsumed;
         public float effectsDurationInSeconds = 6;
 
+        [Header("Consumable Effect")]
+        public ConsumableEffect consumableEffect;
+
         public string GetFormattedRemovedStatusEffects()
         {
             string result = "";

@@ -9,10 +9,28 @@ namespace AF
 
         [SerializeField] IdleState idleState;
 
+        GenericTrigger genericTrigger => GetComponent<GenericTrigger>();
+
         private void Awake()
         {
             onMoment_Start.AddListener(OnMomentStart);
             onMoment_End.AddListener(OnMomentEnd);
+
+            dialogueOwner.targetManager.onTargetSet_Event.AddListener(() =>
+            {
+                if (genericTrigger != null)
+                {
+                    genericTrigger.DisableCapturable();
+                }
+            });
+
+            dialogueOwner.targetManager.onClearTarget_Event.AddListener(() =>
+            {
+                if (genericTrigger != null)
+                {
+                    genericTrigger.TurnCapturable();
+                }
+            });
         }
 
         void OnMomentStart()

@@ -55,6 +55,8 @@ namespace AF
         public CharacterBaseDodgeController characterBaseDodgeController;
         public CharacterAbilityBaseManager characterAbilityBaseManager;
         public CharacterBaseActivityManager characterBaseActivityManager;
+        public CharacterBaseConsumableManager characterBaseConsumableManager;
+
         public abstract void ResetStates();
 
         public bool IsBusy()

@@ -294,5 +294,19 @@ namespace AF.Inventory
         {
             return ownedArrows.Count(arrow => arrowToCheck.EqualsTo(arrow));
         }
+
+        public int GetConsumableAmount(Consumable consumable)
+        {
+            return ownedConsumables.Count(ownedConsumable => ownedConsumable.EqualsTo(consumable));
+        }
+
+        public void RemoveConsumable(Consumable consumable)
+        {
+            int idx = ownedConsumables.FindIndex(x => x.Equals(consumable));
+            if (idx != -1)
+            {
+                ownedConsumables.RemoveAt(idx);
+            }
+        }
     }
 }

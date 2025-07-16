@@ -72,26 +72,7 @@ namespace AF
 
         public override Damage GetDamage(CharacterBaseManager attacker)
         {
-            if (isRightHand)
-            {
-                Weapon rightWeapon = attacker.characterBaseWeaponsManager.GetCurrentRightWeapon();
-                if (rightWeapon != null)
-                {
-                    Damage weaponDamage = rightWeapon.damage.Clone();
-                    weaponDamage.Combine(damage);
-                    return weaponDamage;
-                }
-            }
-
-            Weapon leftWeapon = attacker.characterBaseWeaponsManager.GetCurrentLeftWeapon();
-            if (leftWeapon != null)
-            {
-                Damage weaponDamage = leftWeapon.damage.Clone();
-                weaponDamage.Combine(damage);
-                return weaponDamage;
-            }
-
-            return damage;
+            return AbilityUtils.GetAbilityDamageForAIAttack(attacker, damage);
         }
 
         public override void OnFinished(CharacterManager characterManager)

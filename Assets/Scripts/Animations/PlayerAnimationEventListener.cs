@@ -357,5 +357,10 @@ namespace AF.Animations
                 playerManager.playerWeaponsManager.headHitbox.DisableHitbox();
             }
         }
+
+        public void OnUseConsumable()
+        {
+            playerManager.playerConsumableManager.OnConsumableUse();
+        }
     }
 }

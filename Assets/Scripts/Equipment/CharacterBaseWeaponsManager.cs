@@ -20,18 +20,7 @@ namespace AF
         public CharacterWeaponHitbox currentWeaponInstance;
         public CharacterWeaponHitbox currentShieldInstance;
 
-        [Header("Components")]
-        [SerializeField] WeaponsManager weaponsManager;
-
         public float DEFAULT_WEAPON_BUFF_DURATION = 120f;
-
-        void Awake()
-        {
-            if (weaponsManager == null)
-            {
-                weaponsManager = FindAnyObjectByType<WeaponsManager>(FindObjectsInactive.Include);
-            }
-        }
 
         private void Start()
         {

@@ -78,5 +78,6 @@ namespace AF.Animations
 
         public void OnActivityPerformed();
 
+        public void OnUseConsumable();
     }
 }

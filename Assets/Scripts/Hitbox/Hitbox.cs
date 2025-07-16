@@ -17,7 +17,7 @@ namespace AF
 
         [Header("Trails")]
         [HideInInspector] public TrailRenderer trailRenderer;
-        public BoxCollider hitCollider => GetComponent<BoxCollider>();
+        public Collider hitCollider => GetComponent<Collider>();
 
         [Header("Tags To Ignore")]
         public List<string> tagsToIgnore = new();

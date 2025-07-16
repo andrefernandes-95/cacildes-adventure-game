@@ -30,6 +30,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1149856362500921210}
+  - {fileID: 5791831886253428741}
   - {fileID: 2032756102983857372}
   - {fileID: 8532092522774373223}
   - {fileID: 6037441344242549254}
@@ -320,23 +321,12 @@ MonoBehaviour:
           m_StringArgument: IsSitting
           m_BoolArgument: 1
         m_CallState: 2
+  bonfireId: 
   bonfireName: 
-  bonfireName_Localized:
-    m_TableReference:
-      m_TableCollectionName: 
-    m_TableEntryReference:
-      m_KeyId: 0
-      m_Key: 
-    m_FallbackState: 0
-    m_WaitForCompletion: 0
-    m_LocalVariables: []
   canBeTravelledTo: 1
   canUseTravelToOtherMaps: 1
   bonfiresDatabase: {fileID: 11400000, guid: 7c00954bbe23c8240bf4234a7f7c826f, type: 2}
   playerTransformRef: {fileID: 1149856362500921210}
-  references:
-    version: 2
-    RefIds: []
 --- !u!1 &2769757735696344421
 GameObject:
   m_ObjectHideFlags: 0
@@ -5787,6 +5777,55 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!1 &9194782891652548934
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5791831886253428741}
+  - component: {fileID: 3327745559704713806}
+  m_Layer: 0
+  m_Name: NPC Activity - Sitting at bonfire
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5791831886253428741
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9194782891652548934}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: 1.206, y: 0, z: 0.68}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7994215454925277786}
+  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
+--- !u!114 &3327745559704713806
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9194782891652548934}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: af13f3bbebee7b34197330216079d537, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  stoppingDistance: 0.5
+  bonfireLookReference: {fileID: 8532092522774373223}
+  transformRef: {fileID: 5791831886253428741}
+  bonfireFireToLitUp: {fileID: 7830677095115337530}
+  durationInSeconds: 30
 --- !u!1001 &7290526747525701514
 PrefabInstance:
   m_ObjectHideFlags: 0

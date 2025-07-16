@@ -1,4 +1,3 @@
-
 In Dev:
 
 - Attack Stat Manager to store current damage for right and left weapon, we should also store bonus damage from str, dex and int into separate variables for consultation (for right and left hand)
@@ -8,22 +7,26 @@ In Dev:
 - Block state permanent in companions and ai
 - Companions can find weapons on fallen enemies, and we should store the weapons
 
-
 Next:
+
+- Made wood sword upgradeable
 - Inventory weight, if too heavy, do heavy roll ( do not hinder jump )
 - Rework stat scale to work with module operators for every 2 or 3 levels (25 bonus to health every level)
 - BUG: Accessories can be equipped on other slots
 
 [CRAFTING]
+
 - Crafting upgrades to +10
 - Create Iron Shards up to 10
 - We should be able to upgrade spells and armors
 
 [UI]
+
 - Add category to received items popup
 - Add Damage Type Label to weapons (Slash, Blunt, etc)
 
 [CORE_MECHANICS]
+
 - Fix gold dupping by not reloading save data, we need to check boss story events to not use monobehaviour ids, and rely on quest progress instead
 
 To Do:
@@ -39,12 +42,11 @@ To Do:
 - Add note to boss tokens which is: Talk to Altaire in Snailcliff to unlock boss weapons
 - Add total game progress
 - Buff weapons made easier
-- PS4 Gamepad not showing correct icns 
+- PS4 Gamepad not showing correct icns
 - Review enemies
 - Backpack accessory - allow more items in th eback
 
 Low:
-
 
 - Ability should consume stamina and mana
 - Requirements for spells can still exist, but damage will be lessen
@@ -83,11 +85,9 @@ Low:
 - Ring that enhances charged spells damages
 - Ring that allows any weapon to use powerstance regardless of differnet categories
 
-
 BACKLOG:
 
 - Setup Analytics for Unity
-
 
 Done:
 

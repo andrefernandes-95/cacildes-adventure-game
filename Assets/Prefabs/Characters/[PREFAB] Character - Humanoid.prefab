@@ -60,6 +60,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -191,6 +194,9 @@ TrailRenderer:
   m_ReflectionProbeUsage: 0
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -332,6 +338,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   greeting: Lemon zest... Two grinds of black pepper... Maybe more.
   duration: 5
+  gesture: {fileID: 0}
+  shouldFacePlayerWhenGreeting: 1
 --- !u!1001 &1642463159905610125
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -407,6 +415,10 @@ PrefabInstance:
     - target: {fileID: 2029026628384904377, guid: 0dc023b7099ec0d4382589bad3b1d108, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2165521607436182418, guid: 0dc023b7099ec0d4382589bad3b1d108, type: 3}
+      propertyPath: transformRef
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 2621631975807239129, guid: 0dc023b7099ec0d4382589bad3b1d108, type: 3}
       propertyPath: currentState
@@ -500,6 +512,14 @@ PrefabInstance:
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 3f45a2bfb8b917a448e3467de45e179d, type: 2}
+    - target: {fileID: 4448357718069574994, guid: 0dc023b7099ec0d4382589bad3b1d108, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4448357718069574994, guid: 0dc023b7099ec0d4382589bad3b1d108, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4537469322808011498, guid: 0dc023b7099ec0d4382589bad3b1d108, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -592,6 +612,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6063044817768823121, guid: 0dc023b7099ec0d4382589bad3b1d108, type: 3}
+      propertyPath: transformRef
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 6155146739327157142, guid: 0dc023b7099ec0d4382589bad3b1d108, type: 3}
       propertyPath: m_IsActive
       value: 1
@@ -668,10 +692,30 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7353292270462359461, guid: 0dc023b7099ec0d4382589bad3b1d108, type: 3}
-      propertyPath: 'weapons.Array.data[0]'
-      value: 
-      objectReference: {fileID: 5619372727836968618}
+    - target: {fileID: 7443398021152945735, guid: 0dc023b7099ec0d4382589bad3b1d108, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7443398021152945735, guid: 0dc023b7099ec0d4382589bad3b1d108, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7443398021152945735, guid: 0dc023b7099ec0d4382589bad3b1d108, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7443398021152945735, guid: 0dc023b7099ec0d4382589bad3b1d108, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7443398021152945735, guid: 0dc023b7099ec0d4382589bad3b1d108, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7443398021152945735, guid: 0dc023b7099ec0d4382589bad3b1d108, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7750829825110630602, guid: 0dc023b7099ec0d4382589bad3b1d108, type: 3}
       propertyPath: m_IsActive
       value: 1
@@ -736,6 +780,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 8701266370095907941, guid: 0dc023b7099ec0d4382589bad3b1d108, type: 3}
+      propertyPath: chaseState
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 8818868876428911327, guid: 0dc023b7099ec0d4382589bad3b1d108, type: 3}
       propertyPath: onTakeDamage.m_PersistentCalls.m_Calls.Array.size
       value: 3
@@ -751,7 +799,7 @@ PrefabInstance:
     - target: {fileID: 8818868876428911327, guid: 0dc023b7099ec0d4382589bad3b1d108, type: 3}
       propertyPath: onTakeDamage.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 6092401240340013479}
+      objectReference: {fileID: 0}
     - target: {fileID: 8818868876428911327, guid: 0dc023b7099ec0d4382589bad3b1d108, type: 3}
       propertyPath: onTakeDamage.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
@@ -816,6 +864,10 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 9038299807041895652, guid: 0dc023b7099ec0d4382589bad3b1d108, type: 3}
+      propertyPath: characterVfxRoot
+      value: 
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
     - {fileID: 5096080073923502155, guid: 0dc023b7099ec0d4382589bad3b1d108, type: 3}
@@ -841,7 +893,7 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 8604187818890481140}
     - targetCorrespondingSourceObject: {fileID: 663694065089165705, guid: 0dc023b7099ec0d4382589bad3b1d108, type: 3}
-      insertIndex: 0
+      insertIndex: -1
       addedObject: {fileID: 26303261801550252}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0dc023b7099ec0d4382589bad3b1d108, type: 3}
@@ -898,17 +950,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6428397718215034728, guid: 0dc023b7099ec0d4382589bad3b1d108, type: 3}
   m_PrefabInstance: {fileID: 1642463159905610125}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &6092401240340013479 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4775993929164867626, guid: 0dc023b7099ec0d4382589bad3b1d108, type: 3}
-  m_PrefabInstance: {fileID: 1642463159905610125}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2f73e7d13eb68004a8b998684453e595, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &6990299611181770861 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8631636866818146784, guid: 0dc023b7099ec0d4382589bad3b1d108, type: 3}
@@ -1005,9 +1046,6 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 1056949161560036, guid: dafb40339da77644f9dcf99de8a054bd, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 5619372727836968618}
-    - targetCorrespondingSourceObject: {fileID: 1056949161560036, guid: dafb40339da77644f9dcf99de8a054bd, type: 3}
-      insertIndex: -1
       addedObject: {fileID: 3535137930184607547}
   m_SourcePrefab: {fileID: 100100000, guid: dafb40339da77644f9dcf99de8a054bd, type: 3}
 --- !u!1 &8603375232192942614 stripped
@@ -1015,36 +1053,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 1056949161560036, guid: dafb40339da77644f9dcf99de8a054bd, type: 3}
   m_PrefabInstance: {fileID: 8603728492830594546}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &5619372727836968618
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8603375232192942614}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2dd29b7d2ab7447e197e24809d8d5108, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  weapon: {fileID: 0}
-  trailRenderer: {fileID: 601943056297872968}
-  character: {fileID: 1055857268342400634}
-  tagsToIgnore: []
-  swingSfx: {fileID: 0}
-  hitSfx: {fileID: 0}
-  combatAudioSource: {fileID: 0}
-  onOpenHitbox:
-    m_PersistentCalls:
-      m_Calls: []
-  onCloseHitbox:
-    m_PersistentCalls:
-      m_Calls: []
-  onDamageInflicted:
-    m_PersistentCalls:
-      m_Calls: []
-  characterTwoHandRef: {fileID: 0}
-  characterWeaponBuffs: {fileID: 0}
 --- !u!65 &3535137930184607547
 BoxCollider:
   m_ObjectHideFlags: 0

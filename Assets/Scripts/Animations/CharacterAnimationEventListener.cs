@@ -123,11 +123,24 @@ namespace AF.Animations
             {
                 characterManager.characterWeaponsManager.currentShieldInstance.EnableHitbox();
             }
+            else if (characterManager.characterWeaponsManager.leftHandHitbox != null)
+            {
+                characterManager.characterWeaponsManager.leftHandHitbox.EnableHitbox();
+            }
         }
 
         public void CloseLeftWeaponHitbox()
         {
             onLeftWeaponHitboxClose?.Invoke();
+
+            if (characterManager.characterWeaponsManager.currentShieldInstance != null)
+            {
+                characterManager.characterWeaponsManager.currentShieldInstance.DisableHitbox();
+            }
+            else if (characterManager.characterWeaponsManager.leftHandHitbox != null)
+            {
+                characterManager.characterWeaponsManager.leftHandHitbox.DisableHitbox();
+            }
         }
 
         public void OpenRightWeaponHitbox()
@@ -138,31 +151,64 @@ namespace AF.Animations
             {
                 characterManager.characterWeaponsManager.currentWeaponInstance.EnableHitbox();
             }
+            else if (characterManager.characterWeaponsManager.rightHandHitbox != null)
+            {
+                characterManager.characterWeaponsManager.rightHandHitbox.EnableHitbox();
+            }
         }
 
         public void CloseRightWeaponHitbox()
         {
             onRightWeaponHitboxClose?.Invoke();
+
+            if (characterManager.characterWeaponsManager.currentWeaponInstance != null)
+            {
+                characterManager.characterWeaponsManager.currentWeaponInstance.DisableHitbox();
+            }
+            else if (characterManager.characterWeaponsManager.rightHandHitbox != null)
+            {
+                characterManager.characterWeaponsManager.rightHandHitbox.DisableHitbox();
+            }
         }
 
         public void OpenLeftFootHitbox()
         {
             onLeftFootHitboxOpen?.Invoke();
+
+            if (characterManager.characterWeaponsManager.leftFootHitbox != null)
+            {
+                characterManager.characterWeaponsManager.leftFootHitbox.EnableHitbox();
+            }
         }
 
         public void CloseLeftFootHitbox()
         {
             onLeftFootHitboxClose?.Invoke();
+
+            if (characterManager.characterWeaponsManager.leftFootHitbox != null)
+            {
+                characterManager.characterWeaponsManager.leftFootHitbox.DisableHitbox();
+            }
         }
 
         public void OpenRightFootHitbox()
         {
             onRightFootHitboxOpen?.Invoke();
+
+            if (characterManager.characterWeaponsManager.rightFootHitbox != null)
+            {
+                characterManager.characterWeaponsManager.rightFootHitbox.EnableHitbox();
+            }
         }
 
         public void CloseRightFootHitbox()
         {
             onRightFootHitboxClose?.Invoke();
+
+            if (characterManager.characterWeaponsManager.rightFootHitbox != null)
+            {
+                characterManager.characterWeaponsManager.rightFootHitbox.DisableHitbox();
+            }
         }
 
         public void EnableRotation()
@@ -364,6 +410,7 @@ namespace AF.Animations
 
         public void OnActivityPerformed()
         {
+            characterManager.characterActivityManager.OnActivityPerformed();
         }
 
 
@@ -381,6 +428,11 @@ namespace AF.Animations
             {
                 characterManager.characterWeaponsManager.headHitbox.DisableHitbox();
             }
+        }
+
+        public void OnUseConsumable()
+        {
+            characterManager.characterConsumableManager.OnConsumableUse();
         }
     }
 }
