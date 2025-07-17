@@ -9,7 +9,7 @@ namespace AF
         {
             characterBaseManager.characterBaseWeaponsManager.HideEquipment();
 
-            characterBaseManager.PlayCrossFadeBusyAnimationWithRootMotion("Activate", .1f);
+            characterBaseManager.PlayBusyAnimationWithRootMotion("Activate");
         }
 
         public override void OnUse(CharacterBaseManager characterBaseManager)

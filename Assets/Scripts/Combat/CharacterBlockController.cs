@@ -79,7 +79,11 @@ namespace AF
         public void HandleBlockEnd()
         {
             (characterManager as CharacterManager).faceTarget = false;
-            characterManager.PlayAnimationWithCrossFade("Idle");
+
+            if (characterManager.health.GetCurrentHealth() > 0)
+            {
+                characterManager.PlayAnimationWithCrossFade("Idle");
+            }
         }
 
         public override void BeginParrying()

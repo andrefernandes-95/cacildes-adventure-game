@@ -29,7 +29,6 @@ namespace AF
                 playerManager.equipmentDatabase.UnequipConsumable(playerManager.equipmentDatabase.currentConsumableIndex);
             }
 
-
             playerManager.playerInventory.RemoveConsumable(consumable);
 
             //playerManager.playerInventory.PrepareItemForConsuming(consumableItem);
@@ -51,11 +50,14 @@ namespace AF
                 return false;
             }
 
-            if (consumable.isRenewable && playerManager.playerInventory.GetConsumableAmount(consumable) <= 0)
+            if (playerManager.playerInventory.GetConsumableAmount(consumable) <= 0)
             {
-                notificationManager.ShowNotification(
-                    Utils.IsPortuguese() ? "Consumível esgotado" : "Consumable depleted",
-                    notificationManager.notEnoughSpells);
+                if (consumable.isRenewable)
+                {
+                    notificationManager.ShowNotification(
+                        Utils.IsPortuguese() ? "Consumível esgotado" : "Consumable depleted",
+                        notificationManager.notEnoughSpells);
+                }
 
                 return false;
             }

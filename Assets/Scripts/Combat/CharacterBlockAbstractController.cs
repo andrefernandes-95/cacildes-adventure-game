@@ -145,17 +145,31 @@ namespace AF
 
             if (currentShield != null)
             {
-                if (blockVisualEffects.ContainsKey(currentShield) && blockVisualEffects[currentShield] != null)
+                // Clean up, if we switch shields or left weapon, it will cause the vfx that was previously instatiated to be deleted
+                // so we need to clean it from the dictionary
+                if (blockVisualEffects.ContainsKey(currentShield) && blockVisualEffects[currentShield] == null)
                 {
-                    blockVisualEffects[currentShield].SetActive(false);
-                    blockVisualEffects[currentShield].SetActive(true);
+                    blockVisualEffects.Remove(currentShield);
                 }
-                else if (currentShield.blockFx != null)
+
+                if (blockVisualEffects.ContainsKey(currentShield))
                 {
-                    GameObject instance = Instantiate(currentShield.blockFx, characterManager.characterTransformHelper.leftHand);
-                    blockVisualEffects.Add(currentShield, instance);
-                    blockVisualEffects[currentShield].SetActive(false);
-                    blockVisualEffects[currentShield].SetActive(true);
+                    if (blockVisualEffects[currentShield] != null)
+                    {
+
+                        blockVisualEffects[currentShield].SetActive(false);
+                        blockVisualEffects[currentShield].SetActive(true);
+                    }
+                }
+                else
+                {
+                    if (currentShield.blockFx != null)
+                    {
+                        GameObject instance = Instantiate(currentShield.blockFx, characterManager.characterTransformHelper.leftHand);
+                        blockVisualEffects.Add(currentShield, instance);
+                        blockVisualEffects[currentShield].SetActive(false);
+                        blockVisualEffects[currentShield].SetActive(true);
+                    }
                 }
             }
             else if (unarmedBlockVfxPrefab != null)

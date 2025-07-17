@@ -273,9 +273,6 @@ namespace AF.UI.EquipmentMenu
             enabled = true;
             tooltipEffectsContainer.Clear();
             tooltipItemSprite.style.backgroundImage = new StyleBackground(item.sprite);
-
-            tooltipItemSprite.style.width = new StyleLength(60);
-            tooltipItemSprite.style.height = new StyleLength(60);
             tooltipItemSprite.style.borderBottomWidth = new StyleFloat(1);
             tooltipItemSprite.style.borderTopWidth = new StyleFloat(1);
             tooltipItemSprite.style.borderLeftWidth = new StyleFloat(1);

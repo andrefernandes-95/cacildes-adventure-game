@@ -591,6 +591,27 @@ namespace AF
             });
         }
 
+        public void LoadGameFromGameOver()
+        {
+            string lastSave = SaveUtils.GetLastSaveFile(SAVE_FILES_FOLDER);
+
+            if (!string.IsNullOrEmpty(lastSave) && QuickSaveBase.RootExists(lastSave))
+            {
+                // Restore player health
+                playerStatsDatabase.currentHealth = playerStatsDatabase.maxHealth;
+                playerStatsDatabase.currentMana = playerStatsDatabase.maxMana;
+                playerStatsDatabase.currentStamina = playerStatsDatabase.maxStamina;
+
+                QuickSaveReader quickSaveReader = QuickSaveReader.Create(lastSave);
+                LoadSceneSettings(quickSaveReader);
+            }
+            else
+            {
+                // We need to return to title screen
+                ResetGameStateAndReturnToTitleScreen(isFromGameOver: true);
+            }
+        }
+
         public void ResetGameStateAndReturnToTitleScreen(bool isFromGameOver)
         {
             ResetGameState(isFromGameOver);

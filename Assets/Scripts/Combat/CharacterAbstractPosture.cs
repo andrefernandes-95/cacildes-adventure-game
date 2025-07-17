@@ -57,6 +57,7 @@ namespace AF
         {
             if (health.GetCurrentHealth() <= 0)
             {
+                postureBarSlider.gameObject.SetActive(false);
                 return;
             }
 

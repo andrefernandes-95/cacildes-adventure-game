@@ -63,7 +63,7 @@ namespace AF
 
             yield return new WaitForSeconds(gameOverDuration);
 
-            saveManager.LoadLastSavedGame(true);
+            saveManager.LoadGameFromGameOver();
         }
     }
 }

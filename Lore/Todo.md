@@ -1,3 +1,17 @@
+organize todo
+
+
+work on redifining story event
+
+
+i die in the boss fight against balbino - it will be active because main quest is not over
+in the boat, replace steel key with a lever, this way, the boss fight always triggers safely even if we die
+
+reload to last rested bonfire (or Cacildes Home if none is found in the save file) - need to store last bonfire rested at
+
+
+
+
 In Dev:
 
 - Attack Stat Manager to store current damage for right and left weapon, we should also store bonus damage from str, dex and int into separate variables for consultation (for right and left hand)

@@ -176,13 +176,16 @@ namespace AF
 
         public IEnumerator Typewrite(string dialogueText, Label messageTextLabel)
         {
-
-            for (int i = 0; i < dialogueText.Length + 1; i++)
-            {
-                var letter = dialogueText.Substring(0, i);
-                messageTextLabel.text = letter;
-                yield return new WaitForSeconds(textDelay);
-            }
+            messageTextLabel.text = dialogueText;
+            UIUtils.PlayPopAnimation(messageTextLabel, new Vector3(1.05f, 1.05f, 1.05f));
+            yield return null;
+            /*
+                        for (int i = 0; i < dialogueText.Length + 1; i++)
+                        {
+                            var letter = dialogueText.Substring(0, i);
+                            messageTextLabel.text = letter;
+                            yield return new WaitForSeconds(textDelay);
+                        } */
 
             hasFinishedTypewriter = true;
         }
@@ -220,6 +223,7 @@ namespace AF
                     cursorManager.HideCursor();
                     selectedResponse = response;
                     response.onResponseSelected?.Invoke();
+                    playerManager.thirdPersonController.LockCameraPosition = false;
                 }, soundbank);
 
                 elementToFocus ??= newDialogueChoiceItem.Q<Button>();
@@ -256,6 +260,56 @@ namespace AF
             }
 
             selectedResponse.onResponseFinished?.Invoke();
+        }
+
+        public void DisplayMessageV2(
+                    Character character,
+                    string message,
+                    Response[] responses
+                )
+        {
+            ShowMessage(character, message);
+
+            // Create a new copy to prevent mutation
+            Response[] clonedResponses = responses.ToArray();
+
+            if (clonedResponses != null && clonedResponses.Length > 0)
+            {
+                DrawResponses(clonedResponses);
+            }
+        }
+
+        public void DrawResponses(Response[] responses)
+        {
+            dialogueChoicePanel.Clear();
+            dialogueChoicePanel.style.display = DisplayStyle.None;
+
+            if (responses.Length <= 0)
+            {
+                dialogueChoicePanel.style.display = DisplayStyle.None;
+                return;
+            }
+
+            dialogueChoicePanel.style.display = DisplayStyle.Flex;
+
+            Button elementToFocus = null;
+
+            foreach (var response in responses)
+            {
+                var newDialogueChoiceItem = dialogueChoiceItem.CloneTree();
+                newDialogueChoiceItem.Q<Button>().text = response.text;
+
+                UIUtils.SetupButton(newDialogueChoiceItem.Q<Button>(), () =>
+                {
+                    response.onResponseSelected?.Invoke();
+                }, soundbank);
+
+                elementToFocus ??= newDialogueChoiceItem.Q<Button>();
+
+                dialogueChoicePanel.Add(newDialogueChoiceItem);
+            }
+
+            elementToFocus?.Focus();
         }
     }
 }

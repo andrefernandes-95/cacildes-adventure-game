@@ -57,9 +57,6 @@ namespace AF
 
         public override void OnUse(CharacterManager characterManager)
         {
-            damage.Multiply(characterManager.characterAbilityManager.GetChargingAmountMultiplier());
-            ApplyDamageScaling(characterManager);
-            characterManager.characterBaseAttackManager.damageBonus = damage;
         }
 
         public override bool CanUseAbility(CharacterBaseManager character)
@@ -70,7 +67,7 @@ namespace AF
 
         public override Damage GetDamage(CharacterBaseManager attacker)
         {
-            return AbilityUtils.GetAbilityDamageForAIAttack(attacker, damage);
+            return damage;
         }
 
         public override void OnFinished(CharacterManager characterManager)

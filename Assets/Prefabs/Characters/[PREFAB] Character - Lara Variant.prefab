@@ -272,6 +272,54 @@ MonoBehaviour:
       m_Calls: []
   maxIntervalBetweenDecidingChaseActions: 5
   companionsDatabase: {fileID: 0}
+--- !u!1 &1126810260484035002
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 655693561929257873}
+  - component: {fileID: 479394654273245386}
+  m_Layer: 31
+  m_Name: Story
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &655693561929257873
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1126810260484035002}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.020155808, y: -0.85556555, z: 0.03337538, w: 0.51622415}
+  m_LocalPosition: {x: 2.5951958, y: 1.5200002, z: -3.5412042}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 7536928339403274877}
+  - {fileID: 7037788991240856099}
+  m_Father: {fileID: 2251295871179364121}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &479394654273245386
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1126810260484035002}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cffb2e8654de98942ae332ba7decad9e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  englishStory: {fileID: 4900000, guid: 14cb98f328e03e044bfc195471ae8696, type: 3}
+  portugueseStory: {fileID: 4900000, guid: 14cb98f328e03e044bfc195471ae8696, type: 3}
 --- !u!1 &2194737102739351972
 GameObject:
   m_ObjectHideFlags: 0
@@ -385,7 +433,7 @@ MonoBehaviour:
   animationSpeed: 1
   hasHyperArmor: 0
   characterManager: {fileID: 7317334718162287056}
---- !u!1 &2997408956220711709
+--- !u!1 &2961283401198803065
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -393,57 +441,59 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1115627408571916863}
-  - component: {fileID: 8292528187878091719}
-  m_Layer: 22
-  m_Name: 'Response:: Looking for my chickens'
+  - component: {fileID: 7536928339403274877}
+  - component: {fileID: 215403177349411066}
+  m_Layer: 31
+  m_Name: Dialogue Event - Buy from Lara
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &1115627408571916863
+--- !u!4 &7536928339403274877
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2997408956220711709}
+  m_GameObject: {fileID: 2961283401198803065}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 8782102159640078040}
+  m_Father: {fileID: 655693561929257873}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8292528187878091719
+--- !u!114 &215403177349411066
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2997408956220711709}
+  m_GameObject: {fileID: 2961283401198803065}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 433ca407a0ceafe46947512bccfaedf4, type: 3}
+  m_Script: {fileID: 11500000, guid: 4ebeddfa90020d34d83963c20ff50ddf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  text: (Tell her about the chickens...)
-  onResponseSelected:
+  eventId: Buy from Lara
+  eventToInvoke:
     m_PersistentCalls:
-      m_Calls: []
-  onResponseFinished:
-    m_PersistentCalls:
-      m_Calls: []
-  subEventPage: {fileID: 0}
-  replier: {fileID: 11400000, guid: 5f2f9baaf00e5e54091fa27c5a82a007, type: 2}
-  reply: I haven't seen any chickens around here. But you know, animals usually leave
-    clues behind no matter where they wander. Maybe keep an eye out for any scattered
-    feathers?
-  reputationAmountToIncrease: 0
-  reputationAmountToDecrease: 0
-  reputationToAwardMonobehaviourID: {fileID: 0}
+      m_Calls:
+      - m_Target: {fileID: 4927455577469768372}
+        m_TargetAssemblyTypeName: AF.Shops.CharacterShop, AF
+        m_MethodName: BuyFromCharacter
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  comment: 
 --- !u!1 &3702460222308866136
 GameObject:
   m_ObjectHideFlags: 0
@@ -637,7 +687,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 8263143461243497766}
+  - {fileID: 655693561929257873}
   m_Father: {fileID: 3117015865857761936}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6520762115120067776
@@ -714,7 +764,7 @@ MonoBehaviour:
       m_Calls: []
   dialogueOwner: {fileID: 7317334718162287056}
   idleState: {fileID: 4705496949753608407}
---- !u!1 &4524847699272918473
+--- !u!1 &4733752281225156551
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -722,55 +772,59 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 8263143461243497766}
-  - component: {fileID: 3787109027266519885}
-  m_Layer: 11
-  m_Name: ':: Message'
+  - component: {fileID: 7037788991240856099}
+  - component: {fileID: 8590979699426331466}
+  m_Layer: 31
+  m_Name: Dialogue Event - Sell to Lara
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &8263143461243497766
+--- !u!4 &7037788991240856099
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4524847699272918473}
+  m_GameObject: {fileID: 4733752281225156551}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 8782102159640078040}
-  - {fileID: 7579784317666393695}
-  - {fileID: 2101919490535045957}
-  - {fileID: 4042454904240023395}
-  m_Father: {fileID: 2251295871179364121}
+  m_Children: []
+  m_Father: {fileID: 655693561929257873}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3787109027266519885
+--- !u!114 &8590979699426331466
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4524847699272918473}
+  m_GameObject: {fileID: 4733752281225156551}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c8aa3f3cae44ad24590de72453d413b7, type: 3}
+  m_Script: {fileID: 11500000, guid: 4ebeddfa90020d34d83963c20ff50ddf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  character: {fileID: 11400000, guid: 5f2f9baaf00e5e54091fa27c5a82a007, type: 2}
-  message: You're that boy from the farm down the road, right? Lara's the name. The
-    bees and I are old friends. I can tell by the look on your face that something's
-    bothering you. Maybe I can help?
-  responses:
-  - {fileID: 8292528187878091719}
-  - {fileID: 3499416551452122869}
-  - {fileID: 7293506379134377495}
-  - {fileID: 379821737166132254}
+  eventId: Sell to Lara
+  eventToInvoke:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 4927455577469768372}
+        m_TargetAssemblyTypeName: AF.Shops.CharacterShop, AF
+        m_MethodName: SellToCharacter
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  comment: 
 --- !u!1 &5532351105613420653
 GameObject:
   m_ObjectHideFlags: 0
@@ -820,125 +874,6 @@ MonoBehaviour:
   duration: 5
   gesture: {fileID: 0}
   shouldFacePlayerWhenGreeting: 1
---- !u!1 &5999481648203398920
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 7579784317666393695}
-  - component: {fileID: 3499416551452122869}
-  m_Layer: 22
-  m_Name: 'Response:: Buy Items'
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &7579784317666393695
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5999481648203398920}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 8263143461243497766}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3499416551452122869
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5999481648203398920}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 433ca407a0ceafe46947512bccfaedf4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  text: (Buy items)
-  onResponseSelected:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 4927455577469768372}
-        m_TargetAssemblyTypeName: AF.Shops.CharacterShop, AF
-        m_MethodName: BuyFromCharacter
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  onResponseFinished:
-    m_PersistentCalls:
-      m_Calls: []
-  subEventPage: {fileID: 0}
-  replier: {fileID: 0}
-  reply: 
-  reputationAmountToIncrease: 0
-  reputationAmountToDecrease: 0
-  reputationToAwardMonobehaviourID: {fileID: 0}
---- !u!1 &7349331037906355697
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 8782102159640078040}
-  - component: {fileID: 7201205930239202786}
-  m_Layer: 22
-  m_Name: Quest Dependant
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &8782102159640078040
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7349331037906355697}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 1115627408571916863}
-  m_Father: {fileID: 8263143461243497766}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7201205930239202786
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7349331037906355697}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e9221b9cbf6915f40900275df3d68d41, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  questParent: {fileID: 0}
-  questProgresses: 
-  shouldBeWithinRange: 1
-  shouldBeOutsideRange: 0
-  listenForQuestChanges: 1
 --- !u!1 &7829465806046228377
 GameObject:
   m_ObjectHideFlags: 0
@@ -1172,132 +1107,6 @@ MonoBehaviour:
     m_Bits: 1
   rayDistanceDownwards: 4
   footstepCooldown: 0.25
---- !u!1 &8745959899121224514
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2101919490535045957}
-  - component: {fileID: 7293506379134377495}
-  m_Layer: 22
-  m_Name: 'Response:: Sell Items'
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &2101919490535045957
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8745959899121224514}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 8263143461243497766}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7293506379134377495
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8745959899121224514}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 433ca407a0ceafe46947512bccfaedf4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  text: (Sell items)
-  onResponseSelected:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 4927455577469768372}
-        m_TargetAssemblyTypeName: AF.Shops.CharacterShop, AF
-        m_MethodName: SellToCharacter
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  onResponseFinished:
-    m_PersistentCalls:
-      m_Calls: []
-  subEventPage: {fileID: 0}
-  replier: {fileID: 0}
-  reply: 
-  reputationAmountToIncrease: 0
-  reputationAmountToDecrease: 0
-  reputationToAwardMonobehaviourID: {fileID: 0}
---- !u!1 &9121508623378125511
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 4042454904240023395}
-  - component: {fileID: 379821737166132254}
-  m_Layer: 22
-  m_Name: 'Response:: Goodbye'
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &4042454904240023395
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9121508623378125511}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 8263143461243497766}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &379821737166132254
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9121508623378125511}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 433ca407a0ceafe46947512bccfaedf4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  text: Goodbye
-  onResponseSelected:
-    m_PersistentCalls:
-      m_Calls: []
-  onResponseFinished:
-    m_PersistentCalls:
-      m_Calls: []
-  subEventPage: {fileID: 0}
-  replier: {fileID: 0}
-  reply: 
-  reputationAmountToIncrease: 0
-  reputationAmountToDecrease: 0
-  reputationToAwardMonobehaviourID: {fileID: 0}
 --- !u!1001 &3335254751470111537
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2220,22 +2029,6 @@ PrefabInstance:
       propertyPath: responses.Array.size
       value: 4
       objectReference: {fileID: 0}
-    - target: {fileID: 2738698598456507154, guid: 1d4ad8111310603419a605972d4f4d41, type: 3}
-      propertyPath: 'responses.Array.data[0]'
-      value: 
-      objectReference: {fileID: 8292528187878091719}
-    - target: {fileID: 2738698598456507154, guid: 1d4ad8111310603419a605972d4f4d41, type: 3}
-      propertyPath: 'responses.Array.data[1]'
-      value: 
-      objectReference: {fileID: 3499416551452122869}
-    - target: {fileID: 2738698598456507154, guid: 1d4ad8111310603419a605972d4f4d41, type: 3}
-      propertyPath: 'responses.Array.data[2]'
-      value: 
-      objectReference: {fileID: 7293506379134377495}
-    - target: {fileID: 2738698598456507154, guid: 1d4ad8111310603419a605972d4f4d41, type: 3}
-      propertyPath: 'responses.Array.data[3]'
-      value: 
-      objectReference: {fileID: 379821737166132254}
     - target: {fileID: 2749541340287645881, guid: 1d4ad8111310603419a605972d4f4d41, type: 3}
       propertyPath: nameOfParentGameObjectToAttachTo
       value: SM_Chr_Rider_01

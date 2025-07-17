@@ -122,6 +122,15 @@ namespace AF.Health
 
             onDeath?.Invoke();
 
+            // Disable state machine
+            characterManager.stateManager.gameObject.SetActive(false);
+
+            // Give Loot
+            characterManager.characterLoot.GiveLoot();
+
+            // Play Death Animation
+            characterManager.PlayBusyAnimationWithRootMotion("Dying");
+
             // Disable enemy colliders so they don't block doors and other places
             HandleCollisions(false);
             HideHealthbar();
@@ -154,6 +163,8 @@ namespace AF.Health
             hasRunHalthHealthEvent = false;
             RestoreFullHealth();
             onRevive?.Invoke();
+
+            characterManager.stateManager.gameObject.SetActive(true);
 
             HandleCollisions(true);
 
