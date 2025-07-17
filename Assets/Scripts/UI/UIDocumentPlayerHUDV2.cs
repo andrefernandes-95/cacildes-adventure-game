@@ -275,7 +275,7 @@ namespace AF
                 : new StyleBackground(unequippedWeaponSlot);
 
             quickItemName.text = equipmentDatabase.GetCurrentConsumable() != null ?
-                equipmentDatabase.GetCurrentConsumable().GetName() + $" ({inventoryDatabase.GetItemAmount(equipmentDatabase.GetCurrentConsumable())})"
+                equipmentDatabase.GetCurrentConsumable().GetName() + $" ({playerManager.playerInventory.GetConsumableAmount(equipmentDatabase.GetCurrentConsumable())})"
                 : "";
 
             consumableSlotContainer.style.unityBackgroundScaleMode = ScaleMode.ScaleAndCrop;

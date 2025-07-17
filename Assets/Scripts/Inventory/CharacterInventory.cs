@@ -166,7 +166,7 @@ namespace AF
 
         public override void RemoveConsumable(Consumable consumable)
         {
-            int idx = ownedConsumables.FindIndex(x => x.Equals(consumable));
+            int idx = ownedConsumables.FindIndex(x => x.EqualsTo(consumable));
             if (idx != -1)
             {
                 ownedConsumables.RemoveAt(idx);

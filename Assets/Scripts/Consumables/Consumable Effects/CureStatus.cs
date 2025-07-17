@@ -30,7 +30,7 @@ namespace AF
             potionPrefabInstance.transform.localPosition = consumableLocalPosition;
             potionPrefabInstance.transform.localRotation = Quaternion.Euler(consumableLocalRotation);
 
-            characterBaseManager.PlayCrossFadeBusyAnimationWithRootMotion(startAnimation, .1f);
+            characterBaseManager.PlayBusyAnimationWithRootMotion(startAnimation);
         }
 
         public override void OnUse(CharacterBaseManager characterBaseManager)

@@ -33,6 +33,7 @@ namespace AF
         public CharacterDodgeController characterDodgeController;
         public CharacterActivityManager characterActivityManager;
         public CharacterConsumableManager characterConsumableManager;
+        public CharacterLoot characterLoot;
 
         // Animator Overrides
         [HideInInspector] public AnimatorOverrideController animatorOverrideController;

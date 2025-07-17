@@ -176,13 +176,16 @@ namespace AF
 
         public IEnumerator Typewrite(string dialogueText, Label messageTextLabel)
         {
-
-            for (int i = 0; i < dialogueText.Length + 1; i++)
-            {
-                var letter = dialogueText.Substring(0, i);
-                messageTextLabel.text = letter;
-                yield return new WaitForSeconds(textDelay);
-            }
+            messageTextLabel.text = dialogueText;
+            UIUtils.PlayPopAnimation(messageTextLabel, new Vector3(1.05f, 1.05f, 1.05f));
+            yield return null;
+            /*
+                        for (int i = 0; i < dialogueText.Length + 1; i++)
+                        {
+                            var letter = dialogueText.Substring(0, i);
+                            messageTextLabel.text = letter;
+                            yield return new WaitForSeconds(textDelay);
+                        } */
 
             hasFinishedTypewriter = true;
         }
@@ -220,6 +223,7 @@ namespace AF
                     cursorManager.HideCursor();
                     selectedResponse = response;
                     response.onResponseSelected?.Invoke();
+                    playerManager.thirdPersonController.LockCameraPosition = false;
                 }, soundbank);
 
                 elementToFocus ??= newDialogueChoiceItem.Q<Button>();
