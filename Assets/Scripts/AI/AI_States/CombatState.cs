@@ -57,9 +57,9 @@ namespace AF
         private bool HasValidTarget()
         {
             var target = characterManager.targetManager.currentTarget;
+
             if (target == null || target.health.GetCurrentHealth() <= 0)
             {
-                characterManager.targetManager.ClearTarget();
                 return false;
             }
 

@@ -12,7 +12,7 @@ namespace AF
 
         private void Awake()
         {
-            defaultMaxPostureDamage = maxPostureDamage;
+            defaultMaxPostureDamage = characterBaseManager.combatant != null ? characterBaseManager.combatant.maximumPosture : maxPostureDamage;
         }
 
         private void Start()

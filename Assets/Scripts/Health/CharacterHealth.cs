@@ -138,7 +138,8 @@ namespace AF.Health
 
         public override int GetMaxHealth()
         {
-            int value = Utils.ScaleWithCurrentNewGameIteration(maxHealth + bonusHealth + bonusHealthFromCompanions, gameSession.currentGameIteration, gameSession.newGamePlusScalingFactor);
+            int maxHealthValue = characterManager.combatant != null ? characterManager.combatant.maximumHealth : this.maxHealth;
+            int value = Utils.ScaleWithCurrentNewGameIteration(maxHealthValue + bonusHealth + bonusHealthFromCompanions, gameSession.currentGameIteration, gameSession.newGamePlusScalingFactor);
 
             if (hasHealthCutInHalf)
             {
@@ -221,17 +222,17 @@ namespace AF.Health
                 return;
             }
 
-            characterHealthUI.UpdateUI();
+            characterHealthUI?.UpdateUI();
         }
 
         void ShowHealthbar()
         {
-            characterHealthUI.gameObject.SetActive(true);
+            characterHealthUI?.gameObject.SetActive(true);
         }
 
         void HideHealthbar()
         {
-            characterHealthUI.gameObject.SetActive(false);
+            characterHealthUI?.gameObject.SetActive(false);
         }
     }
 

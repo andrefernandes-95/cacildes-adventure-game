@@ -229,7 +229,7 @@ namespace AF
 
         public void FilterIncomingDamage(Damage incomingDamage)
         {
-            if (damagedAbsorbed.physical > 0)
+            if (incomingDamage.physical > 0)
             {
                 incomingDamage.physical -= Mathf.Max(1, damagedAbsorbed.physical);
 
@@ -237,58 +237,91 @@ namespace AF
                 switch (incomingDamage.weaponAttackType)
                 {
                     case WeaponAttackType.Slash:
-                        incomingDamage.physical = Mathf.Max(1, (int)(incomingDamage.physical * slashDamageAbsorption));
+                        incomingDamage.physical = Mathf.Max(1, (int)(incomingDamage.physical
+                            * (character.combatant != null ? character.combatant.slashAbsorption : slashDamageAbsorption)));
                         break;
                     case WeaponAttackType.Blunt:
-                        incomingDamage.physical = Mathf.Max(1, (int)(incomingDamage.physical * bluntDamageAbsorption));
+                        incomingDamage.physical = Mathf.Max(1, (int)(incomingDamage.physical
+                            * (character.combatant != null ? character.combatant.bluntAbsorption : bluntDamageAbsorption)));
                         break;
                     case WeaponAttackType.Pierce:
-                        incomingDamage.physical = Mathf.Max(1, (int)(incomingDamage.physical * pierceDamageAbsorption));
+                        incomingDamage.physical = Mathf.Max(1, (int)(incomingDamage.physical
+                            * (character.combatant != null ? character.combatant.pierceAbsorption : pierceDamageAbsorption)));
                         break;
                 }
             }
 
-            if (damagedAbsorbed.fire > 0)
+            if (incomingDamage.fire > 0)
             {
                 incomingDamage.fire -= Mathf.Max(0, damagedAbsorbed.fire);
+
+                if (character.combatant != null)
+                {
+                    incomingDamage.fire = (int)(incomingDamage.fire * character.combatant.fireAbsorption * character.combatant.fireBonus);
+                }
             }
 
-            if (damagedAbsorbed.frost > 0)
+            if (incomingDamage.frost > 0)
             {
                 incomingDamage.frost -= Mathf.Max(0, damagedAbsorbed.frost);
+
+                if (character.combatant != null)
+                {
+                    incomingDamage.frost = (int)(incomingDamage.frost * character.combatant.frostAbsorption * character.combatant.frostBonus);
+                }
             }
 
-            if (damagedAbsorbed.water > 0)
+            if (incomingDamage.water > 0)
             {
                 incomingDamage.water -= Mathf.Max(0, damagedAbsorbed.water);
+
+                if (character.combatant != null)
+                {
+                    incomingDamage.water = (int)(incomingDamage.water * character.combatant.waterAbsorption * character.combatant.waterBonus);
+                }
             }
 
-            if (damagedAbsorbed.darkness > 0)
+            if (incomingDamage.darkness > 0)
             {
                 incomingDamage.darkness -= Mathf.Max(0, damagedAbsorbed.darkness);
+
+                if (character.combatant != null)
+                {
+                    incomingDamage.darkness = (int)(incomingDamage.darkness * character.combatant.darknessAbsorption * character.combatant.darknessBonus);
+                }
             }
 
-            if (damagedAbsorbed.lightning > 0)
+            if (incomingDamage.lightning > 0)
             {
                 incomingDamage.lightning -= Mathf.Max(0, damagedAbsorbed.lightning);
+
+                if (character.combatant != null)
+                {
+                    incomingDamage.lightning = (int)(incomingDamage.lightning * character.combatant.lightningAbsorption * character.combatant.lightningBonus);
+                }
             }
 
-            if (damagedAbsorbed.magic > 0)
+            if (incomingDamage.magic > 0)
             {
                 incomingDamage.magic -= Mathf.Max(0, damagedAbsorbed.magic);
+
+                if (character.combatant != null)
+                {
+                    incomingDamage.magic = (int)(incomingDamage.magic * character.combatant.magicAbsorption * character.combatant.magicBonus);
+                }
             }
 
-            if (damagedAbsorbed.postureDamage > 0)
+            if (incomingDamage.postureDamage > 0)
             {
                 incomingDamage.postureDamage -= Mathf.Max(1, damagedAbsorbed.postureDamage);
             }
 
-            if (damagedAbsorbed.poiseDamage > 0)
+            if (incomingDamage.poiseDamage > 0)
             {
                 incomingDamage.poiseDamage -= Mathf.Max(1, damagedAbsorbed.poiseDamage);
             }
 
-            if (damagedAbsorbed.pushForce > 0)
+            if (incomingDamage.pushForce > 0)
             {
                 incomingDamage.pushForce -= damagedAbsorbed.pushForce;
                 incomingDamage.pushForce = Mathf.Max(0, incomingDamage.pushForce);
@@ -311,6 +344,12 @@ namespace AF
                     }
 
                     float finalAmount = Mathf.Max(1, effectEntry.amountPerHit - match.amountPerHit);
+
+                    /* // TODO: Add Status Effect classes for each status effect so we can easily check the resistance here
+                    if (character.combatant != null)
+                    {
+                        incomingDamage.magic = (int)(incomingDamage.magic * character.combatant.poisonResistance);
+                    } */
 
                     filteredEffects.Add(new StatusEffectEntry
                     {

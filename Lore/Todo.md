@@ -3,6 +3,9 @@
 
 # IN DEV
 
+- Do enemy damage weakeness based on combatant
+- Lock On Is a bit wonky, not responsive enough on click to fetch target
+
 # Reload Mechanic and Fixing Gold
 i die in the boss fight against balbino - it will be active because main quest is not over
 in the boat, replace steel key with a lever, this way, the boss fight always triggers safely even if we die

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using AF.Events;
 using Cinemachine;
 using TigerForge;
@@ -63,6 +64,9 @@ namespace AF
         CinemachineFramingTransposer cinemachineFramingTransposer;
         float defaultTrackedOffsetY;
 
+        List<LockOnRef> _allPossibleTargets = new();
+        bool hasLoadedAllPossibleTargets = false;
+
         private void Awake()
         {
             EventManager.StartListening(EventMessages.ON_CHARACTER_KILLED, OnEnemyKilledCheckIfShouldDisengageLockOn);
@@ -79,7 +83,7 @@ namespace AF
 
         private void Update()
         {
-            Camera.main.useOcclusionCulling = !isLockedOn;
+            // Camera.main.useOcclusionCulling = !isLockedOn;
 
             if (targetSwitchingCooldown < maxTargetSwitchingCooldown)
             {
@@ -126,45 +130,19 @@ namespace AF
             previousInputsLook = inputs.look;
         }
 
-        bool IsViewBlocked()
-        {
-            if (Physics.Linecast(playerHeadRef.transform.position, nearestLockOnTarget.transform.position, out RaycastHit hit, blockLayers))
-            {
-                if (hit.transform != null)
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
         bool IsViewBlocked(Transform target)
         {
-            if (Physics.Linecast(playerHeadRef.transform.position, target.transform.position, out RaycastHit hit, blockLayers))
+            Vector3 start = playerHeadRef.position;
+            Vector3 direction = target.position - start;
+            float distance = direction.magnitude;
+
+            if (Physics.Raycast(start, direction.normalized, out RaycastHit hit, distance, blockLayers))
             {
-                if (hit.transform != null)
-                {
-                    return true;
-                }
+                // If the hit is not part of the target hierarchy, it's blocking the view
+                return !hit.transform.IsChildOf(target);
             }
 
             return false;
-        }
-
-        IEnumerator CheckIfShouldDisengage_Coroutine()
-        {
-            yield return new WaitForSeconds(MAX_TIME_BEFORE_DISENGAGING);
-
-            if (nearestLockOnTarget != null)
-            {
-                if (IsViewBlocked())
-                {
-                    DisableLockOn();
-                }
-            }
-
-            evaluatingIfShouldDisengage = false;
         }
 
         /// <summary>
@@ -181,7 +159,6 @@ namespace AF
                 HandleLockOnClick(false);
             }
         }
-
 
         public void SnapPlayerRotationToLockOnTarget()
         {
@@ -256,104 +233,104 @@ namespace AF
             return true;
         }
 
+        List<LockOnRef> GetAllValidTargets()
+        {
+            if (!hasLoadedAllPossibleTargets)
+            {
+                hasLoadedAllPossibleTargets = true;
+                _allPossibleTargets = FindObjectsByType<LockOnRef>(FindObjectsInactive.Include, FindObjectsSortMode.None).ToList();
+            }
+
+            return _allPossibleTargets;
+        }
+
+        List<LockOnRef> FindValidTargets(bool targetEnemiesInActiveBattle = false)
+        {
+            List<LockOnRef> allTargets = GetAllValidTargets();
+            List<LockOnRef> validTargets = new();
+
+            foreach (var target in allTargets)
+            {
+                if (target.transform.root == playerManager.transform.root)
+                {
+                    continue;
+                }
+
+                float distance = Vector3.Distance(playerManager.transform.position, target.transform.position);
+                if (distance > maximumLockOnDistance)
+                {
+                    continue;
+                }
+
+                if (targetEnemiesInActiveBattle)
+                {
+                    var cm = target.GetComponentInParent<CharacterManager>();
+                    if (cm?.targetManager?.currentTarget == null)
+                    {
+                        continue;
+                    }
+                }
+
+                if (!target.CanLockOn())
+                {
+                    continue;
+                }
+
+                if (!InScreen(target))
+                {
+                    continue;
+                }
+
+                if (IsViewBlocked(target.transform))
+                {
+                    continue;
+                }
+
+                validTargets.Add(target);
+            }
+
+            return validTargets;
+        }
+
+        LockOnRef SelectNearestTarget(List<LockOnRef> targets)
+        {
+            float closest = float.MaxValue;
+            LockOnRef nearest = null;
+
+            foreach (LockOnRef target in targets)
+            {
+                float dist = Vector3.Distance(target.transform.position, playerManager.transform.position);
+                if (dist < closest)
+                {
+                    closest = dist;
+                    nearest = target;
+                }
+            }
+
+            return nearest;
+        }
+
         public void HandleLockOnClick(bool shouldLookForActiveEnemies)
         {
-            if (!CanLockOn())
-            {
-                return;
-            }
+            if (!CanLockOn()) return;
 
-            nearestLockOnTarget = null;
-            availableTargets.Clear();
-
-            float shortestDistance = Mathf.Infinity;
-            LockOnRef[] colliders = FindObjectsByType<LockOnRef>(FindObjectsInactive.Exclude, FindObjectsSortMode.None);
-
-            for (int i = 0; i < colliders.Length; i++)
-            {
-                LockOnRef enemy = colliders[i];
-
-                if (enemy != null)
-                {
-                    if (shouldLookForActiveEnemies)
-                    {
-                        CharacterManager characterManager = enemy.GetComponentInParent<CharacterManager>();
-
-                        if (characterManager != null && characterManager?.targetManager?.currentTarget == null)
-                        {
-                            continue;
-                        }
-                    }
-
-                    float distanceFromTarget = Vector3.Distance(enemy.transform.position, playerManager.transform.position);
-
-                    if (enemy.transform.root != playerManager.transform.root
-                        && InScreen(enemy)
-                        && !IsViewBlocked(enemy.transform)
-                        && distanceFromTarget <= maximumLockOnDistance)
-                    {
-                        availableTargets.Add(enemy);
-                    }
-                }
-            }
-
-            for (int i = 0; i < availableTargets.Count; i++)
-            {
-                float distanceFromTarget = Vector3.Distance(playerManager.transform.position, availableTargets[i].transform.position);
-
-                if (distanceFromTarget < shortestDistance)
-                {
-                    shortestDistance = distanceFromTarget;
-                    if (availableTargets[i].CanLockOn())
-                    {
-                        Vector3 start = playerHeadRef.transform.position;
-                        Vector3 direction = availableTargets[i].transform.position - start;
-
-                        // Draw a debug ray from the start position in the specified direction
-                        Debug.DrawRay(start, direction, Color.red);
-
-                        RaycastHit[] hits;
-                        hits = Physics.RaycastAll(start, direction, maximumLockOnDistance, detectionLayer);
-
-                        foreach (var hit in hits)
-                        {
-                            // Check if the hit object has a specific MonoBehaviour component
-                            LockOnRef component = hit.collider.GetComponent<LockOnRef>() ?? hit.collider.GetComponentInChildren<LockOnRef>();
-
-                            if (component != null)
-                            {
-                                if (component.gameObject == availableTargets[i].gameObject)
-                                {
-                                    nearestLockOnTarget = availableTargets[i];
-                                }
-                            }
-
-                        }
-                    }
-                }
-            }
+            availableTargets = FindValidTargets(shouldLookForActiveEnemies);
+            nearestLockOnTarget = SelectNearestTarget(availableTargets);
 
             if (nearestLockOnTarget != null)
             {
-                if (targetSwitchingCooldown < maxTargetSwitchingCooldown)
-                {
-                    return;
-                }
-
                 soundbank.PlaySound(soundbank.uiLockOn);
-
-                targetSwitchingCooldown = 0f;
                 UpdateCameraProperties(nearestLockOnTarget.transform);
-
                 SnapPlayerRotationToLockOnTarget();
-
                 EnableLockOn();
+                targetSwitchingCooldown = 0f;
             }
             else
             {
                 DisableLockOn();
             }
         }
+
 
         void UpdateCameraProperties(Transform lockOnTarget)
         {
@@ -374,34 +351,28 @@ namespace AF
 
         bool InScreen(LockOnRef target)
         {
-            Vector3 viewPortPosition = Camera.main.WorldToViewportPoint(target.transform.position);
+            Vector3 viewportPosition = Camera.main.WorldToViewportPoint(target.transform.position);
 
-            if (!(viewPortPosition.x > 0) || !(viewPortPosition.x < 1))
+            // Check if the target is within the viewport bounds (and in front of the camera)
+            if (viewportPosition.z < 0 ||
+                viewportPosition.x < 0 || viewportPosition.x > 1 ||
+                viewportPosition.y < 0 || viewportPosition.y > 1)
             {
                 return false;
             }
 
-            if (!(viewPortPosition.y > 0) || !(viewPortPosition.y < 1))
-            {
-                return false;
-            }
-
-            if (!(viewPortPosition.z > 0))
-            {
-                return false;
-            }
-
-            // Calculate the direction from the camera to the target
+            // Check for occlusion (line of sight)
             Vector3 direction = target.transform.position - Camera.main.transform.position;
+            float distance = direction.magnitude;
 
-            // Create a ray from the camera position with the calculated direction
-            Ray ray = new(Camera.main.transform.position, direction);
-
-            // Perform the raycast with the maximum distance
-            if (Physics.Raycast(
-                ray, out RaycastHit hit, Vector3.Distance(target.transform.position, Camera.main.transform.position), blockLayers) && hit.transform != null)
+            // Optional: exclude the target's layer if needed, or use a custom LayerMask
+            if (Physics.Raycast(Camera.main.transform.position, direction.normalized, out RaycastHit hit, distance, blockLayers))
             {
-                return false;
+                // If the hit object is not the target, something is blocking the view
+                if (hit.transform != target.transform && hit.transform.root != target.transform.root)
+                {
+                    return false;
+                }
             }
 
             return true;

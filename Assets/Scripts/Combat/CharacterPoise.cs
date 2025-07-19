@@ -36,6 +36,11 @@ namespace AF
 
         public override int GetMaxPoiseHits()
         {
+            if (characterManager.combatant != null)
+            {
+                return characterManager.combatant.maximumPoise;
+            }
+
             return maxPoiseHits;
         }
 

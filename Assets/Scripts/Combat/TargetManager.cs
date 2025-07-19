@@ -109,28 +109,6 @@ namespace AF.Combat
                     charManager.targetManager.SetTarget(this.characterManager);
                 }
             }
-
-
-        }
-
-        bool CanSetTarget(bool ignorePostureBroken)
-        {
-            if (ignorePostureBroken == false && characterManager.characterPosture.isStunned)
-            {
-                return false;
-            }
-
-            return true;
-        }
-
-        public void ClearTarget()
-        {
-            currentTarget = null;
-            if (onAgressiveTowardsPlayer != null)
-            {
-                onAgressiveTowardsPlayer(false);
-            }
-            onClearTarget_Event?.Invoke();
         }
 
         public bool IsTargetBusy()
@@ -202,21 +180,29 @@ namespace AF.Combat
             if (currentTarget != null)
             {
                 currentTarget.health.onDeath.RemoveListener(OnTargetDeath);
+                currentTarget = null;
             }
 
             if (target != null)
             {
                 target.health.onDeath.AddListener(OnTargetDeath);
-
                 currentTarget = target;
+                onTargetSet_Event?.Invoke();
             }
-
-            onTargetSet_Event?.Invoke();
         }
 
         void OnTargetDeath()
         {
+            ClearTarget();
+        }
+
+        public void ClearTarget()
+        {
             SetTargetInternally(null);
+
+            onAgressiveTowardsPlayer?.Invoke(false);
+
+            onClearTarget_Event?.Invoke();
         }
     }
 }

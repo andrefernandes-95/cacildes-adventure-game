@@ -9,13 +9,18 @@ namespace AF
     {
         public Transform notificationRootTransform;
         public List<CombatNotificationEntry> combatNotificationEntries = new();
-        CombatNotificationManager combatNotificationManager;
+        CombatNotificationManager _combatNotificationManager;
 
         public float yOffset = .25f;
 
-        private void Awake()
+        CombatNotificationManager GetCombatNotificationManager()
         {
-            combatNotificationManager = FindFirstObjectByType<CombatNotificationManager>(FindObjectsInactive.Include);
+            if (_combatNotificationManager == null)
+            {
+                _combatNotificationManager = FindAnyObjectByType<CombatNotificationManager>(FindObjectsInactive.Include);
+            }
+
+            return _combatNotificationManager;
         }
 
         public void AddNotification(string text, Color color)
@@ -29,7 +34,7 @@ namespace AF
                 element.transform.position = new Vector3(element.transform.position.x, element.transform.position.y + yOffset, element.transform.position.z);
             });
 
-            var instance = combatNotificationManager.GetInstance();
+            var instance = GetCombatNotificationManager()?.GetInstance();
             if (instance == null)
             {
                 return;
@@ -46,31 +51,31 @@ namespace AF
 
         public void ShowDamage(int amount)
         {
-            AddNotification("- " + amount, combatNotificationManager.damage);
+            AddNotification("- " + amount, GetCombatNotificationManager().damage);
         }
         public void ShowFireDamage(int amount)
         {
-            AddNotification("- " + amount, combatNotificationManager.fireDamage);
+            AddNotification("- " + amount, GetCombatNotificationManager().fireDamage);
         }
         public void ShowFrostDamage(int amount)
         {
-            AddNotification("- " + amount, combatNotificationManager.frostDamage);
+            AddNotification("- " + amount, GetCombatNotificationManager().frostDamage);
         }
         public void ShowLightningDamage(int amount)
         {
-            AddNotification("- " + amount, combatNotificationManager.lightningDamage);
+            AddNotification("- " + amount, GetCombatNotificationManager().lightningDamage);
         }
         public void ShowDarknessDamage(int amount)
         {
-            AddNotification("- " + amount, combatNotificationManager.darknessDamage);
+            AddNotification("- " + amount, GetCombatNotificationManager().darknessDamage);
         }
         public void ShowWaterDamage(int amount)
         {
-            AddNotification("- " + amount, combatNotificationManager.waterDamage);
+            AddNotification("- " + amount, GetCombatNotificationManager().waterDamage);
         }
         public void ShowMagicDamage(int amount)
         {
-            AddNotification("- " + amount, combatNotificationManager.magicDamage);
+            AddNotification("- " + amount, GetCombatNotificationManager().magicDamage);
         }
         public void ShowStatusFullAmountEffect(string displayedStatusEffectName, Color statusEffectColor)
         {
@@ -87,27 +92,27 @@ namespace AF
         }
         public void ShowCritical(float amount)
         {
-            AddNotification("- " + amount + " " + LocalizationSettings.StringDatabase.GetLocalizedString("UIDocuments", "from critical attack"), combatNotificationManager.criticalDamage);
+            AddNotification("- " + amount + " " + LocalizationSettings.StringDatabase.GetLocalizedString("UIDocuments", "from critical attack"), GetCombatNotificationManager().criticalDamage);
         }
         public void ShowBackstab(float amount)
         {
-            AddNotification("- " + amount + " " + LocalizationSettings.StringDatabase.GetLocalizedString("UIDocuments", "from backstab attack"), combatNotificationManager.criticalDamage);
+            AddNotification("- " + amount + " " + LocalizationSettings.StringDatabase.GetLocalizedString("UIDocuments", "from backstab attack"), GetCombatNotificationManager().criticalDamage);
         }
         public void ShowGuardCounter(float amount)
         {
-            AddNotification("- " + amount + " " + LocalizationSettings.StringDatabase.GetLocalizedString("UIDocuments", "from guard counter attack"), combatNotificationManager.criticalDamage);
+            AddNotification("- " + amount + " " + LocalizationSettings.StringDatabase.GetLocalizedString("UIDocuments", "from guard counter attack"), GetCombatNotificationManager().criticalDamage);
         }
         public void ShowRageCounter(float amount)
         {
-            AddNotification("- " + amount + " " + LocalizationSettings.StringDatabase.GetLocalizedString("UIDocuments", "from rage buildup attack"), combatNotificationManager.criticalDamage);
+            AddNotification("- " + amount + " " + LocalizationSettings.StringDatabase.GetLocalizedString("UIDocuments", "from rage buildup attack"), GetCombatNotificationManager().criticalDamage);
         }
         public void ShowPostureBroken(float amount)
         {
-            AddNotification("- " + amount + " " + LocalizationSettings.StringDatabase.GetLocalizedString("UIDocuments", "from broken posture"), combatNotificationManager.criticalDamage);
+            AddNotification("- " + amount + " " + LocalizationSettings.StringDatabase.GetLocalizedString("UIDocuments", "from broken posture"), GetCombatNotificationManager().criticalDamage);
         }
         public void ShowHealthRestored(int amount)
         {
-            AddNotification("+ " + amount, combatNotificationManager.healthRestored);
+            AddNotification("+ " + amount, GetCombatNotificationManager().healthRestored);
         }
 
     }
