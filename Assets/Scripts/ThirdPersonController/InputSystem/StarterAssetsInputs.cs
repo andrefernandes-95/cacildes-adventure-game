@@ -6,6 +6,7 @@ using System.Collections;
 using AF.UI.EquipmentMenu;
 using AF.Events;
 using TigerForge;
+using UnityEngine.InputSystem.DualShock;
 
 namespace AF
 {
@@ -462,12 +463,12 @@ namespace AF
 
 		public bool IsPS4Controller()
 		{
-			return playerInput.currentControlScheme == "PS4Controller";
+			return Gamepad.current != null && Gamepad.current is DualShockGamepad;
 		}
 
 		public bool IsXboxController()
 		{
-			return playerInput.currentControlScheme == "XboxController";
+			return Gamepad.current != null && Gamepad.current is not DualShockGamepad;
 		}
 
 		public bool IsKeyboardMouse()
@@ -477,7 +478,7 @@ namespace AF
 
 		public bool IsGamepad()
 		{
-			return playerInput.currentControlScheme == "Gamepad";
+			return Gamepad.current != null;
 		}
 
 		void HandleCustomBindings(InputActionMap actionMap)

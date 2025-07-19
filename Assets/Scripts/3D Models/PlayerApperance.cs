@@ -20,7 +20,9 @@ namespace AF
 
         [Header("Components")]
         [SerializeField] GameSettings gameSettings;
+        [SerializeField] GameSession gameSession;
         [SerializeField] SyntyCharacterModelManager syntyCharacterModelManager;
+        [SerializeField] PlayerManager playerManager;
 
         [Header("Default Apperance")]
         public string defaultHair = "Chr_Hair_23";
@@ -29,6 +31,24 @@ namespace AF
         private void Awake()
         {
             EventManager.StartListening(EventMessages.ON_CHARACTER_CUSTOMIZED, syntyCharacterModelManager.UpdateAvatar);
+            EventManager.StartListening(EventMessages.ON_BODY_TYPE_CHANGED, () =>
+            {
+                if (gameSession.gameState == GameSession.GameState.INITIALIZED_AND_SHOWN_TITLE_SCREEN)
+                {
+                    syntyCharacterModelManager.UpdateAvatar();
+
+                    Armor tmpArmor = playerManager.characterBaseEquipment.GetEquippedArmor();
+
+                    playerManager.characterBaseEquipment.UnequipArmor();
+
+                    syntyCharacterModelManager.ToggleTorso(true);
+
+                    if (tmpArmor != null)
+                    {
+                        playerManager.characterBaseEquipment.EquipArmor(tmpArmor);
+                    }
+                }
+            });
         }
 
         public override List<string> GetBeard()

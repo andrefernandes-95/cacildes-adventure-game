@@ -107,5 +107,20 @@ namespace AF
                 playerManager.equipmentDatabase.UnequipShield(slotIndex);
             }
         }
+
+        public override Spell[] GetEquippedSpells()
+        {
+            return playerManager.equipmentDatabase.spells;
+        }
+
+        public override void EquipSpell(Spell spell, int slotIndex)
+        {
+            playerManager.equipmentDatabase.EquipSpell(spell, slotIndex);
+        }
+
+        public override void UnequipSpell(int slotIndex)
+        {
+            playerManager.equipmentDatabase.UnequipSpell(slotIndex);
+        }
     }
 }

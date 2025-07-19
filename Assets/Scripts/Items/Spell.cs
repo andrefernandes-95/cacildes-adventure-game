@@ -33,16 +33,12 @@ namespace AF
         public bool parentToPlayer = false;
 
         [Header("Requirements")]
-        public int intelligenceRequired = 0;
         public int positiveReputationRequired = 0;
         public int negativeReputationRequired = 0;
 
         [Header("Actions")]
         [HelpBox("If true, will use the new action system")]
         public Ability ability;
-        [Header("Level & Upgrades")]
-        public bool canBeUpgraded = true;
-        public int level = 1;
 
         public string GetFormattedAppliedStatusEffects()
         {
@@ -61,7 +57,7 @@ namespace AF
 
         public bool AreRequirementsMet(CharacterBaseManager characterBaseManager)
         {
-            if (intelligenceRequired != 0 && characterBaseManager.characterBaseStats.GetIntelligence() < intelligenceRequired)
+            if (spellType != null && spellType.intelligenceRequired != 0 && characterBaseManager.characterBaseStats.GetIntelligence() < spellType.intelligenceRequired)
             {
                 return false;
             }
@@ -79,7 +75,12 @@ namespace AF
 
         public bool HasRequirements()
         {
-            return intelligenceRequired != 0 || positiveReputationRequired != 0 || negativeReputationRequired != 0;
+            if (spellType == null)
+            {
+                return false;
+            }
+
+            return spellType.intelligenceRequired != 0 || positiveReputationRequired != 0 || negativeReputationRequired != 0;
         }
 
         public string DrawRequirements(CharacterBaseManager characterBaseManager)
@@ -88,13 +89,13 @@ namespace AF
                 ? LocalizationSettings.StringDatabase.GetLocalizedString("UIDocuments", "Requirements met: ")
                 : LocalizationSettings.StringDatabase.GetLocalizedString("UIDocuments", "Requirements not met: ");
 
-            if (intelligenceRequired != 0)
+            if (spellType.intelligenceRequired != 0)
             {
-                text += $"  {LocalizationSettings.StringDatabase.GetLocalizedString("UIDocuments", "Intelligence Required:")} {intelligenceRequired}   {LocalizationSettings.StringDatabase.GetLocalizedString("UIDocuments", "Current:")} {characterBaseManager.characterBaseStats.GetIntelligence()}\n";
+                text += $"  {LocalizationSettings.StringDatabase.GetLocalizedString("UIDocuments", "Intelligence Required:")} {spellType.intelligenceRequired}   {LocalizationSettings.StringDatabase.GetLocalizedString("UIDocuments", "Current:")} {characterBaseManager.characterBaseStats.GetIntelligence()}\n";
             }
             if (positiveReputationRequired != 0)
             {
-                text += $"  {LocalizationSettings.StringDatabase.GetLocalizedString("UIDocuments", "Reputation Required:")} {intelligenceRequired}   {LocalizationSettings.StringDatabase.GetLocalizedString("UIDocuments", "Current:")} {characterBaseManager.characterBaseStats.GetReputation()}\n";
+                text += $"  {LocalizationSettings.StringDatabase.GetLocalizedString("UIDocuments", "Reputation Required:")} {spellType.intelligenceRequired}   {LocalizationSettings.StringDatabase.GetLocalizedString("UIDocuments", "Current:")} {characterBaseManager.characterBaseStats.GetReputation()}\n";
             }
 
             if (negativeReputationRequired != 0)

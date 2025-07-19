@@ -20,11 +20,6 @@ namespace AF
 
         public override void OnPrepare(CharacterManager characterManager)
         {
-            if (!characterManager.characterAbilityManager.CanUseAbility())
-            {
-                return;
-            }
-
             characterManager.characterAbilityManager.SetCurrentAbility(this);
             characterManager.characterAbilityManager.SetIsCharging(true);
             characterManager.characterWeaponsManager.HideEquipment();

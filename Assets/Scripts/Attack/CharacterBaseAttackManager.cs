@@ -100,7 +100,7 @@
             }
             else if (unarmedRightWeapon != null)
             {
-                rightWeaponCurrentDamage = unarmedRightWeapon.unarmedWeapon.damage;
+                rightWeaponCurrentDamage = CalculateUnarmedDamage(unarmedRightWeapon.unarmedWeapon.damage).weaponDamage;
             }
 
             if (GetCharacter().characterBaseWeaponsManager.currentShieldInstance != null)
@@ -109,7 +109,7 @@
             }
             else if (unarmedLeftWeapon != null)
             {
-                leftWeaponCurrentDamage = unarmedRightWeapon.unarmedWeapon.damage;
+                leftWeaponCurrentDamage = CalculateUnarmedDamage(unarmedLeftWeapon.unarmedWeapon.damage).weaponDamage;
             }
         }
 
@@ -244,6 +244,28 @@
             weaponDamage.physical = (int)(weaponDamage.physical * attackMultiplierBonuses);
 
             return twoHandAttackBonus;
+        }
+
+        public (Damage weaponDamage, int STRBonus, int DEXBonus, int INTBonus,
+        int TwoHandAttackBonus) CalculateUnarmedDamage(Damage unarmedDamage)
+        {
+            Damage weaponDamage = unarmedDamage.Clone();
+
+            int STRBonus = weaponDamage.GetStrengthBonus(GetCharacter());
+            int DEXBonus = weaponDamage.GetDexterityBonus(GetCharacter());
+            int INTBonus = weaponDamage.GetIntelligenceBonus(GetCharacter());
+
+            // Store the weapon's current base physical damage for UI purposes
+            weaponDamage.basePhysicalDamage = weaponDamage.physical;
+
+            if (weaponDamage.physical > 0)
+            {
+                weaponDamage.physical += STRBonus + DEXBonus;
+            }
+
+            int twoHandAttackBonus = ApplyWeaponBuffs(null, weaponDamage);
+
+            return (weaponDamage, STRBonus, DEXBonus, INTBonus, twoHandAttackBonus);
         }
 
         public Accessory[] GetAccessories()

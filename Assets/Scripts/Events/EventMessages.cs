@@ -54,6 +54,10 @@ namespace AF.Events
         public static readonly string ON_PLAYER_HUD_VISIBILITY_CHANGED = "ON_PLAYER_HUD_VISIBILITY_CHANGED";
         public static readonly string ON_CHARACTER_CUSTOMIZED = "ON_CHARACTER_CUSTOMIZED";
 
+        // Player Attributes
+        public static readonly string ON_PLAYER_HEALTH_CHANGED = "ON_PLAYER_HEALTH_CHANGED";
+        public static readonly string ON_PLAYER_STAMINA_CHANGED = "ON_PLAYER_STAMINA_CHANGED";
+        public static readonly string ON_PLAYER_MANA_CHANGED = "ON_PLAYER_MANA_CHANGED";
 
     }
 }

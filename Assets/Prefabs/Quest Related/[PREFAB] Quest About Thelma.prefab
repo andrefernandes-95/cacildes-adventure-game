@@ -69,6 +69,7 @@ MonoBehaviour:
     one day at a time.
   reputationAmountToIncrease: 1
   reputationAmountToDecrease: 0
+  reputationToAwardMonobehaviourID: {fileID: 0}
 --- !u!1 &1045584439460069467
 GameObject:
   m_ObjectHideFlags: 0
@@ -117,7 +118,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8aa3f3cae44ad24590de72453d413b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  uIDocumentDialogueWindow: {fileID: 0}
   character: {fileID: 11400000, guid: 53a4d8b4e4705a24f9fc7fd33040fe85, type: 2}
   message: My sister is back! I'm so grateful for your help. She's understandably
     shaken up by her ordeal, and it's going to take some time for her to heal. I'm
@@ -136,7 +136,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8aa3f3cae44ad24590de72453d413b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  uIDocumentDialogueWindow: {fileID: 0}
   character: {fileID: 11400000, guid: 53a4d8b4e4705a24f9fc7fd33040fe85, type: 2}
   message: Your kindness has granted us peace of mind. Take this token of our gratitude.
     It's not just a reward; it's a symbol of the strength you've given to all of
@@ -156,11 +155,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   item: {fileID: 11400000, guid: 9fc3d9a266938844ba0fb9ff23d9f87e, type: 2}
   amount: 1
+  itemsToAdd: []
   monoBehaviourID: {fileID: 4060021590345103740}
-  soundbank: {fileID: 0}
-  playerManager: {fileID: 0}
   showNotificationText: 1
-  notificationManager: {fileID: 0}
   pickupDatabase: {fileID: 11400000, guid: b6fddea60ce7ee3489c86ef80e06148e, type: 2}
 --- !u!114 &8111035508813330782
 MonoBehaviour:
@@ -280,7 +277,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 4457796322598440115}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: AF.Dialogue.GreetingMessageController, AF
         m_MethodName: HideGreetingMessage
         m_Mode: 1
@@ -331,7 +328,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76f9b66ee65866848951b3a6287b153c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  uIDocumentKeyPrompt: {fileID: 0}
   onActivate:
     m_PersistentCalls:
       m_Calls:
@@ -349,6 +345,9 @@ MonoBehaviour:
         m_CallState: 2
   key: E
   action: Talk
+  item: {fileID: 0}
+  requiredItemToOpen: {fileID: 0}
+  inventoryDatabase: {fileID: 0}
 --- !u!135 &4492054027214504775
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -433,7 +432,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 4457796322598440115}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: AF.Dialogue.GreetingMessageController, AF
         m_MethodName: HideGreetingMessage
         m_Mode: 1
@@ -484,7 +483,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76f9b66ee65866848951b3a6287b153c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  uIDocumentKeyPrompt: {fileID: 0}
   onActivate:
     m_PersistentCalls:
       m_Calls:
@@ -502,6 +500,9 @@ MonoBehaviour:
         m_CallState: 2
   key: E
   action: Talk
+  item: {fileID: 0}
+  requiredItemToOpen: {fileID: 0}
+  inventoryDatabase: {fileID: 0}
 --- !u!135 &3026631828251332973
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -663,7 +664,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76f9b66ee65866848951b3a6287b153c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  uIDocumentKeyPrompt: {fileID: 0}
   onActivate:
     m_PersistentCalls:
       m_Calls:
@@ -681,6 +681,9 @@ MonoBehaviour:
         m_CallState: 2
   key: E
   action: Talk
+  item: {fileID: 0}
+  requiredItemToOpen: {fileID: 0}
+  inventoryDatabase: {fileID: 0}
 --- !u!135 &2380783288163442609
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -845,7 +848,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8aa3f3cae44ad24590de72453d413b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  uIDocumentDialogueWindow: {fileID: 0}
   character: {fileID: 11400000, guid: 53a4d8b4e4705a24f9fc7fd33040fe85, type: 2}
   message: My sister Thelma... she's been missing for a while. We've heard about
     thieves lurking in these parts... perhaps they took her? You... look like you
@@ -975,7 +977,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8aa3f3cae44ad24590de72453d413b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  uIDocumentDialogueWindow: {fileID: 0}
   character: {fileID: 11400000, guid: 53a4d8b4e4705a24f9fc7fd33040fe85, type: 2}
   message: Our hearth is your hearth, our table is your table, and our ale is your
     ale. You are not just a friend to us, you are family!
@@ -1176,6 +1177,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   greeting: My sister... have you seen her?
   duration: 5
+  gesture: {fileID: 0}
+  shouldFacePlayerWhenGreeting: 1
 --- !u!1 &4926438000080166620
 GameObject:
   m_ObjectHideFlags: 0
@@ -1223,6 +1226,8 @@ MonoBehaviour:
   greeting: Did you know dandelions are edible? Next time you're planning a salad,
     keep that in mind.
   duration: 5
+  gesture: {fileID: 0}
+  shouldFacePlayerWhenGreeting: 1
 --- !u!1 &4940117865971322234
 GameObject:
   m_ObjectHideFlags: 0
@@ -1318,7 +1323,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8aa3f3cae44ad24590de72453d413b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  uIDocumentDialogueWindow: {fileID: 0}
   character: {fileID: 11400000, guid: b673e0d3f9a09294ba4fe0e5d6981050, type: 2}
   message: It's a relief to be back among familiar faces. Those thieves... I'd like
     to forget them. I miss my old self... I just hope the nightmares and the bad
@@ -1371,6 +1375,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   greeting: Find my little sister... please...
   duration: 5
+  gesture: {fileID: 0}
+  shouldFacePlayerWhenGreeting: 1
 --- !u!1 &5418701539997909626
 GameObject:
   m_ObjectHideFlags: 0
@@ -1499,6 +1505,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   greeting: ...
   duration: 5
+  gesture: {fileID: 0}
+  shouldFacePlayerWhenGreeting: 1
 --- !u!1 &7568801806052684394
 GameObject:
   m_ObjectHideFlags: 0
@@ -1589,7 +1597,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76f9b66ee65866848951b3a6287b153c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  uIDocumentKeyPrompt: {fileID: 0}
   onActivate:
     m_PersistentCalls:
       m_Calls:
@@ -1607,6 +1614,9 @@ MonoBehaviour:
         m_CallState: 2
   key: E
   action: Talk
+  item: {fileID: 0}
+  requiredItemToOpen: {fileID: 0}
+  inventoryDatabase: {fileID: 0}
 --- !u!135 &4967520766769207651
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -1774,6 +1784,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   greeting: She's back! My sister... is back!
   duration: 5
+  gesture: {fileID: 0}
+  shouldFacePlayerWhenGreeting: 1
 --- !u!1 &8393285687534732560
 GameObject:
   m_ObjectHideFlags: 0
@@ -1818,7 +1830,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8aa3f3cae44ad24590de72453d413b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  uIDocumentDialogueWindow: {fileID: 0}
   character: {fileID: 11400000, guid: 53a4d8b4e4705a24f9fc7fd33040fe85, type: 2}
   message: I hope you find my little sister... she looks just like me. The thought
     of something horrible happening to her keeps me up at night.
@@ -1913,7 +1924,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76f9b66ee65866848951b3a6287b153c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  uIDocumentKeyPrompt: {fileID: 0}
   onActivate:
     m_PersistentCalls:
       m_Calls:
@@ -1931,6 +1941,9 @@ MonoBehaviour:
         m_CallState: 2
   key: E
   action: Talk
+  item: {fileID: 0}
+  requiredItemToOpen: {fileID: 0}
+  inventoryDatabase: {fileID: 0}
 --- !u!135 &5342997150272648662
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -2766,17 +2779,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4641681612408847674, guid: 1d4ad8111310603419a605972d4f4d41, type: 3}
   m_PrefabInstance: {fileID: 7589067321693990164}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &4457796322598440115 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6092401240340013479, guid: 1d4ad8111310603419a605972d4f4d41, type: 3}
-  m_PrefabInstance: {fileID: 7589067321693990164}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2f73e7d13eb68004a8b998684453e595, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &5444554049741360103 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2512790386010220275, guid: 1d4ad8111310603419a605972d4f4d41, type: 3}

@@ -327,6 +327,7 @@ namespace AF
         {
             gameSettings.isMale = value == 0;
             OnCharacterCustomized();
+            EventManager.EmitEvent(EventMessages.ON_BODY_TYPE_CHANGED);
         }
 
         void HandleFaceChange(int faceIndex)

@@ -49,7 +49,7 @@ namespace AF
                     enemy.transform.position = playerManager.transform.position;
                     playerManager.transform.rotation = enemy.transform.rotation;
                     playerManager.playerComponentManager.DisablePlayerControlAndRegainControlAfterResetStates();
-                    enemy.targetManager.SetTarget(playerManager, true);
+                    enemy.targetManager.SetTarget(playerManager);
 
                     playerManager.PlayBusyHashedAnimationWithRootMotion(hashBackstabExecution);
                     Invoke(nameof(PlayDelayedBackstab), 0.8f);

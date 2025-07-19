@@ -568,6 +568,8 @@ namespace AF.UI.EquipmentMenu
             SetBackgroundImage(consumableButtonSlot8, equipmentDatabase.consumables, 7, txt_UnequippedConsumable);
             SetBackgroundImage(consumableButtonSlot9, equipmentDatabase.consumables, 8, txt_UnequippedConsumable);
             SetBackgroundImage(consumableButtonSlot10, equipmentDatabase.consumables, 9, txt_UnequippedConsumable);
+
+            otherItemsButton.style.backgroundImage = new StyleBackground(txt_OtherItems);
         }
 
         void SetBackgroundImage(VisualElement button, Item[] items, int index, Texture2D unequippedTexture)

@@ -217,5 +217,30 @@ namespace AF
         {
             return characterManager;
         }
+
+        public override Spell[] GetEquippedSpells()
+        {
+            return GetCompanionState().spells;
+        }
+
+        public override void EquipSpell(Spell spell, int slotIndex)
+        {
+            if (!IsInParty())
+            {
+                return;
+            }
+
+            GetCompanionState().spells[slotIndex] = spell;
+        }
+
+        public override void UnequipSpell(int slotIndex)
+        {
+            if (!IsInParty())
+            {
+                return;
+            }
+
+            GetCompanionState().spells[slotIndex] = null;
+        }
     }
 }

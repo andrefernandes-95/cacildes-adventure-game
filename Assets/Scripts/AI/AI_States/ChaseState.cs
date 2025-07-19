@@ -65,13 +65,6 @@ namespace AF
 
             if (characterManager.targetManager.currentTarget != null)
             {
-                // If Target Is Dead, Stop Chasing
-                if (characterManager.targetManager.currentTarget.health.GetCurrentHealth() <= 0)
-                {
-                    characterManager.targetManager.ClearTarget();
-                    return patrolOrIdleState;
-                }
-
                 characterManager.SetAgentDestination(characterManager.targetManager.currentTarget.transform.position);
 
                 PivotTowardsTarget();

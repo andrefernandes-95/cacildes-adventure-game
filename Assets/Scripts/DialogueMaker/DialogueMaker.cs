@@ -22,8 +22,6 @@ namespace AF
 
         private Story story;
 
-        Coroutine RunStoryCoroutine;
-
         bool hasChosenDialogueOption = false;
 
         void Awake()

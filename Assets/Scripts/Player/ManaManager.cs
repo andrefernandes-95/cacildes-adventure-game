@@ -24,8 +24,13 @@ namespace AF
             // Initialize Mana
             if (playerStatsDatabase.currentMana == -1)
             {
-                playerStatsDatabase.currentMana = GetMaxMana();
+                SetCurrentMana(GetMaxMana());
             }
+        }
+
+        void SetCurrentMana(float mana)
+        {
+            playerStatsDatabase.SetCurrentMana(mana);
         }
 
         private void Update()
@@ -40,7 +45,7 @@ namespace AF
         {
             var finalRegenerationRate = MANA_REGENERATION_RATE + playerManager.statsBonusController.staminaRegenerationBonus;
 
-            playerStatsDatabase.currentMana = Mathf.Clamp(playerStatsDatabase.currentMana + finalRegenerationRate * Time.deltaTime, 0f, GetMaxMana());
+            SetCurrentMana(Mathf.Clamp(playerStatsDatabase.currentMana + finalRegenerationRate * Time.deltaTime, 0f, GetMaxMana()));
         }
 
         public int GetMaxMana()
@@ -51,9 +56,14 @@ namespace AF
                 playerStatsDatabase.levelMultiplierForMana);
         }
 
+        public float GetCurrentMana()
+        {
+            return playerStatsDatabase.currentMana;
+        }
+
         public void DecreaseMana(float amount)
         {
-            playerStatsDatabase.currentMana = Mathf.Clamp(playerStatsDatabase.currentMana - amount, 0, GetMaxMana());
+            SetCurrentMana(Mathf.Clamp(playerStatsDatabase.currentMana - amount, 0, GetMaxMana()));
         }
 
         public bool HasEnoughManaForSpell(Spell spell)
@@ -79,7 +89,7 @@ namespace AF
 
         public void RestoreFullMana()
         {
-            playerStatsDatabase.currentMana = GetMaxMana();
+            SetCurrentMana(GetMaxMana());
         }
 
         public void RestoreManaPercentage(float amount)
@@ -87,14 +97,14 @@ namespace AF
             var percentage = this.GetMaxMana() * amount / 100;
             var nextValue = Mathf.Clamp(playerStatsDatabase.currentMana + percentage, 0, this.GetMaxMana());
 
-            playerStatsDatabase.currentMana = nextValue;
+            SetCurrentMana(nextValue);
         }
 
         public void RestoreManaPoints(float amount)
         {
             var nextValue = Mathf.Clamp(playerStatsDatabase.currentMana + amount, 0, this.GetMaxMana());
 
-            playerStatsDatabase.currentMana = nextValue;
+            SetCurrentMana(nextValue);
         }
 
         public float GetManaPointsForGivenIntelligence(int intelligence)

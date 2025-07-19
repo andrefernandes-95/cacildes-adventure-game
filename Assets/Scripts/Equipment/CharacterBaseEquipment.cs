@@ -7,6 +7,9 @@ namespace AF
 {
     public abstract class CharacterBaseEquipment : MonoBehaviour
     {
+        [Header("Skills")]
+        [SerializeField] Spell[] defaultSkills = new Spell[10];
+
         [Header("Default Gear")]
         [SerializeField] Helmet defaultHelmet;
         [SerializeField] Armor defaultArmor;
@@ -57,6 +60,16 @@ namespace AF
 
         public void SetupDefaultEquipment()
         {
+            for (int slot = 0; slot < defaultSkills.Length; slot++)
+            {
+                Spell skill = defaultSkills[slot];
+
+                if (skill == null)
+                    continue;
+
+                Spell addedSkill = GetCharacter().characterBaseInventory.AddSpell(skill);
+                EquipSpell(addedSkill, slot);
+            }
             for (int slot = 0; slot < defaultAccessories.Length; slot++)
             {
                 Accessory accessory = defaultAccessories[slot];
@@ -98,6 +111,7 @@ namespace AF
         public abstract Gauntlet GetEquippedGauntlet();
         public abstract Legwear GetEquippedLegwear();
         public abstract Accessory[] GetEquippedAccessories();
+        public abstract Spell[] GetEquippedSpells();
 
         protected abstract void SetAccessory(Accessory accessory, int slotIndex);
         protected abstract void ClearAccessory(int slotIndex);
@@ -296,6 +310,9 @@ namespace AF
         public abstract void EquipWeapon(Weapon weapon, int slotIndex, bool rightHand);
         public abstract void UnequipWeapon(int slotIndex, bool rightHand);
 
+        public abstract void EquipSpell(Spell spell, int slotIndex);
+        public abstract void UnequipSpell(int slotIndex);
+
         public bool IsNaked()
         {
             return
@@ -304,8 +321,6 @@ namespace AF
                 && GetEquippedGauntlet() == null
                 && GetEquippedLegwear() == null;
         }
-
-
 
         public abstract CharacterBaseManager GetCharacter();
 

@@ -133,7 +133,17 @@ namespace AF
 
         public override Damage GetAttackDamage()
         {
-            Damage attackDamage = characterBaseAttackManager.GetAttackDamage();
+            Damage attackDamage = characterBaseAttackManager.GetAttackDamage().Clone();
+
+            if (playerCombatController.isHeavyAttacking)
+            {
+                attackDamage.Multiply(characterBaseAttackManager.heavyAttackBonusMultiplier);
+            }
+
+            if (playerCombatController.isJumpAttacking)
+            {
+                attackDamage.Multiply(characterBaseAttackManager.jumpAttackMultiplier);
+            }
 
             if (playerBlockController.isCounterAttacking)
             {

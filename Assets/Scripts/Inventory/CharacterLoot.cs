@@ -17,8 +17,12 @@ namespace AF
         public SerializedDictionary<Item, LootItemAmount> lootTable;
         [SerializeField] bool useLootTable = false;
 
+        [Header("Gold")]
         public int baseGold = 100;
         public int bonusGold = 0;
+
+        [Header("Options")]
+        [SerializeField] bool lootFromInventory = false;
 
         [Header("Components")]
         public CharacterManager lootOwner;
@@ -130,6 +134,11 @@ namespace AF
             List<UIDocumentReceivedItemPrompt.ItemsReceived> itemsToDisplay = new();
             List<UIDocumentReceivedItemPrompt.ItemsReceived> cardsToDisplay = new();
 
+            if (lootFromInventory)
+            {
+                AddInventoryToLootTab(itemsToReceive);
+            }
+
             foreach (var item in itemsToReceive)
             {
                 GetPlayerManager().playerInventory.AddItem(item.Key, item.Value);
@@ -166,7 +175,87 @@ namespace AF
 
             // Distribute to companions
             GiveLootToCompanions();
+        }
 
+        void AddInventoryToLootTab(Dictionary<Item, int> items)
+        {
+            foreach (Weapon wp in lootOwner.characterBaseInventory.GetWeapons())
+            {
+                if (!items.ContainsKey(wp) && wp.ShouldDrop())
+                {
+                    items.Add(wp, 1);
+                }
+            }
+            foreach (Shield shield in lootOwner.characterBaseInventory.GetShields())
+            {
+                if (!items.ContainsKey(shield) && shield.ShouldDrop())
+                {
+                    items.Add(shield, 1);
+                }
+            }
+            foreach (Arrow arrow in lootOwner.characterBaseInventory.GetArrows())
+            {
+                if (!items.ContainsKey(arrow) && arrow.ShouldDrop())
+                {
+                    items.Add(arrow, Random.Range(3, 9));
+                }
+            }
+            foreach (Spell skill in lootOwner.characterBaseInventory.GetSpells())
+            {
+                if (!items.ContainsKey(skill) && skill.ShouldDrop())
+                {
+                    items.Add(skill, 1);
+                }
+            }
+            foreach (Helmet helmet in lootOwner.characterBaseInventory.GetHelmets())
+            {
+                if (!items.ContainsKey(helmet) && helmet.ShouldDrop())
+                {
+                    items.Add(helmet, 1);
+                }
+            }
+            foreach (Armor armor in lootOwner.characterBaseInventory.GetArmors())
+            {
+                if (!items.ContainsKey(armor) && armor.ShouldDrop())
+                {
+                    items.Add(armor, 1);
+                }
+            }
+            foreach (Legwear legwear in lootOwner.characterBaseInventory.GetLegwears())
+            {
+                if (!items.ContainsKey(legwear) && legwear.ShouldDrop())
+                {
+                    items.Add(legwear, 1);
+                }
+            }
+            foreach (Accessory accessory in lootOwner.characterBaseInventory.GetAccessories())
+            {
+                if (!items.ContainsKey(accessory) && accessory.ShouldDrop())
+                {
+                    items.Add(accessory, 1);
+                }
+            }
+            foreach (Consumable consumable in lootOwner.characterBaseInventory.GetConsumables())
+            {
+                if (!items.ContainsKey(consumable) && consumable.ShouldDrop())
+                {
+                    items.Add(consumable, 1);
+                }
+            }
+            foreach (UpgradeMaterial upgradeMaterial in lootOwner.characterBaseInventory.GetUpgradeMaterials())
+            {
+                if (!items.ContainsKey(upgradeMaterial) && upgradeMaterial.ShouldDrop())
+                {
+                    items.Add(upgradeMaterial, 1);
+                }
+            }
+            foreach (CraftingMaterial craftingMaterial in lootOwner.characterBaseInventory.GetCraftingMaterials())
+            {
+                if (!items.ContainsKey(craftingMaterial) && craftingMaterial.ShouldDrop())
+                {
+                    items.Add(craftingMaterial, 1);
+                }
+            }
         }
 
         IEnumerator DisplayCardsWithDelay(List<UIDocumentReceivedItemPrompt.ItemsReceived> cardsToDisplay)
@@ -250,6 +339,11 @@ namespace AF
         void GiveLootToCompanions()
         {
             var itemsToReceive = new SerializedDictionary<Item, int>();
+
+            if (lootFromInventory)
+            {
+                AddInventoryToLootTab(itemsToReceive);
+            }
 
             if (useLootTable)
             {

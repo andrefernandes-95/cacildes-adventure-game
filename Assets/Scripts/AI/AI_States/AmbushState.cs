@@ -22,6 +22,7 @@ namespace AF
 
         [Header("Transitions")]
         public State idleState;
+        public ChaseState chaseState;
 
         bool ambushHasBegun = false;
         public bool shouldAwake = false;
@@ -39,6 +40,20 @@ namespace AF
                 ambushHasBegun = false;
                 shouldAwake = false;
             });
+
+            characterManager.health.onTakeDamage.AddListener(OnTakeDamage);
+        }
+
+        void OnTakeDamage()
+        {
+            if (!ambushHasBegun)
+            {
+                BeginAmbush();
+            }
+            else if (!shouldAwake)
+            {
+                FinishAmbush();
+            }
         }
 
         public override void OnStateEnter(StateManager stateManager)
@@ -78,6 +93,8 @@ namespace AF
         {
             if (ambushHasBegun)
             {
+                // if enemy is awake, we should skip to FinishAmbush() since that will make us chase the target
+                FinishAmbush();
                 return;
             }
 
@@ -89,6 +106,7 @@ namespace AF
         public void FinishAmbush()
         {
             onAmbushFinish?.Invoke();
+            characterManager.stateManager.ScheduleState(chaseState);
             shouldAwake = true;
         }
 

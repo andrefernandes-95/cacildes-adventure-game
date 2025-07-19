@@ -21,16 +21,18 @@ namespace AF
 
         VisualElement healthContainer;
         VisualElement healthFill;
+        Label healthCurrentValue;
         VisualElement staminaContainer;
         VisualElement staminaFill;
+        Label staminaCurrentValue;
         VisualElement manaContainer;
         VisualElement manaFill;
+        Label manaCurrentValue;
 
         [Header("Graphic Settings")]
         public float healthContainerBaseWidth = 180;
         public float staminaContainerBaseWidth = 150;
         public float manaContainerBaseWidth = 150;
-        float _containerMultiplierPerLevel = 10f;
 
         Label quickItemName, abilityName;
         IMGUIContainer shieldBlockedIcon;
@@ -49,9 +51,16 @@ namespace AF
         public Texture2D unequippedShieldSlot;
         public Texture2D unequippedArrowSlot;
 
+        [Header("Combat Stance Icons")]
+        public Sprite oneHandIcon;
+        public Sprite twoHandIcon;
+        VisualElement combatStanceSprite;
+
         [Header("Components")]
         public PlayerManager playerManager;
         public EquipmentGraphicsHandler equipmentGraphicsHandler;
+
+        UIGameControls uIGameControls => GetComponent<UIGameControls>();
 
         IMGUIContainer spellSlotContainer, consumableSlotContainer, weaponSlotContainer, shieldSlotContainer;
 
@@ -103,6 +112,9 @@ namespace AF
 
             EventManager.StartListening(EventMessages.ON_TWO_HANDING_CHANGED, UpdateCombatStanceIndicator);
 
+            EventManager.StartListening(EventMessages.ON_PLAYER_HEALTH_CHANGED, OnHealthChanged);
+            EventManager.StartListening(EventMessages.ON_PLAYER_MANA_CHANGED, OnManaChanged);
+            EventManager.StartListening(EventMessages.ON_PLAYER_STAMINA_CHANGED, OnStaminaChanged);
         }
 
         void EvaluatePlayerHUD()
@@ -119,11 +131,14 @@ namespace AF
                 ? DisplayStyle.Flex : DisplayStyle.None;
 
             healthContainer = root.Q<VisualElement>("Health");
-            healthFill = root.Q<VisualElement>("HealthFill");
+            healthFill = healthContainer.Q<VisualElement>("Fill");
+            healthCurrentValue = healthContainer.Q<Label>("Value");
             staminaContainer = root.Q<VisualElement>("Stamina");
-            staminaFill = root.Q<VisualElement>("StaminaFill");
+            staminaFill = staminaContainer.Q<VisualElement>("Fill");
+            staminaCurrentValue = staminaContainer.Q<Label>("Value");
             manaContainer = root.Q<VisualElement>("Mana");
-            manaFill = root.Q<VisualElement>("ManaFill");
+            manaFill = manaContainer.Q<VisualElement>("Fill");
+            manaCurrentValue = manaContainer.Q<Label>("Value");
 
             quickItemName = root.Q<Label>("QuickItemName");
             abilityName = root.Q<Label>("AbilityName");
@@ -139,6 +154,7 @@ namespace AF
 
 
             combatStanceIndicatorLabel = root.Q<Label>("CombatStanceIndicator");
+            combatStanceSprite = root.Q<VisualElement>("CombatStanceSprite");
 
             root.Q<VisualElement>("SwimmingIndicator").style.display = playerManager.thirdPersonController.water != null ? DisplayStyle.Flex : DisplayStyle.None;
 
@@ -153,6 +169,10 @@ namespace AF
             UpdateQuestTracking();
             EvaluatePlayerHUD();
             UpdateCombatStanceIndicator();
+
+            OnHealthChanged();
+            OnManaChanged();
+            OnStaminaChanged();
         }
 
         void UpdateCombatStanceIndicator()
@@ -160,10 +180,12 @@ namespace AF
             if (equipmentDatabase.isTwoHanding)
             {
                 combatStanceIndicatorLabel.text = twoHandIndicator_LocalizedString.GetLocalizedString();
+                combatStanceSprite.style.backgroundImage = new StyleBackground(twoHandIcon);
             }
             else
             {
                 combatStanceIndicatorLabel.text = oneHandIndicator_LocalizedString.GetLocalizedString();
+                combatStanceSprite.style.backgroundImage = new StyleBackground(oneHandIcon);
             }
         }
 
@@ -180,6 +202,8 @@ namespace AF
         void HandleDeviceChange()
         {
             UpdateEquipment();
+
+            uIGameControls.UpdateFooterButtons();
         }
 
 
@@ -216,20 +240,38 @@ namespace AF
             DOTween.To(() => root.style.opacity.value, x => root.style.opacity = x, 0, 0.5f);
         }
 
-        private void Update()
+
+        void OnHealthChanged()
         {
-            healthContainer.style.width = (healthContainerBaseWidth +
-                playerManager.playerStats.GetVitality() * _containerMultiplierPerLevel) * (playerHealth.hasHealthCutInHalf ? .5f : 1f);
+            int width = (int)healthContainerBaseWidth;
 
-            staminaContainer.style.width = staminaContainerBaseWidth + ((
-                playerManager.playerStats.GetEndurance()) * _containerMultiplierPerLevel);
+            width += playerManager.playerStats.GetVitality() * 10;
+            healthContainer.style.width = width;
 
-            manaContainer.style.width = manaContainerBaseWidth + ((
-                playerManager.playerStats.GetIntelligence()) * _containerMultiplierPerLevel);
+            healthFill.style.width = new Length(playerManager.health.GetCurrentHealthPercentage(), LengthUnit.Percent);
+            healthCurrentValue.text = $"{Mathf.RoundToInt(playerManager.health.GetCurrentHealth())}/{playerManager.health.GetMaxHealth()}";
+        }
 
-            this.healthFill.style.width = new Length(playerManager.health.GetCurrentHealthPercentage() * ((playerHealth.hasHealthCutInHalf ? .5f : 1f)), LengthUnit.Percent);
-            this.staminaFill.style.width = new Length(playerManager.staminaStatManager.GetCurrentStaminaPercentage(), LengthUnit.Percent);
-            this.manaFill.style.width = new Length(playerManager.manaManager.GetCurrentManaPercentage(), LengthUnit.Percent);
+        void OnManaChanged()
+        {
+            int width = (int)manaContainerBaseWidth;
+
+            width += playerManager.playerStats.GetIntelligence() * 10;
+            manaContainer.style.width = width;
+
+            manaFill.style.width = new Length(playerManager.manaManager.GetCurrentManaPercentage(), LengthUnit.Percent);
+            manaCurrentValue.text = $"{Mathf.RoundToInt(playerManager.manaManager.GetCurrentMana())}/{playerManager.manaManager.GetMaxMana()}";
+        }
+
+        void OnStaminaChanged()
+        {
+            int width = (int)staminaContainerBaseWidth;
+
+            width += playerManager.playerStats.GetEndurance() * 10;
+            staminaContainer.style.width = width;
+
+            staminaFill.style.width = new Length(playerManager.staminaStatManager.GetCurrentStaminaPercentage(), LengthUnit.Percent);
+            staminaCurrentValue.text = $"{Mathf.RoundToInt(playerManager.staminaStatManager.GetCurrentStamina())}/{playerManager.staminaStatManager.GetMaxStamina()}";
         }
 
         /// <summary>
@@ -278,11 +320,6 @@ namespace AF
                 equipmentDatabase.GetCurrentConsumable().GetName() + $" ({playerManager.playerInventory.GetConsumableAmount(equipmentDatabase.GetCurrentConsumable())})"
                 : "";
 
-            consumableSlotContainer.style.unityBackgroundScaleMode = ScaleMode.ScaleAndCrop;
-            consumableSlotContainer.style.borderTopWidth = new StyleFloat(1);
-            consumableSlotContainer.style.borderBottomWidth = new StyleFloat(1);
-            consumableSlotContainer.style.borderLeftWidth = new StyleFloat(1);
-            consumableSlotContainer.style.borderRightWidth = new StyleFloat(1);
 
             bool hasConsumable = equipmentDatabase.GetCurrentConsumable() != null;
 
@@ -339,6 +376,11 @@ namespace AF
                 return false;
             }
 
+            if (root.style.opacity.value < 1)
+            {
+                return false;
+            }
+
             return equipmentContainer.visible;
         }
 
@@ -380,13 +422,13 @@ namespace AF
             // Sequence for the blink effect
             Sequence blinkSequence = DOTween.Sequence();
             blinkSequence.Append(
-                DOTween.To(() => (Color)target.style.backgroundColor.value,
-                           x => target.style.backgroundColor = new StyleColor(x),
+                DOTween.To(() => (Color)target.style.unityBackgroundImageTintColor.value,
+                           x => target.style.unityBackgroundImageTintColor = new StyleColor(x),
                            blinkColor, 0.5f)
                        .SetEase(Ease.InOutFlash))
                        .OnComplete(() =>
                        {
-                           target.style.backgroundColor = originalColor;
+                           target.style.unityBackgroundImageTintColor = originalColor;
                        });
         }
 

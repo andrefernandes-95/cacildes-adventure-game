@@ -42,59 +42,33 @@ namespace AF.Combat
             });
         }
 
-        public void SetTarget(CharacterBaseManager target)
+        bool CanFightTarget(CharacterBaseManager target)
         {
-            SetTarget(target, () => { }, false);
-        }
-
-        public void SetTarget(CharacterBaseManager target, bool ignorePostureBroken)
-        {
-            SetTarget(target, () => { }, ignorePostureBroken);
-        }
-
-        public void SetTarget(CharacterBaseManager target, UnityAction onTargetSetCallback, bool ignorePostureBroken)
-        {
-            if (!CanSetTarget(ignorePostureBroken))
-            {
-                return;
-            }
-
             if (currentTarget == target)
             {
-                return;
+                return false;
             }
-
             if (characterManager.IsFromSameFaction(target))
             {
+                return false;
+            }
+
+            return true;
+        }
+
+        public void SetTarget(CharacterBaseManager target)
+        {
+            if (!CanFightTarget(target))
+            {
                 return;
             }
 
-            if (!hasBeenInCombat)
-            {
-                hasBeenInCombat = true;
-
-                IEnumerator PrepareCombat_Coroutine()
-                {
-                    yield return new WaitForSeconds(delayWhenBeginningCombatForFirstTime);
-
-                    HandleSetTarget(target);
-
-                    onTargetSetCallback?.Invoke();
-                }
-
-                StartCoroutine(PrepareCombat_Coroutine());
-            }
-            else
-            {
-                HandleSetTarget(target);
-            }
+            HandleSetTarget(target);
         }
 
         void HandleSetTarget(CharacterBaseManager target)
         {
-            currentTarget = target;
-
-            onTargetSet_Event?.Invoke();
+            SetTargetInternally(target);
 
             if (characterManager != null && characterManager.partners != null && characterManager.partners.Length > 0)
             {
@@ -223,5 +197,26 @@ namespace AF.Combat
             return Vector3.Distance(currentTarget.transform.position, characterManager.transform.position) > maxDistance;
         }
 
+        void SetTargetInternally(CharacterBaseManager target)
+        {
+            if (currentTarget != null)
+            {
+                currentTarget.health.onDeath.RemoveListener(OnTargetDeath);
+            }
+
+            if (target != null)
+            {
+                target.health.onDeath.AddListener(OnTargetDeath);
+
+                currentTarget = target;
+            }
+
+            onTargetSet_Event?.Invoke();
+        }
+
+        void OnTargetDeath()
+        {
+            SetTargetInternally(null);
+        }
     }
 }

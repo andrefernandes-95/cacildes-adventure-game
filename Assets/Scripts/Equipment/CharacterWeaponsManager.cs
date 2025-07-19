@@ -26,6 +26,42 @@ namespace AF.Equipment
         [Header("Backpack Options")]
         public GameObject unequippedShieldInTheBack;
 
+        void Awake()
+        {
+            foreach (Weapon wp in rightHandWeapons)
+            {
+                if (wp != null)
+                {
+                    Weapon clone = Instantiate(wp);
+
+                    if (clone is Shield shield)
+                    {
+                        characterManager.characterBaseInventory.AddShield(shield);
+                    }
+                    else
+                    {
+                        characterManager.characterBaseInventory.AddWeapon(clone);
+                    }
+                }
+            }
+            foreach (Weapon wp in leftHandWeapons)
+            {
+                if (wp != null)
+                {
+                    Weapon clone = Instantiate(wp);
+
+                    if (clone is Shield shield)
+                    {
+                        characterManager.characterBaseInventory.AddShield(shield);
+                    }
+                    else
+                    {
+                        characterManager.characterBaseInventory.AddWeapon(clone);
+                    }
+                }
+            }
+        }
+
         void Start()
         {
             UpdateEquipment();

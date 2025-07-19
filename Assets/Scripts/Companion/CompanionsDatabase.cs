@@ -189,6 +189,14 @@ namespace AF.Companions
                 }
                 serializedCompanionState.leftWeapons = leftWeaponsToSave.ToArray();
 
+                List<string> spellsToSave = new();
+                foreach (Spell spell in state.spells)
+                {
+                    string spellPath = Utils.GetItemPath(spell).Replace("(Clone)", "");
+                    spellsToSave.Add(spellPath);
+                }
+                serializedCompanionState.spells = spellsToSave.ToArray();
+
                 List<string> accessoriesToSave = new();
                 foreach (Accessory acc in state.accessories)
                 {
@@ -244,6 +252,15 @@ namespace AF.Companions
                         if (weapon != null)
                         {
                             newState.leftWeapons[i] = Instantiate(weapon);
+                        }
+                    }
+
+                    for (int i = 0; i < savedState.spells.Length - 1; i++)
+                    {
+                        Spell spell = Resources.Load<Spell>(savedState.spells[i]);
+                        if (spell != null)
+                        {
+                            newState.spells[i] = Instantiate(spell);
                         }
                     }
 

@@ -2,12 +2,14 @@ namespace AF
 {
     using System.Linq;
     using AF.Health;
+    using EditorAttributes;
     using UnityEngine;
 
     [CreateAssetMenu(fileName = "Cast Spell", menuName = "Abilities / Spells / New Cast From Spell", order = 0)]
     public class CastFromSpell : Ability
     {
-        [HideInInspector] public Spell spell;
+        [HelpBox("For player, it is assigned automatically on PlayerShooter(), but enemies may also use it, so always assign the spell")]
+        public Spell spell;
 
         [Header("FX")]
         public GameObject chargingSpellFX;
@@ -22,6 +24,24 @@ namespace AF
 
         public override void OnPrepare(CharacterManager characterManager)
         {
+            characterManager.characterAbilityBaseManager.SetCurrentAbility(this);
+            characterManager.characterWeaponsManager.HideEquipment();
+            characterManager.characterAbilityManager.SetIsCharging(true);
+
+            if (chargingSpellFX != null)
+            {
+                GameObject chargingAbilityFXInstance = Instantiate(
+                    chargingSpellFX, characterManager.characterTransformHelper.rightHand);
+
+                chargingAbilityFXInstance.transform.localScale *= chargingAbilityLocalScale;
+
+                characterManager.characterAbilityManager.chargingAbilityFX = chargingAbilityFXInstance;
+            }
+
+            characterManager.PlayCrossFadeBusyAnimationWithRootMotion("Cast Spell", 0.1f);
+
+            caster = characterManager;
+            target = characterManager.targetManager.currentTarget;
         }
 
         public override void OnPrepare(PlayerManager playerManager)
@@ -57,6 +77,10 @@ namespace AF
 
         public override void OnUse(CharacterManager characterManager)
         {
+            damage.Multiply(characterManager.characterAbilityManager.GetChargingAmountMultiplier());
+            ApplyDamageScaling(characterManager);
+
+            ReleaseSpellGameObject(characterManager, new[] { "Player" });
         }
 
         protected virtual GameObject ReleaseSpellGameObject(CharacterBaseManager damageOwner, string[] tagsToDetect)

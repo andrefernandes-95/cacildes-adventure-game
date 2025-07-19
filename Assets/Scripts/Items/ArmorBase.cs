@@ -179,5 +179,15 @@ namespace AF
         {
             return Mathf.Clamp((int)Math.Round(discountPercentage * 100, 2), 0, 100);
         }
+
+        protected List<string> GetGraphicsToShow()
+        {
+            List<string> graphics = new();
+            foreach (string s in graphicsToShow)
+            {
+                graphics.Add(s);
+            }
+            return graphics;
+        }
     }
 }

@@ -70,9 +70,9 @@ public class PlayerStatsDatabase : ScriptableObject
         maxStamina = defaultMaxStamina;
         maxMana = defaultMaxMana;
 
-        currentHealth = maxHealth;
-        currentStamina = maxStamina;
-        currentMana = maxMana;
+        SetCurrentHealth(maxHealth);
+        SetCurrentStamina(maxStamina);
+        SetCurrentMana(maxMana);
 
         reputation = 1;
         gold = 0;
@@ -85,11 +85,27 @@ public class PlayerStatsDatabase : ScriptableObject
         }
     }
 
+    public void SetCurrentHealth(float value)
+    {
+        currentHealth = value;
+        EventManager.EmitEvent(EventMessages.ON_PLAYER_HEALTH_CHANGED);
+    }
+    public void SetCurrentStamina(float value)
+    {
+        currentStamina = value;
+        EventManager.EmitEvent(EventMessages.ON_PLAYER_STAMINA_CHANGED);
+    }
+    public void SetCurrentMana(float value)
+    {
+        currentMana = value;
+        EventManager.EmitEvent(EventMessages.ON_PLAYER_MANA_CHANGED);
+    }
+
     public void ClearForNewGamePlus()
     {
-        currentHealth = maxHealth;
-        currentStamina = maxStamina;
-        currentMana = maxMana;
+        SetCurrentHealth(maxHealth);
+        SetCurrentStamina(maxStamina);
+        SetCurrentMana(maxMana);
         gold = 0;
         lostGold = -1;
         sceneWhereGoldWasLost = "";

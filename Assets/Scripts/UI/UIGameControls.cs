@@ -131,7 +131,7 @@ namespace AF
             }
         }
 
-        void UpdateFooterButtons()
+        public void UpdateFooterButtons()
         {
             if (starterAssetsInputs.IsPS4Controller())
             {

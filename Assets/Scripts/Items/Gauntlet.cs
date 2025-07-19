@@ -15,7 +15,7 @@ namespace AF
                 return;
             }
 
-            List<string> finalList = graphicsToShow;
+            List<string> finalList = GetGraphicsToShow();
 
             if (character.characterBaseAppearance.IsMale())
             {
@@ -37,7 +37,7 @@ namespace AF
                 return;
             }
 
-            List<string> finalList = graphicsToShow;
+            List<string> finalList = GetGraphicsToShow();
 
             finalList.Add(male_GraphicsToShow);
             finalList.Add(female_GraphicsToShow);

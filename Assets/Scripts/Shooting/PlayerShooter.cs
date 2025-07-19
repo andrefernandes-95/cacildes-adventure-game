@@ -620,6 +620,11 @@ namespace AF.Shooting
 
         void OnUseAbilityInput()
         {
+            if (!GetPlayerManager().playerAbilityManager.CanUseAbility())
+            {
+                return;
+            }
+
             if (equipmentDatabase.GetCurrentSpell() is Spell spell)
             {
                 if (spell.HasAbility())

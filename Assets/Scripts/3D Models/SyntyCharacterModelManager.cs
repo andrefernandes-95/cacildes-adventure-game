@@ -174,7 +174,7 @@ namespace AF
             ToggleBeard(true);
             ToggleEyebrows(true);
             ToggleFace(true);
-            ToggleTorso(true);
+            // ToggleTorso(true);
         }
 
         void LoadMaterialColorsAndApplyColors()

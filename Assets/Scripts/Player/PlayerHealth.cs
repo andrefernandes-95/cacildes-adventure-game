@@ -31,7 +31,7 @@ namespace AF
             // Initialize Health
             if (playerStatsDatabase.currentHealth == -1)
             {
-                playerStatsDatabase.currentHealth = GetMaxHealth();
+                SetCurrentHealth(GetMaxHealth());
             }
         }
 
@@ -70,8 +70,8 @@ namespace AF
 
         public override void RestoreHealth(float value)
         {
-            playerStatsDatabase.currentHealth = Mathf.Clamp(
-                playerStatsDatabase.currentHealth + value, 0, GetMaxHealth());
+            SetCurrentHealth(Mathf.Clamp(
+                playerStatsDatabase.currentHealth + value, 0, GetMaxHealth()));
 
             onRestoreHealth?.Invoke();
             ShowHealthRestoredText((int)value);
@@ -84,8 +84,8 @@ namespace AF
                 return;
             }
 
-            playerStatsDatabase.currentHealth = Mathf.Clamp(
-                playerStatsDatabase.currentHealth - value, 0, GetMaxHealth());
+            SetCurrentHealth(Mathf.Clamp(
+                playerStatsDatabase.currentHealth - value, 0, GetMaxHealth()));
 
             onTakeDamage?.Invoke();
 
@@ -116,8 +116,8 @@ namespace AF
         /// <param name="amount"></param>
         public void TakeDamageWithoutOnTakeDamageEvent(float amount)
         {
-            playerStatsDatabase.currentHealth = Mathf.Clamp(
-                playerStatsDatabase.currentHealth - amount, 0, GetMaxHealth());
+            SetCurrentHealth(Mathf.Clamp(
+                playerStatsDatabase.currentHealth - amount, 0, GetMaxHealth()));
 
             if (GetCurrentHealth() <= 0)
             {
@@ -152,7 +152,7 @@ namespace AF
 
         public override void SetCurrentHealth(float value)
         {
-            this.playerStatsDatabase.currentHealth = value;
+            this.playerStatsDatabase.SetCurrentHealth(value);
             onHealthChange?.Invoke();
         }
 

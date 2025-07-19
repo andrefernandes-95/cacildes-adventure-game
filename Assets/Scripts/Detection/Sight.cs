@@ -111,10 +111,8 @@ namespace AF.Detection
 
             if (potentialTarget != null)
             {
-                targetManager.SetTarget(potentialTarget, () =>
-                {
-                    OnTargetSighted?.Invoke();
-                }, false);
+                targetManager.SetTarget(potentialTarget);
+                OnTargetSighted?.Invoke();
             }
         }
 

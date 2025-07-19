@@ -269,14 +269,14 @@ namespace AF
         {
             // Try to read currentHealth using TryRead
             quickSaveReader.TryRead("currentHealth", out float currentHealth);
-            playerStatsDatabase.currentHealth = currentHealth;
+            playerStatsDatabase.SetCurrentHealth(currentHealth);
 
             // Try to read other stats
             quickSaveReader.TryRead<float>("currentStamina", out float currentStamina);
-            playerStatsDatabase.currentStamina = currentStamina;
+            playerStatsDatabase.SetCurrentStamina(currentStamina);
 
             quickSaveReader.TryRead<float>("currentMana", out float currentMana);
-            playerStatsDatabase.currentMana = currentMana;
+            playerStatsDatabase.SetCurrentMana(currentMana);
 
             quickSaveReader.TryRead<int>("reputation", out int reputation);
             playerStatsDatabase.reputation = reputation;
@@ -597,10 +597,10 @@ namespace AF
 
             if (!string.IsNullOrEmpty(lastSave) && QuickSaveBase.RootExists(lastSave))
             {
-                // Restore player health
-                playerStatsDatabase.currentHealth = playerStatsDatabase.maxHealth;
-                playerStatsDatabase.currentMana = playerStatsDatabase.maxMana;
-                playerStatsDatabase.currentStamina = playerStatsDatabase.maxStamina;
+                // Restore player attributes
+                playerStatsDatabase.SetCurrentHealth(playerStatsDatabase.maxHealth);
+                playerStatsDatabase.SetCurrentStamina(playerStatsDatabase.maxStamina);
+                playerStatsDatabase.SetCurrentMana(playerStatsDatabase.maxMana);
 
                 QuickSaveReader quickSaveReader = QuickSaveReader.Create(lastSave);
                 LoadSceneSettings(quickSaveReader);

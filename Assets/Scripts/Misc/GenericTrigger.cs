@@ -1,7 +1,6 @@
 using AF.Inventory;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.Localization;
 using UnityEngine.Localization.Settings;
 
 namespace AF
@@ -35,7 +34,12 @@ namespace AF
                 return;
             }
 
-            GetUIDocumentKeyPrompt().DisplayPrompt(key, action, item);
+            GetUIDocumentKeyPrompt().DisplayPrompt(key, GetAction(), item);
+        }
+
+        public virtual string GetAction()
+        {
+            return action;
         }
 
         public void OnInvoked()

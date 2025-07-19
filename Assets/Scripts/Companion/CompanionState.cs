@@ -14,6 +14,7 @@ namespace AF.Companions
         // For items, we store the file paths to the items
         public string[] rightWeapons = new string[3];
         public string[] leftWeapons = new string[3];
+        public string[] spells = new string[10];
         public string helmet;
         public string armor;
         public string gauntlet;
@@ -29,6 +30,7 @@ namespace AF.Companions
         public Vector3 waitingPosition;
         public Weapon[] rightWeapons = new Weapon[3];
         public Weapon[] leftWeapons = new Weapon[3];
+        public Spell[] spells = new Spell[10];
         public Helmet helmet;
         public Armor armor;
         public Gauntlet gauntlet;

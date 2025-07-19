@@ -21,7 +21,10 @@ namespace AF.Animations
 
         [Header("Animation Clip Overrides")]
         public SerializedDictionary<string, AnimationClip> clipOverrides;
+
+        [Header("Animation Override Helpers")]
         [SerializeField] AIHumanoidAnimationOverrideHelper aIHumanoidAnimationOverrideHelper;
+        [SerializeField] GenericCreatureAnimationOverrideHelper genericCreatureAnimationOverrideHelper;
 
         [Header("Unity Events")]
         public UnityEvent onLeftFootstep;
@@ -63,6 +66,16 @@ namespace AF.Animations
             if (aIHumanoidAnimationOverrideHelper != null)
             {
                 Dictionary<string, AnimationClip> clipOverridesForAIHumanoid = aIHumanoidAnimationOverrideHelper.GetClipOverrides();
+                foreach (var entry in clipOverridesForAIHumanoid)
+                {
+                    characterManager.UpdateAnimatorOverrideControllerClips(entry.Key, entry.Value);
+                }
+                return;
+            }
+
+            if (genericCreatureAnimationOverrideHelper != null)
+            {
+                Dictionary<string, AnimationClip> clipOverridesForAIHumanoid = genericCreatureAnimationOverrideHelper.GetClipOverrides();
                 foreach (var entry in clipOverridesForAIHumanoid)
                 {
                     characterManager.UpdateAnimatorOverrideControllerClips(entry.Key, entry.Value);

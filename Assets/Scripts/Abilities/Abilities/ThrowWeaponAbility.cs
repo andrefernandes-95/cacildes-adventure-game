@@ -19,11 +19,6 @@ namespace AF
 
         public override void OnPrepare(CharacterManager characterManager)
         {
-            if (!characterManager.characterAbilityManager.CanUseAbility())
-            {
-                return;
-            }
-
             characterManager.characterAbilityManager.SetAnimations(characterManager, spellStart, spellHold, spellRelease);
             characterManager.characterAbilityManager.hasOverridenAnimations = true;
             characterManager.characterAbilityManager.SetIsCharging(true);

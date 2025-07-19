@@ -364,7 +364,7 @@ namespace AF
 
         void UpdateLockOnYPosition(Transform lockOnTarget)
         {
-            float value = defaultTrackedOffsetY + (lockOnTarget.transform.position.y - playerHeadRef.transform.position.y) / 2;
+            float value = defaultTrackedOffsetY + (lockOnTarget.transform.position.y - playerHeadRef.transform.position.y) / 4;
 
             cinemachineFramingTransposer.m_TrackedObjectOffset.y = Mathf.Clamp(
                 value,

@@ -32,12 +32,17 @@ namespace AF
         {
             if (playerStatsDatabase.currentStamina == -1)
             {
-                playerStatsDatabase.currentStamina = GetMaxStamina();
+                SetCurrentStamina(GetMaxStamina());
             }
             else if (playerStatsDatabase.currentStamina < GetMaxStamina())
             {
                 shouldRegenerateStamina = true;
             }
+        }
+
+        void SetCurrentStamina(float currentStamina)
+        {
+            playerStatsDatabase.SetCurrentStamina(currentStamina);
         }
 
         public int GetMaxStamina()
@@ -53,11 +58,16 @@ namespace AF
             return playerStatsDatabase.currentStamina * 100 / GetMaxStamina();
         }
 
+        public float GetCurrentStamina()
+        {
+            return playerStatsDatabase.currentStamina;
+        }
+
         public void DecreaseStamina(float amount)
         {
             shouldRegenerateStamina = false;
 
-            playerStatsDatabase.currentStamina = Mathf.Clamp(playerStatsDatabase.currentStamina - amount, 0, GetMaxStamina());
+            SetCurrentStamina(Mathf.Clamp(playerStatsDatabase.currentStamina - amount, 0, GetMaxStamina()));
 
             if (RegenerateEmptyStaminaCoroutine != null)
             {
@@ -116,7 +126,9 @@ namespace AF
                 finalRegenerationRate = finalRegenerationRate / 4;
             }
 
-            playerStatsDatabase.currentStamina = Mathf.Clamp(playerStatsDatabase.currentStamina + finalRegenerationRate * Time.deltaTime, 0f, GetMaxStamina());
+            SetCurrentStamina(
+                Mathf.Clamp(playerStatsDatabase.currentStamina + finalRegenerationRate * Time.deltaTime, 0f, GetMaxStamina())
+            );
 
             if (playerStatsDatabase.currentStamina >= GetMaxStamina())
             {
@@ -140,14 +152,13 @@ namespace AF
             var percentage = this.GetMaxStamina() * amount / 100;
             var nextValue = Mathf.Clamp(playerStatsDatabase.currentStamina + percentage, 0, this.GetMaxStamina());
 
-            playerStatsDatabase.currentStamina = nextValue;
+            SetCurrentStamina(nextValue);
         }
 
         public void RestoreStaminaPoints(float amount)
         {
             var nextValue = Mathf.Clamp(playerStatsDatabase.currentStamina + amount, 0, this.GetMaxStamina());
-
-            playerStatsDatabase.currentStamina = nextValue;
+            SetCurrentStamina(nextValue);
         }
 
 

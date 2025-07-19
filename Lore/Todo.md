@@ -1,29 +1,31 @@
-organize todo
+# IN PROGRESS
 
 
-work on redifining story event
+# IN DEV
 
-
+# Reload Mechanic and Fixing Gold
 i die in the boss fight against balbino - it will be active because main quest is not over
 in the boat, replace steel key with a lever, this way, the boss fight always triggers safely even if we die
-
 reload to last rested bonfire (or Cacildes Home if none is found in the save file) - need to store last bonfire rested at
+- Fix gold dupping by not reloading save data, we need to check boss story events to not use monobehaviour ids, and rely on quest progress instead
+
+
+
+
+# Bugs in Character Customization
+- Restaurar predefinições faz com que Cacildes tenha Barba
+- Não há opção de sem barba
+- Trocar algum slider desequipa o torso
+
 
 
 
 
 In Dev:
 
-- Attack Stat Manager to store current damage for right and left weapon, we should also store bonus damage from str, dex and int into separate variables for consultation (for right and left hand)
-- Create specific tooltip scripts for equipments
-- BUG: TH when unarmed is not adding extra bonus
-
-- Block state permanent in companions and ai
-- Companions can find weapons on fallen enemies, and we should store the weapons
 
 Next:
 
-- Made wood sword upgradeable
 - Inventory weight, if too heavy, do heavy roll ( do not hinder jump )
 - Rework stat scale to work with module operators for every 2 or 3 levels (25 bonus to health every level)
 - BUG: Accessories can be equipped on other slots
@@ -36,14 +38,12 @@ Next:
 
 [UI]
 
-- Add category to received items popup
 - Add Damage Type Label to weapons (Slash, Blunt, etc)
 
 [CORE_MECHANICS]
 
-- Fix gold dupping by not reloading save data, we need to check boss story events to not use monobehaviour ids, and rely on quest progress instead
-
 To Do:
+- Add category to received items popup
 
 - Add chest that uses another script for adding items, to avoid bugs with armors
 - Weapon should have abilities for right trigger and right bumper and left trigger (this way, the amount of combos is dependant on the weapon itself)
@@ -59,9 +59,12 @@ To Do:
 - PS4 Gamepad not showing correct icns
 - Review enemies
 - Backpack accessory - allow more items in th eback
+- BUG: TH when unarmed is not adding extra bonus
+- On Gamepad, Pressing left analogue should also enable running
+
 
 Low:
-
+- Made wood sword upgradeable
 - Ability should consume stamina and mana
 - Requirements for spells can still exist, but damage will be lessen
 - Poise: Simplify Logic of isbroken, too many side effects
@@ -98,6 +101,10 @@ Low:
 - Ring that enhances defense when all armor pieces are equipped
 - Ring that enhances charged spells damages
 - Ring that allows any weapon to use powerstance regardless of differnet categories
+- Elixir that reveals illusionary walls
+- Confusion Status Effect
+
+- Bug: If tree trunk kills a slime but was in a previous fight with us, it wont return to us. Current Target is set to player, but thats it
 
 BACKLOG:
 
@@ -113,3 +120,7 @@ Done:
 - Cloaks as accessories, same as pauldrons
 - Add Stats to characters, and refactor stats bonus controller
 - Add database for items with json descriptions
+
+# DONE
+- Test PS4 Controls (Fixed by checking the AutoSwitch on PlayerInput, UI Input module must be null)
+

@@ -36,7 +36,7 @@ namespace AF
 
         public void QueueAbility(Ability ability)
         {
-            if (queuedAbilities.Count > maxQueuedAbilities)
+            if (queuedAbilities.Count >= maxQueuedAbilities)
             {
                 return;
             }

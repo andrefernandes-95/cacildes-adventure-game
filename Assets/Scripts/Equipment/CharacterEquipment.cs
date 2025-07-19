@@ -7,6 +7,7 @@ namespace AF
         public CharacterManager characterManager;
 
         [Header("Equipment")]
+        Spell[] spells = new Spell[10];
         Helmet helmet;
         Gauntlet gauntlet;
         Armor armor;
@@ -101,6 +102,21 @@ namespace AF
         public override void UnequipWeapon(int slotIndex, bool rightHand)
         {
             characterManager.characterWeaponsManager.EquipWeapon(null, slotIndex, rightHand);
+        }
+
+        public override void EquipSpell(Spell spell, int slotIndex)
+        {
+            spells[slotIndex] = Instantiate(spell);
+        }
+
+        public override void UnequipSpell(int slotIndex)
+        {
+            spells[slotIndex] = null;
+        }
+
+        public override Spell[] GetEquippedSpells()
+        {
+            return spells;
         }
     }
 }
