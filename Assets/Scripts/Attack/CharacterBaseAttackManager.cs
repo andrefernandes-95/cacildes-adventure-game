@@ -84,12 +84,28 @@
 
         public Damage GetAttackDamage()
         {
+            Damage clonedDamage = null;
+
             if (attackingHitboxType == HitboxType.LEFT_HAND)
             {
-                return leftWeaponCurrentDamage;
+                clonedDamage = leftWeaponCurrentDamage.Clone();
+
+                if (damageBonus != null)
+                {
+                    clonedDamage.Combine(damageBonus);
+                }
+
+                return clonedDamage;
             }
 
-            return rightWeaponCurrentDamage;
+            clonedDamage = rightWeaponCurrentDamage.Clone();
+
+            if (damageBonus != null)
+            {
+                clonedDamage.Combine(damageBonus);
+            }
+
+            return clonedDamage;
         }
 
         public void CalculateCurrentDamage()

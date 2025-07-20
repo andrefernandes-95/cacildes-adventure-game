@@ -9,6 +9,7 @@ namespace AF
         public bool ignoreGravity = false;
 
         [SerializeField] float _verticalVelocity = 0f;
+        public float VerticalVelocity => _verticalVelocity;
         private float _terminalVelocity = 53.0f;
 
         private float _jumpTimeoutDelta;

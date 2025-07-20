@@ -33,6 +33,8 @@ namespace AF
         [SerializeField] string ambushIdle = "Ambush [Skeleton] - Idle";
         [SerializeField] string ambushExit = "Ambush [Skeleton]";
 
+        bool hasSubscribedToOnTakeDamageEvent = false;
+
         private void Awake()
         {
             EventManager.StartListening(EventMessages.ON_LEAVING_BONFIRE, () =>
@@ -40,8 +42,6 @@ namespace AF
                 ambushHasBegun = false;
                 shouldAwake = false;
             });
-
-            characterManager.health.onTakeDamage.AddListener(OnTakeDamage);
         }
 
         void OnTakeDamage()
@@ -61,6 +61,12 @@ namespace AF
             onStateEnter?.Invoke();
 
             characterManager.PlayBusyAnimationWithRootMotion(ambushIdle);
+
+            if (!hasSubscribedToOnTakeDamageEvent)
+            {
+                characterManager.health.onTakeDamage.AddListener(OnTakeDamage);
+                hasSubscribedToOnTakeDamageEvent = true;
+            }
         }
 
         public override void OnStateExit(StateManager stateManager)

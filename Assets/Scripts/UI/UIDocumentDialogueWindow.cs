@@ -38,6 +38,7 @@ namespace AF
         // Internal
         Label actorNameLabel, actorTitleLabel, messageTextLabel;
         IMGUIContainer actorSprite;
+        VisualElement actorSpriteContainer;
         VisualElement actorInfoContainer;
 
         private void Awake()
@@ -62,6 +63,7 @@ namespace AF
             this.actorTitleLabel = this.root.Q<Label>("ActorTitle");
             this.messageTextLabel = this.root.Q<Label>("MessageText");
             this.actorSprite = this.root.Q<IMGUIContainer>("ActorSprite");
+            this.actorSpriteContainer = this.root.Q<VisualElement>("ActorSpriteContainer");
             this.actorInfoContainer = this.root.Q<VisualElement>("ActorInfoContainer");
 
             onEnableEvent?.Invoke();
@@ -164,11 +166,11 @@ namespace AF
             {
                 actorSprite.style.backgroundImage = new StyleBackground(
                                    character.isPlayer ? playerManager.GetPlayerPortrait() : character.avatar);
-                actorSprite.style.display = DisplayStyle.Flex;
+                actorSpriteContainer.style.display = DisplayStyle.Flex;
             }
             else
             {
-                actorSprite.style.display = DisplayStyle.None;
+                actorSpriteContainer.style.display = DisplayStyle.None;
             }
 
             StartCoroutine(Typewrite(message, messageTextLabel));

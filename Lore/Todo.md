@@ -1,10 +1,18 @@
 # IN PROGRESS
 
+- Add signs to path to slepbone cavern
+- Add signs to bear cavern
+- Make bear work
+- Create blacksmith with amensia under beach cavern explaining blacksmith mechanics
+
 
 # IN DEV
 
+
+- bug dialogo quadrado no gamepad
+
+
 - Do enemy damage weakeness based on combatant
-- Lock On Is a bit wonky, not responsive enough on click to fetch target
 
 # Reload Mechanic and Fixing Gold
 i die in the boss fight against balbino - it will be active because main quest is not over
@@ -14,24 +22,8 @@ reload to last rested bonfire (or Cacildes Home if none is found in the save fil
 
 
 
-
-# Bugs in Character Customization
-- Restaurar predefinições faz com que Cacildes tenha Barba
-- Não há opção de sem barba
-- Trocar algum slider desequipa o torso
-
-
-
-
-
 In Dev:
 
-
-Next:
-
-- Inventory weight, if too heavy, do heavy roll ( do not hinder jump )
-- Rework stat scale to work with module operators for every 2 or 3 levels (25 bonus to health every level)
-- BUG: Accessories can be equipped on other slots
 
 [CRAFTING]
 
@@ -47,12 +39,14 @@ Next:
 
 To Do:
 - Add category to received items popup
-
+- Inventory weight, if too heavy, do heavy roll ( do not hinder jump )
+- Rework stat scale to work with module operators for every 2 or 3 levels (25 bonus to health every level)
+- BUG: Accessories can be equipped on other slots
+- expliccar q aguenar abilidades da mais dano
 - Add chest that uses another script for adding items, to avoid bugs with armors
 - Weapon should have abilities for right trigger and right bumper and left trigger (this way, the amount of combos is dependant on the weapon itself)
 - Unify Player and Enemy Actions (Block, Parry, Shooting Bow, Throwing Firebomb, Consuming Orange Juice)
 - Music HUD showing which music is playing
-- Moments as jsons
 - Remove staffs
 - Make item popups pop up animation
 - Add note to quest for Maerimond which is : Rewards - Unlock Boss Weapons
@@ -64,7 +58,7 @@ To Do:
 - Backpack accessory - allow more items in th eback
 - BUG: TH when unarmed is not adding extra bonus
 - On Gamepad, Pressing left analogue should also enable running
-
+- Explain that slimes are resistant to axes because of their bodies.. some weapons are not ideal for some enemies
 
 Low:
 - Made wood sword upgradeable

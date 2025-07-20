@@ -34,6 +34,9 @@ namespace AF
         [Header("Spells")]
         public AnimationClip castSpell;
 
+        [Header("Gestures")]
+        public AnimationClip roar;
+
         public Dictionary<string, AnimationClip> GetClipOverrides()
         {
             Dictionary<string, AnimationClip> animations = new();
@@ -56,6 +59,7 @@ namespace AF
             if (ambushIdle != null) animations.Add("Generic Creature - Ambush - Idle", ambushIdle);
             if (ambushExit != null) animations.Add("Generic Creature - Ambush - Exit", ambushExit);
             if (castSpell != null) animations.Add("Generic Creature - Cast Spell", castSpell);
+            if (roar != null) animations.Add("Generic Creature - Roar", roar);
             return animations;
         }
     }

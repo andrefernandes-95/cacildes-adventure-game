@@ -8,3 +8,6 @@ Disable Baking Rotations - they can not be applied or else the turning animation
 
 ### UI Input not working
  Make sure to go to EventSystem and on Actions Asset, make sure it defaults to DefaultInputActions
+
+### Slime and enemies floating in air by climbing on each other
+set step offset to 0.1

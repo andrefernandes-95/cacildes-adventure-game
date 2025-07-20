@@ -33,6 +33,7 @@ namespace AF
 
         [Header("Lock On Settings")]
         public float maximumLockOnDistance = 15;
+        public float maximumLockOnDistanceOnSwitchingTargets = 3;
         public float MAX_TIME_BEFORE_DISENGAGING = 1f;
 
         [Header("Lock On References")]
@@ -51,13 +52,10 @@ namespace AF
         public float mouseXSwitchThreshold = 0.5f;
         public float maxTargetSwitchingCooldown = 1f;
         [HideInInspector] public float targetSwitchingCooldown = Mathf.Infinity;
-        Vector2 previousInputsLook = Vector2.zero;
 
         // Internal
         public List<LockOnRef> availableTargets = new List<LockOnRef>();
 
-        bool evaluatingIfShouldDisengage = false;
-        Coroutine CheckIfShouldDisengageCoroutine;
         Coroutine EvaluateLockOnAfterKillingEnemyCoroutine;
 
         CinemachineVirtualCamera cinemachineVirtualCamera;
@@ -66,6 +64,12 @@ namespace AF
 
         List<LockOnRef> _allPossibleTargets = new();
         bool hasLoadedAllPossibleTargets = false;
+
+        private float mouseLookAccum = 0f;
+        private float mouseLookTimer = 0f;
+        private const float mouseSwitchCooldown = 0.2f; // seconds
+        [SerializeField] float mouseAccumThreshold = 15f; // degrees or pixels worth of turn
+
 
         private void Awake()
         {
@@ -83,6 +87,10 @@ namespace AF
 
         private void Update()
         {
+            // Accumulate mouse input over time
+            mouseLookAccum += inputs.look.x;
+            mouseLookTimer -= Time.deltaTime;
+
             // Camera.main.useOcclusionCulling = !isLockedOn;
 
             if (targetSwitchingCooldown < maxTargetSwitchingCooldown)
@@ -122,12 +130,18 @@ namespace AF
                 */
             }
 
-            if (isLockedOn && Vector2.Distance(previousInputsLook, inputs.look) >= mouseXSwitchThreshold)
+            if (isLockedOn && mouseLookAccum != 0f)
             {
                 HandleTargetSwitching();
             }
 
-            previousInputsLook = inputs.look;
+            // After evaluation of target switching based on mouse accum, check if we should reset it
+            if (MouseLookedLeft() || MouseLookedRight())
+            {
+                // Reset after switch
+                mouseLookAccum = 0f;
+                mouseLookTimer = mouseSwitchCooldown;
+            }
         }
 
         bool IsViewBlocked(Transform target)
@@ -341,12 +355,7 @@ namespace AF
 
         void UpdateLockOnYPosition(Transform lockOnTarget)
         {
-            float value = defaultTrackedOffsetY + (lockOnTarget.transform.position.y - playerHeadRef.transform.position.y) / 4;
-
-            cinemachineFramingTransposer.m_TrackedObjectOffset.y = Mathf.Clamp(
-                value,
-                defaultTrackedOffsetY - 1f,
-                defaultTrackedOffsetY + .5f);
+            cinemachineFramingTransposer.m_TrackedObjectOffset.y = defaultTrackedOffsetY;
         }
 
         bool InScreen(LockOnRef target)
@@ -378,91 +387,122 @@ namespace AF
             return true;
         }
 
+        private void ScanForTargets()
+        {
+            availableTargets.Clear();
+
+            float radius = maximumLockOnDistance;
+            Vector3 center = playerHeadRef.position;
+
+            Collider[] colliders = Physics.OverlapSphere(center, radius);
+
+            foreach (var collider in colliders)
+            {
+                if (!collider.TryGetComponent<LockOnRef>(out var enemy))
+                {
+                    continue;
+                }
+
+                if (!InScreen(enemy) || IsViewBlocked(enemy.transform))
+                {
+                    continue;
+                }
+
+                if (enemy.CanLockOn())
+                {
+                    availableTargets.Add(enemy);
+                }
+            }
+        }
 
         public void HandleTargetSwitching()
         {
-            bool lookedRight = inputs.look.x > 0 || (Gamepad.current != null && Gamepad.current.rightStick.right.IsActuated());
-            bool lookedLeft = inputs.look.x < 0 || (Gamepad.current != null && Gamepad.current.rightStick.left.IsActuated());
-
-            if (nearestLockOnTarget == null || lookedRight == false && lookedLeft == false)
+            if (!CanSwitchTarget(out bool lookedLeft, out bool lookedRight))
             {
                 return;
             }
 
-            inputs.look.x = 0;
-            inputs.look.y = 0;
+            // Reset inputs to avoid drifting when switching
+            inputs.look = Vector2.zero;
 
-            availableTargets.Clear();
-            leftLockTarget = null;
-            rightLockTarget = null;
-
-            // Define the lock-on sphere's radius and center position
-            float lockOnSphereRadius = 13f;
-            Vector3 lockOnSphereCenter = playerHeadRef.transform.position;
-
-            // Find all colliders within the lock-on sphere
-            Collider[] colliders = Physics.OverlapSphere(lockOnSphereCenter, lockOnSphereRadius);
-
-            foreach (var collider in colliders)
+            if (targetSwitchingCooldown < maxTargetSwitchingCooldown)
             {
-                LockOnRef enemy = collider.GetComponent<LockOnRef>();
-
-                if (enemy != null)
-                {
-                    // Calculate the direction and distance from the player to the target
-                    Vector3 lockTargetDirection = enemy.transform.position - lockOnSphereCenter;
-                    float distanceFromTarget = lockTargetDirection.magnitude;
-
-                    if (enemy.transform.root != playerHeadRef.transform.root && InScreen(enemy) && distanceFromTarget <= maximumLockOnDistance)
-                    {
-                        availableTargets.Add(enemy);
-                    }
-                }
+                return;
             }
 
-            float shortestDistanceLeftTarget = Mathf.Infinity;
-            float shortestDistanceRightTarget = Mathf.Infinity;
-
-            foreach (var target in availableTargets)
-            {
-                Vector3 relativePlayerPosition = playerManager.transform.InverseTransformPoint(target.transform.position);
-                float distanceToPlayer = Vector3.Distance(target.transform.position, playerManager.transform.position);
-
-                if (relativePlayerPosition.x < 0.00 && distanceToPlayer < shortestDistanceLeftTarget)
-                {
-                    shortestDistanceLeftTarget = distanceToPlayer;
-                    if (target.CanLockOn() && nearestLockOnTarget != target)
-                    {
-                        leftLockTarget = target;
-                    }
-                }
-                else if (relativePlayerPosition.x > 0.00 && distanceToPlayer < shortestDistanceRightTarget)
-                {
-                    shortestDistanceRightTarget = distanceToPlayer;
-                    if (target.CanLockOn() && nearestLockOnTarget != target)
-                    {
-                        rightLockTarget = target;
-                    }
-                }
-            }
+            // Scan for valid targets based on current camera view
+            ScanForTargets();
+            EvaluateLockTargets();
 
             if (lookedLeft && leftLockTarget != null)
             {
-                if (targetSwitchingCooldown >= maxTargetSwitchingCooldown)
-                {
-                    SwitchLockOnTarget(leftLockTarget);
-                    targetSwitchingCooldown = 0f;
-                }
+                SwitchLockOnTarget(leftLockTarget);
+                targetSwitchingCooldown = 0f;  // Reset cooldown immediately after switching
             }
             else if (lookedRight && rightLockTarget != null)
             {
-                if (targetSwitchingCooldown >= maxTargetSwitchingCooldown)
+                SwitchLockOnTarget(rightLockTarget);
+                targetSwitchingCooldown = 0f;  // Reset cooldown immediately after switching
+            }
+        }
+
+        private bool MouseLookedLeft()
+        {
+            return mouseLookAccum <= -mouseAccumThreshold && mouseLookTimer <= 0f;
+        }
+
+        private bool MouseLookedRight()
+        {
+            return mouseLookAccum >= mouseAccumThreshold && mouseLookTimer <= 0f;
+        }
+
+        private bool CanSwitchTarget(out bool lookedLeft, out bool lookedRight)
+        {
+            bool mouseLeft = MouseLookedLeft();
+            bool mouseRight = MouseLookedRight();
+
+            bool gamepadLeft = Gamepad.current?.rightStick.left.IsActuated() ?? false;
+            bool gamepadRight = Gamepad.current?.rightStick.right.IsActuated() ?? false;
+
+            lookedLeft = mouseLeft || gamepadLeft;
+            lookedRight = mouseRight || gamepadRight;
+
+            return nearestLockOnTarget != null && (lookedLeft || lookedRight);
+        }
+
+        private void EvaluateLockTargets()
+        {
+            leftLockTarget = null;
+            rightLockTarget = null;
+
+            float shortestLeft = Mathf.Infinity;
+            float shortestRight = Mathf.Infinity;
+
+            foreach (var target in availableTargets)
+            {
+                if (target == nearestLockOnTarget)
                 {
-                    SwitchLockOnTarget(rightLockTarget);
-                    targetSwitchingCooldown = 0f;
+                    continue; // Don't switch back to the current target
+                }
+
+                Vector3 targetDirection = target.transform.position - playerManager.transform.position;
+                float distance = Vector3.Distance(target.transform.position, playerManager.transform.position);
+
+                float angle = Vector3.SignedAngle(playerManager.transform.forward, targetDirection, Vector3.up);
+
+                if (angle < 0 && distance < shortestLeft)  // Target is on the left
+                {
+                    shortestLeft = distance;
+                    leftLockTarget = target;
+                }
+                else if (angle > 0 && distance < shortestRight)  // Target is on the right
+                {
+                    shortestRight = distance;
+                    rightLockTarget = target;
                 }
             }
         }
+
 
         public void SwitchLockOnTarget(LockOnRef newTarget)
         {
@@ -471,27 +511,53 @@ namespace AF
                 return;
             }
 
-            RaycastHit[] hits;
+            // Get the direction and distance to the new target
             Vector3 direction = newTarget.transform.position - playerHeadRef.transform.position;
+            float distanceToTarget = direction.magnitude;
 
-            hits = Physics.RaycastAll(playerHeadRef.transform.position, direction, maximumLockOnDistance, detectionLayer);
-
-            foreach (var hit in hits)
+            // Check if the target is within the lock-on distance
+            if (distanceToTarget > maximumLockOnDistanceOnSwitchingTargets)
             {
-                LockOnRef component = hit.collider.GetComponent<LockOnRef>() ?? hit.collider.GetComponentInChildren<LockOnRef>();
+                return; // If the target is out of range, don't perform any further checks
+            }
 
-                if (component != null && component == newTarget)
+            // Perform a raycast to check if the target is visible and not blocked by obstacles
+            if (Physics.Raycast(playerHeadRef.transform.position, direction.normalized, out RaycastHit hit, distanceToTarget, detectionLayer))
+            {
+                // Check if the raycast hit the target or something related to it
+                if (hit.transform == newTarget.transform || hit.transform.root == newTarget.transform.root)
                 {
+                    // Target is not blocked, proceed with the switch
                     nearestLockOnTarget = newTarget;
 
+                    // Update camera properties, play sound, and snap the player rotation
                     UpdateCameraProperties(nearestLockOnTarget.transform);
                     soundbank.PlaySound(soundbank.uiLockOnSwitchTarget);
 
                     SnapPlayerRotationToLockOnTarget();
-                    break;
+                }
+                else
+                {
+                    // Target is blocked by something else
+                    nearestLockOnTarget = null;
                 }
             }
+            else
+            {
+                // No obstacles detected, lock-on is valid
+                nearestLockOnTarget = newTarget;
+
+                // Update camera properties, play sound, and snap the player rotation
+                UpdateCameraProperties(nearestLockOnTarget.transform);
+                soundbank.PlaySound(soundbank.uiLockOnSwitchTarget);
+
+                SnapPlayerRotationToLockOnTarget();
+            }
+
+            // After switching, prevent further switches for a short duration
+            targetSwitchingCooldown = maxTargetSwitchingCooldown;
         }
+
 
         /// <summary>
         /// Unity Event

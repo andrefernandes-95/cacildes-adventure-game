@@ -236,6 +236,11 @@ namespace AF
 
                     float speed = ShouldRun() ? chaseSpeed : patrolSpeed;
 
+                    if (!characterController.isGrounded)
+                    {
+                        direction += agent.transform.forward * 2f;
+                    }
+
                     characterController.Move(speed * Time.deltaTime * direction);
 
                     // Manually rotate to face agent's path direction
@@ -260,6 +265,7 @@ namespace AF
                     {
                         HandleCuttingDistance(ref rootMotionPosition);
                     }
+
                     characterController.Move(rootMotionPosition);
                 }
             }
@@ -267,6 +273,11 @@ namespace AF
 
         void HandleCuttingDistance(ref Vector3 rootMotionPosition)
         {
+            if (targetManager.currentTarget == null)
+            {
+                return;
+            }
+
             float distanceToTarget = Vector3.Distance(targetManager.currentTarget.transform.position, transform.position);
 
             if (distanceToTarget >= agent.stoppingDistance)
