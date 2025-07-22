@@ -73,13 +73,11 @@ namespace AF
 
         public void HandleBlockStart()
         {
-            (characterManager as CharacterManager).faceTarget = true;
+            (characterManager as CharacterManager).FaceTarget();
         }
 
         public void HandleBlockEnd()
         {
-            (characterManager as CharacterManager).faceTarget = false;
-
             if (characterManager.health.GetCurrentHealth() > 0)
             {
                 characterManager.PlayAnimationWithCrossFade("Idle");

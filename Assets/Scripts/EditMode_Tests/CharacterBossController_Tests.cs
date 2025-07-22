@@ -40,7 +40,7 @@ namespace AF.Tests
         public void Test_Awake_HidesBossHud()
         {
             // Act
-            _bossController.Start();
+            _bossController.Awake();
 
             // Assert
             Assert.That(_bossController.IsBossHUDEnabled(), Is.False);

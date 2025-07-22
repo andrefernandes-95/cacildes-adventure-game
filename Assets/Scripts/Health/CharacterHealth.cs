@@ -1,6 +1,7 @@
 
 using AF.Companions;
 using AF.Events;
+using EditorAttributes;
 using TigerForge;
 using UnityEngine;
 using UnityEngine.Events;
@@ -17,6 +18,9 @@ namespace AF.Health
 
         [SerializeField]
         protected int maxHealth = 100;
+
+        [HelpBox("For some cases, like a boss, we might want to set a different max health basis value")]
+        [SerializeField] bool overrideMaxHealth = false;
 
         [SerializeField] float m_currentHealth;
         protected float CurrentHealth
@@ -138,7 +142,9 @@ namespace AF.Health
 
         public override int GetMaxHealth()
         {
-            int maxHealthValue = characterManager.combatant != null ? characterManager.combatant.maximumHealth : this.maxHealth;
+            int maxHealthValue = characterManager.combatant != null && overrideMaxHealth == false
+                ? characterManager.combatant.maximumHealth : this.maxHealth;
+
             int value = Utils.ScaleWithCurrentNewGameIteration(maxHealthValue + bonusHealth + bonusHealthFromCompanions, gameSession.currentGameIteration, gameSession.newGamePlusScalingFactor);
 
             if (hasHealthCutInHalf)
@@ -219,6 +225,7 @@ namespace AF.Health
         {
             if (characterManager.characterBossController.IsBoss())
             {
+                characterManager.characterBossController.UpdateUI();
                 return;
             }
 
@@ -227,6 +234,12 @@ namespace AF.Health
 
         void ShowHealthbar()
         {
+            if (characterManager.characterBossController.isBoss)
+            {
+                HideHealthbar();
+                return;
+            }
+
             characterHealthUI?.gameObject.SetActive(true);
         }
 

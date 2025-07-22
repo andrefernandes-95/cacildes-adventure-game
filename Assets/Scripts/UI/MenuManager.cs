@@ -21,6 +21,7 @@ namespace AF
         public CursorManager cursorManager;
         public StarterAssetsInputs starterAssetsInputs;
         public UIDocumentCraftScreen craftScreen;
+        public UIDocumentBlacksmith uIDocumentBlacksmith;
         public TitleScreenManager titleScreenManager;
         public UIDocumentBook uIDocumentBook;
         public UIDocumentGameOver uIDocumentGameOver;
@@ -234,6 +235,11 @@ namespace AF
             }
 
             if (craftScreen.isActiveAndEnabled)
+            {
+                return false;
+            }
+
+            if (uIDocumentBlacksmith.isActiveAndEnabled)
             {
                 return false;
             }

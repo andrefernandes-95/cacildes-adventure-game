@@ -22,7 +22,7 @@ namespace AF
 
         public override void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
         {
-            characterManager.faceTarget = true;
+            characterManager.FaceTarget();
 
             if (stateInfo.normalizedTime >= exitTime)
             {

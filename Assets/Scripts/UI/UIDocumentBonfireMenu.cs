@@ -13,6 +13,7 @@ namespace AF
         public UIDocumentLevelUp uiDocumentLevelUp;
         public UIDocumentBonfireTravel uiDocumentTravel;
         public UIDocumentCraftScreen uIDocumentCraftScreen;
+        public UIDocumentBlacksmith uIDocumentBlacksmith;
 
         [Header("Components")]
         public CursorManager cursorManager;
@@ -139,10 +140,8 @@ namespace AF
 
             UIUtils.SetupButton(upgradeWeapons, () =>
             {
-                uIDocumentCraftScreen.craftActivity = UIDocumentCraftScreen.CraftActivity.BLACKSMITH;
-                uIDocumentCraftScreen.returnToBonfire = true;
-
-                uIDocumentCraftScreen.gameObject.SetActive(true);
+                uIDocumentBlacksmith.returnToBonfire = true;
+                uIDocumentBlacksmith.gameObject.SetActive(true);
                 this.gameObject.SetActive(false);
             }, soundbank);
 
@@ -174,6 +173,7 @@ namespace AF
             if (uiDocumentLevelUp.isActiveAndEnabled == false
                 && uiDocumentTravel.isActiveAndEnabled == false
                 && uIDocumentCraftScreen.isActiveAndEnabled == false
+                && uIDocumentBlacksmith.isActiveAndEnabled == false
                 )
             {
                 ExitBonfire();

@@ -5,7 +5,7 @@ using UnityEngine.Localization.Settings;
 
 namespace AF
 {
-    public class GenericTrigger : MonoBehaviour, IEventNavigatorCapturable
+    public class GenericTrigger : MonoBehaviour
     {
 
         [Header("Events")]
@@ -27,6 +27,106 @@ namespace AF
 
         bool canInteract = true;
 
+        MomentManager _momentManager;
+        UIManager _uiManager;
+        UIDocumentKeyPrompt _uIDocumentKeyPrompt;
+        StarterAssetsInputs _starterAssetsInputs;
+
+        const float MAX_INTERACT_ANGLE = 30f;
+
+        StarterAssetsInputs GetStarterAssetsInputs()
+        {
+            if (_starterAssetsInputs == null)
+            {
+                _starterAssetsInputs = FindAnyObjectByType<StarterAssetsInputs>(FindObjectsInactive.Include);
+            }
+
+            return _starterAssetsInputs;
+        }
+
+        MomentManager GetMomentManager()
+        {
+            if (_momentManager == null)
+            {
+                _momentManager = FindAnyObjectByType<MomentManager>(FindObjectsInactive.Include);
+            }
+
+            return _momentManager;
+        }
+
+        UIManager GetUIManager()
+        {
+            if (_uiManager == null)
+            {
+                _uiManager = FindAnyObjectByType<UIManager>(FindObjectsInactive.Include);
+            }
+
+            return _uiManager;
+        }
+
+        UIDocumentKeyPrompt GetUIDocumentKeyPrompt()
+        {
+            if (_uIDocumentKeyPrompt == null)
+            {
+                _uIDocumentKeyPrompt = FindAnyObjectByType<UIDocumentKeyPrompt>(FindObjectsInactive.Include);
+            }
+
+            return _uIDocumentKeyPrompt;
+        }
+
+        bool IsPlayer(Collider other) => other.gameObject.CompareTag("Player");
+
+        private void OnTriggerEnter(Collider other)
+        {
+            if (!IsPlayer(other))
+            {
+                return;
+            }
+        }
+
+        private void OnTriggerStay(Collider other)
+        {
+            if (!IsPlayer(other))
+            {
+                return;
+            }
+
+            if (CanInteract())
+            {
+                if (!GetUIDocumentKeyPrompt().isActiveAndEnabled)
+                {
+                    GetUIDocumentKeyPrompt().DisplayPrompt(key, GetAction(), item);
+                }
+
+                if (GetStarterAssetsInputs().interact)
+                {
+                    GetStarterAssetsInputs().interact = false;
+
+                    HandleActivation();
+                }
+            }
+        }
+
+        private void OnTriggerExit(Collider other)
+        {
+            if (!IsPlayer(other))
+            {
+                return;
+            }
+
+            DisableKeyPrompt();
+        }
+
+        bool CanInteract()
+        {
+            if (GetUIManager().IsShowingFullScreenGUI() || GetMomentManager().HasMomentOnGoing)
+            {
+                return false;
+            }
+
+            return canInteract;
+        }
+
         public void OnCaptured()
         {
             if (!canInteract)
@@ -34,7 +134,6 @@ namespace AF
                 return;
             }
 
-            GetUIDocumentKeyPrompt().DisplayPrompt(key, GetAction(), item);
         }
 
         public virtual string GetAction()
@@ -42,22 +141,6 @@ namespace AF
             return action;
         }
 
-        public void OnInvoked()
-        {
-            if (!canInteract)
-            {
-                return;
-            }
-
-            DisableKeyPrompt();
-
-            HandleActivation();
-        }
-
-        public void OnReleased()
-        {
-            DisableKeyPrompt();
-        }
 
         public void DisableKeyPrompt()
         {
@@ -82,18 +165,15 @@ namespace AF
             //this.gameObject.layer = 0;
         }
 
-        UIDocumentKeyPrompt GetUIDocumentKeyPrompt()
-        {
-            if (uIDocumentKeyPrompt == null)
-            {
-                uIDocumentKeyPrompt = FindAnyObjectByType<UIDocumentKeyPrompt>(FindObjectsInactive.Include);
-            }
-
-            return uIDocumentKeyPrompt;
-        }
-
         public void HandleActivation()
         {
+            if (!canInteract)
+            {
+                return;
+            }
+
+            DisableKeyPrompt();
+
             bool canActivate = true;
 
             if (requiredItemToOpen != null && inventoryDatabase != null)

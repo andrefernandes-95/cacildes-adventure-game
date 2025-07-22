@@ -42,7 +42,6 @@ namespace AF
             }
 
             playerManager.animator.SetBool(hashIsBlocking, true);
-            playerManager.characterAbstractBlockController.SetIsBlocking(true);
 
             onBlockStart?.Invoke();
 
@@ -52,7 +51,6 @@ namespace AF
         public void CancelBlock()
         {
             playerManager.animator.SetBool(hashIsBlocking, false);
-            playerManager.characterAbstractBlockController.SetIsBlocking(false);
 
             onBlockEnd?.Invoke();
         }

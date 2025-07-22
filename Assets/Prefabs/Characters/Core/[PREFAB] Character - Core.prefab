@@ -38085,7 +38085,7 @@ CharacterController:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 2048
   m_LayerOverridePriority: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
@@ -38157,15 +38157,14 @@ MonoBehaviour:
   animatorOverrideController: {fileID: 0}
   patrolSpeed: 2
   chaseSpeed: 6
-  rotationSpeed: 24
+  rotationSpeed: 5
   cutDistanceToTargetSpeed: 2
   cutDistanceRotationSpeedMultiplier: 2
   isCuttingDistanceToTarget: 0
   canRevive: 1
   shouldReturnToInitialPositionOnRevive: 1
+  maximumAngleToAttackTarget: 30
   faceTarget: 0
-  faceTargetDuration: 0.25
-  alwaysFaceTarget: 0
   partners: []
   partnerOrder: 0
   onResetStates:
@@ -38242,8 +38241,6 @@ MonoBehaviour:
   overrideChaseSpeed: -1
   clipOverrides:
     _serializedList: []
-  aIHumanoidAnimationOverrideHelper: {fileID: 0}
-  genericCreatureAnimationOverrideHelper: {fileID: 0}
   onLeftFootstep:
     m_PersistentCalls:
       m_Calls:
@@ -41271,6 +41268,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 86efaed96c8f2e64986cb91761327070, type: 2}
   combatAbilities:
   - {fileID: 11400000, guid: 1cbc9f2c2cd56904c98c9e53c4104e89, type: 2}
+  healthDependantAbilities: []
   reactionToTargetBehindBack: {fileID: 0}
   chanceToReactToTargetBehindBack: 100
   currentCombatAction: {fileID: 0}
@@ -59320,19 +59318,7 @@ MonoBehaviour:
   jumpState: {fileID: 8701266370095907941}
   onStateEnter:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 6374766515803482888}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 4.5
-          m_StringArgument: Chasing
-          m_BoolArgument: 1
-        m_CallState: 2
+      m_Calls: []
   onTargetReached:
     m_PersistentCalls:
       m_Calls: []
@@ -61499,7 +61485,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6464986708083607163}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 19102, guid: 0000000000000000e000000000000000, type: 0}
   m_Name: 
@@ -77971,6 +77957,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   maxHealth: 1900
+  overrideMaxHealth: 0
   m_currentHealth: 0
   onHalfHealth:
     m_PersistentCalls:
@@ -85240,6 +85227,7 @@ MonoBehaviour:
   FallTimeout: 0.15
   shouldJumpToTarget: 0
   jumpTowardsTargetSpeed: 3
+  initialY: 0
 --- !u!1 &8919674591871552269
 GameObject:
   m_ObjectHideFlags: 0
@@ -90625,17 +90613,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8cf81f3bb92dceb438222761dea8ac63, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &6374766515803482888 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 857456232120579889, guid: 454aa59d4b3327d44a86833d10ccb220, type: 3}
-  m_PrefabInstance: {fileID: 6021862154435075129}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &7004058079664395940 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3648648039651953309, guid: 454aa59d4b3327d44a86833d10ccb220, type: 3}
   m_PrefabInstance: {fileID: 6021862154435075129}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6374766515803482888}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 619d886f8c186fb4a8bb31b2cb645785, type: 3}

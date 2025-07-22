@@ -41,6 +41,7 @@ namespace AF
 
         public UIDocument bossHud;
         public IMGUIContainer bossFillBar;
+        Label bossHealthLabel;
 
         public CharacterManager characterManager;
 
@@ -59,10 +60,11 @@ namespace AF
         private BGMManager bgmManager;
         private SceneSettings sceneSettings;
 
-        public void Start()
+        public void Awake()
         {
             HideBossHud();
         }
+
 
         /// <summary>
         /// Unity Event
@@ -84,6 +86,11 @@ namespace AF
 
                 bossFillBar ??= bossHud.rootVisualElement.Q<IMGUIContainer>("hp-bar");
                 bossFillBar.style.width = new Length(characterManager.health.GetCurrentHealth() * 100 / characterManager.health.GetMaxHealth(), LengthUnit.Percent);
+
+                bossHealthLabel ??= bossHud.rootVisualElement.Q<Label>("boss-health");
+                bossHealthLabel.text = $"{Mathf.RoundToInt(characterManager.health.GetCurrentHealth())}/{Mathf.RoundToInt(characterManager.health.GetMaxHealth())}";
+
+                UIUtils.PlayPopAnimation(bossHealthLabel, new Vector3(1.1f, 1.1f, 1.1f));
             }
         }
 
@@ -98,17 +105,14 @@ namespace AF
             bossHud.rootVisualElement.Q<Label>("boss-name").text = bossName;
             bossHud.rootVisualElement.style.display = DisplayStyle.Flex;
             bossHud.rootVisualElement.Q<VisualElement>("container").style.marginBottom = characterManager.partnerOrder == 0 ? 0 : 60 * characterManager.partnerOrder;
+            UIUtils.FadeIn(bossHud.rootVisualElement);
+
             UpdateUI();
         }
 
         public void HideBossHud()
         {
-            if (bossHud == null || bossHud?.rootVisualElement == null)
-            {
-                return;
-            }
-
-            bossHud.rootVisualElement.style.display = DisplayStyle.None;
+            bossHud.enabled = false;
         }
 
         public bool IsBossHUDEnabled()

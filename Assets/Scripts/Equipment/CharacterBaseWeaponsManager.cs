@@ -47,11 +47,12 @@ namespace AF
         public virtual void CloseAllWeaponHitboxes()
         {
             currentWeaponInstance?.DisableHitbox();
-            leftFootHitbox?.DisableHitbox();
-            rightFootHitbox?.DisableHitbox();
+            currentShieldInstance?.DisableHitbox();
             leftHandHitbox?.DisableHitbox();
             rightHandHitbox?.DisableHitbox();
-            currentShieldInstance?.DisableHitbox();
+            leftFootHitbox?.DisableHitbox();
+            rightFootHitbox?.DisableHitbox();
+            headHitbox?.DisableHitbox();
         }
 
         public abstract Weapon GetCurrentRightWeapon();

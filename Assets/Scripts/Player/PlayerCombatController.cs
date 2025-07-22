@@ -8,6 +8,7 @@ namespace AF
     public class PlayerCombatController : MonoBehaviour
     {
         public float crossFade = 0.1f;
+        public readonly string hashAttackWhileBlocking = "Attack While Blocking";
         public readonly string hashLightAttack1 = "Light Attack 1";
         public readonly string hashLightAttack2 = "Light Attack 2";
         public readonly string hashLightAttack3 = "Light Attack 3";
@@ -101,7 +102,15 @@ namespace AF
             {
                 playerManager.playerWeaponsManager.ShowEquipment();
 
-                HandleLightAttack();
+                if (playerManager.playerBlockController.isBlocking)
+                {
+                    HandleAttackWhileBlocking();
+                }
+                else
+                {
+                    HandleLightAttack();
+                }
+
                 canAttack = false;
             }
         }
@@ -258,6 +267,12 @@ namespace AF
             animator.SetFloat(SpeedMultiplierHash, currentAttackSpeed);
         }
 
+        void HandleAttackWhileBlocking()
+        {
+            playerManager.PlayBusyAnimationWithRootMotion(hashAttackWhileBlocking);
+            HandleAttackSpeed();
+        }
+
         void HandleJumpAttack()
         {
             isHeavyAttacking = false;
@@ -369,11 +384,6 @@ namespace AF
                 return false;
             }
 
-            if (playerManager.characterAbstractBlockController.isBlocking)
-            {
-                return false;
-            }
-
             if (menuManager.isMenuOpen)
             {
                 return false;
@@ -420,9 +430,10 @@ namespace AF
                 return;
             }
 
+            // TODO: Remove Guard Counter since we now have poking behind shields
             if (playerManager.playerBlockController.isCounterAttacking)
             {
-                playerManager.playerBlockController.onCounterAttack?.Invoke();
+                // playerManager.playerBlockController.onCounterAttack?.Invoke();
             }
 
             CharacterBaseManager damageReceiverTarget = damageReceiver.GetCharacter();

@@ -36,6 +36,11 @@ namespace AF
 
         public override State Tick(StateManager stateManager)
         {
+            if (!characterManager.IsTargetInView())
+            {
+                return this;
+            }
+
             if (characterManager.IsBusy())
             {
                 return this;

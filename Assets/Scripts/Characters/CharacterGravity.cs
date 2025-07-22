@@ -30,15 +30,16 @@ namespace AF
 
         public bool shouldJumpToTarget = false;
 
-        [SerializeField]
-        float jumpTowardsTargetSpeed = 25f;
+        [SerializeField] float jumpTowardsTargetSpeed = 25f;
 
         Transform jumpTarget;
 
-        Coroutine ResetJumpTargetCoroutine;
+        public float initialY;
 
         void Start()
         {
+            initialY = characterManager.transform.position.y;
+
             if (ignoreGravity)
             {
                 this.gameObject.SetActive(false);

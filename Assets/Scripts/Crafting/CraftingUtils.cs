@@ -38,9 +38,9 @@ namespace AF
             return hasEnoughMaterial;
         }
 
-        public static bool CanImproveWeapon(CharacterBaseManager characterBaseManager, Weapon weapon, int ownedGold)
+        public static bool CanImproveItem(CharacterBaseManager characterBaseManager, UpgradableItem upgradableItem, int ownedGold)
         {
-            UpgradeMaterialData.UpgradeMaterialEntry upgradeData = weapon.upgradeMaterialData.upgradeMaterials.ElementAtOrDefault(weapon.level);
+            UpgradeMaterialData.UpgradeMaterialEntry upgradeData = upgradableItem.upgradeMaterialData.upgradeMaterials.ElementAtOrDefault(upgradableItem.level);
 
             if (upgradeData == null)
             {
@@ -60,21 +60,21 @@ namespace AF
             return true;
         }
 
-        public static void UpgradeWeapon(
-            Weapon weapon,
+        public static void UpgradeItem(
+            UpgradableItem upgradableItem,
             UnityAction<int> onUpgrade,
             UnityAction<KeyValuePair<UpgradeMaterial, int>> onUpgradeMaterialUsed
         )
         {
-            var currentWeaponLevel = weapon.level;
+            var currentWeaponLevel = upgradableItem.level;
 
-            UpgradeMaterialData.UpgradeMaterialEntry upgradeData = weapon.upgradeMaterialData.upgradeMaterials.ElementAtOrDefault(currentWeaponLevel);
+            UpgradeMaterialData.UpgradeMaterialEntry upgradeData = upgradableItem.upgradeMaterialData.upgradeMaterials.ElementAtOrDefault(currentWeaponLevel);
 
             onUpgrade(upgradeData.goldCostForUpgrade);
 
             onUpgradeMaterialUsed(new KeyValuePair<UpgradeMaterial, int>(upgradeData.upgradeMaterial, upgradeData.amount));
 
-            weapon.level++;
+            upgradableItem.level++;
         }
 
         public static bool IsItemAnIngredientOfCurrentLearnedRecipes(RecipesDatabase recipesDatabase, Item item)

@@ -56,9 +56,8 @@ namespace AF
         public bool shouldReturnToInitialPositionOnRevive = true;
 
         [Header("Face Target Settings")]
-        public bool faceTarget = false;
-        public float faceTargetDuration = 0.25f;
-        public bool alwaysFaceTarget = false;
+        [SerializeField] float maximumAngleToAttackTarget = 30f;
+        [SerializeField] bool faceTarget = false;
 
         [Header("Partners")]
         public CharacterManager[] partners;
@@ -80,6 +79,9 @@ namespace AF
         [SerializeField] List<AnimationOverride> oh_unarmedAnimationOverrides = new();
         [SerializeField] List<AnimationOverride> th_unarmedAnimationOverrides = new();
 
+        [HideInInspector] AIHumanoidAnimationOverrideHelper aIHumanoidAnimationOverrideHelper => GetComponent<AIHumanoidAnimationOverrideHelper>();
+        [HideInInspector] GenericCreatureAnimationOverrideHelper genericCreatureAnimationOverrideHelper => GetComponent<GenericCreatureAnimationOverrideHelper>();
+
         private void Awake()
         {
             SetupAnimatorOverrides();
@@ -94,13 +96,14 @@ namespace AF
 
         void SetupAnimatorOverrides()
         {
-
             animatorOverrideController = new AnimatorOverrideController(animator.runtimeAnimatorController);
             animator.runtimeAnimatorController = animatorOverrideController;
         }
 
         private void Start()
         {
+            UpdateAnimationsBasedOnEquippedWeapons();
+
             defaultAnimationHash = animator.GetCurrentAnimatorStateInfo(0).fullPathHash;
         }
 
@@ -124,6 +127,19 @@ namespace AF
             characterAbilityManager.ResetStates();
             characterActivityManager.ResetStates();
             characterConsumableManager.ResetStates();
+
+            faceTarget = false;
+        }
+
+        private void Update()
+        {
+            if (
+                // If in battle
+                !IsTargetInView() && IsBusy() == false
+                || faceTarget)
+            {
+                RotateTowardsTarget(rotationSpeed);
+            }
         }
 
         public void UpdateAnimatorOverrideControllerClips(string animationName, AnimationClip animationClip)
@@ -152,52 +168,75 @@ namespace AF
 
             Dictionary<string, AnimationOverride> overrides = new();
 
-            // Always apply unarmed first
-            AddOrReplaceOverride(oh_unarmedAnimationOverrides, overrides);
-
-            if (characterWeaponsManager.IsTwoHanding())
+            if (aIHumanoidAnimationOverrideHelper != null || genericCreatureAnimationOverrideHelper != null)
             {
-                AddOrReplaceOverride(th_unarmedAnimationOverrides, overrides);
+                Dictionary<string, AnimationClip> clipOverridesForAINonHumanoid =
+                    aIHumanoidAnimationOverrideHelper != null
+                        ? aIHumanoidAnimationOverrideHelper.GetClipOverrides()
+                        : genericCreatureAnimationOverrideHelper.GetClipOverrides();
+
+                List<AnimationOverride> list = new();
+                foreach (var entry in clipOverridesForAINonHumanoid)
+                {
+                    list.Add(new()
+                    {
+                        animationName = entry.Key,
+                        animationClip = entry.Value,
+                    });
+                }
+
+                AddOrReplaceOverride(list, overrides);
             }
-
-            // Apply right-hand weapon overrides
-            Weapon currentWeapon = characterWeaponsManager.GetCurrentRightWeapon();
-            if (currentWeapon != null && currentWeapon.weaponAnimationData != null)
+            else // IS HUMANOID
             {
-                AddOrReplaceOverride(currentWeapon.weaponAnimationData.GetRightHandAnimationsForAI(), overrides);
+
+                // Always apply unarmed first
+                AddOrReplaceOverride(oh_unarmedAnimationOverrides, overrides);
 
                 if (characterWeaponsManager.IsTwoHanding())
                 {
-                    AddOrReplaceOverride(currentWeapon.weaponAnimationData.GetTwoHandAnimationsForAI(), overrides);
-                }
-            }
-
-            // Apply left-hand weapon overrides if not two-handing
-            Weapon leftWeapon = characterWeaponsManager.GetCurrentLeftWeapon();
-            if (leftWeapon != null && !characterWeaponsManager.IsTwoHanding())
-            {
-                if (leftWeapon.weaponAnimationData != null)
-                {
-                    AddOrReplaceOverride(leftWeapon.weaponAnimationData.GetLeftHandAnimationsForAI(), overrides);
+                    AddOrReplaceOverride(th_unarmedAnimationOverrides, overrides);
                 }
 
-                // If left weapons is a range weapon, override the animations for shooting
-                if (leftWeapon.weaponRangeAnimation != null)
+                // Apply right-hand weapon overrides
+                Weapon currentWeapon = characterWeaponsManager.GetCurrentRightWeapon();
+                if (currentWeapon != null && currentWeapon.weaponAnimationData != null)
                 {
-                    AddOrReplaceOverride(leftWeapon.weaponRangeAnimation.GetAnimations(), overrides);
-                }
-            }
+                    AddOrReplaceOverride(currentWeapon.weaponAnimationData.GetRightHandAnimationsForAI(), overrides);
 
-            // Lastly, check for any additional weapon animation overrides that have the highest priority
-            if (currentWeapon != null)
-            {
-                if (characterWeaponsManager.IsTwoHanding() && currentWeapon.th_weaponAnimationOverrides.Count > 0)
-                {
-                    AddOrReplaceOverride(currentWeapon.th_weaponAnimationOverrides, overrides);
+                    if (characterWeaponsManager.IsTwoHanding())
+                    {
+                        AddOrReplaceOverride(currentWeapon.weaponAnimationData.GetTwoHandAnimationsForAI(), overrides);
+                    }
                 }
-                else if (currentWeapon.oh_weaponAnimationOverrides.Count > 0)
+
+                // Apply left-hand weapon overrides if not two-handing
+                Weapon leftWeapon = characterWeaponsManager.GetCurrentLeftWeapon();
+                if (leftWeapon != null && !characterWeaponsManager.IsTwoHanding())
                 {
-                    AddOrReplaceOverride(currentWeapon.oh_weaponAnimationOverrides, overrides);
+                    if (leftWeapon.weaponAnimationData != null)
+                    {
+                        AddOrReplaceOverride(leftWeapon.weaponAnimationData.GetLeftHandAnimationsForAI(), overrides);
+                    }
+
+                    // If left weapons is a range weapon, override the animations for shooting
+                    if (leftWeapon.weaponRangeAnimation != null)
+                    {
+                        AddOrReplaceOverride(leftWeapon.weaponRangeAnimation.GetAnimations(), overrides);
+                    }
+                }
+
+                // Lastly, check for any additional weapon animation overrides that have the highest priority
+                if (currentWeapon != null)
+                {
+                    if (characterWeaponsManager.IsTwoHanding() && currentWeapon.th_weaponAnimationOverrides.Count > 0)
+                    {
+                        AddOrReplaceOverride(currentWeapon.th_weaponAnimationOverrides, overrides);
+                    }
+                    else if (currentWeapon.oh_weaponAnimationOverrides.Count > 0)
+                    {
+                        AddOrReplaceOverride(currentWeapon.oh_weaponAnimationOverrides, overrides);
+                    }
                 }
             }
 
@@ -219,10 +258,7 @@ namespace AF
 
         private void OnAnimatorMove()
         {
-            if (faceTarget || alwaysFaceTarget)
-            {
-                RotateTowardsTarget(rotationSpeed);
-            }
+            Vector3 gravity = characterGravity.ignoreGravity ? new Vector3(0, characterGravity.initialY, 0) : Physics.gravity;
 
             if (animator.applyRootMotion && characterController.enabled)
             {
@@ -232,7 +268,7 @@ namespace AF
                     Vector3 worldDeltaPosition = agent.nextPosition - transform.position;
                     worldDeltaPosition.y = 0f;
 
-                    Vector3 direction = worldDeltaPosition.normalized + Physics.gravity;
+                    Vector3 direction = worldDeltaPosition.normalized + gravity;
 
                     float speed = ShouldRun() ? chaseSpeed : patrolSpeed;
 
@@ -259,7 +295,7 @@ namespace AF
                     transform.rotation *= animator.deltaRotation;
 
                     // Apply root motion position and gravity
-                    Vector3 rootMotionPosition = animator.deltaPosition + Physics.gravity * Time.deltaTime;
+                    Vector3 rootMotionPosition = animator.deltaPosition + gravity * Time.deltaTime;
 
                     if (isCuttingDistanceToTarget)
                     {
@@ -307,8 +343,8 @@ namespace AF
         public void FaceTarget()
         {
             faceTarget = true;
-            Invoke(nameof(ResetFaceTargetFlag), faceTargetDuration);
         }
+
         public void FaceTargetImmediately()
         {
             if (targetManager.currentTarget == null)
@@ -319,15 +355,6 @@ namespace AF
             Vector3 lookDirection = targetManager.currentTarget.transform.position - transform.position;
             lookDirection.y = 0;
             transform.rotation = Quaternion.LookRotation(lookDirection);
-        }
-        public void SetAlwaysFaceTarget(bool value)
-        {
-            alwaysFaceTarget = value;
-        }
-
-        public void ResetFaceTargetFlag()
-        {
-            faceTarget = false;
         }
 
         /// <summary>
@@ -471,6 +498,21 @@ namespace AF
                 agent.CalculatePath(targetPosition, navMeshPath);
                 agent.SetPath(navMeshPath);
             }
+        }
+
+        public bool IsTargetInView()
+        {
+            if (targetManager.currentTarget == null)
+            {
+                return true;
+            }
+
+            Vector3 lookDirection = targetManager.currentTarget.transform.position - transform.position;
+            lookDirection.y = 0;
+
+            // Check angle to target
+            float angleToTarget = Vector3.Angle(transform.forward, lookDirection);
+            return angleToTarget <= maximumAngleToAttackTarget;
         }
 
         public void RotateTowardsTarget(float rotationSpeed)

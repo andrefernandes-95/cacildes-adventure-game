@@ -1,9 +1,27 @@
 # IN PROGRESS
 
-- Add signs to path to slepbone cavern
-- Add signs to bear cavern
-- Make bear work
+- Add shield absorption notice to blacksmith table
+- Improve blacksmith by making it an activity
+
+- item name for weapons doesnt show level
+
+- Remove jump hindering from armor. doesnt make sense from a gameplay perspective
+
+
+- Forest Wanderer Armor Set
+- Forest Wanderer Weapon
+- Blacksmith Explained Book
+- Add hide and shard chest to blacksmith
+- Add blacksmith hammer weapon
+
+
+- Orange juice not respawning, and also not curign player, also animation should be faster
+- Spells should spend mana
+
+
+
 - Create blacksmith with amensia under beach cavern explaining blacksmith mechanics
+
 
 
 # IN DEV

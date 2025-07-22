@@ -33,6 +33,7 @@ namespace AF
 
         private void Update()
         {
+            return;
             bool hitSomething = Physics.Raycast(
                 Camera.main.transform.position,
                 Camera.main.transform.forward, out var hitInfo, gameSettings.GetCameraDistance() + 1, eventNavigatorCapturableLayer);

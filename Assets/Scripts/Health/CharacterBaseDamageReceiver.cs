@@ -206,7 +206,7 @@ namespace AF
             return true;
         }
 
-        protected bool TryBlockIncomingDamageForPlayer(PlayerManager playerManager, CharacterBaseManager attacker, Damage incomingDamage)
+        protected bool TryBlockIncomingDamageForPlayer(PlayerManager playerManager, CharacterBaseManager attacker, ref Damage incomingDamage)
         {
             if (!GetCharacter().characterAbstractBlockController.CanBlockDamage(incomingDamage))
             {

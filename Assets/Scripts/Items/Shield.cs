@@ -65,61 +65,73 @@ namespace AF
         [Header("VFX")]
         public GameObject blockFx;
 
+        public float GetCurrentAbsorption(float baseValue)
+        {
+            return GetAbsorptionForLevel(baseValue, level);
+        }
+
+        public float GetAbsorptionForLevel(float baseValue, int givenLevel)
+        {
+            float bonus = givenLevel / 20;
+
+            return baseValue + bonus;
+        }
+
         public Damage FilterDamage(Damage originalDamage)
         {
-            Damage incomingDamage = originalDamage.Copy();
+            Damage incomingDamage = originalDamage.Clone();
 
             if (physicalAbsorption != 1)
             {
-                incomingDamage.physical = (int)(incomingDamage.physical * physicalAbsorption);
+                incomingDamage.physical = (int)(incomingDamage.physical * GetCurrentAbsorption(physicalAbsorption));
             }
 
             if (fireAbsorption != 1)
             {
-                incomingDamage.fire = (int)(incomingDamage.fire * fireAbsorption);
+                incomingDamage.fire = (int)(incomingDamage.fire * GetCurrentAbsorption(fireAbsorption));
             }
 
             if (frostAbsorption != 1)
             {
-                incomingDamage.frost = (int)(incomingDamage.frost * frostAbsorption);
+                incomingDamage.frost = (int)(incomingDamage.frost * GetCurrentAbsorption(frostAbsorption));
             }
 
             if (lightiningAbsorption != 1)
             {
-                incomingDamage.lightning = (int)(incomingDamage.lightning * lightiningAbsorption);
+                incomingDamage.lightning = (int)(incomingDamage.lightning * GetCurrentAbsorption(lightiningAbsorption));
             }
 
             if (darknessAbsorption != 1)
             {
-                incomingDamage.darkness = (int)(incomingDamage.darkness * darknessAbsorption);
+                incomingDamage.darkness = (int)(incomingDamage.darkness * GetCurrentAbsorption(darknessAbsorption));
             }
 
             if (waterAbsorption != 1)
             {
-                incomingDamage.water = (int)(incomingDamage.water * waterAbsorption);
+                incomingDamage.water = (int)(incomingDamage.water * GetCurrentAbsorption(waterAbsorption));
             }
 
             if (magicAbsorption != 1)
             {
-                incomingDamage.magic = (int)(incomingDamage.magic * magicAbsorption);
+                incomingDamage.magic = (int)(incomingDamage.magic * GetCurrentAbsorption(magicAbsorption));
             }
 
             if (postureDamageAbsorption != 1)
             {
-                incomingDamage.postureDamage = (int)(incomingDamage.postureDamage * postureDamageAbsorption);
+                incomingDamage.postureDamage = (int)(incomingDamage.postureDamage * GetCurrentAbsorption(postureDamageAbsorption));
             }
 
             if (slashDamageAbsorption != 1 && incomingDamage.weaponAttackType == WeaponAttackType.Slash)
             {
-                incomingDamage.physical = (int)(incomingDamage.physical * slashDamageAbsorption);
+                incomingDamage.physical = (int)(incomingDamage.physical * GetCurrentAbsorption(slashDamageAbsorption));
             }
             else if (bluntDamageAbsorption != 1 && incomingDamage.weaponAttackType == WeaponAttackType.Blunt)
             {
-                incomingDamage.physical = (int)(incomingDamage.physical * bluntDamageAbsorption);
+                incomingDamage.physical = (int)(incomingDamage.physical * GetCurrentAbsorption(bluntDamageAbsorption));
             }
             else if (pierceDamageAbsorption != 1 && incomingDamage.weaponAttackType == WeaponAttackType.Pierce)
             {
-                incomingDamage.physical = (int)(incomingDamage.physical * pierceDamageAbsorption);
+                incomingDamage.physical = (int)(incomingDamage.physical * GetCurrentAbsorption(pierceDamageAbsorption));
             }
 
             return incomingDamage;

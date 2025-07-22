@@ -27,6 +27,17 @@ namespace AF.Combat
         public List<Ability> chaseCombatAbilities = new();
         public List<Ability> combatAbilities = new();
 
+        [System.Serializable]
+        public class HealthDependantAbility
+        {
+            public Ability ability;
+            [Range(0f, 100f)] public float minimumHealthToUse = 0f;
+            [Range(0f, 100f)] public float maximumHealthToUse = 100f;
+        }
+
+        [Header("Conditional Abilities")]
+        [SerializeField] List<HealthDependantAbility> healthDependantAbilities = new();
+
         [Header("Directional")]
         public CombatAction reactionToTargetBehindBack;
         [Range(0, 100f)] public float chanceToReactToTargetBehindBack = 100f;
@@ -186,6 +197,35 @@ namespace AF.Combat
             return Time.time < timeSinceLastAttack + waitTimeBetweenCombatActions;
         }
 
+        bool TryUseAbility()
+        {
+            List<Ability> allCombatAbilities = new();
+            foreach (Ability ability in combatAbilities)
+            {
+                allCombatAbilities.Add(ability);
+            }
+
+            foreach (HealthDependantAbility healthDependantAbility in healthDependantAbilities)
+            {
+                if (characterManager.health.GetCurrentHealth() >= healthDependantAbility.minimumHealthToUse &&
+                    characterManager.health.GetCurrentHealth() <= healthDependantAbility.maximumHealthToUse
+                )
+                {
+                    allCombatAbilities.Add(healthDependantAbility.ability);
+                }
+            }
+
+            Ability combatAbility = GetCombatAbility(allCombatAbilities);
+            if (combatAbility != null)
+            {
+                characterManager.characterAbilityManager.QueueAbility(Instantiate(combatAbility));
+                AddAbilityToUsedAbilities(combatAbility);
+                return true;
+            }
+
+            return false;
+        }
+
         public void UseCombatAction()
         {
             if (InCooldown())
@@ -207,11 +247,8 @@ namespace AF.Combat
                 }
             }
 
-            Ability combatAbility = GetCombatAbility(combatAbilities);
-            if (combatAbility != null)
+            if (TryUseAbility())
             {
-                characterManager.characterAbilityManager.QueueAbility(Instantiate(combatAbility));
-                AddAbilityToUsedAbilities(combatAbility);
                 return;
             }
 
@@ -282,11 +319,6 @@ namespace AF.Combat
             if (isPaused)
             {
                 return;
-            }
-
-            if (currentCombatAction != reactionToTargetBehindBack)
-            {
-                characterManager.FaceTarget();
             }
 
             if (currentCombatAction.hasHyperArmor)

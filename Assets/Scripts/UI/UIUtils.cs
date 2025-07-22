@@ -115,5 +115,27 @@ namespace AF
             onFinish();
         }
 
+        public static void FadeIn(VisualElement element, float duration = 0.5f, UnityAction onComplete = null)
+        {
+            if (element == null) return;
+
+            // Set initial opacity
+            element.style.opacity = 0f;
+            element.style.display = DisplayStyle.Flex;
+
+            float currentOpacity = 0f;
+
+            DOTween.To(() => currentOpacity, x =>
+            {
+                currentOpacity = x;
+                element.style.opacity = currentOpacity;
+            }, 1f, duration)
+            .SetEase(Ease.OutQuad)
+            .OnComplete(() =>
+            {
+                element.style.opacity = 1f;
+                onComplete?.Invoke();
+            });
+        }
     }
 }

@@ -189,5 +189,32 @@ namespace AF
             }
             return graphics;
         }
+
+        public int GetCurrentPhysicalDefenseForLevel(int level)
+        {
+            if (damageAbsorbed.physical <= 0)
+            {
+                return 0;
+            }
+
+            return damageAbsorbed.physical + GetBonusAttackPerLevel(level);
+        }
+
+        public int GetFireDefenseForLevel(int level) => GetElementalDefenseForLevel(damageAbsorbed.fire, level);
+        public int GetFrostDefenseForLevel(int level) => GetElementalDefenseForLevel(damageAbsorbed.frost, level);
+        public int GetLightningDefenseForLevel(int level) => GetElementalDefenseForLevel(damageAbsorbed.lightning, level);
+        public int GetDarknessDefenseForLevel(int level) => GetElementalDefenseForLevel(damageAbsorbed.darkness, level);
+        public int GetWaterDefenseForLevel(int level) => GetElementalDefenseForLevel(damageAbsorbed.water, level);
+        public int GetMagicDefenseForLevel(int level) => GetElementalDefenseForLevel(damageAbsorbed.magic, level);
+
+        int GetElementalDefenseForLevel(int baseElementalDamage, int level)
+        {
+            if (baseElementalDamage <= 0)
+            {
+                return 0;
+            }
+
+            return baseElementalDamage + GetBonusAttackPerLevel(level);
+        }
     }
 }

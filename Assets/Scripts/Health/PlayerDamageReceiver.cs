@@ -86,7 +86,7 @@ namespace AF
                 }
 
                 // For AI, we should return and not run any more logic, but for player, we can continue
-                TryBlockIncomingDamageForPlayer(playerManager, attacker, incomingDamage);
+                TryBlockIncomingDamageForPlayer(playerManager, attacker, ref incomingDamage);
                 HandlePlayerReactionToEnemyAttack(attacker, playerManager);
                 HandlePlayerArmorAttacks(attacker);
                 HandlePlayerRage();

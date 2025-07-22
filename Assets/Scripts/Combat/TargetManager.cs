@@ -64,6 +64,8 @@ namespace AF.Combat
             }
 
             HandleSetTarget(target);
+
+            HandleBossEvent(target);
         }
 
         void HandleSetTarget(CharacterBaseManager target)
@@ -203,6 +205,19 @@ namespace AF.Combat
             onAgressiveTowardsPlayer?.Invoke(false);
 
             onClearTarget_Event?.Invoke();
+        }
+
+        void HandleBossEvent(CharacterBaseManager target)
+        {
+            if (target is not PlayerManager)
+            {
+                return;
+            }
+
+            if (characterManager.characterBossController.isBoss)
+            {
+                characterManager.characterBossController.BeginBossBattle();
+            }
         }
     }
 }

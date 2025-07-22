@@ -1,0 +1,751 @@
+using System.Collections.Generic;
+using System.Linq;
+using AF.Events;
+using AF.Inventory;
+using AF.Music;
+using GameAnalyticsSDK;
+using TigerForge;
+using UnityEngine;
+using UnityEngine.Localization;
+using UnityEngine.Localization.Settings;
+using UnityEngine.UIElements;
+
+namespace AF
+{
+    public class UIDocumentBlacksmith : MonoBehaviour
+    {
+        public enum CraftActivity
+        {
+            ALCHEMY,
+            COOKING,
+            BLACKSMITH,
+        }
+
+        public CraftActivity craftActivity;
+
+        [Header("UI")]
+        public VisualTreeAsset recipeItem;
+        public VisualTreeAsset ingredientItem;
+        public Sprite alchemyBackgroundImage;
+        public Sprite cookingBackgroundImage;
+        public Sprite blacksmithBackgroundImage;
+        public Sprite goldSprite;
+
+        [Header("SFX")]
+        public AudioClip sfxOnEnterMenu;
+
+        [Header("UI Components")]
+        public UIDocument uIDocument;
+        [HideInInspector] public VisualElement root;
+        public UIDocumentBonfireMenu uIDocumentBonfireMenu;
+        public UIDocumentPlayerGold uIDocumentPlayerGold;
+
+        [Header("Components")]
+        public NotificationManager notificationManager;
+        public UIManager uiManager;
+        public PlayerManager playerManager;
+        public CursorManager cursorManager;
+        public BGMManager bgmManager;
+        public Soundbank soundbank;
+
+        [HideInInspector] public bool returnToBonfire = false;
+
+        [Header("Databases")]
+        public RecipesDatabase recipesDatabase;
+        public InventoryDatabase inventoryDatabase;
+        public PlayerStatsDatabase playerStatsDatabase;
+
+        // Last scroll position
+        int lastScrollElementIndex = -1;
+
+        Label ItemNamePreview;
+        VisualElement StatsChangedContainer;
+        VisualElement RequirementsPreview;
+        VisualElement AttackDifferencesContainer, DefenseDifferencesContainer, ShieldDifferencesContainer;
+
+        Label PhysicalAttack, FireAttack, FrostAttack, WaterAttack, MagicAttack, LightningAttack, DarknessAttack;
+        Label PhysicalDefense, FireDefense, FrostDefense, WaterDefense, MagicDefense, LightningDefense, DarknessDefense;
+        Label BlockAbsorption;
+
+        private void Awake()
+        {
+            this.gameObject.SetActive(false);
+        }
+
+        private void OnEnable()
+        {
+            this.root = uIDocument.rootVisualElement;
+
+            bgmManager.PlaySound(sfxOnEnterMenu, null);
+            cursorManager.ShowCursor();
+
+            ItemNamePreview = root.Q<Label>("ItemNamePreview");
+            StatsChangedContainer = root.Q<VisualElement>("StatsChangedContainer");
+            RequirementsPreview = root.Q<VisualElement>("RequirementsPreview");
+
+            PhysicalAttack = root.Q<Label>("PhysicalAttack");
+            FireAttack = root.Q<Label>("FireAttack");
+            FrostAttack = root.Q<Label>("FrostAttack");
+            WaterAttack = root.Q<Label>("WaterAttack");
+            MagicAttack = root.Q<Label>("MagicAttack");
+            LightningAttack = root.Q<Label>("LightningAttack");
+            DarknessAttack = root.Q<Label>("DarknessAttack");
+            PhysicalDefense = root.Q<Label>("PhysicalDefense");
+            FireDefense = root.Q<Label>("FireDefense");
+            FrostDefense = root.Q<Label>("FrostDefense");
+            WaterDefense = root.Q<Label>("WaterDefense");
+            MagicDefense = root.Q<Label>("MagicDefense");
+            LightningDefense = root.Q<Label>("LightningDefense");
+            DarknessDefense = root.Q<Label>("DarknessDefense");
+            BlockAbsorption = root.Q<Label>("BlockAbsorption");
+
+            AttackDifferencesContainer = root.Q<VisualElement>("AttackDifferencesContainer");
+            DefenseDifferencesContainer = root.Q<VisualElement>("DefenseDifferencesContainer");
+            ShieldDifferencesContainer = root.Q<VisualElement>("ShieldDifferencesContainer");
+
+            DrawUI();
+        }
+
+        /// <summary>
+        /// Unity Event
+        /// </summary>
+        public void OpenBlacksmithMenu()
+        {
+            LogAnalytic(AnalyticsUtils.OnUIButtonClick("Blacksmith"));
+
+            this.craftActivity = CraftActivity.BLACKSMITH;
+            this.gameObject.SetActive(true);
+        }
+
+        /// <summary>
+        /// Unity Event
+        /// </summary>
+        public void OpenAlchemyMenu()
+        {
+            LogAnalytic(AnalyticsUtils.OnUIButtonClick("Alchemy"));
+
+            this.craftActivity = CraftActivity.ALCHEMY;
+            this.gameObject.SetActive(true);
+        }
+
+        /// <summary>
+        /// Unity Event
+        /// </summary>
+        public void OnClose()
+        {
+            if (!this.isActiveAndEnabled)
+            {
+                return;
+            }
+
+            Close();
+        }
+
+        public void Close()
+        {
+            if (returnToBonfire)
+            {
+                returnToBonfire = false;
+
+                uIDocumentBonfireMenu.gameObject.SetActive(true);
+                cursorManager.ShowCursor();
+                this.gameObject.SetActive(false);
+                return;
+            }
+
+            playerManager.playerComponentManager.EnableComponents();
+            playerManager.playerComponentManager.EnableCharacterController();
+
+            this.gameObject.SetActive(false);
+            cursorManager.HideCursor();
+        }
+
+        void ClearPreviews()
+        {
+            RequirementsPreview.style.opacity = 0;
+
+            ItemNamePreview.text = "";
+            ItemNamePreview.style.display = DisplayStyle.None;
+
+            ClearLabels();
+        }
+
+        void SetupActivity()
+        {
+            root.Q<VisualElement>("ImageBack").style.backgroundImage = new StyleBackground(blacksmithBackgroundImage);
+            root.Q<Label>("CraftActivityTitle").text = Utils.IsPortuguese() ? "Melhorar Equipamento" : "Upgrade Equipment";
+        }
+
+        void DrawUI()
+        {
+            ClearPreviews();
+
+            SetupActivity();
+
+            PopulateScrollView();
+        }
+
+        void PopulateScrollView()
+        {
+            StatsChangedContainer.style.display = DisplayStyle.None;
+
+            var scrollView = this.root.Q<ScrollView>();
+            scrollView.Clear();
+
+            Button exitButton = new()
+            {
+                text = Utils.IsPortuguese() ? "Sair" : "Exit"
+            };
+            exitButton.AddToClassList("primary-button");
+            UIUtils.SetupButton(exitButton, () =>
+            {
+                Close();
+            }, soundbank);
+
+            scrollView.Add(exitButton);
+
+            PopulateUpgradeableItems();
+
+            if (lastScrollElementIndex == -1)
+            {
+                scrollView.ScrollTo(exitButton);
+                exitButton.Focus();
+            }
+            else
+            {
+                Invoke(nameof(GiveFocus), 0f);
+            }
+        }
+
+        void GiveFocus()
+        {
+            UIUtils.ScrollToLastPosition(
+                lastScrollElementIndex,
+                root.Q<ScrollView>(),
+                () =>
+                {
+                    lastScrollElementIndex = -1;
+                }
+            );
+        }
+
+
+        public string GetItemDescription(CraftingRecipe recipe)
+        {
+            if (recipe.resultingItem == null)
+            {
+                return "";
+            }
+
+            string itemDescription = recipe.resultingItem.GetShortDescription()?.Length > 0 ?
+                                     recipe.resultingItem.GetShortDescription().Substring(
+                                        0, System.Math.Min(60, recipe.resultingItem.GetShortDescription().Length)) : "";
+            return itemDescription + (recipe.resultingItem.GetShortDescription()?.Length > 60 ? "..." : "");
+        }
+
+        void PopulateUpgradeableItems()
+        {
+            var scrollView = this.root.Q<ScrollView>();
+
+            int i = 0;
+
+            List<UpgradableItem> upgradableItems = new();
+
+            List<Weapon> weaponsForUpgrade = inventoryDatabase.ownedWeapons.Where(weapon => weapon != null && weapon.canBeUpgraded).ToList();
+            foreach (Weapon wp in weaponsForUpgrade)
+            {
+                upgradableItems.Add(wp);
+            }
+
+            List<Helmet> helmets = inventoryDatabase.ownedHelmets.Where(helmet => helmet != null && helmet.canBeUpgraded).ToList();
+            foreach (Helmet helmet in helmets)
+            {
+                upgradableItems.Add(helmet);
+            }
+
+            List<Armor> armors = inventoryDatabase.ownedArmors.Where(armor => armor != null && armor.canBeUpgraded).ToList();
+            foreach (Armor armor in armors)
+            {
+                upgradableItems.Add(armor);
+            }
+
+            List<Gauntlet> gauntlets = inventoryDatabase.ownedGauntlets.Where(gauntlet => gauntlet != null && gauntlet.canBeUpgraded).ToList();
+            foreach (Gauntlet gauntlet in gauntlets)
+            {
+                upgradableItems.Add(gauntlet);
+            }
+
+            List<Legwear> legwears = inventoryDatabase.ownedLegwears.Where(legwear => legwear != null && legwear.canBeUpgraded).ToList();
+            foreach (Legwear legwear in legwears)
+            {
+                upgradableItems.Add(legwear);
+            }
+
+            List<Accessory> accessories = inventoryDatabase.ownedAccessories.Where(accessory => accessory != null && accessory.canBeUpgraded).ToList();
+            foreach (Accessory accessory in accessories)
+            {
+                upgradableItems.Add(accessory);
+            }
+
+            foreach (UpgradableItem upgradableItem in upgradableItems)
+            {
+                int currentIndex = i;
+
+                if (ShouldSkipUpgrade(upgradableItem, upgradableItem.level))
+                {
+                    continue;
+                }
+
+                var scrollItem = this.recipeItem.CloneTree();
+
+                scrollItem.Q<IMGUIContainer>("ItemIcon").style.backgroundImage = new StyleBackground(upgradableItem.sprite);
+                scrollItem.Q<Label>("ItemName").text = GetItemName(upgradableItem);
+                scrollItem.Q<Label>("ItemDescription").style.display = DisplayStyle.None;
+
+                var craftBtn = scrollItem.Q<Button>("CraftButtonItem");
+                var craftLabel = scrollItem.Q<Label>("CraftLabel");
+                craftLabel.text = Utils.IsPortuguese() ? "Melhorar" : "Upgrade";
+
+                craftBtn.style.opacity = CraftingUtils.CanImproveItem(playerManager, upgradableItem, playerStatsDatabase.gold) ? 1f : 0.25f;
+
+                UIUtils.SetupButton(craftBtn, () =>
+                {
+                    lastScrollElementIndex = currentIndex;
+
+                    if (!CraftingUtils.CanImproveItem(playerManager, upgradableItem, playerStatsDatabase.gold))
+                    {
+                        HandleCraftError(Utils.IsPortuguese()
+                            ? "Faltam materiais para melhorar!"
+                            : "Missing upgrade materials!");
+                        return;
+                    }
+
+                    HandleItemUpgrade(upgradableItem);
+
+                    DrawUI();
+                },
+                () =>
+                {
+                    ShowRequirements(upgradableItem);
+                    scrollView.ScrollTo(craftBtn);
+                },
+                () =>
+                {
+                },
+                true,
+                soundbank);
+
+                scrollView.Add(craftBtn);
+
+                i++;
+            }
+        }
+
+
+        void HandleCraftError(string errorMessage)
+        {
+            soundbank.PlaySound(soundbank.craftError);
+            notificationManager.ShowNotification(errorMessage, notificationManager.alchemyLackOfIngredients);
+        }
+
+        bool ShouldSkipUpgrade(UpgradableItem upgradableItem, int nextLevel)
+        {
+            return upgradableItem.canBeUpgraded == false || upgradableItem.upgradeMaterialData == null || nextLevel >= upgradableItem.upgradeMaterialData.upgradeMaterials.Count();
+        }
+
+        string GetItemName(UpgradableItem upgradableItem)
+        {
+            return $"{upgradableItem.GetName()} +{upgradableItem.level} > {upgradableItem.GetName()} +{upgradableItem.level + 1}";
+        }
+
+        void HandleItemUpgrade(UpgradableItem upgradableItem)
+        {
+            playerManager.playerAchievementsManager.achievementForUpgradingFirstWeapon.AwardAchievement();
+            soundbank.PlaySound(soundbank.craftSuccess);
+            notificationManager.ShowNotification(
+                Utils.IsPortuguese() ? "Item melhorado!" : "Item improved", upgradableItem.sprite);
+
+            LogAnalytic(AnalyticsUtils.OnUIButtonClick("UpgradeWeapon"), new() {
+                { "item_upgraded", upgradableItem.name }
+            });
+
+            CraftingUtils.UpgradeItem(
+                upgradableItem,
+                (goldUsed) => uIDocumentPlayerGold.LoseGold(goldUsed),
+                (upgradeMaterialUsed) => playerManager.playerInventory.RemoveItem(upgradeMaterialUsed.Key, upgradeMaterialUsed.Value)
+            );
+
+            if (upgradableItem is Weapon weapon)
+            {
+                UpdateWeaponIfEquipped(weapon);
+            }
+        }
+
+        void UpdateWeaponIfEquipped(Weapon weapon)
+        {
+            if (weapon == null)
+                return;
+
+            bool shouldCallEquipmentChangedEvent = false;
+            bool foundInRightHand = false;
+
+            // Try to find and update weapon in right-hand (weapons) or left-hand (shields)
+            Weapon matchedEquippedWeapon = null;
+
+            foreach (var equippedWeapon in playerManager.equipmentDatabase.weapons)
+            {
+                if (equippedWeapon != null && equippedWeapon.itemID == weapon.itemID)
+                {
+                    matchedEquippedWeapon = equippedWeapon;
+                    foundInRightHand = true;
+                    break;
+                }
+            }
+
+            if (matchedEquippedWeapon == null)
+            {
+                foreach (var equippedShield in playerManager.equipmentDatabase.shields)
+                {
+                    if (equippedShield != null && equippedShield.itemID == weapon.itemID)
+                    {
+                        matchedEquippedWeapon = equippedShield;
+                        break;
+                    }
+                }
+            }
+
+            // Update level in equipment database
+            if (matchedEquippedWeapon != null)
+            {
+                matchedEquippedWeapon.level = weapon.level;
+            }
+
+            // Update level in world instance (hand slot)
+            CharacterWeaponHitbox currentInstance = foundInRightHand
+                ? playerManager.playerWeaponsManager.currentWeaponInstance
+                : playerManager.playerWeaponsManager.currentShieldInstance;
+
+            if (currentInstance != null && currentInstance.weapon != null && currentInstance.weapon.itemID == weapon.itemID)
+            {
+                currentInstance.weapon.level = weapon.level;
+                shouldCallEquipmentChangedEvent = true;
+            }
+
+            if (shouldCallEquipmentChangedEvent)
+            {
+                EventManager.EmitEvent(EventMessages.ON_EQUIPMENT_CHANGED);
+            }
+        }
+
+
+        void ClearLabels()
+        {
+            AttackDifferencesContainer.style.display = DisplayStyle.None;
+
+            PhysicalAttack.style.display = DisplayStyle.None;
+            FireAttack.style.display = DisplayStyle.None;
+            FrostAttack.style.display = DisplayStyle.None;
+            LightningAttack.style.display = DisplayStyle.None;
+            MagicAttack.style.display = DisplayStyle.None;
+            DarknessAttack.style.display = DisplayStyle.None;
+            WaterAttack.style.display = DisplayStyle.None;
+
+            DefenseDifferencesContainer.style.display = DisplayStyle.None;
+
+            PhysicalDefense.style.display = DisplayStyle.None;
+            FireDefense.style.display = DisplayStyle.None;
+            FrostDefense.style.display = DisplayStyle.None;
+            LightningDefense.style.display = DisplayStyle.None;
+            MagicDefense.style.display = DisplayStyle.None;
+            WaterDefense.style.display = DisplayStyle.None;
+
+            ShieldDifferencesContainer.style.display = DisplayStyle.None;
+
+            BlockAbsorption.style.display = DisplayStyle.None;
+        }
+
+        void DrawAttackDifferences(Weapon weapon)
+        {
+            var nextLevel = weapon.level + 1;
+
+            int currentPhysicalAttack = weapon.GetCurrentPhysicalAttackForLevel(weapon.level);
+            int nextPhysicalAttack = weapon.GetCurrentPhysicalAttackForLevel(nextLevel);
+
+            int currentFireAttack = weapon.GetFireAttackForLevel(weapon.level);
+            int nextFireAttack = weapon.GetFireAttackForLevel(nextLevel);
+
+            int currentFrostAttack = weapon.GetFrostAttackForLevel(weapon.level);
+            int nextFrostAttack = weapon.GetFrostAttackForLevel(nextLevel);
+
+            int currentLightningAttack = weapon.GetLightningAttackForLevel(weapon.level);
+            int nextLightningAttack = weapon.GetLightningAttackForLevel(nextLevel);
+
+            int currentMagicAttack = weapon.GetMagicAttackForLevel(weapon.level);
+            int nextMagicAttack = weapon.GetMagicAttackForLevel(nextLevel);
+
+            int currentDarknessAttack = weapon.GetDarknessAttackForLevel(weapon.level);
+            int nextDarknessAttack = weapon.GetDarknessAttackForLevel(nextLevel);
+
+            int currentWaterAttack = weapon.GetWaterAttackForLevel(weapon.level);
+            int nextWaterAttack = weapon.GetWaterAttackForLevel(nextLevel);
+
+            if (currentPhysicalAttack != 0)
+            {
+                PhysicalAttack.style.display = DisplayStyle.Flex;
+                PhysicalAttack.text =
+                    Utils.IsPortuguese()
+                        ? $"Ataque Físico: {currentPhysicalAttack} > {nextPhysicalAttack}"
+                        : $"Physical Attack: {currentPhysicalAttack} > {nextPhysicalAttack}";
+            }
+            if (currentFireAttack != 0)
+            {
+                FireAttack.style.display = DisplayStyle.Flex;
+                FireAttack.text =
+                    Utils.IsPortuguese()
+                        ? $"Ataque de Fogo: {currentFireAttack} > {nextFireAttack}"
+                        : $"Fire Attack: {currentFireAttack} > {nextFireAttack}";
+            }
+            if (currentFrostAttack != 0)
+            {
+                FrostAttack.style.display = DisplayStyle.Flex;
+                FrostAttack.text =
+                    Utils.IsPortuguese()
+                        ? $"Ataque de Gelo: {currentFrostAttack} > {nextFrostAttack}"
+                        : $"Frost Attack: {currentFrostAttack} > {nextFrostAttack}";
+            }
+            if (currentLightningAttack != 0)
+            {
+                LightningAttack.style.display = DisplayStyle.Flex;
+                LightningAttack.text =
+                     Utils.IsPortuguese()
+                         ? $"Ataque Elétrico: {currentLightningAttack} > {nextLightningAttack}"
+                         : $"Lightning Attack: {currentLightningAttack} > {nextLightningAttack}";
+            }
+            if (currentMagicAttack != 0)
+            {
+                MagicAttack.style.display = DisplayStyle.Flex;
+                MagicAttack.text =
+                    Utils.IsPortuguese()
+                        ? $"Ataque Mágico: {currentMagicAttack} > {nextMagicAttack}"
+                        : $"Magic Attack: {currentMagicAttack} > {nextMagicAttack}";
+            }
+            if (currentDarknessAttack != 0)
+            {
+                DarknessAttack.style.display = DisplayStyle.Flex;
+                DarknessAttack.text =
+                    Utils.IsPortuguese()
+                        ? $"Ataque das Sombras: {currentDarknessAttack} > {nextDarknessAttack}"
+                        : $"Darkness Attack: {currentDarknessAttack} > {nextDarknessAttack}";
+            }
+            if (currentWaterAttack != 0)
+            {
+                WaterAttack.style.display = DisplayStyle.Flex;
+                WaterAttack.text =
+                    Utils.IsPortuguese()
+                        ? $"Ataque de Água: {currentWaterAttack} > {nextWaterAttack}"
+                        : $"Water Attack: {currentWaterAttack} > {nextWaterAttack}";
+            }
+
+            AttackDifferencesContainer.style.display = DisplayStyle.Flex;
+        }
+
+        void DrawDefenseDifferences(ArmorBase armorBase)
+        {
+            var nextLevel = armorBase.level + 1;
+
+            int currentPhysicalDefense = armorBase.GetCurrentPhysicalDefenseForLevel(armorBase.level);
+            int nextPhysicalDefense = armorBase.GetCurrentPhysicalDefenseForLevel(nextLevel);
+
+            int currentFireDefense = armorBase.GetFireDefenseForLevel(armorBase.level);
+            int nextFireDefense = armorBase.GetFireDefenseForLevel(nextLevel);
+
+            int currentFrostDefense = armorBase.GetFrostDefenseForLevel(armorBase.level);
+            int nextFrostDefense = armorBase.GetFrostDefenseForLevel(nextLevel);
+
+            int currentLightningDefense = armorBase.GetLightningDefenseForLevel(armorBase.level);
+            int nextLightningDefense = armorBase.GetLightningDefenseForLevel(nextLevel);
+
+            int currentMagicDefense = armorBase.GetMagicDefenseForLevel(armorBase.level);
+            int nextMagicDefense = armorBase.GetMagicDefenseForLevel(nextLevel);
+
+            int currentDarknessDefense = armorBase.GetDarknessDefenseForLevel(armorBase.level);
+            int nextDarknessDefense = armorBase.GetDarknessDefenseForLevel(nextLevel);
+
+            int currentWaterDefense = armorBase.GetWaterDefenseForLevel(armorBase.level);
+            int nextWaterDefense = armorBase.GetWaterDefenseForLevel(nextLevel);
+
+            if (currentPhysicalDefense != 0)
+            {
+                PhysicalDefense.style.display = DisplayStyle.Flex;
+                PhysicalDefense.text =
+                    Utils.IsPortuguese()
+                        ? $"Defesa Física: {currentPhysicalDefense} > {nextPhysicalDefense}"
+                        : $"Physical Defense: {currentPhysicalDefense} > {nextPhysicalDefense}";
+            }
+            if (currentFireDefense != 0)
+            {
+                FireDefense.style.display = DisplayStyle.Flex;
+                FireDefense.text =
+                    Utils.IsPortuguese()
+                        ? $"Defesa de Fogo: {currentFireDefense} > {nextFireDefense}"
+                        : $"Fire Defense: {currentFireDefense} > {nextFireDefense}";
+            }
+            if (currentFrostDefense != 0)
+            {
+                FrostDefense.style.display = DisplayStyle.Flex;
+                FrostDefense.text =
+                    Utils.IsPortuguese()
+                        ? $"Defesa de Gelo: {currentFrostDefense} > {nextFrostDefense}"
+                        : $"Frost Defense: {currentFrostDefense} > {nextFrostDefense}";
+            }
+            if (currentLightningDefense != 0)
+            {
+                LightningDefense.style.display = DisplayStyle.Flex;
+                LightningDefense.text =
+                     Utils.IsPortuguese()
+                         ? $"Defesa Elétrica: {currentLightningDefense} > {nextLightningDefense}"
+                         : $"Lightning Defense: {currentLightningDefense} > {nextLightningDefense}";
+            }
+            if (currentMagicDefense != 0)
+            {
+                MagicDefense.style.display = DisplayStyle.Flex;
+                MagicDefense.text =
+                    Utils.IsPortuguese()
+                        ? $"Defesa Mágica: {currentMagicDefense} > {nextMagicDefense}"
+                        : $"Magic Defense: {currentMagicDefense} > {nextMagicDefense}";
+            }
+            if (currentDarknessDefense != 0)
+            {
+                DarknessDefense.style.display = DisplayStyle.Flex;
+                DarknessDefense.text =
+                    Utils.IsPortuguese()
+                        ? $"Defesa das Sombras: {currentDarknessDefense} > {nextDarknessDefense}"
+                        : $"Darkness Defense: {currentDarknessDefense} > {nextDarknessDefense}";
+            }
+            if (currentWaterDefense != 0)
+            {
+                WaterDefense.style.display = DisplayStyle.Flex;
+                WaterDefense.text =
+                    Utils.IsPortuguese()
+                        ? $"Defesa de Água: {currentWaterDefense} > {nextWaterDefense}"
+                        : $"Water Defense: {currentWaterDefense} > {nextWaterDefense}";
+            }
+
+            DefenseDifferencesContainer.style.display = DisplayStyle.Flex;
+        }
+
+        void DrawBlockAbsorptionDifferences(Shield shield)
+        {
+            var nextLevel = shield.level + 1;
+
+            float currentPhysicalAttack = shield.GetCurrentAbsorption(shield.blockAbsorption);
+            float nextPhysicalAttack = shield.GetAbsorptionForLevel(shield.blockAbsorption, nextLevel);
+
+            if (currentPhysicalAttack != 0)
+            {
+                BlockAbsorption.style.display = DisplayStyle.Flex;
+                BlockAbsorption.text =
+                    Utils.IsPortuguese()
+                        ? $"Absorção de Dano: {currentPhysicalAttack * 100}% > {nextPhysicalAttack * 100}%"
+                        : $"Damage Absorption: {currentPhysicalAttack * 100}% > {nextPhysicalAttack * 100}%";
+            }
+
+            ShieldDifferencesContainer.style.display = DisplayStyle.Flex;
+        }
+
+        void ClearRequirementsInfo()
+        {
+            root.Q<VisualElement>("ItemInfo").Clear();
+        }
+
+        void DrawItemRequirements(UpgradeMaterialData.UpgradeMaterialEntry upgradeData)
+        {
+            UpgradeMaterial upgradeMaterialItem = upgradeData.upgradeMaterial;
+            int amountRequiredFoUpgrade = upgradeData.amount;
+
+            var ingredientItemEntry = ingredientItem.CloneTree();
+            ingredientItemEntry.Q<IMGUIContainer>("ItemIcon").style.backgroundImage = new StyleBackground(upgradeMaterialItem.sprite);
+            ingredientItemEntry.Q<Label>("Title").text = upgradeMaterialItem.GetName();
+
+            var playerOwnedIngredientAmount = playerManager.characterBaseInventory.GetUpgradeMaterialAmount(upgradeMaterialItem);
+
+            ingredientItemEntry.Q<Label>("Amount").text = playerOwnedIngredientAmount + " / " + amountRequiredFoUpgrade;
+            ingredientItemEntry.Q<Label>("Amount").style.opacity =
+                playerOwnedIngredientAmount >= amountRequiredFoUpgrade ? 1 : 0.25f;
+
+            root.Q<VisualElement>("ItemInfo").Add(ingredientItemEntry);
+        }
+
+        void DrawGoldRequired(UpgradeMaterialData.UpgradeMaterialEntry upgradeData)
+        {
+            var goldItemEntry = ingredientItem.CloneTree();
+            goldItemEntry.Q<IMGUIContainer>("ItemIcon").style.backgroundImage = new StyleBackground(goldSprite);
+            goldItemEntry.Q<Label>("Title").text = LocalizationSettings.StringDatabase.GetLocalizedString("UIDocuments", "Gold");
+
+            goldItemEntry.Q<Label>("Amount").text = playerStatsDatabase.gold + " / " + upgradeData.goldCostForUpgrade;
+            goldItemEntry.Q<Label>("Amount").style.opacity = playerStatsDatabase.gold >= upgradeData.goldCostForUpgrade ? 1 : 0.25f;
+
+            root.Q<VisualElement>("ItemInfo").Add(goldItemEntry);
+        }
+
+        void ShowRequirements(UpgradableItem upgradableItem)
+        {
+            UpgradeMaterialData.UpgradeMaterialEntry upgradeData = upgradableItem.upgradeMaterialData.upgradeMaterials.ElementAtOrDefault(upgradableItem.level);
+
+            if (upgradeData == null)
+            {
+                return;
+            }
+
+            var nextLevel = upgradableItem.level + 1;
+            StatsChangedContainer.style.display = DisplayStyle.Flex;
+
+            // Item preview
+            ItemNamePreview.text = upgradableItem.GetName() + " +" + nextLevel;
+
+            ClearLabels();
+
+            if (upgradableItem is Weapon weapon)
+            {
+                DrawAttackDifferences(weapon);
+            }
+
+            if (upgradableItem is Shield shield)
+            {
+                DrawBlockAbsorptionDifferences(shield);
+            }
+
+            if (upgradableItem is ArmorBase armorBase)
+            {
+                DrawDefenseDifferences(armorBase);
+            }
+
+            // Requirements
+            ClearRequirementsInfo();
+            DrawItemRequirements(upgradeData);
+            DrawGoldRequired(upgradeData);
+
+            RequirementsPreview.style.opacity = 1;
+        }
+
+        void LogAnalytic(string eventName)
+        {
+            if (!GameAnalytics.Initialized)
+            {
+                GameAnalytics.Initialize();
+            }
+
+            GameAnalytics.NewDesignEvent(eventName);
+        }
+
+        void LogAnalytic(string eventName, Dictionary<string, object> values)
+        {
+            if (!GameAnalytics.Initialized)
+            {
+                GameAnalytics.Initialize();
+            }
+
+            GameAnalytics.NewDesignEvent(eventName, values);
+        }
+    }
+}

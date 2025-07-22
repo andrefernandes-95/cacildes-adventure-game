@@ -357,13 +357,13 @@ namespace AF
                 var craftLabel = scrollItem.Q<Label>("CraftLabel");
                 craftLabel.text = GetCraftLabel();
 
-                craftBtn.style.opacity = CraftingUtils.CanImproveWeapon(playerManager, weapon, playerStatsDatabase.gold) ? 1f : 0.25f;
+                craftBtn.style.opacity = CraftingUtils.CanImproveItem(playerManager, weapon, playerStatsDatabase.gold) ? 1f : 0.25f;
 
                 UIUtils.SetupButton(craftBtn, () =>
                 {
                     lastScrollElementIndex = currentIndex;
 
-                    if (!CraftingUtils.CanImproveWeapon(playerManager, weapon, playerStatsDatabase.gold))
+                    if (!CraftingUtils.CanImproveItem(playerManager, weapon, playerStatsDatabase.gold))
                     {
                         HandleCraftError(LocalizationSettings.StringDatabase.GetLocalizedString("UIDocuments", "Missing ingredients!"));
                         return;
@@ -465,7 +465,7 @@ namespace AF
                 { "weapon_upgraded", wp.name }
             });
 
-            CraftingUtils.UpgradeWeapon(
+            CraftingUtils.UpgradeItem(
                 wp,
                 (goldUsed) => uIDocumentPlayerGold.LoseGold(goldUsed),
                 (upgradeMaterialUsed) => playerManager.playerInventory.RemoveItem(upgradeMaterialUsed.Key, upgradeMaterialUsed.Value)
@@ -487,7 +487,6 @@ namespace AF
                     EventManager.EmitEvent(EventMessages.ON_EQUIPMENT_CHANGED);
                 }
             }
-
 
             foreach (Weapon equippedShield in playerManager.equipmentDatabase.shields)
             {

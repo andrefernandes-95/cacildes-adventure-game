@@ -11,6 +11,7 @@ namespace AF
 
         [Header("Critical UIs")]
         [SerializeField] private UIDocumentCraftScreen craftScreen;
+        [SerializeField] private UIDocumentBlacksmith uIDocumentBlacksmith;
         [SerializeField] private UIDocumentBook book;
         [SerializeField] private UIDocumentDialogueWindow dialogueWindow;
         [SerializeField] private UIDocumentGameOver gameOver;
@@ -89,6 +90,12 @@ namespace AF
         {
             // Check non-array UI elements
             if (craftScreen != null && craftScreen.isActiveAndEnabled)
+            {
+                return true;
+            }
+
+            // Check non-array UI elements
+            if (uIDocumentBlacksmith != null && uIDocumentBlacksmith.isActiveAndEnabled)
             {
                 return true;
             }
