@@ -1,13 +1,15 @@
 # IN PROGRESS
 
-- Add shield absorption notice to blacksmith table
-- Improve blacksmith by making it an activity
-
-- item name for weapons doesnt show level
-
-- Remove jump hindering from armor. doesnt make sense from a gameplay perspective
 
 
+- Create Weapon Variant class which derives from weapon and allows for easier weapon creation
+- base Weapon class should have virtual methods which the child can override
+
+
+
+
+- when upgrading armors and spells, we should add logic on blacksmith to ensure we reequip the items
+- Add focus to callback on scroll view exit buttons, which I forgot to do
 - Forest Wanderer Armor Set
 - Forest Wanderer Weapon
 - Blacksmith Explained Book
@@ -22,6 +24,7 @@
 
 - Create blacksmith with amensia under beach cavern explaining blacksmith mechanics
 
+- Bugs pressing E in when reading books and notes open them again
 
 
 # IN DEV

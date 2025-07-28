@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Localization.Settings;
@@ -152,6 +153,22 @@ namespace AF.Health
             this.poiseDamage = (int)(this.poiseDamage * multiplier);
             this.pushForce = (int)(this.pushForce * multiplier);
             this.postureDamage = (int)(this.postureDamage * multiplier);
+
+            if (this.statusEffects != null)
+            {
+                List<StatusEffectEntry> newEffects = new();
+
+                foreach (var otherEffect in this.statusEffects)
+                {
+                    newEffects.Add(new StatusEffectEntry
+                    {
+                        statusEffect = otherEffect.statusEffect,
+                        amountPerHit = (int)(otherEffect.amountPerHit * multiplier)
+                    });
+                }
+
+                this.statusEffects = newEffects.ToArray();
+            }
         }
 
         public void ScaleSpell(

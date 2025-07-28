@@ -97,7 +97,7 @@ namespace AF.Bonfires
         {
             GetPlayerManager().health.RestoreFullHealth();
             GetPlayerManager().staminaStatManager.RestoreStaminaPercentage(100);
-            GetPlayerManager().statusController.RemoveAllStatuses();
+            GetPlayerManager().statusController.RemoveAllEffects();
             GetPlayerManager().manaManager.RestoreManaPercentage(100);
         }
 

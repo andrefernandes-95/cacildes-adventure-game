@@ -59,8 +59,6 @@ namespace AF.Animations
         public void PauseAnimation();
         public void ResumeAnimation();
 
-        public void OnCard();
-
         public void OnExecuted();
         public void OnExecuting();
 

@@ -34,7 +34,7 @@ namespace AF
             {
                 foreach (StatusEffectEntry statusEffect in damage.statusEffects)
                 {
-                    targetToHeal.statusController.RemoveStatusEffect(statusEffect.statusEffect);
+                    targetToHeal.statusController.RemoveEffect(statusEffect.statusEffect);
                 }
             }
         }

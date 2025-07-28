@@ -130,6 +130,11 @@ namespace AF
                 // Replace the weapon from the prefab with the equipped one which contains itemIDs, level, etc.
                 instatiatedCharacterWeaponHitbox.weapon = weapon;
 
+                // Shields
+                if (instatiatedCharacterWeaponHitbox is ShieldInstance shieldInstance1 && weapon is Shield shield)
+                {
+                    shieldInstance1.shield = shield;
+                }
 
                 // TOOD: Remove this code, its just to always have ref positions up to date
                 Weapon weaponTemplate = Resources.Load<Weapon>("Items/Weapons/" + weapon.name.Replace("(Clone)", ""));
@@ -544,7 +549,7 @@ namespace AF
 
             if (IsTwoHanding() && GetCurrentRightWeapon() != null)
             {
-                incomingDamage.physical = (int)(incomingDamage.physical * GetCurrentRightWeapon().blockAbsorption);
+                incomingDamage.physical = (int)(incomingDamage.physical * GetCurrentRightWeapon().weaponBlockAbsorption);
                 return incomingDamage;
             }
             else if (_currentShieldInstance == null || _currentShieldInstance.shield == null)

@@ -352,11 +352,6 @@ namespace AF.Animations
             characterManager.characterDodgeController.EnableIframes();
         }
 
-        public void OnCard()
-        {
-
-        }
-
         public void ShowShield()
         {
         }

@@ -12,6 +12,11 @@ namespace AF
         public bool hideHair = true;
         public bool hideFace = true;
 
+        public override float GetBonusStep(int level)
+        {
+            return .5f;
+        }
+
         public override void OnEquip(CharacterBaseManager character)
         {
             if (!character.IsUsingSyntyModularFantasyHeroModel())

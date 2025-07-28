@@ -9,4 +9,11 @@ namespace AF.StatusEffects
 
         public float currentAmount;
     }
+
+    [System.Serializable]
+    public class StatusEffectState
+    {
+        public float currentAmount;
+        public bool hasReachedTotalAmount;
+    }
 }

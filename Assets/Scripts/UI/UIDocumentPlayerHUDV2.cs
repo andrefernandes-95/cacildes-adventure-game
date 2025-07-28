@@ -58,7 +58,6 @@ namespace AF
 
         [Header("Components")]
         public PlayerManager playerManager;
-        public EquipmentGraphicsHandler equipmentGraphicsHandler;
 
         UIGameControls uIGameControls => GetComponent<UIGameControls>();
 

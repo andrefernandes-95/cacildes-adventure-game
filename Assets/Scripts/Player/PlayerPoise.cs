@@ -20,16 +20,6 @@ namespace AF
             return playerManager.thirdPersonController.isSwimming == false;
         }
 
-        public override int GetMaxPoiseHits()
-        {
-            return 1 + GetExtraPoiseBasedOnStats() + statsBonusController.equipmentPoise;
-        }
-
-        int GetExtraPoiseBasedOnStats()
-        {
-            return (int)Mathf.Round(playerStatsDatabase.endurance / 5f) + (int)Mathf.Round(playerStatsDatabase.strength / 2.5f); ;
-        }
-
         public override void PlayHitReaction()
         {
         }

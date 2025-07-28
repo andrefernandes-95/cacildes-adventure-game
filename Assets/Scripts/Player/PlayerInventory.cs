@@ -46,7 +46,7 @@ namespace AF
             onResetState?.Invoke();
         }
 
-        public void ReplenishItems()
+        public new void ReplenishItems()
         {
             inventoryDatabase.ReplenishItems();
 
@@ -299,22 +299,19 @@ namespace AF
             {
                 foreach (StatusEffect statusEffectToRemove in currentConsumedItem.statusesToRemove)
                 {
-                    AppliedStatusEffect appliedStatusEffect = playerManager.statusController.appliedStatusEffects.FirstOrDefault(
-                        x => x.statusEffect == statusEffectToRemove);
+                    var appliedStatusEffectPair = playerManager.statusController.GetActiveEffects().FirstOrDefault(
+                        x => x.Key == statusEffectToRemove);
 
-                    if (appliedStatusEffect != null)
+                    if (!appliedStatusEffectPair.Equals(default(KeyValuePair<StatusEffect, AF.StatusEffects.StatusEffectState>)))
                     {
-                        playerManager.statusController.RemoveAppliedStatus(appliedStatusEffect);
+                        playerManager.statusController.RemoveEffect(appliedStatusEffectPair.Key);
                     }
                 }
             }
 
             foreach (StatusEffect statusEffect in currentConsumedItem.statusEffectsWhenConsumed)
             {
-                // For positive effects, we override the status effect resistance to be the duration of the consumable effect
-                playerManager.statusController.statusEffectResistances[statusEffect] = currentConsumedItem.effectsDurationInSeconds;
-
-                playerManager.statusController.InflictStatusEffect(statusEffect, currentConsumedItem.effectsDurationInSeconds, true);
+                playerManager.statusController.InflictStatusEffect(statusEffect);
             }
 
             currentConsumedItem = null;

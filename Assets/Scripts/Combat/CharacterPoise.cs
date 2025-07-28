@@ -34,16 +34,6 @@ namespace AF
             return true;
         }
 
-        public override int GetMaxPoiseHits()
-        {
-            if (characterManager.combatant != null)
-            {
-                return characterManager.combatant.maximumPoise;
-            }
-
-            return maxPoiseHits;
-        }
-
         public override bool TakePoiseDamage(int poiseDamage)
         {
             bool result = base.TakePoiseDamage(poiseDamage);

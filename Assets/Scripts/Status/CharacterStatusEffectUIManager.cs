@@ -24,7 +24,10 @@ namespace AF
             characterStatusEffectIndicator.background.sprite = statusEffect.statusEffect.icon;
             characterStatusEffectIndicator.fill.sprite = statusEffect.statusEffect.icon;
 
-            appliedStatusUIIndicatorInstances.Add(statusEffect.statusEffect, characterStatusEffectIndicator);
+            if (!appliedStatusUIIndicatorInstances.ContainsKey(statusEffect.statusEffect))
+            {
+                appliedStatusUIIndicatorInstances.Add(statusEffect.statusEffect, characterStatusEffectIndicator);
+            }
         }
 
         public void UpdateEntry(AppliedStatusEffect appliedStatusEffect, float currentMaximumResistanceToStatusEffect)

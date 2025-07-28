@@ -197,14 +197,28 @@ namespace AF
                 itemTooltip.CreateTooltip(GUIIconsDatabase.physicalAbsorption, Color.white, label);
             }
 
-            if (weapon.blockAbsorption != 1f)
+            float physicalBlockAbsorption = 0f;
+
+            if (weapon is Shield shield)
             {
-                float absorptionPercentage = weapon.blockAbsorption * 100f;
-                float damageTaken = 100f - absorptionPercentage;
+                if (shield.GetCurrentAbsorption(shield.physicalAbsorption) != -1f)
+                {
+                    physicalBlockAbsorption = shield.GetCurrentAbsorption(shield.physicalAbsorption);
+                }
+            }
+            else if (weapon.weaponBlockAbsorption != 1f)
+            {
+                physicalBlockAbsorption = weapon.weaponBlockAbsorption;
+            }
+
+            if (physicalBlockAbsorption != 0f)
+            {
+                float absorptionPercentage = physicalBlockAbsorption * 100f;
+                float damageStillTaken = 100f - absorptionPercentage;
 
                 string label = Utils.IsPortuguese()
-                    ? $"{absorptionPercentage:0}% Absorção ao bloquear com a arma\n<i><size=80%>(Ao bloquear com esta arma, {damageTaken:0}% do dano ainda será sofrido)</i>"
-                    : $"{absorptionPercentage:0}% Absorption when blocking with this weapon\n<i><size=80%>({damageTaken:0}% of the damage will still go through when blocking with this weapon)</i>";
+                    ? $"{absorptionPercentage:0}% Absorção ao bloquear com a arma\n<i><size=80%>(Ao bloquear com esta arma, {damageStillTaken:0}% do dano ainda será sofrido)</i>"
+                    : $"{absorptionPercentage:0}% Absorption when blocking with this weapon\n<i><size=80%>({damageStillTaken:0}% of the damage will still go through when blocking with this weapon)</i>";
 
                 itemTooltip.CreateTooltip(GUIIconsDatabase.physicalAbsorption, Color.white, label);
             }

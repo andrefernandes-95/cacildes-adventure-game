@@ -1,6 +1,4 @@
-using System;
 using System.Collections;
-using System.Linq;
 using AF.Dialogue;
 using AF.Stats;
 using UnityEngine;
@@ -9,8 +7,6 @@ namespace AF
 {
     public class EV_MessageBasedOnStats : EventBase
     {
-
-
         [Header("Actor")]
         public Character character;
 
@@ -23,11 +19,6 @@ namespace AF
 
         [Header("Character Stats")]
         [SerializeField] StatsBonusController statsBonusController;
-
-        [Header("Conditions")]
-        [SerializeField] int minimumStrength = 0;
-        [SerializeField] int minimumDexterity = 0;
-        [SerializeField] int minimumIntelligence = 0;
 
         public override IEnumerator Dispatch()
         {

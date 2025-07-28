@@ -9,6 +9,26 @@ namespace AF
         public int level = 1;
         public UpgradeMaterialData upgradeMaterialData;
 
+        public virtual float GetBonusStep(int level)
+        {
+            if (level <= 3)
+            {
+                return 10;
+            }
+            else if (level <= 6)
+            {
+                return 20;
+            }
+            else if (level <= 9)
+            {
+                return 30;
+            }
+            else
+            {
+                return 40;
+            }
+        }
+
         public int GetBonusAttackPerLevel(int level)
         {
             if (level == 0)
@@ -16,21 +36,14 @@ namespace AF
                 return 0;
             }
 
-            int total = 0;
+            float total = 0;
 
             for (int i = 1; i <= level; i++)
             {
-                if (i <= 3)
-                    total += 10;
-                else if (i <= 6)
-                    total += 20;
-                else if (i <= 9)
-                    total += 30;
-                else
-                    total += 40;
+                total += GetBonusStep(i);
             }
 
-            return total;
+            return Mathf.RoundToInt(total);
         }
 
         public int GetBonusPoisePerLevel(int initialPoise, int level)

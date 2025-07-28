@@ -268,6 +268,17 @@ namespace AF.UI.EquipmentMenu
             weaponTypeLabel = tooltip.Q<Label>("WeaponAttackType");
         }
 
+        string GetItemName(Item item)
+        {
+            string itemName = item.GetName().ToUpper();
+
+            if (item is UpgradableItem upgradableItem)
+            {
+                itemName += " +" + upgradableItem.level;
+            }
+            return itemName;
+        }
+
         public void PrepareTooltipForItem(Item item)
         {
             enabled = true;
@@ -281,13 +292,7 @@ namespace AF.UI.EquipmentMenu
 
             weaponTypeLabel.style.display = DisplayStyle.None;
 
-            string itemName = item.GetName().ToUpper();
-
-
-            if (item is Weapon wp)
-            {
-                itemName += " +" + wp.level;
-            }
+            string itemName = GetItemName(item);
 
             tooltipItemName.text = itemName;
             tooltipItemDescription.text = playerManager.playerInventory.inventoryDatabase.GetItemDescription(item);
@@ -497,12 +502,12 @@ namespace AF.UI.EquipmentMenu
                 CreateTooltip(defenseAbsorptionSprite, Color.white, canNotBeParried.GetLocalizedString());
             }
 
-            if (weapon.blockAbsorption != 1)
+            if (weapon.weaponBlockAbsorption != 1)
             {
                 CreateTooltip(defenseAbsorptionSprite, Color.white,
                     String.Format(
                         physicalDamageAbsorptionWhenBlocking.GetLocalizedString(),
-                        100 - (weapon.blockAbsorption * 100)));
+                        100 - (weapon.weaponBlockAbsorption * 100)));
             }
 
             if (weapon.doubleCoinsUponKillingEnemies)
@@ -528,13 +533,14 @@ namespace AF.UI.EquipmentMenu
                     String.Format(staminaCostPerBlock.GetLocalizedString(), shield.blockStaminaCost));
             }
 
-            if (shield.physicalAbsorption != 1)
+            float shieldAbsorptionLevel = shield.GetAbsorptionForLevel(shield.physicalAbsorption, shield.level);
+            if (shieldAbsorptionLevel != 1)
             {
 
                 CreateTooltip(
                     defenseAbsorptionSprite,
                     Color.white,
-                    String.Format(physicalDamageAbsorptionWhenBlocking.GetLocalizedString(), 100 - (shield.physicalAbsorption * 100)));
+                    String.Format(physicalDamageAbsorptionWhenBlocking.GetLocalizedString(), 100 - (shieldAbsorptionLevel * 100)));
             }
 
             if (shield.fireAbsorption != 1)
@@ -582,7 +588,7 @@ namespace AF.UI.EquipmentMenu
                 CreateTooltip(statusEffectsSprite, Color.white, shield.GetFormattedStatusResistances());
             }
 
-            if (shield.statusEffectCancellationRates != null && shield.statusEffectCancellationRates.Length > 0)
+            if (shield.statusEffectDelayRates != null && shield.statusEffectDelayRates.Length > 0)
             {
                 CreateTooltip(statusEffectsSprite, Color.white, shield.GetFormattedStatusCancellationRates());
             }

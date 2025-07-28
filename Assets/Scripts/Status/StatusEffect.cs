@@ -3,7 +3,7 @@ using UnityEngine.Localization;
 
 namespace AF
 {
-    [CreateAssetMenu(menuName = "Misc / Status / New Status")]
+    [CreateAssetMenu(menuName = "Data / Status Effect / New Status")]
     [System.Serializable]
     public class StatusEffect : ScriptableObject
     {
@@ -12,13 +12,23 @@ namespace AF
 
         public string builtUpName;
         public string appliedName;
+
+        [Header("UI")]
         public Sprite icon;
         public Color barColor;
-        public bool isPositive = false;
+
+        [Header("Options")]
         public bool isAppliedImmediately = false;
+
+        [Header("Decay Rate")]
         public float decreaseRateWithDamage = 1f;
         public float decreaseRateWithoutDamage = 5f;
 
+        [Header("Resistances")]
+        public float fallbackResistance = 25f;
+
+        [Header("Behaviour")]
+        public StatusEffectBehaviour statusEffectBehaviour;
 
         public string GetName()
         {

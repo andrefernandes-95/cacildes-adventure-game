@@ -49,9 +49,6 @@ namespace AF.Health
         // Components
         LockOnRef _characterLockOnRef;
 
-        [Header("Non-Boss Health Bar")]
-        [SerializeField] CharacterHealthUI characterHealthUI;
-
         public void Awake()
         {
             CurrentHealth = GetMaxHealth();
@@ -223,29 +220,17 @@ namespace AF.Health
 
         void UpdateHealthbar()
         {
-            if (characterManager.characterBossController.IsBoss())
-            {
-                characterManager.characterBossController.UpdateUI();
-                return;
-            }
-
-            characterHealthUI?.UpdateUI();
+            onUpdateHealthbar?.Invoke();
         }
 
         void ShowHealthbar()
         {
-            if (characterManager.characterBossController.isBoss)
-            {
-                HideHealthbar();
-                return;
-            }
-
-            characterHealthUI?.gameObject.SetActive(true);
+            onShowHealthbar?.Invoke();
         }
 
         void HideHealthbar()
         {
-            characterHealthUI?.gameObject.SetActive(false);
+            onHideHealthbar?.Invoke();
         }
     }
 

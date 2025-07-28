@@ -162,7 +162,7 @@ namespace AF
         public ProjectileType projectileType;
 
         [Header("Block Options")]
-        [Range(0, 1f)] public float blockAbsorption = .8f;
+        [Range(0, 1f)] public float weaponBlockAbsorption = .8f;
 
         [Header("Staff Options")]
         public bool shouldRegenerateMana = false;

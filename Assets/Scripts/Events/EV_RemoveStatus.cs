@@ -16,7 +16,7 @@ namespace AF
 
         IEnumerator RemoveStatus()
         {
-            GetPlayerManager()?.statusController?.RemoveStatusEffect(statusEffectToRemove);
+            GetPlayerManager()?.statusController?.RemoveEffect(statusEffectToRemove);
 
             yield return null;
         }

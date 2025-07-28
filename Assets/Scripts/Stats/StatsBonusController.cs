@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using AF.Health;
 using AF.StatusEffects;
 using UnityEngine;
 using UnityEngine.Localization.Settings;
@@ -96,7 +97,9 @@ namespace AF.Stats
         public NotificationManager notificationManager;
 
         [Header("Status Effect Resistances")]
-        public Dictionary<StatusEffect, float> statusEffectCancellationRates = new();
+        public Dictionary<StatusEffect, float> statusEffectResistances = new();
+        public Dictionary<StatusEffect, float> statusEffectDelayRates = new();
+
 
         private void Awake()
         {
@@ -159,7 +162,7 @@ namespace AF.Stats
 
         void UpdateStatusEffectCancellationRates()
         {
-            statusEffectCancellationRates.Clear();
+            statusEffectDelayRates.Clear();
 
             List<ArmorBase> equippedArmorBases = new() {
                 GetCurrentHelmet(),
@@ -177,7 +180,7 @@ namespace AF.Stats
                     continue;
                 }
 
-                StatusEffectCancellationRate[] statusEffectCancellationRates = equippedArmor.statusEffectCancellationRates;
+                StatusEffectCancellationRate[] statusEffectCancellationRates = equippedArmor.statusEffectDelayRates;
                 if (statusEffectCancellationRates.Length > 0)
                 {
                     EvaluateItemResistance(statusEffectCancellationRates);
@@ -193,7 +196,7 @@ namespace AF.Stats
                     continue;
                 }
 
-                StatusEffectCancellationRate[] statusEffectCancellationRates = shield.statusEffectCancellationRates;
+                StatusEffectCancellationRate[] statusEffectCancellationRates = shield.statusEffectDelayRates;
                 if (statusEffectCancellationRates.Length > 0)
                 {
                     EvaluateItemResistance(statusEffectCancellationRates);
@@ -205,13 +208,13 @@ namespace AF.Stats
         {
             foreach (var statusEffectCancellationRate in itemStatusEffectCancellationRates)
             {
-                if (statusEffectCancellationRates.ContainsKey(statusEffectCancellationRate.statusEffect))
+                if (statusEffectDelayRates.ContainsKey(statusEffectCancellationRate.statusEffect))
                 {
-                    statusEffectCancellationRates[statusEffectCancellationRate.statusEffect] += statusEffectCancellationRate.amountToCancelPerSecond;
+                    statusEffectDelayRates[statusEffectCancellationRate.statusEffect] += statusEffectCancellationRate.delayRate;
                 }
                 else
                 {
-                    statusEffectCancellationRates.Add(statusEffectCancellationRate.statusEffect, statusEffectCancellationRate.amountToCancelPerSecond);
+                    statusEffectDelayRates.Add(statusEffectCancellationRate.statusEffect, statusEffectCancellationRate.delayRate);
                 }
             }
         }
@@ -265,22 +268,22 @@ namespace AF.Stats
 
             if (helmet != null)
             {
-                equipmentPoise += helmet.poiseBonus;
+                equipmentPoise += helmet.GetDamageAbsorbed().poiseDamage;
             }
             if (armor != null)
             {
-                equipmentPoise += armor.poiseBonus;
+                equipmentPoise += armor.GetDamageAbsorbed().poiseDamage;
             }
             if (gauntlet != null)
             {
-                equipmentPoise += gauntlet.poiseBonus;
+                equipmentPoise += gauntlet.GetDamageAbsorbed().poiseDamage;
             }
             if (legwear != null)
             {
-                equipmentPoise += legwear.poiseBonus;
+                equipmentPoise += legwear.GetDamageAbsorbed().poiseDamage;
             }
 
-            equipmentPoise += accessories.Sum(x => x == null ? 0 : x.poiseBonus);
+            equipmentPoise += accessories.Sum(x => x == null ? 0 : x.GetDamageAbsorbed().poiseDamage);
         }
 
         void UpdateEquipmentPhysicalDefense(Helmet helmet, Armor armor, Gauntlet gauntlet, Legwear legwear, List<Accessory> accessories)
@@ -289,44 +292,45 @@ namespace AF.Stats
 
             if (helmet != null)
             {
-                equipmentPhysicalDefenseBonus += helmet.damageAbsorbed.physical;
+                equipmentPhysicalDefenseBonus += helmet.GetCurrentPhysicalDefenseForLevel(helmet.level);
             }
 
             if (armor != null)
             {
-                equipmentPhysicalDefenseBonus += armor.damageAbsorbed.physical;
+                equipmentPhysicalDefenseBonus += armor.GetCurrentPhysicalDefenseForLevel(armor.level);
             }
 
             if (gauntlet != null)
             {
-                equipmentPhysicalDefenseBonus += gauntlet.damageAbsorbed.physical;
+                equipmentPhysicalDefenseBonus += gauntlet.GetCurrentPhysicalDefenseForLevel(gauntlet.level);
             }
 
             if (legwear != null)
             {
-                equipmentPhysicalDefenseBonus += legwear.damageAbsorbed.physical;
+                equipmentPhysicalDefenseBonus += legwear.GetCurrentPhysicalDefenseForLevel(legwear.level);
             }
 
-            equipmentPhysicalDefenseBonus += accessories.Sum(x => x == null ? 0 : x.damageAbsorbed.physical);
+            equipmentPhysicalDefenseBonus += accessories.Sum(x => x == null ? 0 : x.GetDamageAbsorbedForCurrentLevel().physical);
         }
 
         void UpdateStatusEffectResistances(Helmet helmet, Armor armor, Gauntlet gauntlet, Legwear legwear, List<Accessory> accessories)
         {
-            statusController.statusEffectResistanceBonuses.Clear();
+            statusEffectResistances.Clear();
 
-            HandleStatusEffectEntries(helmet?.statusEffectResistances);
-            HandleStatusEffectEntries(armor?.statusEffectResistances);
-            HandleStatusEffectEntries(gauntlet?.statusEffectResistances);
-            HandleStatusEffectEntries(legwear?.statusEffectResistances);
+            HandleStatusEffectEntries(helmet?.GetDamageAbsorbed().statusEffects);
+            HandleStatusEffectEntries(armor?.GetDamageAbsorbed().statusEffects);
+            HandleStatusEffectEntries(gauntlet?.GetDamageAbsorbed().statusEffects);
+            HandleStatusEffectEntries(legwear?.GetDamageAbsorbed().statusEffects);
 
             var accessoryResistances = accessories
                 .Where(a => a != null)
-                .SelectMany(a => a.statusEffectResistances ?? Enumerable.Empty<StatusEffectResistance>())
+                .SelectMany(a => a.GetDamageAbsorbed().statusEffects)
                 .ToArray();
+
             HandleStatusEffectEntries(accessoryResistances);
         }
 
-        void HandleStatusEffectEntries(StatusEffectResistance[] resistances)
+        void HandleStatusEffectEntries(StatusEffectEntry[] resistances)
         {
             if (resistances != null && resistances.Length > 0)
             {
@@ -337,17 +341,16 @@ namespace AF.Stats
             }
         }
 
-        void HandleStatusEffectEntry(StatusEffectResistance statusEffectResistance)
+        void HandleStatusEffectEntry(StatusEffectEntry statusEffectResistance)
         {
-            if (statusController.statusEffectResistanceBonuses.ContainsKey(statusEffectResistance.statusEffect))
+            if (this.statusEffectResistances.ContainsKey(statusEffectResistance.statusEffect))
             {
-                statusController.statusEffectResistanceBonuses[statusEffectResistance.statusEffect]
-                    += (int)statusEffectResistance.resistanceBonus;
+                this.statusEffectResistances[statusEffectResistance.statusEffect]
+                    += (int)statusEffectResistance.amountPerHit;
             }
             else
             {
-                statusController.statusEffectResistanceBonuses.Add(
-                    statusEffectResistance.statusEffect, (int)statusEffectResistance.resistanceBonus);
+                this.statusEffectResistances.Add(statusEffectResistance.statusEffect, (int)statusEffectResistance.amountPerHit);
             }
         }
 
@@ -407,15 +410,15 @@ namespace AF.Stats
                 strengthBonus += equipment.strengthBonus;
                 dexterityBonus += equipment.dexterityBonus;
                 intelligenceBonus += equipment.intelligenceBonus;
-                equipmentFireDefenseBonus += equipment.damageAbsorbed.fire;
-                equipmentFrostDefenseBonus += equipment.damageAbsorbed.frost;
-                equipmentLightningDefenseBonus += equipment.damageAbsorbed.lightning;
-                equipmentMagicDefenseBonus += equipment.damageAbsorbed.magic;
-                equipmentDarkDefenseBonus += equipment.damageAbsorbed.darkness;
-                equipmentWaterDefenseBonus += equipment.damageAbsorbed.water;
+                equipmentFireDefenseBonus += equipment.GetDamageAbsorbedForCurrentLevel().fire;
+                equipmentFrostDefenseBonus += equipment.GetDamageAbsorbedForCurrentLevel().frost;
+                equipmentLightningDefenseBonus += equipment.GetDamageAbsorbedForCurrentLevel().lightning;
+                equipmentMagicDefenseBonus += equipment.GetDamageAbsorbedForCurrentLevel().magic;
+                equipmentDarkDefenseBonus += equipment.GetDamageAbsorbedForCurrentLevel().darkness;
+                equipmentWaterDefenseBonus += equipment.GetDamageAbsorbedForCurrentLevel().water;
                 reputationBonus += equipment.reputationBonus;
                 discountPercentage += equipment.discountPercentage;
-                postureBonus += equipment.postureBonus;
+                postureBonus += equipment.GetDamageAbsorbed().postureDamage;
                 staminaRegenerationBonus += equipment.staminaRegenBonus;
                 movementSpeedBonus += equipment.movementSpeedBonus;
                 projectileMultiplierBonus += equipment.projectileMultiplierBonus;
@@ -436,12 +439,12 @@ namespace AF.Stats
                 strengthBonus += accessory?.strengthBonus ?? 0;
                 dexterityBonus += accessory?.dexterityBonus ?? 0;
                 intelligenceBonus += accessory?.intelligenceBonus ?? 0;
-                equipmentFireDefenseBonus += accessory?.damageAbsorbed.fire ?? 0;
-                equipmentFrostDefenseBonus += accessory?.damageAbsorbed.frost ?? 0;
-                equipmentLightningDefenseBonus += accessory?.damageAbsorbed.lightning ?? 0;
-                equipmentMagicDefenseBonus += accessory?.damageAbsorbed.magic ?? 0;
-                equipmentDarkDefenseBonus += accessory?.damageAbsorbed.darkness ?? 0;
-                equipmentWaterDefenseBonus += accessory?.damageAbsorbed.water ?? 0;
+                equipmentFireDefenseBonus += accessory?.GetDamageAbsorbed().fire ?? 0;
+                equipmentFrostDefenseBonus += accessory?.GetDamageAbsorbed().frost ?? 0;
+                equipmentLightningDefenseBonus += accessory?.GetDamageAbsorbed().lightning ?? 0;
+                equipmentMagicDefenseBonus += accessory?.GetDamageAbsorbed().magic ?? 0;
+                equipmentDarkDefenseBonus += accessory?.GetDamageAbsorbed().darkness ?? 0;
+                equipmentWaterDefenseBonus += accessory?.GetDamageAbsorbed().water ?? 0;
                 reputationBonus += accessory?.reputationBonus ?? 0;
                 parryPostureDamageBonus += accessory?.postureDamagePerParry ?? 0;
 
@@ -451,7 +454,7 @@ namespace AF.Stats
                 magicBonus += accessory?.magicBonus ?? 0;
                 staminaBonus += accessory?.staminaBonus ?? 0;
                 spellDamageBonusMultiplier += accessory?.spellDamageBonusMultiplier ?? 0;
-                postureBonus += accessory?.postureBonus ?? 0;
+                postureBonus += accessory?.GetDamageAbsorbed().postureDamage ?? 0;
                 staminaRegenerationBonus += accessory?.staminaRegenBonus ?? 0;
 
                 postureDecreaseRateBonus += accessory?.postureDecreaseRateBonus ?? 0;

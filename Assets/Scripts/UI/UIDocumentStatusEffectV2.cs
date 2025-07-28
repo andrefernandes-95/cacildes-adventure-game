@@ -47,20 +47,6 @@ namespace AF
                 appliedStatusEffect.currentAmount,
                 Mathf.Clamp(appliedStatusEffect.currentAmount, 0, currentMaximumResistanceToStatusEffect));
 
-            clone.Q<VisualElement>("BarFill").style.backgroundColor = appliedStatusEffect.statusEffect.barColor;
-            clone.Q<IMGUIContainer>("PositiveIndicator").style.display = appliedStatusEffect.statusEffect.isPositive
-                ? DisplayStyle.Flex : DisplayStyle.None;
-            clone.Q<IMGUIContainer>("NegativeIndicator").style.display = appliedStatusEffect.statusEffect.isPositive
-                ? DisplayStyle.None : DisplayStyle.Flex;
-
-            if (appliedStatusEffect.statusEffect.isPositive)
-            {
-                positiveContainer.Add(clone);
-            }
-            else
-            {
-                negativeContainer.Add(clone);
-            }
         }
 
         void UpdateBarFill(VisualElement backgroundBar, VisualElement barFill, float currentAmount, float maximumWidth)
@@ -94,7 +80,7 @@ namespace AF
         VisualElement GetStatusEffectEntry(AppliedStatusEffect appliedStatusEffect)
         {
             string statusEffectName = appliedStatusEffect.statusEffect.name;
-            VisualElement container = appliedStatusEffect.statusEffect.isPositive ? positiveContainer : negativeContainer;
+            VisualElement container = true ? positiveContainer : negativeContainer;
 
             return container.Children().FirstOrDefault(entry => entry.viewDataKey == statusEffectName);
         }
@@ -104,7 +90,7 @@ namespace AF
             VisualElement statusEffectEntry = GetStatusEffectEntry(appliedStatusEffect);
             if (statusEffectEntry != null)
             {
-                VisualElement container = appliedStatusEffect.statusEffect.isPositive ? positiveContainer : negativeContainer;
+                VisualElement container = true ? positiveContainer : negativeContainer;
                 container.Remove(statusEffectEntry);
             }
         }

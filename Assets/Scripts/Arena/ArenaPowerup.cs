@@ -39,22 +39,13 @@ namespace AF.Arena
             if (other.TryGetComponent<CharacterBaseManager>(out var character) && character.statusController != null)
             {
                 StatusEffect chosenStatusEffect = possibleStatusEffects[Random.Range(0, possibleStatusEffects.Length)];
+
                 if (chosenStatusEffect != null)
                 {
-                    if (character.statusController.statusEffectResistances.ContainsKey(chosenStatusEffect))
-                    {
-                        character.statusController.statusEffectResistances[chosenStatusEffect] = statusEffectDuration;
-                    }
-                    else
-                    {
-                        character.statusController.statusEffectResistances.Add(chosenStatusEffect, statusEffectDuration);
-                    }
-
                     FindAnyObjectByType<NotificationManager>(FindObjectsInactive.Include).ShowNotification(
                         character.name + " " + hasPickedPowereUp_LocalizedString.GetLocalizedString() + " " + chosenStatusEffect.appliedName, null);
 
-                    character.statusController.InflictStatusEffect(
-                        chosenStatusEffect, statusEffectDuration, true);
+                    character.statusController.InflictStatusEffect(chosenStatusEffect);
                 }
             }
 

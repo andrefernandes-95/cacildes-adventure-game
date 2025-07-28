@@ -7,6 +7,10 @@ namespace AF
     [CreateAssetMenu(menuName = "Items / Armor / New Legwear")]
     public class Legwear : ArmorBase
     {
+        public override float GetBonusStep(int level)
+        {
+            return .5f;
+        }
 
         public override void OnEquip(CharacterBaseManager character)
         {

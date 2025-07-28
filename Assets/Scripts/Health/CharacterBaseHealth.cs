@@ -15,8 +15,12 @@ namespace AF.Health
         public UnityEvent onDeath;
         public UnityEvent onDamageFromPlayer;
 
-        [HideInInspector]
-        public UnityEvent onHealthChange;
+        // UI Events
+        [HideInInspector] public UnityEvent onShowHealthbar;
+        [HideInInspector] public UnityEvent onHideHealthbar;
+        [HideInInspector] public UnityEvent onUpdateHealthbar;
+        [HideInInspector] public UnityEvent onHealthChange;
+        [HideInInspector] public UnityEvent<int> onHealthRestoredUI;
 
         [Header("Quests")]
         public Weapon weaponRequiredToKill;
@@ -34,9 +38,6 @@ namespace AF.Health
 
         [Header("Status")]
         public bool hasHealthCutInHalf = false;
-
-        [Header("Components")]
-        [SerializeField] CombatNotificationsController combatNotificationsController;
 
         private void Start()
         {
@@ -115,7 +116,7 @@ namespace AF.Health
 
         public void ShowHealthRestoredText(int healthRestored)
         {
-            combatNotificationsController.ShowHealthRestored(healthRestored);
+            onHealthRestoredUI?.Invoke(healthRestored);
         }
 
 

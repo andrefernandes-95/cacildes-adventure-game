@@ -27,9 +27,9 @@ namespace AF
         {
             Consumable potentialConsumable = null;
 
-            foreach (AppliedStatusEffect appliedStatusEffect in characterBaseManager.statusController.appliedStatusEffects)
+            foreach (KeyValuePair<StatusEffect, StatusEffectState> activeEffect in characterBaseManager.statusController.GetActiveEffects())
             {
-                StatusEffect statusEffectToRemove = appliedStatusEffect.statusEffect;
+                StatusEffect statusEffectToRemove = activeEffect.Key;
 
                 Consumable potentialConsumableToRemoveThisStatusEffect =
                     characterBaseManager.characterBaseInventory.GetConsumables().FirstOrDefault(consumable =>
@@ -61,7 +61,7 @@ namespace AF
 
         public override bool CanUseAbility(CharacterBaseManager character)
         {
-            return character.statusController.appliedStatusEffects.Count > 0
+            return character.statusController.GetActiveEffects().Count > 0
                 && GetPotentialConsumableToRemoveStatusEffect(character) != null;
         }
 

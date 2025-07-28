@@ -613,7 +613,7 @@ namespace AF.Shooting
             {
                 foreach (var statusEffectEntry in arrowThatWasShot.statusEffectsInflictedUponShootingArrow)
                 {
-                    playerManager.statusController.InflictStatusEffect(statusEffectEntry.statusEffect, statusEffectEntry.amountPerHit, false);
+                    playerManager.statusController.InflictStatusEffect(statusEffectEntry.statusEffect);
                 }
             }
         }

@@ -7,7 +7,7 @@ namespace AF.Particles
     {
         public Transform target;
 
-        public ParticleSystem particleSystem;
+        public new ParticleSystem particleSystem;
 
         [Header("Options")]
         public bool adjustGravityModifierBasedOnDistanceToTarget = true;

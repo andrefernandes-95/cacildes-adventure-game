@@ -246,12 +246,37 @@ namespace AF
 
             PlayerHealth playerHealth = playerManager.health as PlayerHealth;
 
-            root.Q<VisualElement>("MaximumHealth").Q<Label>("Value").text = playerHealth.GetHealthPointsForGivenVitality(desiredVitality) + "";
-            root.Q<VisualElement>("MaximumStamina").Q<Label>("Value").text = playerManager.staminaStatManager.GetStaminaPointsForGivenEndurance(desiredEndurance) + "";
-            root.Q<VisualElement>("MaximumMana").Q<Label>("Value").text = playerManager.manaManager.GetManaPointsForGivenIntelligence(desiredIntelligence) + "";
-            root.Q<VisualElement>("PhysicalAttackPower").Q<Label>("Value").text =
-                playerManager.characterBaseAttackManager.GetCurrentPhysicalAttackForGivenStrengthAndDexterity(desiredStrength, desiredDexterity) + "";
-            root.Q<VisualElement>("DefenseAbsorption").Q<Label>("Value").text = playerManager.defenseStatManager.GetCurrentPhysicalDefenseForGivenEndurance(desiredEndurance) + "";
+            string maxHealth = playerHealth.GetHealthPointsForGivenVitality(desiredVitality).ToString();
+            string maxEndurance = playerManager.staminaStatManager.GetStaminaPointsForGivenEndurance(desiredEndurance).ToString();
+            string maxMana = playerManager.manaManager.GetManaPointsForGivenIntelligence(desiredIntelligence).ToString();
+
+            string currentAttackForRightHand = "";
+
+            if (playerManager.playerWeaponsManager.currentWeaponInstance != null)
+            {
+                currentAttackForRightHand = playerManager.characterBaseAttackManager.GetScaledDamageForStats(
+                    playerManager.playerWeaponsManager.currentWeaponInstance.weapon.damage,
+                    desiredStrength,
+                    desiredDexterity
+                ).physical.ToString();
+            }
+            else if (playerManager.playerWeaponsManager.rightHandHitbox is UnarmedHitbox rightUnarmedHitbox)
+            {
+                currentAttackForRightHand = playerManager.characterBaseAttackManager.GetScaledDamageForStats(
+                    rightUnarmedHitbox.unarmedWeapon.damage,
+                    desiredStrength,
+                    desiredDexterity
+                ).physical.ToString();
+            }
+
+            string currentDefenseAbsorption = playerManager.characterBaseDefenseManager.GetPhysicalDamageAbsorption(desiredVitality, desiredEndurance, desiredStrength).ToString();
+
+            root.Q<VisualElement>("MaximumHealth").Q<Label>("Value").text = maxHealth;
+            root.Q<VisualElement>("MaximumStamina").Q<Label>("Value").text = maxEndurance;
+            root.Q<VisualElement>("MaximumMana").Q<Label>("Value").text = maxMana;
+
+            root.Q<VisualElement>("PhysicalAttackPower").Q<Label>("Value").text = currentAttackForRightHand;
+            root.Q<VisualElement>("DefenseAbsorption").Q<Label>("Value").text = currentDefenseAbsorption;
 
             // Buttons
             root.Q<VisualElement>("Vitality").Q<Button>("DecreaseBtn").SetEnabled(desiredVitality > playerStatsDatabase.vitality);

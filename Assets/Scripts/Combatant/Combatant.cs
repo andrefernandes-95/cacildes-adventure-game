@@ -1,6 +1,7 @@
 namespace AF
 {
     using System.Collections.Generic;
+    using AF.Health;
     using AF.Inventory;
     using AYellowpaper.SerializedCollections;
     using UnityEngine;
@@ -65,6 +66,12 @@ namespace AF
         public int confusionResistance = 25;
         public int paralysisResistance = 25;
         public int slownessResistance = 25;
+
+        [SerializedDictionary("Status", "The width of the status resistance bar")]
+        public SerializedDictionary<StatusEffect, float> statusEffectResistances = new();
+
+        [SerializedDictionary("Status", "Delay Rate (Between 0 and 1)")]
+        public SerializedDictionary<StatusEffect, float> statusEffectDelayRates = new();
 
         [Header("Sounds")]
         public AudioClip greeting;

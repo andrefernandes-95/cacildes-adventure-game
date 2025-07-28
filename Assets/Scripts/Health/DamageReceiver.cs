@@ -13,10 +13,6 @@ namespace AF
         [Header("Character")]
         public CharacterManager character;
 
-        [Header("Components")]
-        public DamageResistances damageResistances;
-        public CharacterBaseHealth health;
-
         public void OnDamage(CharacterBaseManager attacker, Action onDamageInflicted)
         {
             if (!CanTakeDamage(attacker))

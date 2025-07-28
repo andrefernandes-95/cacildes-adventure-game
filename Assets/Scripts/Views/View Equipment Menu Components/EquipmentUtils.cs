@@ -2,6 +2,7 @@ namespace AF
 {
     using System;
     using System.Linq;
+    using AF.Health;
     using AF.Stats;
     using AF.StatusEffects;
 
@@ -11,142 +12,6 @@ namespace AF
         public enum AttributeType { VITALITY, ENDURANCE, DEXTERITY, STRENGTH, INTELLIGENCE, REPUTATION }
         public enum AccessoryAttributeType { HEALTH_BONUS, STAMINA_BONUS, MANA_BONUS }
 
-        public static int GetPoiseChangeFromItem(int playerMaxPoiseHits, EquipmentDatabase equipmentDatabase, Item itemToEquip)
-        {
-            int currentPoise = playerMaxPoiseHits;
-
-            // Get the equipped poise bonus based on the type of armor
-            int equippedPoiseBonus = itemToEquip switch
-            {
-                Helmet _ => equipmentDatabase.helmet?.poiseBonus ?? 0,
-                Armor _ => equipmentDatabase.armor?.poiseBonus ?? 0,
-                Gauntlet _ => equipmentDatabase.gauntlet?.poiseBonus ?? 0,
-                Legwear _ => equipmentDatabase.legwear?.poiseBonus ?? 0,
-                _ => 0
-            };
-
-            // Subtract equipped poise bonus from current poise, ensuring it doesn't go negative
-            currentPoise = Math.Max(0, currentPoise - equippedPoiseBonus);
-
-            // Get the new poise bonus from the item (armorBase)
-            int itemPoiseBonus = itemToEquip switch
-            {
-                Helmet helmet => helmet.poiseBonus,
-                Armor armor => armor.poiseBonus,
-                Gauntlet gauntlet => gauntlet.poiseBonus,
-                Legwear legwear => legwear.poiseBonus,
-                Accessory accessory => equipmentDatabase.IsAccessoryEquiped(accessory) ? 0 : accessory.poiseBonus,
-                _ => 0
-            };
-
-            // Return the updated poise (current poise + new item poise bonus)
-            return currentPoise + itemPoiseBonus;
-        }
-
-        public static int GetPostureChangeFromItem(int playerMaxPostureDamage, EquipmentDatabase equipmentDatabase, Item itemToEquip)
-        {
-            int currentPosture = playerMaxPostureDamage;
-
-            // Get the equipped posture bonus based on armor type
-            int equippedPostureBonus = itemToEquip switch
-            {
-                Helmet _ => equipmentDatabase.helmet?.postureBonus ?? 0,
-                Armor _ => equipmentDatabase.armor?.postureBonus ?? 0,
-                Gauntlet _ => equipmentDatabase.gauntlet?.postureBonus ?? 0,
-                Legwear _ => equipmentDatabase.legwear?.postureBonus ?? 0,
-                _ => 0
-            };
-
-            // Subtract equipped posture bonus from current posture, ensure it's non-negative
-            currentPosture = Math.Max(0, currentPosture - equippedPostureBonus);
-
-            // Get the new posture bonus from the item (armorBase)
-            int itemPostureBonus = itemToEquip switch
-            {
-                Helmet helmet => helmet.postureBonus,
-                Armor armor => armor.postureBonus,
-                Gauntlet gauntlet => gauntlet.postureBonus,
-                Legwear legwear => legwear.postureBonus,
-                Accessory accessory => equipmentDatabase.IsAccessoryEquiped(accessory) ? 0 : accessory.postureBonus,
-                _ => 0
-            };
-
-            // Return the updated posture (current posture + new item posture bonus)
-            return currentPosture + itemPostureBonus;
-        }
-
-        public static int GetElementalAttackForCurrentWeapon(Weapon weapon, WeaponElementType elementType, CharacterBaseAttackManager attackStatManager, int playerCurrentReputation)
-        {
-            if (weapon == null) return 0;
-
-            return elementType switch
-            {
-                WeaponElementType.Fire => weapon.GetWeaponFireAttack(attackStatManager),
-                WeaponElementType.Frost => weapon.GetWeaponFrostAttack(attackStatManager),
-                WeaponElementType.Lightning => weapon.GetWeaponLightningAttack(playerCurrentReputation, attackStatManager),
-                WeaponElementType.Darkness => weapon.GetWeaponDarknessAttack(playerCurrentReputation, attackStatManager),
-                WeaponElementType.Magic => weapon.GetWeaponMagicAttack(attackStatManager),
-                WeaponElementType.Water => weapon.GetWeaponWaterAttack(attackStatManager),
-                _ => 0
-            };
-        }
-
-        public static int GetElementalDefenseFromItem(ArmorBase armorBase, WeaponElementType weaponElementType, DefenseStatManager defenseStatManager, EquipmentDatabase equipmentDatabase)
-        {
-            int baseElementalDefense = weaponElementType switch
-            {
-                WeaponElementType.Fire => (int)defenseStatManager.GetFireDefense(),
-                WeaponElementType.Frost => (int)defenseStatManager.GetFrostDefense(),
-                WeaponElementType.Lightning => (int)defenseStatManager.GetLightningDefense(),
-                WeaponElementType.Magic => (int)defenseStatManager.GetMagicDefense(),
-                WeaponElementType.Darkness => (int)defenseStatManager.GetDarknessDefense(),
-                WeaponElementType.Water => (int)defenseStatManager.GetWaterDefense(),
-                WeaponElementType.None => (int)defenseStatManager.GetDefenseAbsorption(),
-                _ => 0
-            };
-
-            ArmorBase equippedArmor = armorBase switch
-            {
-                Helmet => equipmentDatabase.helmet,
-                Armor => equipmentDatabase.armor,
-                Gauntlet => equipmentDatabase.gauntlet,
-                Legwear => equipmentDatabase.legwear,
-                Accessory accessory when !equipmentDatabase.IsAccessoryEquiped(accessory) => accessory,
-                _ => null
-            };
-
-            int currentDefenseFromItem = 0;
-            if (equippedArmor != null)
-            {
-                currentDefenseFromItem = weaponElementType switch
-                {
-                    WeaponElementType.Fire => (int)equippedArmor.fireDefense,
-                    WeaponElementType.Frost => (int)equippedArmor.frostDefense,
-                    WeaponElementType.Lightning => (int)equippedArmor.lightningDefense,
-                    WeaponElementType.Magic => (int)equippedArmor.magicDefense,
-                    WeaponElementType.Darkness => (int)equippedArmor.darkDefense,
-                    WeaponElementType.Water => (int)equippedArmor.waterDefense,
-                    WeaponElementType.None => (int)equippedArmor.physicalDefense,
-                    _ => 0
-                };
-            }
-
-            int newValue = Math.Max(0, baseElementalDefense - currentDefenseFromItem);
-
-            int newDefenseFromItem = equipmentDatabase.IsEquipped(armorBase) ? 0 : weaponElementType switch
-            {
-                WeaponElementType.Fire => (int)armorBase.fireDefense,
-                WeaponElementType.Frost => (int)armorBase.frostDefense,
-                WeaponElementType.Lightning => (int)armorBase.lightningDefense,
-                WeaponElementType.Magic => (int)armorBase.magicDefense,
-                WeaponElementType.Darkness => (int)armorBase.darkDefense,
-                WeaponElementType.Water => (int)armorBase.waterDefense,
-                WeaponElementType.None => (int)armorBase.physicalDefense,
-                _ => 0
-            };
-
-            return newValue + newDefenseFromItem;
-        }
 
         public static float GetEquipLoadFromItem(Item itemToEquip, float currentWeightPenalty, EquipmentDatabase equipmentDatabase)
         {
@@ -338,7 +203,7 @@ namespace AF
             EquipmentDatabase equipmentDatabase)
         {
             // Get current value based on attribute type
-            int currentValue = playerStatusController.GetResistanceForStatusEffect(statusEffect);
+            int currentValue = playerStatusController.GetCurrentResistanceForStatusEffect(statusEffect);
 
             // Determine bonus from the armor base and currently equipped item
             int bonusFromEquipment = 0;
@@ -347,40 +212,45 @@ namespace AF
             // Retrieve bonus from armorBase
             if (itemToEquip != null)
             {
-                ArmorBase.StatusEffectResistance match = itemToEquip.statusEffectResistances
-                    .FirstOrDefault(x => x.statusEffect == statusEffect);
-                bonusFromEquipment = (int)(match?.resistanceBonus ?? 0);
+                int equipmentResistanceToStatusEffect = GetEquipmentResistanceForStatusEffect(itemToEquip, statusEffect);
+
+                bonusFromEquipment = equipmentResistanceToStatusEffect;
             }
 
             // Check currently equipped items
             if (itemToEquip is Helmet && equipmentDatabase.helmet != null)
             {
-                ArmorBase.StatusEffectResistance match = equipmentDatabase.helmet.statusEffectResistances
-                    .FirstOrDefault(x => x.statusEffect == statusEffect);
-                valueFromCurrentEquipment = (int)(match?.resistanceBonus ?? 0);
+                valueFromCurrentEquipment = GetEquipmentResistanceForStatusEffect(equipmentDatabase.helmet, statusEffect);
             }
             else if (itemToEquip is Armor && equipmentDatabase.armor != null)
             {
-                ArmorBase.StatusEffectResistance match = equipmentDatabase.armor.statusEffectResistances
-                    .FirstOrDefault(x => x.statusEffect == statusEffect);
-                valueFromCurrentEquipment = (int)(match?.resistanceBonus ?? 0);
+                valueFromCurrentEquipment = GetEquipmentResistanceForStatusEffect(equipmentDatabase.armor, statusEffect);
             }
             else if (itemToEquip is Gauntlet && equipmentDatabase.gauntlet != null)
             {
-                ArmorBase.StatusEffectResistance match = equipmentDatabase.gauntlet.statusEffectResistances
-                    .FirstOrDefault(x => x.statusEffect == statusEffect);
-                valueFromCurrentEquipment = (int)(match?.resistanceBonus ?? 0);
+                valueFromCurrentEquipment = GetEquipmentResistanceForStatusEffect(equipmentDatabase.gauntlet, statusEffect);
             }
             else if (itemToEquip is Legwear && equipmentDatabase.legwear != null)
             {
-                ArmorBase.StatusEffectResistance match = equipmentDatabase.legwear.statusEffectResistances
-                    .FirstOrDefault(x => x.statusEffect == statusEffect);
-                valueFromCurrentEquipment = (int)(match?.resistanceBonus ?? 0);
+                valueFromCurrentEquipment = GetEquipmentResistanceForStatusEffect(equipmentDatabase.legwear, statusEffect);
             }
 
             // Adjust current value by the bonuses
             currentValue = Math.Max(0, currentValue - valueFromCurrentEquipment); // Ensure non-negative
+
             return currentValue + bonusFromEquipment;
+        }
+
+        static int GetEquipmentResistanceForStatusEffect(ArmorBase item, StatusEffect statusEffect)
+        {
+            StatusEffectEntry match = item.GetDamageAbsorbed().statusEffects
+                    .FirstOrDefault(x => x.statusEffect == statusEffect);
+            if (match == null)
+            {
+                return 0;
+            }
+
+            return (int)match.amountPerHit;
         }
 
 

@@ -21,6 +21,7 @@ namespace AF
         {
             SetupDefaultEquipment();
             CallOnEquipEventsForEquippedItemsOnStart();
+            UpdateEquipmentValues();
         }
 
         void CallOnEquipEventsForEquippedItemsOnStart()
@@ -119,13 +120,16 @@ namespace AF
         {
             // If accessory already equipped, unequip it
             Accessory possibleEquippedAccessory = GetAccessoryInSlot(slotIndex);
-            if (
-                possibleEquippedAccessory != null
-                && accessory != null
-                && possibleEquippedAccessory.itemID == accessory.itemID)
+            if (possibleEquippedAccessory != null)
             {
+                bool isSameAccessory = accessory != null && possibleEquippedAccessory.itemID == accessory.itemID;
+
                 UnequipAccessory(slotIndex);
-                return;
+
+                if (isSameAccessory)
+                {
+                    return;
+                }
             }
 
             if (accessory != null)
@@ -154,12 +158,16 @@ namespace AF
         public void EquipHelmet(Helmet helmet)
         {
             Helmet possibleEquippedHelmet = GetEquippedHelmet();
-            if (possibleEquippedHelmet != null
-                && helmet != null
-                && possibleEquippedHelmet.itemID == helmet.itemID)
+            if (possibleEquippedHelmet != null)
             {
+                bool isSameHelmet = helmet != null && possibleEquippedHelmet.itemID == helmet.itemID;
+
                 UnequipHelmet();
-                return;
+
+                if (isSameHelmet)
+                {
+                    return;
+                }
             }
 
             if (helmet != null)
@@ -190,10 +198,16 @@ namespace AF
         {
             Armor possibleEquippedArmor = GetEquippedArmor();
 
-            if (possibleEquippedArmor != null && armor != null && possibleEquippedArmor.itemID == armor.itemID)
+            if (possibleEquippedArmor != null)
             {
+                bool isSameArmor = armor != null && possibleEquippedArmor.itemID == armor.itemID;
+
                 UnequipArmor();
-                return;
+
+                if (isSameArmor)
+                {
+                    return;
+                }
             }
 
             if (armor != null)
@@ -224,10 +238,15 @@ namespace AF
         {
             Gauntlet possibleEquippedGauntlets = GetEquippedGauntlet();
 
-            if (possibleEquippedGauntlets != null && gauntlet != null && possibleEquippedGauntlets.itemID == gauntlet.itemID)
+            if (possibleEquippedGauntlets != null)
             {
+                bool isSameGauntlets = gauntlet != null && possibleEquippedGauntlets.itemID == gauntlet.itemID;
                 UnequipGauntlets();
-                return;
+
+                if (isSameGauntlets)
+                {
+                    return;
+                }
             }
 
             if (gauntlet != null)
@@ -257,10 +276,16 @@ namespace AF
         {
             Legwear possibleEquippedLegwears = GetEquippedLegwear();
 
-            if (possibleEquippedLegwears != null && legwear != null && possibleEquippedLegwears.itemID == legwear.itemID)
+            if (possibleEquippedLegwears != null)
             {
+                bool isSameLegwear = legwear != null && possibleEquippedLegwears.itemID == legwear.itemID;
+
                 UnequipLegwear();
-                return;
+
+                if (isSameLegwear)
+                {
+                    return;
+                }
             }
 
             if (legwear != null)
@@ -288,6 +313,7 @@ namespace AF
         {
             GetCharacter().statsBonusController.RecalculateEquipmentBonus();
             GetCharacter().characterBaseDefenseManager.RecalculateDamageAbsorbed();
+            GetCharacter().statusController.RecalculateResistances();
         }
 
         public bool IsAccessoryEquiped(Accessory accessory)

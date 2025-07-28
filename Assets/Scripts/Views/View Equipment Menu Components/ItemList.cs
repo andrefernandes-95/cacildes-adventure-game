@@ -274,16 +274,9 @@ namespace AF.UI.EquipmentMenu
 
                 return equippedSpell.itemID == item.itemID;
             }
-            else if (item is Accessory)
+            else if (item is Accessory accessory)
             {
-                if (equipmentDatabase.accessories == null || slotIndex < 0 || slotIndex >= equipmentDatabase.accessories.Length)
-                    return false;
-
-                var equippedAccessory = equipmentDatabase.accessories[slotIndex];
-                if (equippedAccessory == null)
-                    return false;
-
-                return equippedAccessory.itemID == item.itemID;
+                return IsAccessoryEquipped(accessory, slotIndex);
             }
             else if (item is Consumable)
             {
@@ -316,6 +309,33 @@ namespace AF.UI.EquipmentMenu
             return false;
         }
 
+        bool IsAccessoryEquippedOnOtherSlot(Accessory accessoryToEquip, int targetSlot)
+        {
+            if (equipmentDatabase.accessories == null || targetSlot < 0 || targetSlot >= equipmentDatabase.accessories.Length)
+            {
+                return false;
+            }
+
+            for (int i = 0; i < equipmentDatabase.accessories.Length; i++)
+            {
+                if (i != targetSlot && equipmentDatabase.accessories[i]?.itemID == accessoryToEquip.itemID)
+                {
+                    return true; // accessory is equipped elsewhere
+                }
+            }
+
+            return false;
+        }
+
+        bool IsAccessoryEquipped(Accessory accessoryToEquip, int targetSlot)
+        {
+            if (equipmentDatabase.accessories == null || targetSlot < 0 || targetSlot >= equipmentDatabase.accessories.Length)
+            {
+                return false;
+            }
+
+            return accessoryToEquip?.itemID == equipmentDatabase.accessories?[targetSlot]?.itemID;
+        }
 
         public bool IsKeyItem(Item item)
         {
@@ -423,7 +443,7 @@ namespace AF.UI.EquipmentMenu
                 var itemType = instance.Q<Label>("ItemType");
                 itemType.style.display = DisplayStyle.None;
 
-                itemName.text = item.GetName();
+                itemName.text = GetItemName(item);
 
                 if (isEquipped)
                 {
@@ -511,6 +531,18 @@ namespace AF.UI.EquipmentMenu
             Invoke(nameof(GiveFocus), 0f);
         }
 
+        string GetItemName(Item item)
+        {
+            string itemName = item.GetName();
+
+            if (item is UpgradableItem upgradableItem)
+            {
+                itemName += $" +{upgradableItem.level}";
+            }
+
+            return itemName;
+        }
+
         void PopulateScrollView<T>(bool showOnlyKeyItems, int slotIndex, List<T> items) where T : Item
         {
             this.itemsScrollView.Clear();
@@ -529,8 +561,17 @@ namespace AF.UI.EquipmentMenu
                 if (stackableItems.ContainsKey(itemFileName))
                 {
                     stackableItems[itemFileName]++;
-                    stackableItemAmountLabels[itemFileName].text = $"{item.GetName()} ({stackableItems[itemFileName]})";
+                    stackableItemAmountLabels[itemFileName].text = $"{GetItemName(item)} ({stackableItems[itemFileName]})";
                     continue;
+                }
+
+                if (item is Accessory accessory)
+                {
+                    // If is equipped elsewhere, skip
+                    if (IsAccessoryEquippedOnOtherSlot(accessory, slotIndex))
+                    {
+                        continue;
+                    }
                 }
 
                 bool isEquipped = IsItemEquipped(item, slotIndex);
@@ -542,7 +583,7 @@ namespace AF.UI.EquipmentMenu
                 var itemType = instance.Q<Label>("ItemType");
                 itemType.style.display = DisplayStyle.None;
 
-                itemName.text = item.GetName();
+                itemName.text = GetItemName(item);
 
                 if (item is Consumable || item is Arrow || showOnlyKeyItems)
                 {
@@ -806,22 +847,22 @@ namespace AF.UI.EquipmentMenu
             }
             else if (item is Helmet helmet)
             {
-                value = playerManager.defenseStatManager.CompareHelmet(helmet);
+                value = playerManager.characterBaseDefenseManager.CompareHelmet(helmet);
                 shouldReturn = true;
             }
             else if (item is Armor armor)
             {
-                value = playerManager.defenseStatManager.CompareArmor(armor);
+                value = playerManager.characterBaseDefenseManager.CompareArmor(armor);
                 shouldReturn = true;
             }
             else if (item is Gauntlet gauntlet)
             {
-                value = playerManager.defenseStatManager.CompareGauntlet(gauntlet);
+                value = playerManager.characterBaseDefenseManager.CompareGauntlets(gauntlet);
                 shouldReturn = true;
             }
             else if (item is Legwear legwear)
             {
-                value = playerManager.defenseStatManager.CompareLegwear(legwear);
+                value = playerManager.characterBaseDefenseManager.CompareLegwears(legwear);
                 shouldReturn = true;
             }
 

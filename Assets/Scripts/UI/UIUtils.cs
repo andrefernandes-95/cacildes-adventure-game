@@ -137,5 +137,34 @@ namespace AF
                 onComplete?.Invoke();
             });
         }
+        public static void FadeIn(CanvasGroup canvasGroup, float duration = 0.5f, UnityAction onComplete = null)
+        {
+            if (canvasGroup == null || canvasGroup.alpha >= 1f) return;
+
+            canvasGroup.DOKill(); // kill any existing tweens
+            canvasGroup.alpha = 0f;
+            canvasGroup.interactable = true;
+            canvasGroup.blocksRaycasts = true;
+
+            canvasGroup.DOFade(1f, duration)
+                .SetEase(Ease.OutQuad)
+                .OnComplete(() => onComplete?.Invoke());
+        }
+
+        public static void FadeOut(CanvasGroup canvasGroup, float duration = 0.5f, UnityAction onComplete = null)
+        {
+            if (canvasGroup == null || canvasGroup.alpha <= 0f) return;
+
+            canvasGroup.DOKill(); // kill any existing tweens
+
+            canvasGroup.DOFade(0f, duration)
+                .SetEase(Ease.OutQuad)
+                .OnComplete(() =>
+                {
+                    canvasGroup.interactable = false;
+                    canvasGroup.blocksRaycasts = false;
+                    onComplete?.Invoke();
+                });
+        }
     }
 }

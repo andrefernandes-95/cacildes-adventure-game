@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using AF.Health;
+using EditorAttributes;
 using UnityEngine;
 using UnityEngine.Localization.Settings;
 
@@ -17,42 +17,23 @@ namespace AF
 
     public class ArmorBase : UpgradableItem
     {
-        [System.Serializable]
-        public class StatusEffectResistance
-        {
-            public StatusEffect statusEffect;
-            public float resistanceBonus;
-        }
 
         [System.Serializable]
         public class StatusEffectCancellationRate
         {
             public StatusEffect statusEffect;
-            public float amountToCancelPerSecond = 0.1f;
+            [Range(0f, 1f)] public float delayRate = 1f;
         }
 
         [Header("Stats")]
-
         [Header("Damage Absorption")]
-        public Damage damageAbsorbed = new();
+        [SerializeField] ArmorDamageTemplate damageTemplate;
 
-        [Obsolete("Use Damage Absorbed")] public float physicalDefense;
+        [HelpBox("If you want custom damage, use damage absorbed, otherwise, use Damage Template for multiple pieces of armor")]
+        [SerializeField] Damage damageAbsorbed = new();
 
-        [Header("Elemental")]
-        [Obsolete("Use Damage Absorbed")] public float fireDefense;
-        [Obsolete("Use Damage Absorbed")] public float frostDefense;
-        [Obsolete("Use Damage Absorbed")] public float lightningDefense;
-        [Obsolete("Use Damage Absorbed")] public float magicDefense = 0;
-        [Obsolete("Use Damage Absorbed")] public float darkDefense = 0;
-        [Obsolete("Use Damage Absorbed")] public float waterDefense = 0;
-
-        [Header("Negative Status Resistances")]
-        [Obsolete("Use Damage Absorbed")] public StatusEffectResistance[] statusEffectResistances;
-        public StatusEffectCancellationRate[] statusEffectCancellationRates;
-
-        [Header("Graphics")]
-        public string graphicNameToShow;
-        public string[] graphicNamesToHide;
+        [Header("Delay of Status Effect Amount Buildups")]
+        public StatusEffectCancellationRate[] statusEffectDelayRates;
 
         [Header("Attribute Bonus")]
         public int vitalityBonus = 0;
@@ -60,12 +41,6 @@ namespace AF
         public int strengthBonus = 0;
         public int dexterityBonus = 0;
         public int intelligenceBonus = 0;
-
-        [Header("Poise")]
-        public int poiseBonus = 0;
-
-        [Header("Posture")]
-        public int postureBonus = 0;
 
         [Header("Stamina")]
         public float staminaRegenBonus = 0f;
@@ -84,14 +59,6 @@ namespace AF
         [Header("Discounts")]
         [Range(0, 1f)] public float discountPercentage = 0f;
 
-        [Header("Damage Type Filters")]
-
-        [Range(0, 1f)] public float pierceDamageAbsorption = 1f;
-
-        [Range(0, 1f)] public float bluntDamageAbsorption = 1f;
-
-        [Range(0, 1f)] public float slashDamageAbsorption = 1f;
-
         [Header("Damage On Enemies")]
         public bool canDamageEnemiesUponAttack = false;
         public Damage damageDealtToEnemiesUponAttacked;
@@ -108,6 +75,36 @@ namespace AF
         public string female_GraphicsToShow;
         public Material armorMaterial;
 
+        Damage _cachedDamageAbsorbed = null;
+
+        public Damage GetDamageAbsorbed()
+        {
+            if (_cachedDamageAbsorbed == null)
+            {
+                Damage clonedDamage = damageTemplate != null ? Instantiate(damageTemplate).damage.Clone() : this.damageAbsorbed.Clone();
+
+                // If using damage templates, check if the equipment is the main armor or a piece, and reduce its damage absorption accordingly
+                if (damageTemplate != null)
+                {
+                    if (this is Legwear)
+                    {
+                        clonedDamage.Multiply(0.65f);
+                    }
+                    else if (this is Helmet)
+                    {
+                        clonedDamage.Multiply(0.45f);
+                    }
+                    else if (this is Gauntlet || this is Accessory)
+                    {
+                        clonedDamage.Multiply(0.25f);
+                    }
+                }
+
+                _cachedDamageAbsorbed = clonedDamage;
+            }
+
+            return _cachedDamageAbsorbed;
+        }
 
         public string GetFormattedStatusResistances()
         {
@@ -115,7 +112,7 @@ namespace AF
 
             var resistenceAgainstLabel = LocalizationSettings.StringDatabase.GetLocalizedString("UIDocuments", "resistence against");
 
-            foreach (var resistance in damageAbsorbed.statusEffects)
+            foreach (var resistance in GetDamageAbsorbed().statusEffects)
             {
 
                 if (resistance != null && resistance.statusEffect != null && resistance.statusEffect.GetName().Length > 0)
@@ -132,16 +129,26 @@ namespace AF
         {
             string result = "";
 
-            foreach (var resistance in statusEffectCancellationRates)
+            foreach (var resistance in statusEffectDelayRates)
             {
                 if (resistance != null)
                 {
-                    result += $"-{resistance.amountToCancelPerSecond} {resistance.statusEffect.GetName()} {LocalizationSettings.StringDatabase.GetLocalizedString("UIDocuments", "Inflicted Per Second")}\n";
+                    float buildupReductionPercent = (1f - resistance.delayRate) * 100f;
+
+                    if (Utils.IsPortuguese())
+                    {
+                        result += $"{buildupReductionPercent:0.#}% de redução na taxa de acúmulo de {resistance.statusEffect.GetName()} por segundo\n";
+                    }
+                    else
+                    {
+                        result += $"{buildupReductionPercent:0.#}% reduction in buildup rate of {resistance.statusEffect.GetName()} per second\n";
+                    }
                 }
             }
 
             return result.TrimEnd();
         }
+
 
         public string GetFormattedDamageDealtToEnemiesUpponAttacked()
         {
@@ -192,20 +199,19 @@ namespace AF
 
         public int GetCurrentPhysicalDefenseForLevel(int level)
         {
-            if (damageAbsorbed.physical <= 0)
+            if (GetDamageAbsorbed().physical <= 0)
             {
                 return 0;
             }
 
-            return damageAbsorbed.physical + GetBonusAttackPerLevel(level);
+            return GetDamageAbsorbed().physical + GetBonusAttackPerLevel(level);
         }
-
-        public int GetFireDefenseForLevel(int level) => GetElementalDefenseForLevel(damageAbsorbed.fire, level);
-        public int GetFrostDefenseForLevel(int level) => GetElementalDefenseForLevel(damageAbsorbed.frost, level);
-        public int GetLightningDefenseForLevel(int level) => GetElementalDefenseForLevel(damageAbsorbed.lightning, level);
-        public int GetDarknessDefenseForLevel(int level) => GetElementalDefenseForLevel(damageAbsorbed.darkness, level);
-        public int GetWaterDefenseForLevel(int level) => GetElementalDefenseForLevel(damageAbsorbed.water, level);
-        public int GetMagicDefenseForLevel(int level) => GetElementalDefenseForLevel(damageAbsorbed.magic, level);
+        public int GetFireDefenseForLevel(int level) => GetElementalDefenseForLevel(GetDamageAbsorbed().fire, level);
+        public int GetFrostDefenseForLevel(int level) => GetElementalDefenseForLevel(GetDamageAbsorbed().frost, level);
+        public int GetLightningDefenseForLevel(int level) => GetElementalDefenseForLevel(GetDamageAbsorbed().lightning, level);
+        public int GetDarknessDefenseForLevel(int level) => GetElementalDefenseForLevel(GetDamageAbsorbed().darkness, level);
+        public int GetWaterDefenseForLevel(int level) => GetElementalDefenseForLevel(GetDamageAbsorbed().water, level);
+        public int GetMagicDefenseForLevel(int level) => GetElementalDefenseForLevel(GetDamageAbsorbed().magic, level);
 
         int GetElementalDefenseForLevel(int baseElementalDamage, int level)
         {
@@ -215,6 +221,21 @@ namespace AF
             }
 
             return baseElementalDamage + GetBonusAttackPerLevel(level);
+        }
+
+        public Damage GetDamageAbsorbedForCurrentLevel()
+        {
+            Damage cloneDamage = this.GetDamageAbsorbed().Clone();
+
+            cloneDamage.physical = GetCurrentPhysicalDefenseForLevel(level);
+            cloneDamage.fire = GetFireDefenseForLevel(level);
+            cloneDamage.frost = GetFrostDefenseForLevel(level);
+            cloneDamage.lightning = GetLightningDefenseForLevel(level);
+            cloneDamage.magic = GetMagicDefenseForLevel(level);
+            cloneDamage.darkness = GetDarknessDefenseForLevel(level);
+            cloneDamage.water = GetWaterDefenseForLevel(level);
+
+            return cloneDamage;
         }
     }
 }

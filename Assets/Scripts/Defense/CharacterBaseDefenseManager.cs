@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using AF.Health;
-using AF.Stats;
 using UnityEngine;
 
 namespace AF
@@ -10,12 +9,24 @@ namespace AF
     public abstract class CharacterBaseDefenseManager : MonoBehaviour
     {
         [Header("Negated Damage")]
-        public Damage damagedAbsorbed = new();
+        [SerializeField] private Damage _baseDamagedAbsorbed = new();
+        /// <summary>
+        /// The damage absorption from the character, calculated from his / her stats
+        /// </summary>
+        public Damage BaseDamageAbsorbed => _baseDamagedAbsorbed;
 
-        [Header("Damage Type Absorptions")]
-        public float pierceDamageAbsorption = 1f;
-        public float slashDamageAbsorption = 1f;
-        public float bluntDamageAbsorption = 1f;
+        [SerializeField] private Damage _damagedAbsorbedFromEquipment = new();
+        /// <summary>
+        /// The damage absorption from currently equipped items
+        /// </summary>
+        public Damage DamageAbsorbedFromEquipment => _damagedAbsorbedFromEquipment;
+
+        [SerializeField] private Damage _damageAbsorbed = new();
+
+        /// <summary>
+        /// The total current damage absorption
+        /// </summary>
+        public Damage CurrentDamageAbsorbed => _damageAbsorbed;
 
         [Header("Components")]
         public CharacterBaseManager character;
@@ -23,19 +34,40 @@ namespace AF
         // Call this whenever equipment is changed or stats are updated
         public void RecalculateDamageAbsorbed()
         {
+            // Already includes bonuses from equipped items regarding the stats
             int vitality = character.characterBaseStats.GetVitality();
             int strength = character.characterBaseStats.GetStrength();
             int endurance = character.characterBaseStats.GetEndurance();
 
-            damagedAbsorbed.physical = GetPhysicalDamageAbsorption(vitality, endurance, strength);
-            damagedAbsorbed.magic = GetMagicDamageAbsorption();
-            damagedAbsorbed.fire = GetFireDamageAbsorption();
-            damagedAbsorbed.frost = GetFrostDamageAbsorption();
-            damagedAbsorbed.water = GetWaterDamageAbsorption();
-            damagedAbsorbed.darkness = GetDarknessDamageAbsorption();
-            damagedAbsorbed.lightning = GetLightningDamageAbsorption();
+            _baseDamagedAbsorbed = new Damage
+            {
+                physical = GetPhysicalDamageAbsorption(vitality, endurance, strength),
+                magic = GetElementalDefense(),
+                fire = GetElementalDefense(),
+                frost = GetElementalDefense(),
+                water = GetElementalDefense(),
+                darkness = GetDarknessDamageAbsorption(),
+                lightning = GetLightningDamageAbsorption(),
+                poiseDamage = 0,
+                postureDamage = 0
+            };
 
-            //TODO: Poise, Posture, Status Effects, etc.
+            _damagedAbsorbedFromEquipment = new Damage
+            {
+                physical = character.statsBonusController.equipmentPhysicalDefenseBonus,
+                fire = character.statsBonusController.equipmentFireDefenseBonus,
+                frost = character.statsBonusController.equipmentFrostDefenseBonus,
+                lightning = character.statsBonusController.equipmentLightningDefenseBonus,
+                magic = character.statsBonusController.equipmentMagicDefenseBonus,
+                water = character.statsBonusController.equipmentWaterDefenseBonus,
+                darkness = character.statsBonusController.equipmentDarkDefenseBonus,
+                poiseDamage = character.statsBonusController.equipmentPoise,
+                postureDamage = character.statsBonusController.postureBonus
+            };
+
+            _damageAbsorbed = new Damage();
+            _damageAbsorbed.Combine(BaseDamageAbsorbed);
+            _damageAbsorbed.Combine(DamageAbsorbedFromEquipment);
         }
 
         // Why do we pass the stats here? Because we also call this function in Level Up screen 
@@ -48,64 +80,21 @@ namespace AF
             defense += DefenseUtils.GetPhysicalDefenseFromVitaly(vitality);
             defense += DefenseUtils.GetPhysicalDefenseFromStrength(strength);
 
-            // Defense from equipment
-            defense += character.statsBonusController.equipmentPhysicalDefenseBonus;
-
-            // TODO: Lowered damage bonus from status effect like weaken enemy to attacks
-
-            return defense;
-        }
-
-        public int GetMagicDamageAbsorption()
-        {
-            return GetElementalDefense(character.statsBonusController.equipmentMagicDefenseBonus);
-        }
-
-        public int GetFireDamageAbsorption()
-        {
-            return GetElementalDefense(character.statsBonusController.equipmentMagicDefenseBonus);
-        }
-
-        public int GetFrostDamageAbsorption()
-        {
-            return GetElementalDefense(character.statsBonusController.equipmentMagicDefenseBonus);
-        }
-
-        public int GetWaterDamageAbsorption()
-        {
-            return GetElementalDefense(character.statsBonusController.equipmentMagicDefenseBonus);
-        }
-
-        int GetElementalDefense(int defenseFromEquipment)
-        {
-            int defense = 0;
-
-            // Defense from stats
-            defense += DefenseUtils.GetElementalDefenseFromIntelligence(character.characterBaseStats.GetIntelligence());
-
-            defense += defenseFromEquipment;
-
             return defense;
         }
 
         int GetLightningDamageAbsorption()
         {
             int defense = 0;
-            int defenseFromEquipment = character.statsBonusController.equipmentLightningDefenseBonus;
 
             // If the character has a reputation, they don't get a bonus to their defense from their stats, only from their equipment
             int reputation = character.characterBaseStats.GetReputation();
-            if (reputation >= 0)
-            {
-                return defenseFromEquipment;
-            }
 
             // If is evil character, makes sense to get lightning damage because of negative reputation
             reputation = Mathf.Abs(character.characterBaseStats.GetReputation());
 
             // Defense from stats
             defense += DefenseUtils.GetElementalDefenseFromReputation(reputation);
-            defense += defenseFromEquipment;
 
             return defense;
         }
@@ -113,21 +102,22 @@ namespace AF
         int GetDarknessDamageAbsorption()
         {
             int defense = 0;
-            int defenseFromEquipment = character.statsBonusController.equipmentDarkDefenseBonus;
 
             // If the character has negative reputation, they don't get a bonus to their defense from their stats, only from their equipment
             int reputation = character.characterBaseStats.GetReputation();
-            if (reputation < 0)
-            {
-                return defenseFromEquipment;
-            }
-
-            // If is good / neutral character, makes sense to get darkness damage defense because of positive reputation
-            reputation = character.characterBaseStats.GetReputation();
 
             // Defense from stats
             defense += DefenseUtils.GetElementalDefenseFromReputation(reputation);
-            defense += defenseFromEquipment;
+
+            return defense;
+        }
+
+        int GetElementalDefense()
+        {
+            int defense = 0;
+
+            // Defense from stats
+            defense += DefenseUtils.GetElementalDefenseFromIntelligence(character.characterBaseStats.GetIntelligence());
 
             return defense;
         }
@@ -139,13 +129,13 @@ namespace AF
             Helmet equippedHelmet = character.characterBaseEquipment.GetEquippedHelmet();
             if (equippedHelmet != null)
             {
-                currentHelmetDamage = equippedHelmet.damageAbsorbed.GetTotalDamage();
+                currentHelmetDamage = equippedHelmet.GetDamageAbsorbedForCurrentLevel().GetTotalDamage();
             }
 
             int newHelmetDamage = 0;
             if (helmet != null)
             {
-                newHelmetDamage = helmet.damageAbsorbed.GetTotalDamage();
+                newHelmetDamage = helmet.GetDamageAbsorbedForCurrentLevel().GetTotalDamage();
             }
 
             return CompareValues(currentHelmetDamage, newHelmetDamage);
@@ -158,13 +148,13 @@ namespace AF
             Armor equippedArmor = character.characterBaseEquipment.GetEquippedArmor();
             if (equippedArmor != null)
             {
-                currentDamage = equippedArmor.damageAbsorbed.GetTotalDamage();
+                currentDamage = equippedArmor.GetDamageAbsorbedForCurrentLevel().GetTotalDamage();
             }
 
             int itemDamage = 0;
             if (armor != null)
             {
-                itemDamage = armor.damageAbsorbed.GetTotalDamage();
+                itemDamage = armor.GetDamageAbsorbedForCurrentLevel().GetTotalDamage();
             }
 
             return CompareValues(currentDamage, itemDamage);
@@ -177,13 +167,13 @@ namespace AF
             Gauntlet equippedGauntlet = character.characterBaseEquipment.GetEquippedGauntlet();
             if (equippedGauntlet != null)
             {
-                currentDamage = equippedGauntlet.damageAbsorbed.GetTotalDamage();
+                currentDamage = equippedGauntlet.GetDamageAbsorbedForCurrentLevel().GetTotalDamage();
             }
 
             int itemDamage = 0;
             if (gauntlet != null)
             {
-                itemDamage = gauntlet.damageAbsorbed.GetTotalDamage();
+                itemDamage = gauntlet.GetDamageAbsorbedForCurrentLevel().GetTotalDamage();
             }
 
             return CompareValues(currentDamage, itemDamage);
@@ -197,13 +187,13 @@ namespace AF
             Legwear equippedLegwear = character.characterBaseEquipment.GetEquippedLegwear();
             if (equippedLegwear != null)
             {
-                currentDamage = equippedLegwear.damageAbsorbed.GetTotalDamage();
+                currentDamage = equippedLegwear.GetDamageAbsorbedForCurrentLevel().GetTotalDamage();
             }
 
             int itemDamage = 0;
             if (legwear != null)
             {
-                itemDamage = legwear.damageAbsorbed.GetTotalDamage();
+                itemDamage = legwear.GetDamageAbsorbedForCurrentLevel().GetTotalDamage();
             }
 
             return CompareValues(currentDamage, itemDamage);
@@ -231,29 +221,29 @@ namespace AF
         {
             if (incomingDamage.physical > 0)
             {
-                incomingDamage.physical -= Mathf.Max(1, damagedAbsorbed.physical);
+                incomingDamage.physical -= Mathf.Max(1, CurrentDamageAbsorbed.physical);
 
                 // Apply weapon type multiplier after flat reduction
                 switch (incomingDamage.weaponAttackType)
                 {
                     case WeaponAttackType.Slash:
                         incomingDamage.physical = Mathf.Max(1, (int)(incomingDamage.physical
-                            * (character.combatant != null ? character.combatant.slashAbsorption : slashDamageAbsorption)));
+                            * (character.combatant != null ? character.combatant.slashAbsorption : 1f)));
                         break;
                     case WeaponAttackType.Blunt:
                         incomingDamage.physical = Mathf.Max(1, (int)(incomingDamage.physical
-                            * (character.combatant != null ? character.combatant.bluntAbsorption : bluntDamageAbsorption)));
+                            * (character.combatant != null ? character.combatant.bluntAbsorption : 1f)));
                         break;
                     case WeaponAttackType.Pierce:
                         incomingDamage.physical = Mathf.Max(1, (int)(incomingDamage.physical
-                            * (character.combatant != null ? character.combatant.pierceAbsorption : pierceDamageAbsorption)));
+                            * (character.combatant != null ? character.combatant.pierceAbsorption : 1f)));
                         break;
                 }
             }
 
             if (incomingDamage.fire > 0)
             {
-                incomingDamage.fire -= Mathf.Max(0, damagedAbsorbed.fire);
+                incomingDamage.fire -= Mathf.Max(0, CurrentDamageAbsorbed.fire);
 
                 if (character.combatant != null)
                 {
@@ -263,7 +253,7 @@ namespace AF
 
             if (incomingDamage.frost > 0)
             {
-                incomingDamage.frost -= Mathf.Max(0, damagedAbsorbed.frost);
+                incomingDamage.frost -= Mathf.Max(0, CurrentDamageAbsorbed.frost);
 
                 if (character.combatant != null)
                 {
@@ -273,7 +263,7 @@ namespace AF
 
             if (incomingDamage.water > 0)
             {
-                incomingDamage.water -= Mathf.Max(0, damagedAbsorbed.water);
+                incomingDamage.water -= Mathf.Max(0, CurrentDamageAbsorbed.water);
 
                 if (character.combatant != null)
                 {
@@ -283,7 +273,7 @@ namespace AF
 
             if (incomingDamage.darkness > 0)
             {
-                incomingDamage.darkness -= Mathf.Max(0, damagedAbsorbed.darkness);
+                incomingDamage.darkness -= Mathf.Max(0, CurrentDamageAbsorbed.darkness);
 
                 if (character.combatant != null)
                 {
@@ -293,7 +283,7 @@ namespace AF
 
             if (incomingDamage.lightning > 0)
             {
-                incomingDamage.lightning -= Mathf.Max(0, damagedAbsorbed.lightning);
+                incomingDamage.lightning -= Mathf.Max(0, CurrentDamageAbsorbed.lightning);
 
                 if (character.combatant != null)
                 {
@@ -303,7 +293,7 @@ namespace AF
 
             if (incomingDamage.magic > 0)
             {
-                incomingDamage.magic -= Mathf.Max(0, damagedAbsorbed.magic);
+                incomingDamage.magic -= Mathf.Max(0, CurrentDamageAbsorbed.magic);
 
                 if (character.combatant != null)
                 {
@@ -313,53 +303,20 @@ namespace AF
 
             if (incomingDamage.postureDamage > 0)
             {
-                incomingDamage.postureDamage -= Mathf.Max(1, damagedAbsorbed.postureDamage);
+                incomingDamage.postureDamage -= Mathf.Max(1, CurrentDamageAbsorbed.postureDamage);
             }
 
             if (incomingDamage.poiseDamage > 0)
             {
-                incomingDamage.poiseDamage -= Mathf.Max(1, damagedAbsorbed.poiseDamage);
+                incomingDamage.poiseDamage -= Mathf.Max(1, CurrentDamageAbsorbed.poiseDamage);
             }
 
             if (incomingDamage.pushForce > 0)
             {
-                incomingDamage.pushForce -= damagedAbsorbed.pushForce;
+                incomingDamage.pushForce -= CurrentDamageAbsorbed.pushForce;
                 incomingDamage.pushForce = Mathf.Max(0, incomingDamage.pushForce);
             }
-
-            if (incomingDamage.statusEffects != null && incomingDamage.statusEffects.Length > 0)
-            {
-                List<StatusEffectEntry> filteredEffects = new();
-
-                foreach (var effectEntry in incomingDamage.statusEffects)
-                {
-                    StatusEffectEntry match = damagedAbsorbed.statusEffects.FirstOrDefault(
-                        entry => entry.statusEffect == effectEntry.statusEffect);
-
-                    if (match == null)
-                    {
-                        // Do not apply filter to this effect since we do not absorb it
-                        filteredEffects.Add(effectEntry);
-                        continue;
-                    }
-
-                    float finalAmount = Mathf.Max(1, effectEntry.amountPerHit - match.amountPerHit);
-
-                    /* // TODO: Add Status Effect classes for each status effect so we can easily check the resistance here
-                    if (character.combatant != null)
-                    {
-                        incomingDamage.magic = (int)(incomingDamage.magic * character.combatant.poisonResistance);
-                    } */
-
-                    filteredEffects.Add(new StatusEffectEntry
-                    {
-                        statusEffect = effectEntry.statusEffect,
-                        amountPerHit = finalAmount
-                    });
-                }
-
-                incomingDamage.statusEffects = filteredEffects.ToArray();
-            }
         }
+
     }
 }

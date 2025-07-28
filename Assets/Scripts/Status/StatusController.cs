@@ -1,340 +1,305 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using AYellowpaper;
-using AYellowpaper.SerializedCollections;
 using UnityEngine;
 using UnityEngine.Events;
+using AYellowpaper;
+using AYellowpaper.SerializedCollections;
+using AF.Health;
 
 namespace AF.StatusEffects
 {
-    public class StatusController : MonoBehaviour
+    public abstract class StatusController : MonoBehaviour
     {
         [Header("Character")]
         public CharacterBaseManager characterBaseManager;
 
-        // TODO: Refactor to be in database when we have cross scene teleport to test
-
-        [Header("Resistances")]
-
-
-        // These two make the resistance bar to the given status effect larger, taking longer to be inflicted
-        [SerializedDictionary("Status Resistances", "Duration (seconds)")]
-        public SerializedDictionary<StatusEffect, float> statusEffectResistances = new();
-
-        public Dictionary<StatusEffect, float> statusEffectResistanceBonuses = new();
-
-        // This one removes the amount of the given status effect, delaying or cancelling it somewhat
-        public Dictionary<StatusEffect, float> statusEffectCancellationBonuses = new();
-
-        public List<AppliedStatusEffect> appliedStatusEffects = new();
-
-        // END TODO
-
-        [Header("Effect Instances")]
-        [SerializedDictionary("Status Effect", "World Instance")]
+        [Header("Status Effect Instances")]
+        [SerializedDictionary("Status Effect", "Instance")]
         public SerializedDictionary<StatusEffect, StatusEffectInstance> statusEffectInstances;
 
         [Header("UI")]
-        public InterfaceReference<IStatusEffectUI, MonoBehaviour> statusEffectUI;
+        public UIDocumentStatusEffectApplied uIDocumentStatusEffectApplied;
 
         [Header("Unity Events")]
         public UnityEvent onAwake;
 
+        [Header("Game Session")]
         public GameSession gameSession;
 
-        [Header("Optional Components")]
-        public UIDocumentStatusEffectApplied uIDocumentStatusEffectApplied;
+        [SerializeField] SerializedDictionary<StatusEffect, float> calculatedResistances = new();
+        [SerializeField] SerializedDictionary<StatusEffect, float> calculatedDelayRates = new();
+        [SerializeField] SerializedDictionary<StatusEffect, GameObject> startEffectsVfx = new();
+        [SerializeField] SerializedDictionary<StatusEffect, GameObject> updateEffectsVfx = new();
+
+        List<StatusEffect> effectsToRemove = new();
 
         private void Awake()
         {
             onAwake?.Invoke();
 
-            if (gameSession.currentGameIteration > 0)
+            if (gameSession != null && gameSession.currentGameIteration > 0)
             {
                 ScaleResistancesToNewGamePlus();
             }
         }
 
-        void ScaleResistancesToNewGamePlus()
+        /// <summary>
+        /// Inflicts the status effect with maximum buildup, causing the effect to be applied immediately
+        /// </summary>
+        /// <param name="effect"></param>
+        public void InflictStatusEffect(StatusEffect effect)
         {
-            // Create a list of keys to avoid modifying the dictionary while iterating
-            List<StatusEffect> keys = new List<StatusEffect>(statusEffectResistances.Keys);
-
-            foreach (var key in keys)
-            {
-                statusEffectResistances[key] = Utils.ScaleWithCurrentNewGameIteration(
-                    (int)statusEffectResistances[key], gameSession.currentGameIteration, gameSession.newGamePlusScalingFactor);
-            }
+            float amount = GetMaximumResistance(effect);
+            InflictStatusEffect(effect, amount);
         }
-
-        private void Update()
-        {
-            if (appliedStatusEffects.Count <= 0)
-            {
-                return;
-            }
-
-            HandleStatusEffects();
-        }
-
 
         /// <summary>
-        /// Unity Event
+        /// Inflicts the status effect with the buildup given by the raw amount
         /// </summary>
-        /// <param name="statusEffect"></param>
-        public void InflictStatusEffect(StatusEffect statusEffect)
+        /// <param name="effect"></param>
+        /// <param name="rawAmount"></param>
+        public void InflictStatusEffect(StatusEffect effect, float rawAmount)
         {
-            InflictStatusEffect(statusEffect, GetMaximumStatusResistanceBeforeSufferingStatusEffect(statusEffect, true), true);
-        }
+            var activeEffects = GetActiveEffects();
+            float amount = ApplyResistanceModifiers(effect, rawAmount);
+            float maximumResistance = GetMaximumResistance(effect);
 
-        public void InflictStatusEffect(StatusEffect statusEffect, float amount, bool hasReachedFullAmount)
-        {
-            var existingStatusEffectIndex = appliedStatusEffects.FindIndex(x => x.statusEffect == statusEffect);
-
-            // If inflicted amount is greater than the character's maximum resistance, make him suffer the status effect
-            float maximumResistanceToStatusEffect = GetMaximumStatusResistanceBeforeSufferingStatusEffect(statusEffect, true);
-            if (amount >= maximumResistanceToStatusEffect)
+            // Try to get current state
+            if (!activeEffects.TryGetValue(effect, out var state))
             {
-                amount = maximumResistanceToStatusEffect;
-                hasReachedFullAmount = true;
+                state = new StatusEffectState
+                {
+                    currentAmount = 0f,
+                    hasReachedTotalAmount = false
+                };
+                activeEffects.Add(effect, state);
+                characterBaseManager.characterHUD.AddStatusEffectBar(effect); // Add bar for new effect
             }
 
-            amount = GetAmountAfterCalculatingCancellationBonuses(statusEffect, amount);
-            amount = GetFinalAmountBasedOnCancellationRate(statusEffect, amount);
-
-            if (existingStatusEffectIndex == -1)
-            {
-                AddStatusEffect(statusEffect, amount, hasReachedFullAmount, maximumResistanceToStatusEffect);
-            }
-            // Don't inflict status effect on an already fully-inflicted status effect
-            else if (!appliedStatusEffects[existingStatusEffectIndex].hasReachedTotalAmount)
-            {
-                appliedStatusEffects[existingStatusEffectIndex].currentAmount += amount;
-                HandleReachedAmountCalculation(statusEffect, existingStatusEffectIndex);
-            }
-        }
-
-        void HandleReachedAmountCalculation(StatusEffect statusEffect, int appliedStatusEffectIndex)
-        {
-            float maxAmountBeforeSuffering = GetMaximumStatusResistanceBeforeSufferingStatusEffect(statusEffect, true);
-            if (appliedStatusEffects[appliedStatusEffectIndex].currentAmount < maxAmountBeforeSuffering)
+            // Prevent further buildup if effect is already applied
+            if (state.hasReachedTotalAmount)
             {
                 return;
             }
 
-            appliedStatusEffects[appliedStatusEffectIndex].currentAmount = GetMaximumStatusResistanceBeforeSufferingStatusEffect(statusEffect, false);
-            appliedStatusEffects[appliedStatusEffectIndex].hasReachedTotalAmount = true;
+            // Apply buildup
+            state.currentAmount = Mathf.Clamp(state.currentAmount + amount, 0, maximumResistance);
 
-            StatusEffectInstance statusEffectInstance = GetStatusEffectInstance(statusEffect);
-            if (statusEffectInstance != null)
+            // Trigger effect when max reached
+            if (state.currentAmount >= maximumResistance && !state.hasReachedTotalAmount)
             {
-                statusEffectInstance.onApplied_Start?.Invoke();
+                state.hasReachedTotalAmount = true;
+                ApplyEffect(effect, state);
+            }
 
-                if (uIDocumentStatusEffectApplied != null)
-                {
-                    uIDocumentStatusEffectApplied.Display(statusEffect);
-                }
+            characterBaseManager.characterHUD.UpdateStatusEffectBar(effect, state.currentAmount, maximumResistance, state.hasReachedTotalAmount);
+        }
+
+        private void ApplyEffect(StatusEffect effect, StatusEffectState state)
+        {
+            if (uIDocumentStatusEffectApplied != null)
+            {
+                uIDocumentStatusEffectApplied.Display(effect);
+            }
+
+            StatusEffectBehaviour statusEffectBehaviour = effect.statusEffectBehaviour;
+            if (statusEffectBehaviour != null)
+            {
+                statusEffectBehaviour.OnApplied(characterBaseManager, effect);
             }
         }
 
-        StatusEffectInstance GetStatusEffectInstance(StatusEffect statusEffect)
+        void Update()
         {
-            if (statusEffectInstances.ContainsKey(statusEffect))
-            {
-                return statusEffectInstances[statusEffect];
-            }
+            var activeEffects = GetActiveEffects();
 
-            return null;
-        }
-
-        public float GetMaximumStatusResistanceBeforeSufferingStatusEffect(StatusEffect statusEffect, bool useResistanceBonuses)
-        {
-            float resistance = 0;
-
-            if (statusEffectResistances.ContainsKey(statusEffect))
-            {
-                resistance += statusEffectResistances[statusEffect];
-            }
-
-            if (useResistanceBonuses && statusEffectResistanceBonuses.ContainsKey(statusEffect))
-            {
-                resistance += statusEffectResistanceBonuses[statusEffect];
-            }
-
-            return resistance;
-        }
-
-
-        void AddStatusEffect(StatusEffect statusEffect, float amount, bool hasReachedFullAmount, float maximumResistanceToStatusEffect)
-        {
-            if (appliedStatusEffects.Exists(x => x.statusEffect == statusEffect))
+            if (activeEffects.Count == 0)
             {
                 return;
             }
 
-            AppliedStatusEffect appliedStatus = new()
-            {
-                statusEffect = statusEffect,
-                currentAmount = amount,
-                hasReachedTotalAmount = hasReachedFullAmount
-            };
+            effectsToRemove.Clear();
 
-            appliedStatusEffects.Add(appliedStatus);
-
-            if (statusEffectUI != null && statusEffectUI.Value != null)
+            foreach (var kvp in activeEffects.ToList())
             {
-                statusEffectUI?.Value?.AddEntry(appliedStatus, maximumResistanceToStatusEffect);
+                var effect = kvp.Key;
+                var state = kvp.Value;
+
+                if (ShouldRemove(effect, state))
+                {
+                    effectsToRemove.Add(effect);
+                    continue;
+                }
+
+                float decayRate = state.hasReachedTotalAmount
+                    ? effect.decreaseRateWithDamage
+                    : effect.decreaseRateWithoutDamage;
+
+                state.currentAmount -= decayRate * Time.deltaTime;
+
+                characterBaseManager.characterHUD.UpdateStatusEffectBar(
+                    effect,
+                    state.currentAmount,
+                    GetMaximumResistance(effect),
+                    state.hasReachedTotalAmount);
+
+                if (state.hasReachedTotalAmount)
+                {
+                    effect.statusEffectBehaviour?.OnUpdate(characterBaseManager, effect);
+                }
             }
 
-            StatusEffectInstance statusEffectInstance = GetStatusEffectInstance(statusEffect);
-            if (statusEffectInstance != null && appliedStatus.hasReachedTotalAmount)
+            foreach (var effectToRemove in effectsToRemove)
             {
-                statusEffectInstance.onApplied_Start?.Invoke();
+                RemoveEffect(effectToRemove);
             }
         }
 
-        private void HandleStatusEffects()
-        {
-            List<AppliedStatusEffect> statusToDelete = new();
-
-            foreach (var entry in appliedStatusEffects.ToList())
-            {
-
-                entry.currentAmount -= (entry.hasReachedTotalAmount
-                    ? entry.statusEffect.decreaseRateWithDamage
-                    : entry.statusEffect.decreaseRateWithoutDamage) * Time.deltaTime;
-
-                if (statusEffectUI != null && statusEffectUI.Value != null)
-                {
-                    statusEffectUI.Value.UpdateEntry(entry, GetMaximumStatusResistanceBeforeSufferingStatusEffect(entry.statusEffect, true));
-                }
-
-                if (ShouldRemove(entry))
-                {
-                    statusToDelete.Add(entry);
-                }
-
-                StatusEffectInstance statusEffectInstance = GetStatusEffectInstance(entry.statusEffect);
-                if (entry.hasReachedTotalAmount && statusEffectInstance != null)
-                {
-                    statusEffectInstance.onApplied_Update?.Invoke();
-                }
-            }
-
-            foreach (var status in statusToDelete)
-            {
-                RemoveAppliedStatus(status);
-            }
-        }
-
-        bool ShouldRemove(AppliedStatusEffect appliedStatusEffect)
+        private bool ShouldRemove(StatusEffect effect, StatusEffectState state)
         {
             if (characterBaseManager?.health?.GetCurrentHealth() <= 0)
             {
                 return true;
             }
 
-            if (appliedStatusEffect.hasReachedTotalAmount && appliedStatusEffect.statusEffect.isAppliedImmediately)
+            if (state.hasReachedTotalAmount && effect.isAppliedImmediately)
             {
                 return true;
             }
 
-            if (appliedStatusEffect.currentAmount > 0)
-            {
-                return false;
-            }
-
-            return true;
+            return state.currentAmount <= 0;
         }
 
-        public void RemoveAppliedStatus(AppliedStatusEffect appliedStatus)
+        public void RemoveEffect(StatusEffect effect)
         {
-            if (appliedStatus == null || appliedStatusEffects.Contains(appliedStatus) == false)
+            if (!GetActiveEffects().ContainsKey(effect))
             {
                 return;
             }
 
-            StatusEffectInstance statusEffectInstance = GetStatusEffectInstance(appliedStatus.statusEffect);
-            if (statusEffectInstance != null)
+            StatusEffectBehaviour statusEffectBehaviour = effect.statusEffectBehaviour;
+            if (statusEffectBehaviour != null)
             {
-                statusEffectInstance.onApplied_End?.Invoke();
+                statusEffectBehaviour.OnRemoved(characterBaseManager, effect);
             }
 
-            if (statusEffectUI != null && statusEffectUI.Value != null)
-            {
-                statusEffectUI.Value.RemoveEntry(appliedStatus);
-            }
-
-            appliedStatusEffects.Remove(appliedStatus);
+            characterBaseManager.characterHUD.RemoveStatusEffectBar(effect);
+            GetActiveEffects().Remove(effect);
+            RemoveVfx(effect);
         }
 
-        public void RemoveStatusEffect(StatusEffect statusEffect)
+        public void RemoveAllEffects()
         {
-            if (appliedStatusEffects != null && appliedStatusEffects.Count > 0)
+            List<StatusEffect> activeEffects = GetActiveEffects().Select(x => x.Key).ToList();
+
+            foreach (var effect in activeEffects)
             {
-                var existingStatusEffectIndex = appliedStatusEffects.FindIndex(x => x.statusEffect == statusEffect);
-                if (existingStatusEffectIndex != -1)
+                RemoveEffect(effect);
+            }
+        }
+
+        private float ApplyResistanceModifiers(StatusEffect effect, float amount)
+        {
+            if (calculatedDelayRates.TryGetValue(effect, out var rate))
+                amount *= rate;
+
+            return amount;
+        }
+
+        private float GetMaximumResistance(StatusEffect effect)
+        {
+            if (calculatedResistances.TryGetValue(effect, out var resistance))
+            {
+                return resistance;
+            }
+
+            return effect.fallbackResistance; // fallback
+        }
+
+        public abstract SerializedDictionary<StatusEffect, StatusEffectState> GetActiveEffects();
+
+        public int GetCurrentResistanceForStatusEffect(StatusEffect statusEffect)
+        {
+            if (calculatedResistances.ContainsKey(statusEffect))
+            {
+                return (int)calculatedResistances[statusEffect];
+            }
+
+            return 0;
+        }
+
+        public void RecalculateResistances()
+        {
+            calculatedResistances.Clear();
+            AddOrUpdate(calculatedResistances, characterBaseManager.combatant?.statusEffectResistances);
+            AddOrUpdate(calculatedResistances, characterBaseManager.statsBonusController.statusEffectResistances);
+
+            calculatedDelayRates.Clear();
+            AddOrUpdate(calculatedDelayRates, characterBaseManager.combatant?.statusEffectDelayRates, true);
+            AddOrUpdate(calculatedDelayRates, characterBaseManager.statsBonusController.statusEffectDelayRates, true);
+        }
+
+        void AddOrUpdate(Dictionary<StatusEffect, float> target, Dictionary<StatusEffect, float> source, bool isDelay = false)
+        {
+            source ??= new();
+
+            foreach (var kvp in source)
+            {
+                if (target.ContainsKey(kvp.Key))
                 {
-                    RemoveAppliedStatus(appliedStatusEffects[existingStatusEffectIndex]);
+                    if (isDelay)
+                        target[kvp.Key] = Mathf.Clamp(target[kvp.Key] * kvp.Value, 0.01f, 1f);
+                    else
+                        target[kvp.Key] += kvp.Value;
+                }
+                else
+                {
+                    target[kvp.Key] = kvp.Value;
                 }
             }
         }
 
-        public void RemoveAllStatuses()
+        void ScaleResistancesToNewGamePlus()
         {
-            AppliedStatusEffect[] appliedStatusEffectsClone = appliedStatusEffects.ToArray();
-            foreach (var appliedStatusEffect in appliedStatusEffectsClone)
-            {
-                RemoveAppliedStatus(appliedStatusEffect);
-            }
+            // Future resistance scaling logic (optional)
         }
 
-        float GetAmountAfterCalculatingCancellationBonuses(StatusEffect statusEffect, float amount)
+        public void InstantiateStartVfx(StatusEffect statusEffect, GameObject vfx)
         {
-            if (statusEffectCancellationBonuses != null && statusEffectCancellationBonuses.Count > 0 && statusEffectCancellationBonuses.ContainsKey(statusEffect))
+            if (startEffectsVfx.TryGetValue(statusEffect, out var existing) && existing != null)
             {
-                amount = Mathf.Clamp(amount - statusEffectCancellationBonuses[statusEffect], 0, amount);
+                Destroy(existing);
+                startEffectsVfx.Remove(statusEffect);
             }
 
-            return amount;
+            GameObject instance = Instantiate(vfx, characterBaseManager.characterTransformHelper.torso);
+            startEffectsVfx[statusEffect] = instance;
         }
 
-        public void Add_05_CancellationBonuses(StatusEffect statusEffect)
+        public void InstantiateUpdateVfx(StatusEffect statusEffect, GameObject vfx)
         {
-            AddCancellationBonuses(statusEffect, .5f);
-        }
-
-        public void Add_1_CancellationBonuses(StatusEffect statusEffect)
-        {
-            AddCancellationBonuses(statusEffect, 1f);
-        }
-
-        void AddCancellationBonuses(StatusEffect statusEffect, float amount)
-        {
-
-            if (statusEffectCancellationBonuses.ContainsKey(statusEffect))
+            if (updateEffectsVfx.TryGetValue(statusEffect, out var existing) && existing != null)
             {
-                statusEffectCancellationBonuses[statusEffect] = amount;
+                return;
             }
-            else
-            {
-                statusEffectCancellationBonuses.Add(statusEffect, amount);
-            }
+
+            GameObject instance = Instantiate(vfx, characterBaseManager.characterTransformHelper.torso);
+            updateEffectsVfx[statusEffect] = instance;
         }
 
-        public void RemoveCancellationBonuses(StatusEffect statusEffect)
+        public void RemoveVfx(StatusEffect statusEffect)
         {
-            if (statusEffectCancellationBonuses != null && statusEffectCancellationBonuses.Count > 0 && statusEffectCancellationBonuses.ContainsKey(statusEffect))
+            if (updateEffectsVfx.ContainsKey(statusEffect))
             {
-                statusEffectCancellationBonuses.Remove(statusEffect);
+                GameObject tmpInstance = updateEffectsVfx[statusEffect];
+                updateEffectsVfx.Remove(statusEffect);
+
+                if (tmpInstance != null)
+                {
+                    Destroy(tmpInstance);
+                }
             }
         }
-
-        public virtual float GetFinalAmountBasedOnCancellationRate(StatusEffect statusEffect, float amount)
-        {
-
-            return amount;
-        }
-
     }
 }

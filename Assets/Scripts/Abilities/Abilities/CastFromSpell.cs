@@ -114,9 +114,8 @@ namespace AF
             foreach (StatusEffect statusEffect in spell.statusEffects)
             {
                 caster.statusController.statusEffectInstances.FirstOrDefault(x => x.Key == statusEffect).Value?.onConsumeStart?.Invoke();
-                // For positive effects, we override the status effect resistance to be the duration of the consumable effect
-                caster.statusController.statusEffectResistances[statusEffect] = spell.effectsDurationInSeconds;
-                caster.statusController.InflictStatusEffect(statusEffect, spell.effectsDurationInSeconds, true);
+
+                caster.statusController.InflictStatusEffect(statusEffect);
             }
         }
 

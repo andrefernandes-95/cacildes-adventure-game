@@ -43,7 +43,7 @@ namespace AF
 
             foreach (StatusEffect statusEffectToCure in statusEffectsToCure)
             {
-                characterBaseManager.statusController.RemoveStatusEffect(statusEffectToCure);
+                characterBaseManager.statusController.RemoveEffect(statusEffectToCure);
             }
         }
 

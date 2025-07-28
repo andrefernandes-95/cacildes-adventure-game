@@ -12,8 +12,6 @@ namespace AF
     {
         [Header("Components")]
         public PlayerManager playerManager;
-        public EquipmentGraphicsHandler equipmentGraphicsHandler;
-        public DefenseStatManager defenseStatManager;
 
         [Header("UI Documents")]
         public UIDocument uIDocument;
@@ -50,17 +48,7 @@ namespace AF
             root.Q<VisualElement>("Gold").Q<Label>("Value").text = playerStatsDatabase.gold.ToString();
             SetGoldForNextLevelLabel();
 
-            // Physical and Elemental Defenses
-            int basePhysicalDefense = (int)defenseStatManager.GetDefenseAbsorption();
-            var itemDefenses = GetItemDefenses(item);
-
-            int basePoise = playerManager.characterPoise.GetMaxPoiseHits();
-            int itemPoise = EquipmentUtils.GetPoiseChangeFromItem(basePoise, equipmentDatabase, item);
-
-            int basePosture = playerManager.characterPosture.GetMaxPostureDamage();
-            int itemPosture = EquipmentUtils.GetPostureChangeFromItem(basePosture, equipmentDatabase, item);
-
-            float baseEquipLoad = equipmentGraphicsHandler.GetEquipLoad();
+            float baseEquipLoad = playerManager.statsBonusController.weightPenalty;
             float itemEquipLoad = EquipmentUtils.GetEquipLoadFromItem(item, baseEquipLoad, equipmentDatabase);
 
             var playerBaseStats = GetPlayerBaseStats();
@@ -80,21 +68,73 @@ namespace AF
             SetStatLabel("Mana",
                 playerManager.manaManager.GetMaxMana(), itemBonusStats.magicBonus, "" + (int)playerManager.playerStatsDatabase.currentMana);
 
-            SetStatLabel("Poise", basePoise, itemPoise);
-            SetStatLabel("Posture", basePosture, itemPosture);
             SetStatLabel("Reputation", playerBaseStats.reputation, itemBonusStats.reputation);
 
             SetWeightLoadLabel("WeightLoad", baseEquipLoad, itemEquipLoad);
 
             DrawAttackStats(item as Weapon, equippingOnRightHand);
 
-            SetStatLabel("PhysicalDefense", basePhysicalDefense, itemDefenses.physical);
-            SetStatLabel("FireDefense", (int)playerManager.defenseStatManager.GetFireDefense(), itemDefenses.fire);
-            SetStatLabel("FrostDefense", (int)playerManager.defenseStatManager.GetFrostDefense(), itemDefenses.frost);
-            SetStatLabel("LightningDefense", (int)playerManager.defenseStatManager.GetLightningDefense(), itemDefenses.lightning);
-            SetStatLabel("MagicDefense", (int)playerManager.defenseStatManager.GetMagicDefense(), itemDefenses.magic);
-            SetStatLabel("DarknessDefense", (int)playerManager.defenseStatManager.GetDarknessDefense(), itemDefenses.darkness);
-            SetStatLabel("WaterDefense", (int)playerManager.defenseStatManager.GetWaterDefense(), itemDefenses.water);
+
+            // Base defenses (without equipment)
+            int basePhysDEF = playerManager.characterBaseDefenseManager.BaseDamageAbsorbed.physical;
+            int baseFireDEF = playerManager.characterBaseDefenseManager.BaseDamageAbsorbed.fire;
+            int baseFrostDEF = playerManager.characterBaseDefenseManager.BaseDamageAbsorbed.frost;
+            int baseMagicDEF = playerManager.characterBaseDefenseManager.BaseDamageAbsorbed.magic;
+            int baseLightDEF = playerManager.characterBaseDefenseManager.BaseDamageAbsorbed.lightning;
+            int baseDarkDEF = playerManager.characterBaseDefenseManager.BaseDamageAbsorbed.darkness;
+            int baseWaterDEF = playerManager.characterBaseDefenseManager.BaseDamageAbsorbed.water;
+
+            // Item defenses combined with base defenses
+            int itemPhysDEF = -1;
+            int itemFireDEF = -1;
+            int itemFrostDEF = -1;
+            int itemMagicDEF = -1;
+            int itemLightDEF = -1;
+            int itemDarkDEF = -1;
+            int itemWaterDEF = -1;
+
+            int currentPoise = playerManager.characterBaseDefenseManager.CurrentDamageAbsorbed.poiseDamage;
+            int basePoise = playerManager.characterBaseDefenseManager.BaseDamageAbsorbed.poiseDamage;
+            int itemPoise = -1;
+
+            int currentPosture = playerManager.characterBaseDefenseManager.CurrentDamageAbsorbed.postureDamage;
+            int basePosture = playerManager.characterBaseDefenseManager.BaseDamageAbsorbed.postureDamage;
+            int itemPosture = -1;
+
+            if (item is ArmorBase armorBase)
+            {
+                Damage damageFromArmor = armorBase.GetDamageAbsorbed();
+                itemPhysDEF = damageFromArmor.physical + basePhysDEF;
+                itemFireDEF = damageFromArmor.fire + baseFireDEF;
+                itemFrostDEF = damageFromArmor.frost + baseFrostDEF;
+                itemMagicDEF = damageFromArmor.magic + baseMagicDEF;
+                itemLightDEF = damageFromArmor.lightning + baseLightDEF;
+                itemDarkDEF = damageFromArmor.darkness + baseDarkDEF;
+                itemWaterDEF = damageFromArmor.water + baseWaterDEF;
+
+                itemPoise = damageFromArmor.poiseDamage + basePoise;
+                itemPosture = damageFromArmor.postureDamage + basePosture;
+            }
+
+            // Current defenses
+            int currentPhysDEF = playerManager.characterBaseDefenseManager.CurrentDamageAbsorbed.physical;
+            int currentFireDEF = playerManager.characterBaseDefenseManager.CurrentDamageAbsorbed.fire;
+            int currentFrostDEF = playerManager.characterBaseDefenseManager.CurrentDamageAbsorbed.frost;
+            int currentMagicDEF = playerManager.characterBaseDefenseManager.CurrentDamageAbsorbed.magic;
+            int currentLightDEF = playerManager.characterBaseDefenseManager.CurrentDamageAbsorbed.lightning;
+            int currentDarkDEF = playerManager.characterBaseDefenseManager.CurrentDamageAbsorbed.darkness;
+            int currentWaterDEF = playerManager.characterBaseDefenseManager.CurrentDamageAbsorbed.water;
+
+            SetStatLabel("PhysicalDefense", currentPhysDEF, itemPhysDEF);
+            SetStatLabel("FireDefense", currentFireDEF, itemFireDEF);
+            SetStatLabel("FrostDefense", currentFrostDEF, itemFrostDEF);
+            SetStatLabel("LightningDefense", currentLightDEF, itemLightDEF);
+            SetStatLabel("MagicDefense", currentMagicDEF, itemMagicDEF);
+            SetStatLabel("DarknessDefense", currentDarkDEF, itemDarkDEF);
+            SetStatLabel("WaterDefense", currentWaterDEF, itemWaterDEF);
+
+            SetStatLabel("Poise", currentPoise, itemPoise);
+            SetStatLabel("Posture", currentPosture, itemPosture);
 
             DrawStatusEffectLabel("Poison", poison, item);
             DrawStatusEffectLabel("Bleed", bleed, item);
@@ -146,7 +186,7 @@ namespace AF
 
             SetStatLabel(
                 elementName,
-                playerStatusController.GetResistanceForStatusEffect(statusEffect),
+                playerStatusController.GetCurrentResistanceForStatusEffect(statusEffect),
                 item != null
                     ? EquipmentUtils.GetStatusEffectResistanceFromEquipment(item as ArmorBase, statusEffect, playerStatusController, equipmentDatabase)
                     : 0);
@@ -186,13 +226,71 @@ namespace AF
                 playerManager.playerLevelManager.GetRequiredExperienceForNextLevel().ToString();
         }
 
+        float GetStrengthWeightLoadBonus()
+        {
+            float bonus = playerManager.characterBaseStats.GetStrength();
+
+            bonus *= 0.0025f;
+
+            if (bonus > 0f)
+            {
+                return bonus;
+            }
+
+            return 0f;
+        }
+
+        public float GetHeavyWeightThreshold()
+        {
+
+            return 0.135f + GetStrengthWeightLoadBonus();
+        }
+        public float GetMidWeightThreshold()
+        {
+
+            return 0.05f + GetStrengthWeightLoadBonus();
+        }
+
+        bool IsLightWeightForGivenValue(float givenWeightPenalty)
+        {
+            return givenWeightPenalty <= GetMidWeightThreshold();
+        }
+
+        bool IsMidWeightForGivenValue(float givenWeightPenalty)
+        {
+            return givenWeightPenalty < GetHeavyWeightThreshold() && givenWeightPenalty > GetMidWeightThreshold();
+        }
+
+        bool IsHeavyWeightForGivenValue(float givenWeightPenalty)
+        {
+            return givenWeightPenalty >= GetHeavyWeightThreshold();
+        }
+
+        string GetWeightLoadLabel(float givenWeightLoad)
+        {
+            if (IsLightWeightForGivenValue(givenWeightLoad))
+            {
+                return LocalizationSettings.SelectedLocale.Identifier.Code == "en" ? "Light Load" : "Leve";
+            }
+            if (IsMidWeightForGivenValue(givenWeightLoad))
+            {
+                return LocalizationSettings.SelectedLocale.Identifier.Code == "en" ? "Medium Load" : "Médio";
+            }
+            if (IsHeavyWeightForGivenValue(givenWeightLoad))
+            {
+                return LocalizationSettings.SelectedLocale.Identifier.Code == "en" ? "Heavy Load" : "Pesado";
+            }
+
+            return "";
+        }
+
         private void SetWeightLoadLabel(string elementName, float baseValue, float itemValue)
         {
             // Format baseValue and itemValue as percentages with two decimal places
             string formattedBaseValue = (baseValue * 100).ToString("F2") + "%";
             string formattedItemValue = (itemValue * 100).ToString("F2") + "%";
 
-            string label = formattedBaseValue + $" ({equipmentGraphicsHandler.GetWeightLoadLabel(baseValue)})";
+            string label = formattedBaseValue + $" ({GetWeightLoadLabel(baseValue)})";
 
             Label changeIndicator =
                   root.Q<VisualElement>(elementName).Q<Label>("ChangeIndicator");
@@ -209,7 +307,7 @@ namespace AF
                     changeIndicator.style.color = Color.red;
                 }
 
-                changeIndicator.text = " > " + formattedItemValue + $" ({equipmentGraphicsHandler.GetWeightLoadLabel(itemValue)})";
+                changeIndicator.text = " > " + formattedItemValue + $" ({GetWeightLoadLabel(itemValue)})";
                 changeIndicator.style.display = DisplayStyle.Flex;
             }
 
@@ -248,35 +346,5 @@ namespace AF
             return (0, 0, 0, 0, 0, 0, 0, 0, 0);
         }
 
-        private int GetItemAttack(Item item, int baseAttack)
-        {
-            if (item is Weapon weapon)
-            {
-                return playerManager.characterBaseAttackManager.CalculateWeaponDamageForWeapon(weapon).weaponDamage.GetTotalDamage();
-            }
-            else if (item is Accessory accessory && equipmentDatabase.IsAccessoryEquiped(accessory))
-            {
-                return baseAttack + accessory.physicalAttackBonus;
-            }
-            return 0;
-        }
-
-
-        private (int physical, int fire, int frost, int lightning, int magic, int darkness, int water) GetItemDefenses(Item item)
-        {
-            if (item is ArmorBase armorBase && !(item is Accessory acc && equipmentDatabase.IsAccessoryEquiped(acc)))
-            {
-                return (
-                    EquipmentUtils.GetElementalDefenseFromItem(armorBase, WeaponElementType.None, defenseStatManager, equipmentDatabase),
-                    EquipmentUtils.GetElementalDefenseFromItem(armorBase, WeaponElementType.Fire, defenseStatManager, equipmentDatabase),
-                    EquipmentUtils.GetElementalDefenseFromItem(armorBase, WeaponElementType.Frost, defenseStatManager, equipmentDatabase),
-                    EquipmentUtils.GetElementalDefenseFromItem(armorBase, WeaponElementType.Lightning, defenseStatManager, equipmentDatabase),
-                    EquipmentUtils.GetElementalDefenseFromItem(armorBase, WeaponElementType.Magic, defenseStatManager, equipmentDatabase),
-                    EquipmentUtils.GetElementalDefenseFromItem(armorBase, WeaponElementType.Darkness, defenseStatManager, equipmentDatabase),
-                    EquipmentUtils.GetElementalDefenseFromItem(armorBase, WeaponElementType.Water, defenseStatManager, equipmentDatabase)
-                );
-            }
-            return (0, -1, -1, -1, -1, -1, -1);
-        }
     }
 }

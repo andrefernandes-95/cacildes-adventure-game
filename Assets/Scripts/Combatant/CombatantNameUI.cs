@@ -5,19 +5,27 @@ namespace AF
 
     public class CombatantNameUI : MonoBehaviour
     {
-        [SerializeField] CharacterManager characterManager;
+        CharacterManager characterManager;
         public TMPro.TextMeshProUGUI textMeshPro;
 
         [HelpBox("For enemies that hidden - ambush state, for example - check this checkbox")]
         [SerializeField] bool showOnlyInCombat = false;
 
-        void Awake()
+        public void SetupCombatantName(CharacterManager characterManager)
         {
+            this.characterManager = characterManager;
             characterManager.targetManager.onTargetSet_Event.AddListener(ShowCombatantName);
             characterManager.targetManager.onClearTarget_Event.AddListener(HideCombatantName);
+
+            HandleOnEnable();
         }
 
         void OnEnable()
+        {
+            HandleOnEnable();
+        }
+
+        void HandleOnEnable()
         {
             HideCombatantName();
 

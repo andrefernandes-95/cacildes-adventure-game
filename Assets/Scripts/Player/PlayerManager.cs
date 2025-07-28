@@ -24,16 +24,13 @@ namespace AF
         public PlayerDodgeController playerDodgeController;
         public PlayerLevelManager playerLevelManager;
         public PlayerAchievementsManager playerAchievementsManager;
-        public CombatNotificationsController combatNotificationsController;
         public PlayerCombatController playerCombatController;
         public StaminaStatManager staminaStatManager;
         public ManaManager manaManager;
-        public DefenseStatManager defenseStatManager;
         public PlayerInventory playerInventory;
         public FavoriteItemsManager favoriteItemsManager;
         public PlayerShooter playerShootingManager;
         public ProjectileSpawner projectileSpawner;
-        public EquipmentGraphicsHandler equipmentGraphicsHandler;
         public FootstepListener footstepListener;
         public PlayerComponentManager playerComponentManager;
         public EventNavigator eventNavigator;
@@ -46,7 +43,6 @@ namespace AF
         public LockOnManager lockOnManager;
         public PlayerReputation playerReputation;
         public RageManager rageManager;
-        public PlayerCardManager playerCardManager;
         public ExecutionerManager executionerManager;
         public UIDocumentPlayerHUDV2 uIDocumentPlayerHUDV2;
         public UIDocumentAlert uIDocumentAlert;
@@ -148,11 +144,6 @@ namespace AF
             if (playerBlockController.isCounterAttacking)
             {
                 attackDamage.damageType = DamageType.COUNTER_ATTACK;
-            }
-
-            if (playerCardManager.HasCard() && playerCardManager.currentCard.useDamage)
-            {
-                return playerCardManager.CombineDamageWithCard(attackDamage);
             }
 
             return attackDamage;

@@ -41,7 +41,7 @@ namespace AF
 
         [Header("Status Effect Resistances")]
         public StatusEffectBlockResistance[] statusEffectBlockResistances;
-        public StatusEffectCancellationRate[] statusEffectCancellationRates;
+        public StatusEffectCancellationRate[] statusEffectDelayRates;
 
         [Header("Stats Bonuses")]
         public int vitalityBonus = 0;
@@ -65,6 +65,26 @@ namespace AF
         [Header("VFX")]
         public GameObject blockFx;
 
+        public float GetCurrentPhysicalAbsorption(Damage incomingDamage, float baseValue)
+        {
+            float physicalAbsorptionBonus = 0f;
+
+            if (slashDamageAbsorption != 1 && incomingDamage.weaponAttackType == WeaponAttackType.Slash)
+            {
+                physicalAbsorptionBonus += 1 - GetCurrentAbsorption(slashDamageAbsorption);
+            }
+            else if (bluntDamageAbsorption != 1 && incomingDamage.weaponAttackType == WeaponAttackType.Blunt)
+            {
+                physicalAbsorptionBonus += 1 - GetCurrentAbsorption(bluntDamageAbsorption);
+            }
+            else if (pierceDamageAbsorption != 1 && incomingDamage.weaponAttackType == WeaponAttackType.Pierce)
+            {
+                physicalAbsorptionBonus += 1 - GetCurrentAbsorption(pierceDamageAbsorption);
+            }
+
+            return GetCurrentAbsorption(baseValue) + physicalAbsorptionBonus;
+        }
+
         public float GetCurrentAbsorption(float baseValue)
         {
             return GetAbsorptionForLevel(baseValue, level);
@@ -72,7 +92,7 @@ namespace AF
 
         public float GetAbsorptionForLevel(float baseValue, int givenLevel)
         {
-            float bonus = givenLevel / 20;
+            float bonus = (float)(givenLevel + 0f) / 20;
 
             return baseValue + bonus;
         }
@@ -83,55 +103,42 @@ namespace AF
 
             if (physicalAbsorption != 1)
             {
-                incomingDamage.physical = (int)(incomingDamage.physical * GetCurrentAbsorption(physicalAbsorption));
+                incomingDamage.physical = (int)(incomingDamage.physical * (1 - GetCurrentPhysicalAbsorption(incomingDamage, physicalAbsorption)));
             }
 
             if (fireAbsorption != 1)
             {
-                incomingDamage.fire = (int)(incomingDamage.fire * GetCurrentAbsorption(fireAbsorption));
+                incomingDamage.fire = (int)(incomingDamage.fire * (1 - GetCurrentAbsorption(fireAbsorption)));
             }
 
             if (frostAbsorption != 1)
             {
-                incomingDamage.frost = (int)(incomingDamage.frost * GetCurrentAbsorption(frostAbsorption));
+                incomingDamage.frost = (int)(incomingDamage.frost * (1 - GetCurrentAbsorption(frostAbsorption)));
             }
 
             if (lightiningAbsorption != 1)
             {
-                incomingDamage.lightning = (int)(incomingDamage.lightning * GetCurrentAbsorption(lightiningAbsorption));
+                incomingDamage.lightning = (int)(incomingDamage.lightning * (1 - GetCurrentAbsorption(lightiningAbsorption)));
             }
 
             if (darknessAbsorption != 1)
             {
-                incomingDamage.darkness = (int)(incomingDamage.darkness * GetCurrentAbsorption(darknessAbsorption));
+                incomingDamage.darkness = (int)(incomingDamage.darkness * (1 - GetCurrentAbsorption(darknessAbsorption)));
             }
 
             if (waterAbsorption != 1)
             {
-                incomingDamage.water = (int)(incomingDamage.water * GetCurrentAbsorption(waterAbsorption));
+                incomingDamage.water = (int)(incomingDamage.water * (1 - GetCurrentAbsorption(waterAbsorption)));
             }
 
             if (magicAbsorption != 1)
             {
-                incomingDamage.magic = (int)(incomingDamage.magic * GetCurrentAbsorption(magicAbsorption));
+                incomingDamage.magic = (int)(incomingDamage.magic * (1 - GetCurrentAbsorption(magicAbsorption)));
             }
 
             if (postureDamageAbsorption != 1)
             {
-                incomingDamage.postureDamage = (int)(incomingDamage.postureDamage * GetCurrentAbsorption(postureDamageAbsorption));
-            }
-
-            if (slashDamageAbsorption != 1 && incomingDamage.weaponAttackType == WeaponAttackType.Slash)
-            {
-                incomingDamage.physical = (int)(incomingDamage.physical * GetCurrentAbsorption(slashDamageAbsorption));
-            }
-            else if (bluntDamageAbsorption != 1 && incomingDamage.weaponAttackType == WeaponAttackType.Blunt)
-            {
-                incomingDamage.physical = (int)(incomingDamage.physical * GetCurrentAbsorption(bluntDamageAbsorption));
-            }
-            else if (pierceDamageAbsorption != 1 && incomingDamage.weaponAttackType == WeaponAttackType.Pierce)
-            {
-                incomingDamage.physical = (int)(incomingDamage.physical * GetCurrentAbsorption(pierceDamageAbsorption));
+                incomingDamage.postureDamage = (int)(incomingDamage.postureDamage * (1 - GetCurrentAbsorption(postureDamageAbsorption)));
             }
 
             return incomingDamage;
@@ -173,11 +180,20 @@ namespace AF
         {
             string result = "";
 
-            foreach (var resistance in statusEffectCancellationRates)
+            foreach (var resistance in statusEffectDelayRates)
             {
                 if (resistance != null)
                 {
-                    result += $"-{resistance.amountToCancelPerSecond} {resistance.statusEffect.GetName()} {LocalizationSettings.StringDatabase.GetLocalizedString("UIDocuments", "Inflicted Per Second")}\n";
+                    float buildupReductionPercent = (1f - resistance.delayRate) * 100f;
+
+                    if (Utils.IsPortuguese())
+                    {
+                        result += $"{buildupReductionPercent:0.#}% de redução na taxa de acúmulo de {resistance.statusEffect.GetName()} por segundo\n";
+                    }
+                    else
+                    {
+                        result += $"{buildupReductionPercent:0.#}% reduction in buildup rate of {resistance.statusEffect.GetName()} per second\n";
+                    }
                 }
             }
 

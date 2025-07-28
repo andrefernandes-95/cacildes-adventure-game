@@ -4,9 +4,6 @@ using System.Linq;
 using AYellowpaper.SerializedCollections;
 using UnityEditor;
 using UnityEngine;
-using System.Collections.Generic;
-using System.IO;
-using UnityEngine;
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
 

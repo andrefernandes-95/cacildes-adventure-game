@@ -12,7 +12,6 @@ namespace AF
         [Header("Flee Settings")]
         [SerializeField] private float maxFleeDistance = 20f;
         [SerializeField] private float maxIntervalBetweenDecidingFleeActions = 5f;
-        [SerializeField] private float fleeSpeed = 5f;
 
         [Header("States")]
         [SerializeField] private State patrolOrIdleState;

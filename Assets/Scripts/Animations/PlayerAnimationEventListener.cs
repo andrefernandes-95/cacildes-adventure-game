@@ -296,11 +296,6 @@ namespace AF.Animations
             playerManager.playerDodgeController.EnableIframes();
         }
 
-        public void OnCard()
-        {
-            playerManager.playerCardManager.UseCurrentCard();
-        }
-
         public void OnExecuted()
         {
         }

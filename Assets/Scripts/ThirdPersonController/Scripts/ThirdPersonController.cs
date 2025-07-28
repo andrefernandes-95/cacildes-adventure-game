@@ -903,16 +903,7 @@ namespace AF
 
         int GetCurrentJumpHeight()
         {
-            float JumpWeightBonus = 0;
             float _JumpHeightBonus = JumpHeightBonus;
-            if (playerManager.equipmentGraphicsHandler.IsLightWeight())
-            {
-                JumpWeightBonus = .5f;
-            }
-            else if (playerManager.equipmentGraphicsHandler.IsHeavyWeight())
-            {
-                JumpWeightBonus = -1;
-            }
 
             if (playerManager.playerStats.GetDexterity() > 1)
             {
@@ -924,7 +915,7 @@ namespace AF
                 _JumpHeightBonus += Mathf.Pow(playerManager.playerStats.GetDexterity(), .05f) / 2;
             }
 
-            return (int)(JumpHeight + _JumpHeightBonus + JumpWeightBonus);
+            return (int)(JumpHeight + _JumpHeightBonus);
         }
 
         int GetMovementSpeedBonus()

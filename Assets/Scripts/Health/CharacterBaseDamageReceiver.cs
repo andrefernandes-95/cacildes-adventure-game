@@ -16,11 +16,10 @@ namespace AF
         [Header("Backstab Options")]
         public bool canBeBackstabbed = true;
 
-        [Header("Components")]
-        public CombatNotificationsController combatNotificationsController;
-
         [Header("Visual Effects")]
         [SerializeField] Transform characterVfxRoot;
+        [SerializeField] GameObject bloodVfxPrefab;
+        GameObject bloodVfxInstance;
         [SerializeField] GameObject bluntVfxPrefab;
         GameObject bluntVfxInstance;
         [SerializeField] GameObject slashVfxPrefab;
@@ -52,6 +51,14 @@ namespace AF
         public UnityEvent onWaterDamage;
         public UnityEvent onBackstabbed;
         public UnityEvent onAttackedWhileWithFlatulence;
+
+        [HideInInspector] public UnityEvent<int> onPhysicalDamageUI;
+        [HideInInspector] public UnityEvent<int> onFireDamageUI;
+        [HideInInspector] public UnityEvent<int> onFrostDamageUI;
+        [HideInInspector] public UnityEvent<int> onLightningDamageUI;
+        [HideInInspector] public UnityEvent<int> onMagicDamageUI;
+        [HideInInspector] public UnityEvent<int> onDarknessDamageUI;
+        [HideInInspector] public UnityEvent<int> onWaterDamageUI;
 
 
         [Header("Flags")]
@@ -332,8 +339,7 @@ namespace AF
             {
                 foreach (var statusEffectToApply in incomingDamage.statusEffects)
                 {
-                    GetCharacter().statusController.InflictStatusEffect(
-                        statusEffectToApply.statusEffect, statusEffectToApply.amountPerHit, false);
+                    GetCharacter().statusController.InflictStatusEffect(statusEffectToApply.statusEffect, statusEffectToApply.amountPerHit);
                 }
             }
         }
@@ -342,88 +348,43 @@ namespace AF
         {
             if (incomingDamage.physical > 0)
             {
-                if (combatNotificationsController != null)
-                {
-                    if (incomingDamage.damageType == DamageType.CRITICAL_ATTACK)
-                    {
-                        combatNotificationsController.ShowPostureBroken(incomingDamage.physical);
-                    }
-                    else if (incomingDamage.damageType == DamageType.COUNTER_ATTACK)
-                    {
-                        combatNotificationsController.ShowGuardCounter(incomingDamage.physical);
-                    }
-                    else if (incomingDamage.damageType == DamageType.ENRAGED)
-                    {
-                        combatNotificationsController.ShowRageCounter(incomingDamage.physical);
-                    }
-                    else if (incomingDamage.damageType == DamageType.BACKSTAB)
-                    {
-                        combatNotificationsController.ShowBackstab(incomingDamage.physical);
-                    }
-                    else
-                    {
-                        combatNotificationsController.ShowDamage(incomingDamage.physical);
-                    }
-                }
+                onPhysicalDamageUI?.Invoke(incomingDamage.physical);
+                onPhysicalDamage?.Invoke();
             }
 
             if (incomingDamage.fire > 0)
             {
-                if (combatNotificationsController != null)
-                {
-                    combatNotificationsController.ShowFireDamage(incomingDamage.fire);
-                }
-
+                onFireDamageUI?.Invoke(incomingDamage.fire);
                 onFireDamage?.Invoke();
             }
 
             if (incomingDamage.frost > 0)
             {
-                if (combatNotificationsController != null)
-                {
-                    combatNotificationsController.ShowFrostDamage(incomingDamage.frost);
-                }
-
+                onFrostDamageUI?.Invoke(incomingDamage.frost);
                 onFrostDamage?.Invoke();
             }
 
             if (incomingDamage.magic > 0)
             {
-                if (combatNotificationsController != null)
-                {
-                    combatNotificationsController.ShowMagicDamage(incomingDamage.magic);
-                }
-
+                onMagicDamageUI?.Invoke(incomingDamage.magic);
                 onMagicDamage?.Invoke();
             }
 
             if (incomingDamage.lightning > 0)
             {
-                if (combatNotificationsController != null)
-                {
-                    combatNotificationsController.ShowLightningDamage(incomingDamage.lightning);
-                }
-
+                onLightningDamageUI?.Invoke(incomingDamage.lightning);
                 onLightningDamage?.Invoke();
             }
 
             if (incomingDamage.darkness > 0)
             {
-                if (combatNotificationsController != null)
-                {
-                    combatNotificationsController.ShowDarknessDamage(incomingDamage.darkness);
-                }
-
+                onDarknessDamageUI?.Invoke(incomingDamage.darkness);
                 onDarknessDamage?.Invoke();
             }
 
             if (incomingDamage.water > 0)
             {
-                if (combatNotificationsController != null)
-                {
-                    combatNotificationsController.ShowWaterDamage(incomingDamage.water);
-                }
-
+                onWaterDamageUI?.Invoke(incomingDamage.water);
                 onWaterDamage?.Invoke();
             }
 
@@ -434,6 +395,8 @@ namespace AF
         {
             if (incomingDamage.physical > 0)
             {
+                PlayDamageVfx(ref bloodVfxInstance, bloodVfxPrefab);
+
                 switch (incomingDamage.weaponAttackType)
                 {
                     case WeaponAttackType.Blunt:

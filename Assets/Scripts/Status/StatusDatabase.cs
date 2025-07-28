@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using AYellowpaper.SerializedCollections;
 using UnityEditor;
 using UnityEngine;
 
@@ -11,7 +12,7 @@ namespace AF.StatusEffects
     {
 
         [Header("Status Effects")]
-        public List<AppliedStatusEffect> appliedStatus = new();
+        public SerializedDictionary<StatusEffect, StatusEffectState> activeEffects = new();
 
 #if UNITY_EDITOR 
         private void OnEnable()
@@ -32,7 +33,7 @@ namespace AF.StatusEffects
 
         public void Clear()
         {
-            appliedStatus.Clear();
+            activeEffects.Clear();
         }
 
     }

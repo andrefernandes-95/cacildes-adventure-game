@@ -56,6 +56,7 @@ namespace AF
         public CharacterAbilityBaseManager characterAbilityBaseManager;
         public CharacterBaseActivityManager characterBaseActivityManager;
         public CharacterBaseConsumableManager characterBaseConsumableManager;
+        public CharacterHUD characterHUD;
 
         public abstract void ResetStates();
 

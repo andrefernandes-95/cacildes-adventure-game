@@ -2,6 +2,7 @@ using System.Collections;
 using AF.Health;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.UI;
 
 namespace AF
 {
@@ -15,82 +16,44 @@ namespace AF
         public UnityEvent onPostureBreakDamage;
         public UnityEvent onDamageWhileStunned;
 
+        [HideInInspector] public UnityEvent onShowPostureBar;
+        [HideInInspector] public UnityEvent onHidePostureBar;
+        [HideInInspector] public UnityEvent onUpdatePostureBar;
+
 
         [Header("Components")]
         public CharacterBaseHealth health;
+        public Slider postureBarSlider;
 
         [Header("Optional AI Components")]
-
-        public UnityEngine.UI.Slider postureBarSlider;
         public CharacterBaseManager characterBaseManager;
         public bool isStunned = false;
-        private bool isDecreasingPosture = false;
 
-        private void Start()
-        {
-            InitializePostureHUD();
-        }
-
-        private void Update()
-        {
-            UpdatePosture();
-        }
+        private Coroutine postureDecayRoutine;
 
         public void ResetStates()
         {
             isStunned = false;
         }
 
-        public abstract int GetMaxPostureDamage();
-
-        public void InitializePostureHUD()
+        public virtual int GetMaxPostureDamage()
         {
-            if (postureBarSlider != null)
-            {
-                postureBarSlider.maxValue = GetMaxPostureDamage() * 0.01f;
-                postureBarSlider.value = currentPostureDamage * 0.01f;
-                postureBarSlider.gameObject.SetActive(false);
-            }
-        }
-
-        void UpdatePosture()
-        {
-            if (health.GetCurrentHealth() <= 0)
-            {
-                postureBarSlider.gameObject.SetActive(false);
-                return;
-            }
-
-            if (postureBarSlider != null)
-            {
-                postureBarSlider.maxValue = GetMaxPostureDamage() * 0.01f;
-                postureBarSlider.value = currentPostureDamage * 0.01f;
-                postureBarSlider.gameObject.SetActive(currentPostureDamage > 0);
-            }
-
-            if (isDecreasingPosture)
-            {
-                if (currentPostureDamage > 0)
-                {
-                    currentPostureDamage -= Time.deltaTime * GetPostureDecreateRate();
-                }
-                else
-                {
-                    isDecreasingPosture = false;
-                }
-            }
+            return characterBaseManager.combatant.maximumPosture;
         }
 
         public virtual bool TakePostureDamage(int extraPostureDamage)
         {
-            var postureDamage = 0;
-            if (extraPostureDamage != 0)
-            {
-                postureDamage = extraPostureDamage;
-            }
-
+            int postureDamage = extraPostureDamage;
             currentPostureDamage = Mathf.Clamp(currentPostureDamage + postureDamage, 0, GetMaxPostureDamage());
-            StartCoroutine(BeginDecreasingPosture());
+
+            onUpdatePostureBar?.Invoke();
+            onShowPostureBar?.Invoke();
+
+            if (postureDecayRoutine != null)
+            {
+                StopCoroutine(postureDecayRoutine);
+            }
+            postureDecayRoutine = StartCoroutine(BeginDecreasingPosture());
 
             if (currentPostureDamage >= GetMaxPostureDamage())
             {
@@ -101,14 +64,21 @@ namespace AF
             return false;
         }
 
-        public abstract bool CanPlayPostureDamagedEvent();
-
         IEnumerator BeginDecreasingPosture()
         {
-            isDecreasingPosture = false;
-            yield return new WaitForSeconds(1);
-            isDecreasingPosture = true;
+            yield return new WaitForSeconds(1f);
+
+            while (currentPostureDamage > 0 && health.GetCurrentHealth() > 0)
+            {
+                currentPostureDamage -= Time.deltaTime * GetPostureDecreateRate();
+                currentPostureDamage = Mathf.Max(0, currentPostureDamage);
+                onUpdatePostureBar?.Invoke();
+                yield return null;
+            }
+
+            onHidePostureBar?.Invoke();
         }
+
 
         public void BreakPosture()
         {
@@ -124,7 +94,10 @@ namespace AF
         {
             currentPostureDamage = 0f;
             isStunned = true;
+            postureDecayRoutine = null;
+
             characterBaseManager.health.PlayPostureBroke();
+            onHidePostureBar?.Invoke();
         }
 
         public void RecoverFromStunned()
@@ -135,10 +108,11 @@ namespace AF
 
         public abstract float GetPostureDecreateRate();
 
+        public abstract bool CanPlayPostureDamagedEvent();
+
         public int GetPostureDamageBonus()
         {
             return (int)(health.GetMaxHealth() * 12.5f) / 100;
         }
     }
-
 }

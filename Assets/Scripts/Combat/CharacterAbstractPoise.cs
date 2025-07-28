@@ -73,7 +73,11 @@ namespace AF
             currentPoiseHitCount = 0;
         }
 
-        public abstract int GetMaxPoiseHits();
+        public int GetMaxPoiseHits()
+        {
+            return characterManager.combatant.maximumPoise;
+        }
+
         public abstract bool CanCallPoiseDamagedEvent();
         public abstract void PlayHitReaction();
     }

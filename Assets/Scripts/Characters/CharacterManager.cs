@@ -138,6 +138,13 @@ namespace AF
                 !IsTargetInView() && IsBusy() == false
                 || faceTarget)
             {
+
+                if (health.GetCurrentHealth() <= 0)
+                {
+                    faceTarget = false;
+                    return;
+                }
+
                 RotateTowardsTarget(rotationSpeed);
             }
         }

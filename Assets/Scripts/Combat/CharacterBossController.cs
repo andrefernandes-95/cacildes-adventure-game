@@ -63,8 +63,14 @@ namespace AF
         public void Awake()
         {
             HideBossHud();
-        }
 
+            if (IsBoss())
+            {
+                characterManager.health.onShowHealthbar.AddListener(UpdateUI);
+                characterManager.health.onHideHealthbar.AddListener(UpdateUI);
+                characterManager.health.onUpdateHealthbar.AddListener(UpdateUI);
+            }
+        }
 
         /// <summary>
         /// Unity Event

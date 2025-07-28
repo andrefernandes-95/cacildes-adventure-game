@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using AF.Equipment;
 using AF.Events;
 using AF.Inventory;
 using AF.Music;
@@ -58,7 +60,10 @@ namespace AF
         // Last scroll position
         int lastScrollElementIndex = -1;
 
+        VisualElement ItemInfoPreview;
         Label ItemNamePreview;
+        Label ItemDescriptionPreview;
+        VisualElement ItemSprite;
         VisualElement StatsChangedContainer;
         VisualElement RequirementsPreview;
         VisualElement AttackDifferencesContainer, DefenseDifferencesContainer, ShieldDifferencesContainer;
@@ -80,6 +85,10 @@ namespace AF
             cursorManager.ShowCursor();
 
             ItemNamePreview = root.Q<Label>("ItemNamePreview");
+            ItemDescriptionPreview = root.Q<Label>("ItemDescriptionPreview");
+            ItemSprite = root.Q<VisualElement>("ItemSprite");
+            ItemInfoPreview = root.Q<VisualElement>("ItemInfoPreview");
+
             StatsChangedContainer = root.Q<VisualElement>("StatsChangedContainer");
             RequirementsPreview = root.Q<VisualElement>("RequirementsPreview");
 
@@ -165,7 +174,8 @@ namespace AF
             RequirementsPreview.style.opacity = 0;
 
             ItemNamePreview.text = "";
-            ItemNamePreview.style.display = DisplayStyle.None;
+            ItemDescriptionPreview.text = "";
+            ItemInfoPreview.style.display = DisplayStyle.None;
 
             ClearLabels();
         }
@@ -190,6 +200,7 @@ namespace AF
             StatsChangedContainer.style.display = DisplayStyle.None;
 
             var scrollView = this.root.Q<ScrollView>();
+            scrollView.verticalScroller.focusable = false;
             scrollView.Clear();
 
             Button exitButton = new()
@@ -200,7 +211,12 @@ namespace AF
             UIUtils.SetupButton(exitButton, () =>
             {
                 Close();
-            }, soundbank);
+            },
+            () =>
+            {
+                scrollView.ScrollTo(exitButton);
+            },
+            () => { }, false, soundbank);
 
             scrollView.Add(exitButton);
 
@@ -379,64 +395,47 @@ namespace AF
             {
                 UpdateWeaponIfEquipped(weapon);
             }
-        }
-
-        void UpdateWeaponIfEquipped(Weapon weapon)
-        {
-            if (weapon == null)
-                return;
-
-            bool shouldCallEquipmentChangedEvent = false;
-            bool foundInRightHand = false;
-
-            // Try to find and update weapon in right-hand (weapons) or left-hand (shields)
-            Weapon matchedEquippedWeapon = null;
-
-            foreach (var equippedWeapon in playerManager.equipmentDatabase.weapons)
+            else if (upgradableItem is Helmet helmet)
             {
-                if (equippedWeapon != null && equippedWeapon.itemID == weapon.itemID)
-                {
-                    matchedEquippedWeapon = equippedWeapon;
-                    foundInRightHand = true;
-                    break;
-                }
+                UpdateEquipmentIfEquipped(
+                    helmet,
+                    playerManager.playerInventory.inventoryDatabase.ownedHelmets,
+                    playerManager.equipmentDatabase.helmet,
+                    playerManager.characterBaseEquipment.UnequipHelmet,
+                    playerManager.characterBaseEquipment.EquipHelmet
+                );
             }
-
-            if (matchedEquippedWeapon == null)
+            else if (upgradableItem is Armor armor)
             {
-                foreach (var equippedShield in playerManager.equipmentDatabase.shields)
-                {
-                    if (equippedShield != null && equippedShield.itemID == weapon.itemID)
-                    {
-                        matchedEquippedWeapon = equippedShield;
-                        break;
-                    }
-                }
+                UpdateEquipmentIfEquipped(
+                    armor,
+                    playerManager.playerInventory.inventoryDatabase.ownedArmors,
+                    playerManager.equipmentDatabase.armor,
+                    playerManager.characterBaseEquipment.UnequipArmor,
+                    playerManager.characterBaseEquipment.EquipArmor
+                );
             }
-
-            // Update level in equipment database
-            if (matchedEquippedWeapon != null)
+            else if (upgradableItem is Gauntlet gauntlet)
             {
-                matchedEquippedWeapon.level = weapon.level;
+                UpdateEquipmentIfEquipped(
+                    gauntlet,
+                    playerManager.playerInventory.inventoryDatabase.ownedGauntlets,
+                    playerManager.equipmentDatabase.gauntlet,
+                    playerManager.characterBaseEquipment.UnequipGauntlets,
+                    playerManager.characterBaseEquipment.EquipGauntlets
+                );
             }
-
-            // Update level in world instance (hand slot)
-            CharacterWeaponHitbox currentInstance = foundInRightHand
-                ? playerManager.playerWeaponsManager.currentWeaponInstance
-                : playerManager.playerWeaponsManager.currentShieldInstance;
-
-            if (currentInstance != null && currentInstance.weapon != null && currentInstance.weapon.itemID == weapon.itemID)
+            else if (upgradableItem is Legwear legwear)
             {
-                currentInstance.weapon.level = weapon.level;
-                shouldCallEquipmentChangedEvent = true;
-            }
-
-            if (shouldCallEquipmentChangedEvent)
-            {
-                EventManager.EmitEvent(EventMessages.ON_EQUIPMENT_CHANGED);
+                UpdateEquipmentIfEquipped(
+                    legwear,
+                    playerManager.playerInventory.inventoryDatabase.ownedLegwears,
+                    playerManager.equipmentDatabase.legwear,
+                    playerManager.characterBaseEquipment.UnequipLegwear,
+                    playerManager.characterBaseEquipment.EquipLegwear
+                );
             }
         }
-
 
         void ClearLabels()
         {
@@ -456,6 +455,7 @@ namespace AF
             FireDefense.style.display = DisplayStyle.None;
             FrostDefense.style.display = DisplayStyle.None;
             LightningDefense.style.display = DisplayStyle.None;
+            DarknessDefense.style.display = DisplayStyle.None;
             MagicDefense.style.display = DisplayStyle.None;
             WaterDefense.style.display = DisplayStyle.None;
 
@@ -638,16 +638,16 @@ namespace AF
         {
             var nextLevel = shield.level + 1;
 
-            float currentPhysicalAttack = shield.GetCurrentAbsorption(shield.blockAbsorption);
-            float nextPhysicalAttack = shield.GetAbsorptionForLevel(shield.blockAbsorption, nextLevel);
+            float currentAbsorption = shield.GetCurrentAbsorption(shield.physicalAbsorption) * 100;
+            float nextAbsorption = shield.GetAbsorptionForLevel(shield.physicalAbsorption, nextLevel) * 100;
 
-            if (currentPhysicalAttack != 0)
+            if (currentAbsorption != 0)
             {
                 BlockAbsorption.style.display = DisplayStyle.Flex;
                 BlockAbsorption.text =
                     Utils.IsPortuguese()
-                        ? $"Absorção de Dano: {currentPhysicalAttack * 100}% > {nextPhysicalAttack * 100}%"
-                        : $"Damage Absorption: {currentPhysicalAttack * 100}% > {nextPhysicalAttack * 100}%";
+                        ? $"Absorção de Dano: {currentAbsorption}% > {nextAbsorption}%"
+                        : $"Damage Absorption: {currentAbsorption}% > {nextAbsorption}%";
             }
 
             ShieldDifferencesContainer.style.display = DisplayStyle.Flex;
@@ -702,6 +702,9 @@ namespace AF
 
             // Item preview
             ItemNamePreview.text = upgradableItem.GetName() + " +" + nextLevel;
+            ItemDescriptionPreview.text = upgradableItem.GetDescription();
+            ItemSprite.style.backgroundImage = new StyleBackground(upgradableItem.sprite);
+            ItemInfoPreview.style.display = DisplayStyle.Flex;
 
             ClearLabels();
 
@@ -746,6 +749,89 @@ namespace AF
             }
 
             GameAnalytics.NewDesignEvent(eventName, values);
+        }
+
+        void UpdateWeaponIfEquipped(Weapon weaponAfterUpgrade)
+        {
+            if (weaponAfterUpgrade == null)
+            {
+                return;
+            }
+
+            // Update weapon in inventory first
+            int indexOfWeaponInInventory = playerManager.playerInventory.inventoryDatabase.ownedWeapons.FindIndex(x => x != null && x.itemID == weaponAfterUpgrade.itemID);
+            if (indexOfWeaponInInventory != -1)
+            {
+                playerManager.playerInventory.inventoryDatabase.ownedWeapons[indexOfWeaponInInventory].level = weaponAfterUpgrade.level;
+            }
+            else
+            {
+                return;
+            }
+
+            Weapon weaponInInventory = playerManager.playerInventory.inventoryDatabase.ownedWeapons[indexOfWeaponInInventory];
+
+            bool hasFoundMatch = false;
+
+            // Then check if weapon is equipped - if it is, we need to reequip it
+            for (int i = 0; i < playerManager.equipmentDatabase.weapons.Length; i++)
+            {
+                Weapon potentialRightHandWeapon = playerManager.equipmentDatabase.weapons[i];
+
+                if (potentialRightHandWeapon != null && potentialRightHandWeapon.itemID == weaponInInventory.itemID)
+                {
+                    // Reequip
+                    playerManager.characterBaseEquipment.UnequipWeapon(i, true);
+                    playerManager.characterBaseEquipment.EquipWeapon(Instantiate(weaponInInventory), i, true);
+
+                    hasFoundMatch = true;
+                    break;
+                }
+            }
+
+            if (hasFoundMatch)
+            {
+                return;
+            }
+
+            for (int i = 0; i < playerManager.equipmentDatabase.shields.Length; i++)
+            {
+                Weapon potentialLeftHandWeapon = playerManager.equipmentDatabase.shields[i];
+
+                if (potentialLeftHandWeapon != null && potentialLeftHandWeapon.itemID == weaponInInventory.itemID)
+                {
+                    // Reequip
+                    playerManager.characterBaseEquipment.UnequipWeapon(i, false);
+                    playerManager.characterBaseEquipment.EquipWeapon(Instantiate(weaponInInventory), i, false);
+                    break;
+                }
+            }
+        }
+
+        void UpdateEquipmentIfEquipped<T>(
+            T itemAfterUpgrade,
+            List<T> ownedItems,
+            T currentlyEquippedItem,
+            Action UnequipAction,
+            Action<T> EquipAction
+        ) where T : ArmorBase // Or your common base class/interface
+        {
+            if (itemAfterUpgrade == null)
+                return;
+
+            int indexInInventory = ownedItems.FindIndex(x => x != null && x.itemID == itemAfterUpgrade.itemID);
+            if (indexInInventory == -1)
+                return;
+
+            ownedItems[indexInInventory].level = itemAfterUpgrade.level;
+
+            T itemInInventory = ownedItems[indexInInventory];
+
+            if (currentlyEquippedItem != null && currentlyEquippedItem.itemID == itemInInventory.itemID)
+            {
+                UnequipAction?.Invoke();
+                EquipAction?.Invoke(Instantiate(itemInInventory));
+            }
         }
     }
 }

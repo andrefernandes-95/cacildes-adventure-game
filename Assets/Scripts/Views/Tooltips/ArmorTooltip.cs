@@ -2,6 +2,7 @@ namespace AF
 {
     using System;
     using System.Collections.Generic;
+    using AF.Health;
     using AF.UI.EquipmentMenu;
     using UnityEngine;
 
@@ -16,13 +17,13 @@ namespace AF
 
             Dictionary<string, (int value, string enText, string ptText, Color color)> damageTypes = new()
             {
-                { "physical",  (armor.damageAbsorbed.physical,  "Physical Damage Absorbed", "Dano Físico Absorvido",    Color.white) },
-                { "fire",      (armor.damageAbsorbed.fire,      "Fire Damage Absorbed",     "Dano de Fogo Absorvido",   GUIIconsDatabase.fireColor) },
-                { "frost",     (armor.damageAbsorbed.frost,     "Frost Damage Absorbed",    "Dano de Gelo Absorvido",   GUIIconsDatabase.frostColor) },
-                { "lightning", (armor.damageAbsorbed.lightning, "Lightning Damage Absorbed","Dano Elétrico Absorvido",  GUIIconsDatabase.lightningColor) },
-                { "magic",     (armor.damageAbsorbed.magic,     "Magic Damage Absorbed",    "Dano Mágico Absorvido",    GUIIconsDatabase.magicColor) },
-                { "darkness",  (armor.damageAbsorbed.darkness,  "Darkness Damage Absorbed", "Dano de Trevas Absorvido", GUIIconsDatabase.darknessColor) },
-                { "water",     (armor.damageAbsorbed.water,     "Water Damage Absorbed",    "Dano Aquático Absorvido",  GUIIconsDatabase.waterColor) }
+                { "physical",  (armor.GetCurrentPhysicalDefenseForLevel(armor.level),  "Physical Damage Absorbed", "Dano Físico Absorvido",    Color.white) },
+                { "fire",      (armor.GetFireDefenseForLevel(armor.level),      "Fire Damage Absorbed",     "Dano de Fogo Absorvido",   GUIIconsDatabase.fireColor) },
+                { "frost",     (armor.GetFrostDefenseForLevel(armor.level),     "Frost Damage Absorbed",    "Dano de Gelo Absorvido",   GUIIconsDatabase.frostColor) },
+                { "lightning", (armor.GetLightningDefenseForLevel(armor.level), "Lightning Damage Absorbed","Dano Elétrico Absorvido",  GUIIconsDatabase.lightningColor) },
+                { "magic",     (armor.GetMagicDefenseForLevel(armor.level),     "Magic Damage Absorbed",    "Dano Mágico Absorvido",    GUIIconsDatabase.magicColor) },
+                { "darkness",  (armor.GetDarknessDefenseForLevel(armor.level),  "Darkness Damage Absorbed", "Dano de Trevas Absorvido", GUIIconsDatabase.darknessColor) },
+                { "water",     (armor.GetWaterDefenseForLevel(armor.level),     "Water Damage Absorbed",    "Dano Aquático Absorvido",  GUIIconsDatabase.waterColor) }
             };
 
             foreach (var entry in damageTypes)
@@ -47,15 +48,15 @@ namespace AF
                 Color.white,
                 damageLabel);
 
-            if (armor.damageAbsorbed.poiseDamage > 0)
+            if (armor.GetDamageAbsorbed().poiseDamage > 0)
             {
-                string label = $"+{armor.damageAbsorbed.poiseDamage} Poise";
+                string label = $"+{armor.GetDamageAbsorbed().poiseDamage} Poise";
                 label += "\n";
                 label += "<i><size=80%>(How many hits you can endure before you're interrupted)</i>";
 
                 if (Utils.IsPortuguese())
                 {
-                    label = $"+{armor.damageAbsorbed.poiseDamage} Equilíbrio";
+                    label = $"+{armor.GetDamageAbsorbed().poiseDamage} Equilíbrio";
                     label += "\n";
                     label += "<i><size=80%>(Quantos golpes consegues suportar antes de seres interrompido(a))</i>";
                 }
@@ -67,15 +68,15 @@ namespace AF
                     label);
             }
 
-            if (armor.damageAbsorbed.postureDamage > 0)
+            if (armor.GetDamageAbsorbed().postureDamage > 0)
             {
-                string label = $"+{armor.damageAbsorbed.postureDamage} Posture";
+                string label = $"+{armor.GetDamageAbsorbed().postureDamage} Posture";
                 label += "\n";
                 label += "<i><size=80%>(Your resistance to critical attacks, represented by a yellow bar)</i>";
 
                 if (Utils.IsPortuguese())
                 {
-                    label = $"+{armor.damageAbsorbed.postureDamage} Postura";
+                    label = $"+{armor.GetDamageAbsorbed().postureDamage} Postura";
                     label += "\n";
                     label += "<i><size=80%>(A tua resistência contra ataques críticos, representada por uma barra amarela)</i>";
                 }
@@ -88,12 +89,12 @@ namespace AF
             }
 
 
-            if (armor.damageAbsorbed.statusEffects != null && armor.damageAbsorbed.statusEffects.Length > 0)
+            if (armor.GetDamageAbsorbed().statusEffects != null && armor.GetDamageAbsorbed().statusEffects.Length > 0)
             {
                 itemTooltip.CreateTooltip(GUIIconsDatabase.statusEffects, Color.white, armor.GetFormattedStatusResistances());
             }
 
-            if (armor.statusEffectCancellationRates != null && armor.statusEffectCancellationRates.Length > 0)
+            if (armor.statusEffectDelayRates != null && armor.statusEffectDelayRates.Length > 0)
             {
                 itemTooltip.CreateTooltip(GUIIconsDatabase.statusEffects, Color.white, armor.GetFormattedStatusCancellationRates());
             }

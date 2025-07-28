@@ -6,5 +6,6 @@ namespace AF
     {
         public Transform leftHand;
         public Transform rightHand;
+        public Transform torso;
     }
 }

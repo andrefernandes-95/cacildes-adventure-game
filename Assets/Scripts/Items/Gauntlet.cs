@@ -7,6 +7,10 @@ namespace AF
     [CreateAssetMenu(menuName = "Items / Armor / New Gauntlet")]
     public class Gauntlet : ArmorBase
     {
+        public override float GetBonusStep(int level)
+        {
+            return .5f;
+        }
 
         public override void OnEquip(CharacterBaseManager character)
         {

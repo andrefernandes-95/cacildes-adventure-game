@@ -18,7 +18,7 @@ namespace AF
             hasEnabled = false;
         }
 
-        private void OnStateUpdate(Animator animator, AnimatorStateInfo animatorStateInfo, int layerIndex)
+        public override void OnStateUpdate(Animator animator, AnimatorStateInfo animatorStateInfo, int layerIndex)
         {
             if (!animator.IsInTransition(0) && hasEnabled == false)
             {
