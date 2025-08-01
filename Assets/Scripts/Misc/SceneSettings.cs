@@ -36,7 +36,11 @@ namespace AF
         public bool displaySceneName = true;
         public float displaySceneNameDelay = 3f;
         public float displaySceneNameDuration = 3f;
+
+        [Header("Scene Info")]
         public string sceneName = "";
+        public SceneLocation sceneLocation;
+
         public UIDocument sceneNameDocument;
         public AudioClip sceneNameSfx;
 
@@ -60,7 +64,11 @@ namespace AF
 
             onSceneStart?.Invoke();
 
-            if (string.IsNullOrEmpty(sceneName))
+            if (sceneLocation != null)
+            {
+                sceneName = sceneLocation.GetName();
+            }
+            else if (string.IsNullOrEmpty(sceneName))
             {
                 sceneName = SceneManager.GetActiveScene().name;
             }
@@ -176,7 +184,11 @@ namespace AF
 
             bgmManager.StopMusic();
 
-            AudioClip chosenAudioClip = playlist[Random.Range(0, playlist.Length)];
+            AudioClip chosenAudioClip =
+                    sceneLocation != null && sceneLocation.playlist.Length > 0
+                ? sceneLocation.playlist[Random.Range(0, sceneLocation.playlist.Length)]
+                : playlist[Random.Range(0, playlist.Length)];
+
             bgmManager.PlayMusic(chosenAudioClip);
             isPlayingMusicFromThePlaylist = true;
 
@@ -214,7 +226,7 @@ namespace AF
                 return;
             }
 
-            if (playlist != null && playlist.Length > 0)
+            if (playlist != null && playlist.Length > 0 || sceneLocation != null && sceneLocation.playlist != null && sceneLocation.playlist.Length > 0)
             {
                 EvaluatePlaylist();
             }
@@ -230,6 +242,21 @@ namespace AF
 
         void EvaluateNightMusic()
         {
+            if (sceneLocation != null)
+            {
+                if (sceneLocation.nightMusic != null)
+                {
+                    bgmManager.PlayMusic(sceneLocation.nightMusic);
+                }
+
+                if (sceneLocation.nightAmbience != null)
+                {
+                    bgmManager.PlayAmbience(sceneLocation.nightAmbience);
+                }
+
+                return;
+            }
+
             if (nightMusic != null)
             {
                 bgmManager.PlayMusic(nightMusic);
@@ -243,6 +270,21 @@ namespace AF
 
         void EvaluateDayMusic()
         {
+            if (sceneLocation != null)
+            {
+                if (sceneLocation.dayMusic != null)
+                {
+                    bgmManager.PlayMusic(sceneLocation.dayMusic);
+                }
+
+                if (sceneLocation.dayAmbience != null)
+                {
+                    bgmManager.PlayAmbience(sceneLocation.dayAmbience);
+                }
+
+                return;
+            }
+
             if (dayMusic != null)
             {
                 bgmManager.PlayMusic(dayMusic);

@@ -440,7 +440,10 @@ namespace AF
 
             foreach (var ingredient in recipe.ingredients)
             {
-                playerManager.playerInventory.RemoveItem(ingredient.ingredient, ingredient.amount);
+                for (int i = 0; i < ingredient.amount; i++)
+                {
+                    inventoryDatabase.RemoveCraftingMaterial(ingredient.ingredient);
+                }
             }
         }
 
@@ -515,16 +518,8 @@ namespace AF
                 ingredientItemEntry.Q<IMGUIContainer>("ItemIcon").style.backgroundImage = new StyleBackground(ingredient.ingredient.sprite);
                 ingredientItemEntry.Q<Label>("Title").text = ingredient.ingredient.GetName();
 
-                var playerOwnedIngredientAmount = 0;
-
-                var playerOwnedIngredient = inventoryDatabase.HasItem(ingredient.ingredient)
-                    ? inventoryDatabase.ownedItems[ingredient.ingredient]
-                    : null;
-
-                if (playerOwnedIngredient != null)
-                {
-                    playerOwnedIngredientAmount = playerOwnedIngredient.amount;
-                }
+                var playerOwnedIngredientAmount =
+                    CraftingUtils.GetCraftingMaterialAmountInInventory(inventoryDatabase, ingredient.ingredient);
 
                 ingredientItemEntry.Q<Label>("Amount").text = playerOwnedIngredientAmount + " / " + ingredient.amount;
                 ingredientItemEntry.Q<Label>("Amount").style.opacity = playerOwnedIngredientAmount >= ingredient.amount ? 1 : 0.25f;

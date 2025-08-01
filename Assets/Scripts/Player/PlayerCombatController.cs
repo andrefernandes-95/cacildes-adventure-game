@@ -8,6 +8,7 @@ namespace AF
     public class PlayerCombatController : MonoBehaviour
     {
         public float crossFade = 0.1f;
+        public readonly string hashRunAttack = "Run Attack";
         public readonly string hashAttackWhileBlocking = "Attack While Blocking";
         public readonly string hashLightAttack1 = "Light Attack 1";
         public readonly string hashLightAttack2 = "Light Attack 2";
@@ -102,9 +103,13 @@ namespace AF
             {
                 playerManager.playerWeaponsManager.ShowEquipment();
 
-                if (playerManager.playerBlockController.isBlocking)
+                if (IsBlocking())
                 {
                     HandleAttackWhileBlocking();
+                }
+                else if (playerManager.thirdPersonController.IsSprinting())
+                {
+                    HandleRunAttack();
                 }
                 else
                 {
@@ -129,6 +134,11 @@ namespace AF
         public bool IsAttacking()
         {
             return isLightAttacking || isHeavyAttacking || isJumpAttacking;
+        }
+
+        bool IsBlocking()
+        {
+            return playerManager.playerBlockController.isBlocking && playerManager.starterAssetsInputs.block;
         }
 
         public void HandleLightAttack()
@@ -270,6 +280,12 @@ namespace AF
         void HandleAttackWhileBlocking()
         {
             playerManager.PlayBusyAnimationWithRootMotion(hashAttackWhileBlocking);
+            HandleAttackSpeed();
+        }
+
+        void HandleRunAttack()
+        {
+            playerManager.PlayBusyAnimationWithRootMotion(hashRunAttack);
             HandleAttackSpeed();
         }
 

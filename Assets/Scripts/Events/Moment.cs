@@ -43,9 +43,15 @@ namespace AF.Events
         public UnityEvent onMoment_Start;
         public UnityEvent onMoment_End;
 
+        protected GenericTrigger genericTrigger;
+
+        float timeToReenableTrigger = 1f;
+
         private void Awake()
         {
             CollectEventsFromChildren();
+
+            genericTrigger = GetComponent<GenericTrigger>();
         }
 
         private void CollectEventsFromChildren()
@@ -66,6 +72,11 @@ namespace AF.Events
             if (isRunning)
             {
                 return;
+            }
+
+            if (genericTrigger != null)
+            {
+                genericTrigger.DisableCapturable();
             }
 
             onMoment_Start?.Invoke();
@@ -103,6 +114,16 @@ namespace AF.Events
             onMoment_End?.Invoke();
             isRunning = false;
             EventManager.EmitEvent(EventMessages.ON_MOMENT_END);
+
+            Invoke(nameof(ReenableTrigger), timeToReenableTrigger);
+        }
+
+        void ReenableTrigger()
+        {
+            if (genericTrigger != null)
+            {
+                genericTrigger.TurnCapturable();
+            }
         }
 
         private void OnDisable()

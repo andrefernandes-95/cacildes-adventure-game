@@ -197,7 +197,7 @@ namespace AF.Stats
                 }
 
                 StatusEffectCancellationRate[] statusEffectCancellationRates = shield.statusEffectDelayRates;
-                if (statusEffectCancellationRates.Length > 0)
+                if (statusEffectCancellationRates != null && statusEffectCancellationRates.Length > 0)
                 {
                     EvaluateItemResistance(statusEffectCancellationRates);
                 }

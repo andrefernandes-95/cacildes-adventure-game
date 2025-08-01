@@ -12,7 +12,21 @@ namespace AF
         public Sprite image;
 
         [Header("Teleport Settings")]
-        public string sceneName;
-        public string spawnGameObjectNameRef = "Bonfire Spawnref";
+        public SceneLocation sceneLocation;
+        public SpawnLocationData spawnLocationData;
+
+        [Header("Settings")]
+        public bool isUnlockable = true;
+        public bool canFastTravel = true;
+
+        public string GetName()
+        {
+            if (Utils.IsPortuguese())
+            {
+                return portugueseName;
+            }
+
+            return englishName;
+        }
     }
 }

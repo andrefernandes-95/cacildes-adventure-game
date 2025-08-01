@@ -1,6 +1,4 @@
 using System.Collections;
-using System.Linq;
-using AF.Dialogue;
 using UnityEngine;
 
 namespace AF
@@ -12,8 +10,20 @@ namespace AF
 
         DialogueMaker _dialogueMaker;
 
+        [Header("Options")]
+        CharacterManager dialogueOwner;
+        [SerializeField] bool shouldStopCharacter = true;
+        [SerializeField] bool shouldFacePlayer = true;
+
+        void Start()
+        {
+            dialogueOwner = GetComponentInParent<CharacterManager>();
+        }
+
         public override IEnumerator Dispatch()
         {
+            OnDialogueStart();
+
             if (Utils.IsPortuguese())
             {
                 yield return StartCoroutine(GetDialogueMaker().PlayStory(new Ink.Runtime.Story(portugueseStory.text)));
@@ -23,7 +33,32 @@ namespace AF
                 yield return StartCoroutine(GetDialogueMaker().PlayStory(new Ink.Runtime.Story(englishStory.text)));
             }
 
-            Debug.Log("Story has finished");
+            OnDialogueEnd();
+        }
+
+        void OnDialogueStart()
+        {
+            if (dialogueOwner != null)
+            {
+                if (shouldStopCharacter)
+                {
+                    dialogueOwner.agent.enabled = false;
+                    dialogueOwner.stateManager.gameObject.SetActive(false);
+                }
+
+                if (shouldFacePlayer)
+                {
+                    dialogueOwner.FacePlayer();
+                }
+            }
+        }
+
+        void OnDialogueEnd()
+        {
+            if (dialogueOwner != null && shouldStopCharacter)
+            {
+                dialogueOwner.stateManager.gameObject.SetActive(true);
+            }
         }
 
         private void OnDisable()

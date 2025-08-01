@@ -21,6 +21,7 @@ namespace AF.Bonfires
         [Header("UI")]
         public string bonfireId;
         public string bonfireName;
+        public BonfireSite bonfireSite;
 
         [HideInInspector]
         public bool canBeTravelledTo = true;
@@ -50,16 +51,16 @@ namespace AF.Bonfires
             GameAnalytics.NewDesignEvent(eventName);
         }
 
-        public void UnlockBonfire(string bonfireName)
+        public void UnlockBonfire(string bonfireID)
         {
-            if (bonfiresDatabase.unlockedBonfires.Contains(bonfireName))
+            if (bonfiresDatabase.unlockedBonfires.Contains(bonfireID))
             {
                 return;
             }
 
-            LogAnalytic(AnalyticsUtils.OnUnlockBonfire(bonfireId));
+            LogAnalytic(AnalyticsUtils.OnUnlockBonfire(bonfireID));
 
-            bonfiresDatabase.unlockedBonfires.Add(bonfireName);
+            bonfiresDatabase.unlockedBonfires.Add(bonfireID);
         }
 
         PlayerManager GetPlayerManager()
@@ -129,9 +130,9 @@ namespace AF.Bonfires
 
             GetCompanionsSceneManager()?.TeleportCompanionsNearPlayer();
 
-            if (canBeTravelledTo)
+            if (bonfireSite != null && bonfireSite.isUnlockable || canBeTravelledTo)
             {
-                UnlockBonfire(bonfireId);
+                UnlockBonfire(bonfireSite != null ? bonfireSite.name : bonfireId);
             }
 
             SetPlayerLockState(true);
@@ -187,7 +188,7 @@ namespace AF.Bonfires
 
         public string GetBonfireName()
         {
-            return bonfireName;
+            return bonfireSite != null ? bonfireSite.GetName() : bonfireName;
         }
 
     }

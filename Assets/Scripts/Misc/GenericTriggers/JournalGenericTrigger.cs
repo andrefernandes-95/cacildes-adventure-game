@@ -16,6 +16,8 @@ namespace AF
 
         bool hasLoadedBookMetadata = false;
 
+        float timeToReenableTrigger = 1f;
+
         private void Awake()
         {
             LocalizationSettings.SelectedLocaleChanged += (value) =>
@@ -29,7 +31,17 @@ namespace AF
         [ContextMenu("Load Ink Book")]
         public void LoadInkBook()
         {
+            DisableCapturable();
+
+            GetUIDocumentBookV2().onJournalClose.RemoveListener(OnReadingFinished);
+            GetUIDocumentBookV2().onJournalClose.AddListener(OnReadingFinished);
+
             GetUIDocumentBookV2().BeginReadInk(Utils.IsPortuguese() ? portugueseBook : englishBook);
+        }
+
+        void OnReadingFinished()
+        {
+            Invoke(nameof(ReenableTrigger), timeToReenableTrigger);
         }
 
         UIDocumentBookV2 GetUIDocumentBookV2()
@@ -81,6 +93,11 @@ namespace AF
                     }
                 }
             }
+        }
+
+        void ReenableTrigger()
+        {
+            TurnCapturable();
         }
     }
 }

@@ -9,7 +9,6 @@ namespace AF
 
         [SerializeField] IdleState idleState;
 
-        GenericTrigger genericTrigger => GetComponent<GenericTrigger>();
 
         private void Awake()
         {

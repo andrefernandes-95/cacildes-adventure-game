@@ -25,6 +25,7 @@ namespace AF
         [SerializeField] AnimationClip oh_PowerStanceAttack2;
         [SerializeField] AnimationClip oh_PowerStance_HeavyAttack1;
         [SerializeField] AnimationClip oh_PowerStance_HeavyAttack2;
+        [SerializeField] AnimationClip oh_RunAttack;
 
         [Header("Two Handing")]
         [SerializeField] AnimationClip th_Idle;
@@ -38,6 +39,7 @@ namespace AF
         [SerializeField] AnimationClip th_HeavyAttack1;
         [SerializeField] AnimationClip th_HeavyAttack2;
         [SerializeField] AnimationClip th_HeavyAttack3;
+        [SerializeField] AnimationClip th_RunAttack;
 
         [Header("Blocking")]
         [SerializeField] WeaponBlockAnimation weaponBlockAnimation;
@@ -104,6 +106,10 @@ namespace AF
             if (oh_HeavyAttack3 != null)
             {
                 animationOverrides.Add(new() { animationName = "Cacildes - Heavy Attack - 3", animationClip = oh_HeavyAttack3 });
+            }
+            if (oh_RunAttack != null)
+            {
+                animationOverrides.Add(new() { animationName = "Cacildes - Run Attack", animationClip = oh_RunAttack });
             }
 
             return animationOverrides;
@@ -193,6 +199,10 @@ namespace AF
             if (th_HeavyAttack3 != null)
             {
                 animationOverrides.Add(new() { animationName = "Cacildes - Heavy Attack - 3", animationClip = th_HeavyAttack3 });
+            }
+            if (th_RunAttack != null)
+            {
+                animationOverrides.Add(new() { animationName = "Cacildes - Run Attack", animationClip = th_RunAttack });
             }
 
             animationOverrides.AddRange(weaponBlockAnimation.GetTwoHandBlockingAnimations());

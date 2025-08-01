@@ -44,7 +44,11 @@ namespace AF
 
             questTitle.text = questParent.questName_LocalizedString.GetLocalizedString();
 
-            if (questParent.questObjectiveInfos != null && questParent.questObjectiveInfos.Length > 0)
+            if (questParent.objectives != null && questParent.objectives.Count > 0)
+            {
+                questDescription.text = questParent.objectives[0].GetDescription();
+            }
+            else if (questParent.questObjectiveInfos != null && questParent.questObjectiveInfos.Length > 0)
             {
                 questDescription.text = questParent.questObjectiveInfos[0].objectiveDescription.GetLocalizedString();
             }

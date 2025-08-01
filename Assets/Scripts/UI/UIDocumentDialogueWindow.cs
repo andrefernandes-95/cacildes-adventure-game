@@ -222,7 +222,6 @@ namespace AF
 
                 UIUtils.SetupButton(newDialogueChoiceItem.Q<Button>(), () =>
                 {
-                    cursorManager.HideCursor();
                     selectedResponse = response;
                     response.onResponseSelected?.Invoke();
                     playerManager.thirdPersonController.LockCameraPosition = false;
@@ -294,8 +293,9 @@ namespace AF
 
             dialogueChoicePanel.style.display = DisplayStyle.Flex;
 
-            Button elementToFocus = null;
+            cursorManager.ShowCursor();
 
+            Button elementToFocus = null;
             foreach (var response in responses)
             {
                 var newDialogueChoiceItem = dialogueChoiceItem.CloneTree();
@@ -313,5 +313,6 @@ namespace AF
 
             elementToFocus?.Focus();
         }
+
     }
 }

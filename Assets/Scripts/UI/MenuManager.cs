@@ -24,6 +24,7 @@ namespace AF
         public UIDocumentBlacksmith uIDocumentBlacksmith;
         public TitleScreenManager titleScreenManager;
         public UIDocumentBook uIDocumentBook;
+        public UIDocumentBookV2 uIDocumentBookV2;
         public UIDocumentGameOver uIDocumentGameOver;
         public UIDocumentShopMenu uIDocumentShopMenu;
         public UIDocumentCharacterCustomization uIDocumentCharacterCustomization;
@@ -229,6 +230,13 @@ namespace AF
             if (uIDocumentBook != null)
             {
                 if (uIDocumentBook.isActiveAndEnabled)
+                {
+                    return false;
+                }
+            }
+            if (uIDocumentBookV2 != null)
+            {
+                if (uIDocumentBookV2.isActiveAndEnabled)
                 {
                     return false;
                 }

@@ -1,3 +1,4 @@
+using AF;
 using UnityEditor;
 using UnityEngine;
 
@@ -15,7 +16,8 @@ public class GameSession : ScriptableObject
     public GameState gameState = GameState.NOT_INITIALIZED;
 
     [Header("Teleport")]
-    public string nextMap_SpawnGameObjectName;
+    public SpawnLocationData nextMap_SpawnLocationData;
+
     [Header("Arena Settings")]
     public bool isParticipatingInArenaEvent = false;
 
@@ -65,7 +67,7 @@ public class GameSession : ScriptableObject
         initialTimeOfDay = 11;
         isParticipatingInArenaEvent = false;
         loadSavedPlayerPositionAndRotation = false;
-        nextMap_SpawnGameObjectName = "";
+        nextMap_SpawnLocationData = null;
         currentGameIteration = 0;
     }
 

@@ -1,4 +1,4 @@
-using System.Collections;
+using System.Linq;
 using AF.Bonfires;
 using AF.Companions;
 using AF.Loading;
@@ -6,7 +6,6 @@ using AF.Music;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Localization.Settings;
-using UnityEngine.SceneManagement;
 
 namespace AF
 {
@@ -25,6 +24,8 @@ namespace AF
         public BGMManager bGMManager;
         public CompanionsSceneManager companionsSceneManager;
         public NotificationManager notificationManager;
+
+        [SerializeField] SpawnLocationData bonfireSpawnLocationData;
 
         void Start()
         {
@@ -45,17 +46,22 @@ namespace AF
                 return;
             }
 
-            Teleport(bonfiresDatabase.lastBonfireSceneId, "Bonfire Spawnref");
+            Teleport(bonfiresDatabase.lastBonfireSceneId, bonfireSpawnLocationData);
         }
 
         public void Teleport(string sceneName)
         {
-            Teleport(sceneName, "A");
+            Teleport(sceneName, bonfireSpawnLocationData);
         }
 
-        public void Teleport(string sceneName, string spawnGameObjectNameRef)
+        public void Teleport(SceneLocation sceneLocation, SpawnLocationData spawnLocationData)
         {
-            gameSession.nextMap_SpawnGameObjectName = spawnGameObjectNameRef;
+            Teleport(sceneLocation.id, spawnLocationData);
+        }
+
+        public void Teleport(string sceneName, SpawnLocationData spawnLocationData)
+        {
+            gameSession.nextMap_SpawnLocationData = spawnLocationData;
 
             bGMManager.StopMusic();
 
@@ -77,11 +83,15 @@ namespace AF
 
                 playerManager.playerComponentManager.UpdatePosition(gameSession.savedPlayerPosition, gameSession.savedPlayerRotation);
             }
-            else if (!string.IsNullOrEmpty(gameSession.nextMap_SpawnGameObjectName))
+            else if (gameSession.nextMap_SpawnLocationData != null)
             {
 
-                GameObject spawnGameObject = GameObject.Find(gameSession.nextMap_SpawnGameObjectName);
-                gameSession.nextMap_SpawnGameObjectName = "";
+                SpawnLocationTransform[] candidates = FindObjectsByType<SpawnLocationTransform>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+
+                GameObject spawnGameObject = candidates
+                    .FirstOrDefault(candidate => candidate.spawnLocationData == gameSession.nextMap_SpawnLocationData)?.gameObject;
+
+                gameSession.nextMap_SpawnLocationData = null;
 
                 if (spawnGameObject != null)
                 {

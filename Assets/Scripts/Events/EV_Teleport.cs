@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using UnityEngine;
 
 namespace AF
@@ -6,8 +7,12 @@ namespace AF
     public class EV_Teleport : EventBase
     {
         [Header("Teleport Settings")]
-        public string sceneName;
-        public string spawnGameObjectName;
+        [Obsolete] public string sceneName;
+        [Obsolete] public string spawnGameObjectName;
+
+
+        public SceneLocation sceneToTeleportTo;
+        public SpawnLocationData spawnAt;
 
         // Scene Refs
         TeleportManager teleportManager;
@@ -20,7 +25,7 @@ namespace AF
 
         public void Teleport()
         {
-            GetTeleportManager().Teleport(sceneName, spawnGameObjectName);
+            GetTeleportManager().Teleport(sceneToTeleportTo, spawnAt);
         }
 
         TeleportManager GetTeleportManager()

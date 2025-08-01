@@ -46,9 +46,69 @@ namespace AF
         [Header("Systems")]
         public GameSession gameSession;
 
+        bool ShouldUseFog()
+        {
+            if (sceneSettings.sceneLocation != null && sceneSettings.sceneLocation.useFog)
+            {
+                return true;
+            }
+
+            return useFog;
+        }
+
+        bool ShouldOverride()
+        {
+            if (sceneSettings.sceneLocation != null && sceneSettings.sceneLocation.useSceneLightSettings)
+            {
+                return true;
+            }
+
+            return useOverride;
+        }
+
+        float GetFogDensity()
+        {
+            if (sceneSettings.sceneLocation != null && sceneSettings.sceneLocation.useSceneLightSettings)
+            {
+                return sceneSettings.sceneLocation.fogDensity;
+            }
+
+            return fogDensity;
+        }
+
+        Gradient GetAmbientColor()
+        {
+            if (sceneSettings.sceneLocation != null && sceneSettings.sceneLocation.useSceneLightSettings)
+            {
+                return sceneSettings.sceneLocation.AmbientColor;
+            }
+
+            return AmbientColor;
+        }
+
+        Gradient GetDirectionalColor()
+        {
+            if (sceneSettings.sceneLocation != null && sceneSettings.sceneLocation.useSceneLightSettings)
+            {
+                return sceneSettings.sceneLocation.DirectionalColor;
+            }
+
+            return DirectionalColor;
+        }
+
+        Gradient GetFogColor()
+        {
+            if (sceneSettings.sceneLocation != null && sceneSettings.sceneLocation.useSceneLightSettings)
+            {
+                return sceneSettings.sceneLocation.FogColor;
+            }
+
+            return FogColor;
+        }
+
         private void Start()
         {
-            RenderSettings.fogDensity = fogDensity;
+            RenderSettings.fogDensity = GetFogDensity();
         }
 
         /// <summary>
@@ -227,23 +287,23 @@ namespace AF
                 RenderSettings.skybox = dawnSky;
             }
 
-            RenderSettings.ambientLight = useOverride ? AmbientColor.Evaluate(timePercent) : gameSession.AmbientColor.Evaluate(timePercent);
+            RenderSettings.ambientLight = ShouldOverride() ? GetAmbientColor().Evaluate(timePercent) : gameSession.AmbientColor.Evaluate(timePercent);
 
-            if (useFog)
+            if (ShouldUseFog())
             {
-                RenderSettings.fogColor = useOverride ? FogColor.Evaluate(timePercent) : gameSession.FogColor.Evaluate(timePercent);
+                RenderSettings.fogColor = ShouldOverride() ? GetFogColor().Evaluate(timePercent) : gameSession.FogColor.Evaluate(timePercent);
             }
 
             if (directionalLight != null)
             {
-                directionalLight.color = useOverride ? DirectionalColor.Evaluate(timePercent) : gameSession.DirectionalColor.Evaluate(timePercent);
+                directionalLight.color = ShouldOverride() ? GetDirectionalColor().Evaluate(timePercent) : gameSession.DirectionalColor.Evaluate(timePercent);
                 directionalLight.transform.localRotation = Quaternion.Euler(new Vector3((timePercent * 360f) - 90f, -170f, 0));
             }
         }
 
         public bool TimePassageAllowed()
         {
-            return sceneSettings != null && sceneSettings.isInterior == false;
+            return sceneSettings != null && sceneSettings.isInterior == false && sceneSettings.sceneLocation?.isInterior == false;
         }
 
         private void OnValidate()

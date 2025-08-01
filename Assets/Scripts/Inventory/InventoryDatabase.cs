@@ -271,7 +271,7 @@ namespace AF.Inventory
                 Consumable consumable => ownedConsumables.Exists(x => x == itemToFind),
                 Accessory accessory => ownedAccessories.Exists(x => x == itemToFind),
                 UpgradeMaterial upgradeMaterial => ownedUpgradeMaterials.Exists(x => x == itemToFind),
-                CraftingMaterial craftingMaterial => ownedCraftingMaterials.Exists(x => x == itemToFind),
+                CraftingMaterial craftingMaterial => ownedCraftingMaterials.Exists(x => x.EqualsTo(itemToFind)),
                 KeyItem keyItem => ownedKeyItems.Exists(x => x == itemToFind),
                 _ => false,
             };
@@ -303,6 +303,15 @@ namespace AF.Inventory
             if (idx != -1)
             {
                 ownedConsumables.RemoveAt(idx);
+            }
+        }
+
+        public void RemoveCraftingMaterial(CraftingMaterial craftingMaterial)
+        {
+            int idx = ownedCraftingMaterials.FindIndex(x => x.EqualsTo(craftingMaterial));
+            if (idx != -1)
+            {
+                ownedCraftingMaterials.RemoveAt(idx);
             }
         }
     }

@@ -239,9 +239,19 @@ namespace AF
             var objectiveScrollView = root.Q<ScrollView>("QuestObjectivesScrollView");
             objectiveScrollView.Clear();
 
-            for (int i = 0; i < selectedQuest.questObjectives.Length; i++)
+            if (selectedQuest.objectives != null && selectedQuest.objectives.Count > 0)
             {
-                DrawObjective(selectedQuest, selectedQuest.questObjectives[i], i, objectiveScrollView);
+                for (int i = 0; i < selectedQuest.questObjectives.Length; i++)
+                {
+                    DrawObjective(selectedQuest, selectedQuest.objectives[i], i, objectiveScrollView);
+                }
+            }
+            else
+            {
+                for (int i = 0; i < selectedQuest.questObjectives.Length; i++)
+                {
+                    DrawObjective(selectedQuest, selectedQuest.questObjectives[i], i, objectiveScrollView);
+                }
             }
         }
 
@@ -267,6 +277,81 @@ namespace AF
             }
         }
 
+        public void DrawObjective(QuestParent questParent, QuestObjective questObjective, int index, ScrollView scrollView)
+        {
+            bool isCompleted = questParent.IsObjectiveCompleted(questObjective);
+            bool isLocked = !isCompleted && index > questParent.questProgress;
+            bool isCurrent = index == questParent.questProgress;
+
+            var entry = questInfoButton.CloneTree();
+            var descLabel = entry.Q<Label>("Description");
+
+            entry.Q<Label>("Type").text = Utils.IsPortuguese() ? "Objetivo" : "Objective";
+            entry.Q<Label>("Label").style.display = DisplayStyle.None;
+
+            descLabel.text = isLocked ? (Utils.IsPortuguese() ? "Objetivo ainda não revelado" : "Unrevelead objective") : questObjective.GetDescription();
+            descLabel.style.fontSize = isLocked ? 16 : 24;
+            descLabel.style.color = Color.white;
+            descLabel.style.marginRight = 10;
+            descLabel.style.unityFontStyleAndWeight = isCurrent ? FontStyle.Bold : FontStyle.Normal;
+
+            var checkbox = entry.Q<Toggle>("ObjectiveCompletedCheckbox");
+            checkbox.value = isCompleted;
+            checkbox.style.display = isLocked ? DisplayStyle.None : DisplayStyle.Flex;
+
+            var image = entry.Q<VisualElement>("Image");
+            if (isLocked)
+            {
+                image.style.backgroundImage = new StyleBackground(unrevealedObjectiveSprite);
+                image.style.display = DisplayStyle.Flex;
+                image.style.width = 120;
+                image.style.height = 120;
+                entry.style.opacity = 0.5f;
+            }
+            else
+            {
+                if (questParent.objectives != null && questParent.objectives.Count > 0)
+                {
+                    var info = index < questParent.objectives.Count ? questParent.objectives[index] : null;
+                    if (info?.objectiveImage != null)
+                    {
+                        image.style.backgroundImage = new StyleBackground(info.objectiveImage);
+                        image.style.display = DisplayStyle.Flex;
+                    }
+                    else
+                    {
+                        image.style.display = DisplayStyle.None;
+                    }
+                }
+                else // TODO Remove
+                {
+                    if (questObjective?.objectiveImage != null)
+                    {
+                        image.style.backgroundImage = new StyleBackground(questObjective.objectiveImage);
+                        image.style.display = DisplayStyle.Flex;
+                    }
+                    else
+                    {
+                        image.style.display = DisplayStyle.None;
+                    }
+                }
+            }
+
+            entry.Q<Button>().RegisterCallback<FocusInEvent>(ev => scrollView.ScrollTo(entry));
+            scrollView.Add(entry);
+
+            if (questParent.objectives != null && questParent.objectives.Count > 0)
+            {
+                var objectiveInfo = index < questParent.objectives.Count ? questParent.objectives[index] : null;
+
+                if (objectiveInfo != null && !isLocked && objectiveInfo.location != null && objectiveInfo.closestBonfire != null)
+                {
+                    DrawLocation(objectiveInfo.location.GetName(), objectiveInfo.closestBonfire.GetName(), objectiveInfo.closestBonfire.image, entry.Q("CardDetails"));
+                }
+            }
+        }
+
+        // TODO: Remove
         public void DrawObjective(QuestParent questParent, string questObjective, int index, ScrollView scrollView)
         {
             bool isCompleted = questParent.IsObjectiveCompleted(questObjective);
@@ -300,36 +385,65 @@ namespace AF
             }
             else
             {
-                var info = index < questParent.questObjectiveInfos.Length ? questParent.questObjectiveInfos[index] : null;
-                if (info?.objectiveImage != null)
+                if (questParent.objectives != null && questParent.objectives.Count > 0)
                 {
-                    image.style.backgroundImage = new StyleBackground(info.objectiveImage);
-                    image.style.display = DisplayStyle.Flex;
+                    var info = index < questParent.objectives.Count ? questParent.objectives[index] : null;
+                    if (info?.objectiveImage != null)
+                    {
+                        image.style.backgroundImage = new StyleBackground(info.objectiveImage);
+                        image.style.display = DisplayStyle.Flex;
+                    }
+                    else
+                    {
+                        image.style.display = DisplayStyle.None;
+                    }
                 }
-                else
+                else // TODO Remove
                 {
-                    image.style.display = DisplayStyle.None;
+                    var info = index < questParent.questObjectiveInfos.Length ? questParent.questObjectiveInfos[index] : null;
+                    if (info?.objectiveImage != null)
+                    {
+                        image.style.backgroundImage = new StyleBackground(info.objectiveImage);
+                        image.style.display = DisplayStyle.Flex;
+                    }
+                    else
+                    {
+                        image.style.display = DisplayStyle.None;
+                    }
                 }
             }
 
             entry.Q<Button>().RegisterCallback<FocusInEvent>(ev => scrollView.ScrollTo(entry));
             scrollView.Add(entry);
 
-            var objectiveInfo = index < questParent.questObjectiveInfos.Length ? questParent.questObjectiveInfos[index] : null;
-
-            if (objectiveInfo != null && !isLocked && !objectiveInfo.location.IsEmpty)
+            if (questParent.objectives != null && questParent.objectives.Count > 0)
             {
-                DrawLocation(objectiveInfo, entry.Q("CardDetails"));
+                var objectiveInfo = index < questParent.objectives.Count ? questParent.objectives[index] : null;
+
+                if (objectiveInfo != null && !isLocked && objectiveInfo.location != null && objectiveInfo.closestBonfire != null)
+                {
+                    DrawLocation(objectiveInfo.location.GetName(), objectiveInfo.closestBonfire.GetName(), objectiveInfo.closestBonfire.image, entry.Q("CardDetails"));
+                }
+            }
+            else
+            {
+                // TODO: OLD STUFF, Remove
+                var objectiveInfo = index < questParent.questObjectiveInfos.Length ? questParent.questObjectiveInfos[index] : null;
+
+                if (objectiveInfo != null && !isLocked && !objectiveInfo.location.IsEmpty)
+                {
+                    DrawLocation(objectiveInfo.location.GetLocalizedString(), objectiveInfo.closestBonfire.GetLocalizedString(), objectiveInfo.locationImage, entry.Q("CardDetails"));
+                }
             }
         }
 
-        public void DrawLocation(QuestObjectiveInfo info, VisualElement parent)
+        public void DrawLocation(string location, string closestBonfire, Sprite locationImage, VisualElement parent)
         {
             var entry = CreateInfoEntry(
                 Utils.IsPortuguese() ? "Localização" : "Location",
-                info.location.GetLocalizedString(),
-                (Utils.IsPortuguese() ? "Viagem Rápida: " : "Quick Travel: ") + info.closestBonfire.GetLocalizedString(),
-                info.locationImage,
+                location,
+                (Utils.IsPortuguese() ? "Viagem Rápida: " : "Quick Travel: ") + closestBonfire,
+                locationImage,
                 false
             );
             parent.Add(entry);

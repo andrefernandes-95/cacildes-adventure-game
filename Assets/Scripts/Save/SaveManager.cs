@@ -442,7 +442,7 @@ namespace AF
         void LoadSceneSettings(QuickSaveReader quickSaveReader)
         {
             gameSession.currentGameIteration = 0;
-            gameSession.nextMap_SpawnGameObjectName = null;
+            gameSession.nextMap_SpawnLocationData = null;
             gameSession.loadSavedPlayerPositionAndRotation = true;
 
             quickSaveReader.TryRead("playerPosition", out Vector3 playerPosition);

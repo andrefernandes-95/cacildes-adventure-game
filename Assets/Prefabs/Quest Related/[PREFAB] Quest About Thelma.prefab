@@ -264,58 +264,10 @@ MonoBehaviour:
   comment: Add children game objects with events. To execute, call Moment.Triger()
   onMoment_Start:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 7491421399618702190}
-        m_TargetAssemblyTypeName: AF.CharacterManager, AF
-        m_MethodName: FaceTarget
-        m_Mode: 2
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Transform, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: AF.Dialogue.GreetingMessageController, AF
-        m_MethodName: HideGreetingMessage
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: AF.Soundbank, AF
-        m_MethodName: PlaySound
-        m_Mode: 2
-        m_Arguments:
-          m_ObjectArgument: {fileID: 8300000, guid: 4e3a2817fb1133f4fab91bd2cf2766f8, type: 3}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.AudioClip, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   onMoment_End:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 7491421399618702190}
-        m_TargetAssemblyTypeName: AF.CharacterManager, AF
-        m_MethodName: FaceInitialRotation
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &2282142074670007570
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -419,58 +371,10 @@ MonoBehaviour:
   comment: Add children game objects with events. To execute, call Moment.Triger()
   onMoment_Start:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 7491421399618702190}
-        m_TargetAssemblyTypeName: AF.CharacterManager, AF
-        m_MethodName: FaceTarget
-        m_Mode: 2
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Transform, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: AF.Dialogue.GreetingMessageController, AF
-        m_MethodName: HideGreetingMessage
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: AF.Soundbank, AF
-        m_MethodName: PlaySound
-        m_Mode: 2
-        m_Arguments:
-          m_ObjectArgument: {fileID: 8300000, guid: 4e3a2817fb1133f4fab91bd2cf2766f8, type: 3}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.AudioClip, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   onMoment_End:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 7491421399618702190}
-        m_TargetAssemblyTypeName: AF.CharacterManager, AF
-        m_MethodName: FaceInitialRotation
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &7203546039303650580
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -571,6 +475,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   questParent: {fileID: 11400000, guid: 80f076c28931f1a42801f13bcd6c68e4, type: 2}
   questProgresses: 00000000
+  questMustNotHaveStarted: 0
+  questMustBeCompleted: 0
+  requiredObjectives: []
   shouldBeWithinRange: 1
   shouldBeOutsideRange: 0
   listenForQuestChanges: 1
@@ -851,6 +758,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   englishStory: {fileID: 4900000, guid: 17c9fe808eb5a3049b7a68606eb863dd, type: 3}
   portugueseStory: {fileID: 4900000, guid: 872f2452b5600d048a7bdc8f103dbcf5, type: 3}
+  shouldStopCharacter: 1
+  shouldFacePlayer: 1
 --- !u!114 &4340342454849014528
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -927,6 +836,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   questParent: {fileID: 11400000, guid: 80f076c28931f1a42801f13bcd6c68e4, type: 2}
   questProgresses: ffffffff
+  questMustNotHaveStarted: 0
+  questMustBeCompleted: 0
+  requiredObjectives: []
   shouldBeWithinRange: 1
   shouldBeOutsideRange: 0
   listenForQuestChanges: 1
@@ -1025,6 +937,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   questParent: {fileID: 11400000, guid: 80f076c28931f1a42801f13bcd6c68e4, type: 2}
   questProgresses: 01000000
+  questMustNotHaveStarted: 0
+  questMustBeCompleted: 0
+  requiredObjectives: []
   shouldBeWithinRange: 1
   shouldBeOutsideRange: 0
   listenForQuestChanges: 1
@@ -1075,6 +990,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   questParent: {fileID: 11400000, guid: 80f076c28931f1a42801f13bcd6c68e4, type: 2}
   questProgresses: ffffffff
+  questMustNotHaveStarted: 0
+  questMustBeCompleted: 0
+  requiredObjectives: []
   shouldBeWithinRange: 1
   shouldBeOutsideRange: 0
   listenForQuestChanges: 1
@@ -1125,6 +1043,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   questParent: {fileID: 11400000, guid: 80f076c28931f1a42801f13bcd6c68e4, type: 2}
   questProgresses: 02000000
+  questMustNotHaveStarted: 0
+  questMustBeCompleted: 0
+  requiredObjectives: []
   shouldBeWithinRange: 1
   shouldBeOutsideRange: 0
   listenForQuestChanges: 1
@@ -1272,6 +1193,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   questParent: {fileID: 11400000, guid: 80f076c28931f1a42801f13bcd6c68e4, type: 2}
   questProgresses: ffffffff00000000
+  questMustNotHaveStarted: 0
+  questMustBeCompleted: 0
+  requiredObjectives: []
   shouldBeWithinRange: 0
   shouldBeOutsideRange: 1
   listenForQuestChanges: 1
@@ -1453,6 +1377,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   questParent: {fileID: 11400000, guid: 80f076c28931f1a42801f13bcd6c68e4, type: 2}
   questProgresses: 00000000
+  questMustNotHaveStarted: 0
+  questMustBeCompleted: 0
+  requiredObjectives: []
   shouldBeWithinRange: 1
   shouldBeOutsideRange: 0
   listenForQuestChanges: 1
@@ -1554,34 +1481,10 @@ MonoBehaviour:
   comment: Add children game objects with events. To execute, call Moment.Triger()
   onMoment_Start:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 6474041641630494005}
-        m_TargetAssemblyTypeName: AF.EventBase, AF
-        m_MethodName: Execute
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   onMoment_End:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1240993985199883927}
-        m_TargetAssemblyTypeName: AF.EventBase, AF
-        m_MethodName: Execute
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &6805525664563712973
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1682,6 +1585,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   questParent: {fileID: 11400000, guid: 80f076c28931f1a42801f13bcd6c68e4, type: 2}
   questProgresses: 02000000
+  questMustNotHaveStarted: 0
+  questMustBeCompleted: 0
+  requiredObjectives: []
   shouldBeWithinRange: 1
   shouldBeOutsideRange: 0
   listenForQuestChanges: 1
@@ -1732,6 +1638,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   questParent: {fileID: 11400000, guid: 80f076c28931f1a42801f13bcd6c68e4, type: 2}
   questProgresses: 01000000
+  questMustNotHaveStarted: 0
+  questMustBeCompleted: 0
+  requiredObjectives: []
   shouldBeWithinRange: 1
   shouldBeOutsideRange: 0
   listenForQuestChanges: 1
@@ -1942,34 +1851,10 @@ MonoBehaviour:
   comment: Add children game objects with events. To execute, call Moment.Triger()
   onMoment_Start:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 6474041641630494005}
-        m_TargetAssemblyTypeName: AF.EventBase, AF
-        m_MethodName: Execute
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   onMoment_End:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1240993985199883927}
-        m_TargetAssemblyTypeName: AF.EventBase, AF
-        m_MethodName: Execute
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &8399564361043173993
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3366,6 +3251,10 @@ PrefabInstance:
       propertyPath: 'questProgresses.Array.data[0]'
       value: -1
       objectReference: {fileID: 0}
+    - target: {fileID: 691839057599254365, guid: 1d4ad8111310603419a605972d4f4d41, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 784681305066847540, guid: 1d4ad8111310603419a605972d4f4d41, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -3426,6 +3315,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1360539448120621579, guid: 1d4ad8111310603419a605972d4f4d41, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1389876706077339120, guid: 1d4ad8111310603419a605972d4f4d41, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -3453,6 +3346,10 @@ PrefabInstance:
     - target: {fileID: 1576564352995890806, guid: 1d4ad8111310603419a605972d4f4d41, type: 3}
       propertyPath: _id.Value
       value: 961442db-8df5-47b2-8908-fd1d52b401e8
+      objectReference: {fileID: 0}
+    - target: {fileID: 1578891874332174792, guid: 1d4ad8111310603419a605972d4f4d41, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1723879216867060562, guid: 1d4ad8111310603419a605972d4f4d41, type: 3}
       propertyPath: onMoment_Start.m_PersistentCalls.m_Calls.Array.size
@@ -3485,6 +3382,10 @@ PrefabInstance:
     - target: {fileID: 1869032738920998545, guid: 1d4ad8111310603419a605972d4f4d41, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2185187769359862249, guid: 1d4ad8111310603419a605972d4f4d41, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2256452805952500108, guid: 1d4ad8111310603419a605972d4f4d41, type: 3}
       propertyPath: m_AnchorMax.y
@@ -3626,6 +3527,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2646269234431945507, guid: 1d4ad8111310603419a605972d4f4d41, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2688655173462095322, guid: 1d4ad8111310603419a605972d4f4d41, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -3672,6 +3577,10 @@ PrefabInstance:
     - target: {fileID: 2738698598456507154, guid: 1d4ad8111310603419a605972d4f4d41, type: 3}
       propertyPath: responses.Array.size
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2780847557601409954, guid: 1d4ad8111310603419a605972d4f4d41, type: 3}
+      propertyPath: greetingState
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 2841358010066050717, guid: 1d4ad8111310603419a605972d4f4d41, type: 3}
       propertyPath: m_IsActive
@@ -3941,6 +3850,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4525123484661948487, guid: 1d4ad8111310603419a605972d4f4d41, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4557508993929192014, guid: 1d4ad8111310603419a605972d4f4d41, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -4149,6 +4062,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -7.5
       objectReference: {fileID: 0}
+    - target: {fileID: 5590278733115721452, guid: 1d4ad8111310603419a605972d4f4d41, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5619372727836968618, guid: 1d4ad8111310603419a605972d4f4d41, type: 3}
       propertyPath: hitSfx
       value: 
@@ -4208,6 +4125,10 @@ PrefabInstance:
     - target: {fileID: 5724153243058312763, guid: 1d4ad8111310603419a605972d4f4d41, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5727751574252443593, guid: 1d4ad8111310603419a605972d4f4d41, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5781049678911836863, guid: 1d4ad8111310603419a605972d4f4d41, type: 3}
       propertyPath: m_AnchorMax.y
@@ -4357,6 +4278,14 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7297448887241018185, guid: 1d4ad8111310603419a605972d4f4d41, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7333051295680733830, guid: 1d4ad8111310603419a605972d4f4d41, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7421654764802550259, guid: 1d4ad8111310603419a605972d4f4d41, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -4428,6 +4357,10 @@ PrefabInstance:
     - target: {fileID: 7704988058352613591, guid: 1d4ad8111310603419a605972d4f4d41, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7809549107158573076, guid: 1d4ad8111310603419a605972d4f4d41, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7830028083437357906, guid: 1d4ad8111310603419a605972d4f4d41, type: 3}
       propertyPath: onTakeDamage.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
@@ -4712,17 +4645,6 @@ PrefabInstance:
       addedObject: {fileID: 3607055252467205145}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1d4ad8111310603419a605972d4f4d41, type: 3}
---- !u!114 &1240993985199883927 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8676516671929985923, guid: 1d4ad8111310603419a605972d4f4d41, type: 3}
-  m_PrefabInstance: {fileID: 7589067321693990164}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c07ccdb5c7c59e0408167c1a7ce525d2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!82 &2867206590287191840 stripped
 AudioSource:
   m_CorrespondingSourceObject: {fileID: 5664285568916419124, guid: 1d4ad8111310603419a605972d4f4d41, type: 3}
@@ -4742,28 +4664,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9b33123913c043e4fbed612785d797e1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &6474041641630494005 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3497504806512132129, guid: 1d4ad8111310603419a605972d4f4d41, type: 3}
-  m_PrefabInstance: {fileID: 7589067321693990164}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c07ccdb5c7c59e0408167c1a7ce525d2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &7491421399618702190 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1055857268342400634, guid: 1d4ad8111310603419a605972d4f4d41, type: 3}
-  m_PrefabInstance: {fileID: 7589067321693990164}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4011914ff19fe314c95808aa4fa140c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!4 &8552073131662130448 stripped

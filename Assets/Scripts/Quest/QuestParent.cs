@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using AF.Events;
 using GameAnalyticsSDK;
@@ -23,14 +24,22 @@ namespace AF
         public Texture questIcon;
 
         [Header("Quest Objectives")]
+        [Obsolete("Use objectives")]
         public string[] questObjectives;
+        [Obsolete("Use objectives")]
         public LocalizedString[] questObjectives_LocalizedString;
+        [Obsolete("Use objectives")]
         public QuestObjectiveInfo[] questObjectiveInfos;
+
+        [Header("Quest Objectives Data")]
+        public List<QuestObjective> objectives = new();
+
         public Character questGiver;
         public Character[] relatedCharacters;
 
         [Header("Quest Progress")]
         public int questProgress = -1;
+        public List<QuestObjective> completedObjectives = new();
 
         [Header("Quest Description")]
         public LocalizedString questDescription;
@@ -128,6 +137,11 @@ namespace AF
         public bool IsObjectiveCompleted(string questObjective)
         {
             return questProgress > Array.IndexOf(questObjectives, questObjective);
+        }
+
+        public bool IsObjectiveCompleted(QuestObjective questObjective)
+        {
+            return completedObjectives.Contains(questObjective);
         }
 
         void LogAnalytic(string eventName)

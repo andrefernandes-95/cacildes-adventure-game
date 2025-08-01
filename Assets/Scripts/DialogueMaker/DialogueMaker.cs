@@ -14,8 +14,6 @@ namespace AF
         public UIDocumentDialogueWindow dialogueWindow;
         [SerializeField] PlayerManager playerManager;
         [SerializeField] CursorManager cursorManager;
-
-
         Dictionary<string, Character> charactersLookUp = new();
 
         DialogueFunctions dialogueFunctions => GetComponent<DialogueFunctions>();
@@ -91,6 +89,8 @@ namespace AF
                     OnMessageEnd();
                 }
             }
+
+            cursorManager.HideCursor();
         }
 
         void OnMessageStart()
@@ -107,13 +107,11 @@ namespace AF
 
         void OnChoicesStart()
         {
-            cursorManager.ShowCursor();
             playerManager.thirdPersonController.SetLockCameraPosition(true);
         }
 
         void OnChoicesEnd()
         {
-            cursorManager.HideCursor();
             playerManager.thirdPersonController.SetLockCameraPosition(false);
         }
 

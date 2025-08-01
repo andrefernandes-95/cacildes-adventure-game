@@ -195,7 +195,9 @@ namespace AF
         {
             foreach (var completedQuest in completedQuests)
             {
-                int questObjectiveCount = completedQuest.questObjectives.Length;
+                int questObjectiveCount = completedQuest.objectives != null && completedQuest.objectives.Count > 0
+                    ? completedQuest.objectives.Count
+                    : completedQuest.questObjectives.Length;
 
                 completedQuest.SetProgress(questObjectiveCount);
             }

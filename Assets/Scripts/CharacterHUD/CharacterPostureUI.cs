@@ -23,14 +23,14 @@ namespace AF.Health
         {
             this.characterBaseManager = characterBaseManager;
 
-            characterBaseManager.characterPosture.onShowPostureBar.AddListener(OnShowPostureBar);
-            characterBaseManager.characterPosture.onHidePostureBar.AddListener(OnHidePostureBar);
+            characterBaseManager.characterPosture.onShowPostureBar.AddListener(OnUpdatePostureBar);
             characterBaseManager.characterPosture.onUpdatePostureBar.AddListener(OnUpdatePostureBar);
+            characterBaseManager.characterPosture.onHidePostureBar.AddListener(OnHidePostureBar);
 
             OnHidePostureBar();
         }
 
-        void OnShowPostureBar()
+        void ShowPostureBar()
         {
             if (!this.isActiveAndEnabled)
             {
@@ -64,6 +64,11 @@ namespace AF.Health
             slider.value = currentValue * 0.01f;
 
             currentAndMaxValue.text = $"{(int)currentValue}/{maxValue}";
+
+            if (!gameObject.activeSelf)
+            {
+                ShowPostureBar();
+            }
         }
     }
 }

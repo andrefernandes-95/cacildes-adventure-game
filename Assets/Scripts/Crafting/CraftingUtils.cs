@@ -8,23 +8,21 @@ namespace AF
 {
     public static class CraftingUtils
     {
+        public static int GetCraftingMaterialAmountInInventory(InventoryDatabase inventoryDatabase, Item ingredient)
+        {
+            return inventoryDatabase
+                .ownedCraftingMaterials
+                .Sum(craftingMaterial => craftingMaterial != null && craftingMaterial.EqualsTo(ingredient) ? 1 : 0);
+
+        }
+
         public static bool CanCraftItem(InventoryDatabase inventoryDatabase, CraftingRecipe recipe)
         {
             bool hasEnoughMaterial = true;
 
             foreach (var ingredient in recipe.ingredients)
             {
-                var itemEntry = inventoryDatabase.HasItem(ingredient.ingredient)
-                    ? inventoryDatabase.ownedItems[ingredient.ingredient]
-                    : null;
-
-                if (itemEntry == null)
-                {
-                    hasEnoughMaterial = false;
-                    break;
-                }
-
-                if (itemEntry.amount >= ingredient.amount)
+                if (GetCraftingMaterialAmountInInventory(inventoryDatabase, ingredient.ingredient) >= ingredient.amount)
                 {
                     hasEnoughMaterial = true;
                 }

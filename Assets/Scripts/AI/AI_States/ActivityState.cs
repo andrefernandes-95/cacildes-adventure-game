@@ -79,7 +79,11 @@ namespace AF
                 }
 
                 characterManager.agent.stoppingDistance = currentActivity.stoppingDistance;
-                characterManager.agent.SetDestination(currentActivity.GetActivityDestination().position);
+
+
+                NavMeshPath navMeshPath = new();
+                characterManager.agent.CalculatePath(currentActivity.GetActivityDestination().position, navMeshPath);
+                characterManager.agent.SetPath(navMeshPath);
 
                 if (HasReachedActivity())
                 {

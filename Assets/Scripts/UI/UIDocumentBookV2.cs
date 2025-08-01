@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Ink.Runtime;
 using UnityEngine;
 using UnityEngine.Events;
@@ -8,15 +9,16 @@ using UnityEngine.UIElements;
 
 namespace AF
 {
+    public struct PageElement
+    {
+        public string title;
+        public List<string> images;
+        public List<List<string>> groupedImages;
+        public string content;
+    }
+
     public class UIDocumentBookV2 : MonoBehaviour
     {
-        enum PageElementType { Text, Image }
-
-        struct PageElement
-        {
-            public PageElementType type;
-            public string content; // text or image path
-        }
 
         VisualElement root;
         VisualElement bookFront, bookPage, bookBack, notePage;
@@ -24,8 +26,20 @@ namespace AF
         VisualElement leftPageContent, rightPageContent;
         Label bookTitle, bookAuthor, notePageTitle, notePageText, leftPageTitle, rightPageTitle;
 
+
+        enum BookState
+        {
+            Cover,
+            PageContent,
+            Back,
+            Note
+        }
+
+        BookState currentState = BookState.Cover;
+
+
         [Header("Indexes")]
-        public int currentPage = -1;
+        public int currentPage = 0;
 
         [Header("Events")]
         public UnityEvent onJournalOpen;
@@ -40,7 +54,7 @@ namespace AF
         Coroutine SetIsReadingCoroutine;
 
         Story inkStory;
-        List<(string title, List<PageElement> elements)> inkPages = new();
+        List<PageElement> inkPages = new(); // text or image path)> inkPages = new();
 
         string bookTitleText = "Untitled";
         string bookAuthorText = "Unknown";
@@ -84,16 +98,31 @@ namespace AF
             rightPageContent = rightPage.Q<VisualElement>("PageContent");
         }
 
+        void ClearState()
+        {
+            currentPage = 0;
+            if (inkPages.Count <= 1)
+            {
+                currentState = BookState.Note;
+            }
+            else
+            {
+                currentState = BookState.Cover;
+            }
+        }
+
         public void BeginReadInk(TextAsset inkJSON)
         {
             inkStory = new Story(inkJSON.text);
             inkPages.Clear();
-            currentPage = -1;
-
             ParseInkBook();
 
+            ClearState();
+
             gameObject.SetActive(true);
-            ShowCover();
+
+            ShowCurrentState();
+
             onJournalOpen?.Invoke();
 
             if (SetIsReadingCoroutine != null)
@@ -119,7 +148,7 @@ namespace AF
 
             while (inkStory.canContinue)
             {
-                string raw = inkStory.Continue().Trim();
+                string raw = inkStory.Continue();
 
                 if (string.IsNullOrWhiteSpace(raw)) continue;
 
@@ -149,84 +178,49 @@ namespace AF
                 parsingMetadata = false;
                 string currentTitle = "";
 
+                PageElement newPageElement = new();
+                List<string> images = new();
+                List<List<string>> groupedImages = new();
+
                 foreach (var tag in inkStory.currentTags)
                 {
                     if (tag.StartsWith("Chapter:", System.StringComparison.OrdinalIgnoreCase))
                     {
                         currentTitle = tag.Substring("Chapter:".Length).Trim();
                     }
-                }
-
-                List<PageElement> elements = new();
-
-                System.Text.StringBuilder currentText = new();
-
-                var parts = raw.Split(new[] { "image:" }, StringSplitOptions.None);
-
-                for (int i = 0; i < parts.Length; i++)
-                {
-                    var part = parts[i];
-
-                    if (i == 0)
+                    else if (tag.StartsWith("Image:", System.StringComparison.OrdinalIgnoreCase))
                     {
-                        // First part, always text before any image
-                        currentText.Append(part.Trim());
-                        continue;
+                        string imagePath = tag.Substring("Image:".Length).Trim();
+                        images.Add(imagePath);
                     }
-
-                    // For subsequent parts, extract image path and remaining text
-                    int pngIndex = part.IndexOf(".png");
-
-                    if (pngIndex != -1)
+                    else if (tag.StartsWith("Images:", System.StringComparison.OrdinalIgnoreCase))
                     {
-                        // Extract image path: from start of part up to .png
-                        string imagePath = part.Substring(0, pngIndex + 4).Trim();
+                        string imagePath = tag.Substring("Images:".Length).Trim();
+                        string[] separatedImages = imagePath.Split(",");
 
-                        // Flush accumulated text before image
-                        if (currentText.Length > 0)
+                        List<string> groupedImagesToAdd = new();
+                        foreach (var img in separatedImages)
                         {
-                            elements.Add(new PageElement
-                            {
-                                type = PageElementType.Text,
-                                content = currentText.ToString().Trim()
-                            });
-                            currentText.Clear();
+                            groupedImagesToAdd.Add(img);
                         }
 
-                        // Add image element
-                        elements.Add(new PageElement
-                        {
-                            type = PageElementType.Image,
-                            content = imagePath
-                        });
-
-                        // Append rest of the part (after image path) as text
-                        string remainingText = part.Substring(pngIndex + 4).Trim();
-                        if (!string.IsNullOrEmpty(remainingText))
-                        {
-                            currentText.Append(remainingText);
-                        }
-                    }
-                    else
-                    {
-                        // No image in this part, just text
-                        currentText.Append(part.Trim());
+                        groupedImages.Add(groupedImagesToAdd);
                     }
                 }
 
-                // Flush any remaining text
-                if (currentText.Length > 0)
+                newPageElement.title = currentTitle;
+
+                if (!string.IsNullOrEmpty(raw))
                 {
-                    elements.Add(new PageElement
+                    inkPages.Add(new()
                     {
-                        type = PageElementType.Text,
-                        content = currentText.ToString().Trim()
+                        title = currentTitle,
+                        content = raw,
+                        images = images,
+                        groupedImages = groupedImages
                     });
                 }
-
-                inkPages.Add(new() { title = currentTitle, elements = elements });
             }
-
         }
 
         void OnClose()
@@ -262,34 +256,91 @@ namespace AF
         {
             if (inkPages.Count == 0) return;
 
-            if (forward)
+            switch (currentState)
             {
-                currentPage = Mathf.Clamp(currentPage == -1 ? 0 : currentPage + 2, -1, inkPages.Count);
-            }
-            else
-            {
-                currentPage = Mathf.Clamp(currentPage - 2, -1, inkPages.Count);
+                case BookState.Cover:
+                    if (forward)
+                    {
+                        currentPage = 0;
+                        currentState = BookState.PageContent;
+                    }
+                    break;
+
+                case BookState.PageContent:
+                    if (forward)
+                    {
+                        currentPage += 2;
+
+                        if (currentPage >= inkPages.Count)
+                        {
+                            currentState = BookState.Back;
+                        }
+                    }
+                    else
+                    {
+                        currentPage -= 2;
+                        if (currentPage < 0)
+                        {
+                            currentState = BookState.Cover;
+                            currentPage = 0;
+                        }
+                    }
+                    break;
+
+                case BookState.Back:
+                    if (!forward)
+                    {
+                        currentState = BookState.PageContent;
+                        currentPage = inkPages.Count - (inkPages.Count % 2 == 0 ? 2 : 1);
+                    }
+                    break;
+
+                case BookState.Note:
+                    currentPage = 0;
+                    break;
             }
 
-            if (currentPage == -1)
+            ShowCurrentState();
+        }
+
+        void ShowCurrentState()
+        {
+            switch (currentState)
             {
-                ShowCover();
+                case BookState.Cover:
+                    ShowCover();
+                    break;
+
+                case BookState.PageContent:
+                    if (currentPage + 1 >= inkPages.Count)
+                    {
+                        ShowSingleInkPage(inkPages[currentPage], false);
+                    }
+                    else
+                    {
+                        ShowInkPages(inkPages[currentPage], inkPages[currentPage + 1]);
+                    }
+                    break;
+
+                case BookState.Back:
+                    ShowBack();
+                    break;
+
+                case BookState.Note:
+                    ShowNotePage(inkPages[currentPage]);
+                    break;
             }
-            else if (currentPage > inkPages.Count - 1)
-            {
-                ShowBack();
-            }
-            else
-            {
-                if (currentPage + 1 > inkPages.Count - 1)
-                {
-                    ShowSingleInkPage(inkPages[currentPage], false);
-                }
-                else
-                {
-                    ShowInkPages(inkPages[currentPage], inkPages[currentPage + 1]);
-                }
-            }
+        }
+
+        public void ShowNotePage(PageElement pageElements)
+        {
+            bookFront.style.display = DisplayStyle.None;
+            bookPage.style.display = DisplayStyle.None;
+            bookBack.style.display = DisplayStyle.None;
+            notePage.style.display = DisplayStyle.Flex;
+
+            notePageTitle.text = pageElements.title;
+            notePageText.text = pageElements.content;
         }
 
         void ShowCover()
@@ -315,27 +366,27 @@ namespace AF
             bookBack.style.backgroundColor = coverColor;
         }
 
-        void ShowSingleInkPage((string title, List<PageElement> elements) page, bool renderOnRight)
+        void ShowSingleInkPage(PageElement pageElements, bool renderOnRight)
         {
             soundbank.PlaySound(soundbank.bookFlip);
             bookFront.style.display = DisplayStyle.None;
             bookPage.style.display = DisplayStyle.Flex;
             bookBack.style.display = DisplayStyle.None;
             notePage.style.display = DisplayStyle.None;
+            rightPageContent.Clear();
+            leftPageContent.Clear();
 
             if (renderOnRight)
             {
-                leftPageContent.Clear();
-                RenderPageContent(page.elements, rightPageContent, rightPageTitle, page.title);
+                RenderPageContent(pageElements, rightPageContent, rightPageTitle, pageElements.title);
             }
             else
             {
-                rightPageContent.Clear();
-                RenderPageContent(page.elements, leftPageContent, leftPageTitle, page.title);
+                RenderPageContent(pageElements, leftPageContent, leftPageTitle, pageElements.title);
             }
         }
 
-        void ShowInkPages((string title, List<PageElement> elements) left, (string title, List<PageElement> elements) right)
+        void ShowInkPages(PageElement left, PageElement right)
         {
             soundbank.PlaySound(soundbank.bookFlip);
             bookFront.style.display = DisplayStyle.None;
@@ -343,17 +394,17 @@ namespace AF
             bookBack.style.display = DisplayStyle.None;
             notePage.style.display = DisplayStyle.None;
 
-            RenderPageContent(left.elements, leftPageContent, leftPageTitle, left.title);
-            RenderPageContent(right.elements, rightPageContent, rightPageTitle, right.title);
+            RenderPageContent(left, leftPageContent, leftPageTitle, left.title);
+            RenderPageContent(right, rightPageContent, rightPageTitle, right.title);
         }
 
-        void RenderPageContent(List<PageElement> elements, VisualElement container, Label titleLabel, string title)
+        void RenderPageContent(PageElement elements, VisualElement container, Label titleLabel, string title)
         {
             container.Clear();
 
             if (!string.IsNullOrEmpty(title))
             {
-                var label = new Label(FormatText(title));
+                var label = new Label(title);
                 label.style.whiteSpace = WhiteSpace.Normal;
                 label.style.marginBottom = 6;
                 label.AddToClassList("label-text");
@@ -361,22 +412,19 @@ namespace AF
                 container.Add(label);
             }
 
-            foreach (var element in elements)
+            if (elements.images.Count > 0)
             {
-                if (element.type == PageElementType.Text)
-                {
-                    var label = new Label(FormatText(element.content));
-                    label.style.whiteSpace = WhiteSpace.Normal;
-                    label.style.marginBottom = 6;
-                    label.AddToClassList("label-text");
-                    label.AddToClassList("book-chapter-paragraph");
-                    container.Add(label);
-                }
-                else if (element.type == PageElementType.Image)
+                VisualElement imageContainer = new VisualElement();
+                imageContainer.style.display = DisplayStyle.Flex;
+                imageContainer.style.flexDirection = FlexDirection.Row;
+                imageContainer.style.alignItems = Align.Center;
+
+                foreach (var element in elements.images)
                 {
                     var image = new Image();
-                    var cleanPath = element.content.Replace("Assets/Resources/", "").Replace(".png", "");
+                    var cleanPath = element.Replace("Assets/Resources/", "").Replace(".png", "");
                     var sprite = Resources.Load<Sprite>(cleanPath);
+
                     if (sprite != null)
                     {
                         image.image = sprite.texture;
@@ -385,16 +433,59 @@ namespace AF
                         image.scaleMode = ScaleMode.ScaleToFit;
                         image.style.marginTop = 8;
                         image.style.marginBottom = 8;
-                        container.Add(image);
-                    }
-                    else
-                    {
-                        Debug.LogWarning($"[Book] Image not found: {element.content}");
+                        imageContainer.Add(image);
                     }
                 }
+
+                container.Add(imageContainer);
+            }
+
+            if (elements.groupedImages.Count > 0)
+            {
+                foreach (var group in elements.groupedImages)
+                {
+                    VisualElement imageContainer = new VisualElement();
+                    imageContainer.style.display = DisplayStyle.Flex;
+                    imageContainer.style.flexDirection = FlexDirection.Row;
+                    imageContainer.style.alignItems = Align.Center;
+
+                    foreach (var imageInGroup in group)
+                    {
+                        var image = new Image();
+                        var cleanPath = imageInGroup.Replace("Assets/Resources/", "").Replace(".png", "");
+                        var sprite = Resources.Load<Sprite>(cleanPath);
+
+                        if (sprite != null)
+                        {
+                            image.image = sprite.texture;
+                            image.style.width = sprite.texture.width * .75f;
+                            image.style.height = sprite.texture.height * .75f;
+                            image.scaleMode = ScaleMode.ScaleToFit;
+                            image.style.marginTop = 4;
+                            image.style.marginBottom = 4;
+                            image.style.marginRight = 4;
+                            image.style.marginLeft = 4;
+                            imageContainer.Add(image);
+                        }
+                    }
+
+                    container.Add(imageContainer);
+                }
+            }
+
+            if (!string.IsNullOrEmpty(elements.content))
+            {
+                string textContent = elements.content;
+                textContent = textContent.Replace("[br]", "\n");
+                var label = new Label(textContent);
+
+                label.style.whiteSpace = WhiteSpace.PreWrap;
+                label.style.marginBottom = 6;
+                label.AddToClassList("label-text");
+                label.AddToClassList("book-chapter-paragraph");
+                container.Add(label);
             }
         }
 
-        string FormatText(string text) => text.Replace("\r", "");
     }
 }

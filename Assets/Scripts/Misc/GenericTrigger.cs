@@ -32,8 +32,6 @@ namespace AF
         UIDocumentKeyPrompt _uIDocumentKeyPrompt;
         StarterAssetsInputs _starterAssetsInputs;
 
-        const float MAX_INTERACT_ANGLE = 30f;
-
         StarterAssetsInputs GetStarterAssetsInputs()
         {
             if (_starterAssetsInputs == null)
@@ -133,7 +131,6 @@ namespace AF
             {
                 return;
             }
-
         }
 
         public virtual string GetAction()

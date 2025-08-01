@@ -23,16 +23,16 @@ namespace AF.Health
         {
             this.characterBaseManager = characterBaseManager;
 
-            characterBaseManager.health.onShowHealthbar.AddListener(OnShowHealthbar);
-            characterBaseManager.health.onHideHealthbar.AddListener(OnHideHealthbar);
+            characterBaseManager.health.onShowHealthbar.AddListener(OnUpdateHealthbar);
             characterBaseManager.health.onUpdateHealthbar.AddListener(OnUpdateHealthbar);
+            characterBaseManager.health.onHideHealthbar.AddListener(OnHideHealthbar);
 
 
             OnHideHealthbar();
         }
 
 
-        void OnShowHealthbar()
+        void ShowHealthbar()
         {
             if (IsBoss())
             {
@@ -75,7 +75,7 @@ namespace AF.Health
 
             if (!gameObject.activeSelf)
             {
-                OnShowHealthbar();
+                ShowHealthbar();
             }
         }
 
