@@ -6688,13 +6688,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 136564195c01c2147a6f2939665076ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  character: {fileID: 11400000, guid: 1fcb53913f83ea64f953952218cb6bba, type: 2}
-  shopGold: 1500
-  itemsToSell:
-    _serializedList: []
-  requiredItemForDiscounts: {fileID: 0}
-  discountGivenByItemInInventory: 0.3
-  discountGivenByShopItself: 1
+  shop: {fileID: 0}
   onShopOpen:
     m_PersistentCalls:
       m_Calls:
@@ -6725,58 +6719,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
-  itemsThatCanBeSold: []
-  questParent: {fileID: 0}
-  questProgressesRequiredForDiscount: 
-  discountGivenByQuestCompleted: 1
-  pricesForHavingItemInInventory_LocalizedString:
-    m_TableReference:
-      m_TableCollectionName: GUID:dbb3674ad34b76b458d72593e4ca5a4a
-    m_TableEntryReference:
-      m_KeyId: 1108142539538432
-      m_Key: 
-    m_FallbackState: 0
-    m_WaitForCompletion: 0
-    m_LocalVariables: []
-  pricesFromShopAffinityTowardsCacildes_LocalizedString:
-    m_TableReference:
-      m_TableCollectionName: GUID:dbb3674ad34b76b458d72593e4ca5a4a
-    m_TableEntryReference:
-      m_KeyId: 1108246713466880
-      m_Key: 
-    m_FallbackState: 0
-    m_WaitForCompletion: 0
-    m_LocalVariables: []
-  pricesFromPlayerBonusStats_LocalizedString:
-    m_TableReference:
-      m_TableCollectionName: GUID:dbb3674ad34b76b458d72593e4ca5a4a
-    m_TableEntryReference:
-      m_KeyId: 1108496354246656
-      m_Key: 
-    m_FallbackState: 0
-    m_WaitForCompletion: 0
-    m_LocalVariables: []
-  pricesFromCompletingQuest_LocalizedString:
-    m_TableReference:
-      m_TableCollectionName: GUID:dbb3674ad34b76b458d72593e4ca5a4a
-    m_TableEntryReference:
-      m_KeyId: 1108669700636672
-      m_Key: 
-    m_FallbackState: 0
-    m_WaitForCompletion: 0
-    m_LocalVariables: []
-  appliedDiscounts_LocalizedString:
-    m_TableReference:
-      m_TableCollectionName: GUID:dbb3674ad34b76b458d72593e4ca5a4a
-    m_TableEntryReference:
-      m_KeyId: 1108772410753024
-      m_Key: 
-    m_FallbackState: 0
-    m_WaitForCompletion: 0
-    m_LocalVariables: []
-  references:
-    version: 2
-    RefIds: []
 --- !u!1 &725488912279243590
 GameObject:
   m_ObjectHideFlags: 0
@@ -16967,6 +16909,7 @@ MonoBehaviour:
     _serializedList: []
   useLootTable: 0
   baseGold: 100
+  useBaseGold: 0
   bonusGold: 0
   lootFromInventory: 0
   lootOwner: {fileID: 1759811369383153655}
@@ -38118,6 +38061,7 @@ MonoBehaviour:
   characterActivityManager: {fileID: 8105309312477364072}
   characterConsumableManager: {fileID: 5880498836130299295}
   characterLoot: {fileID: 2331984330916286163}
+  characterShop: {fileID: 4143778435181749395}
   animatorOverrideController: {fileID: 0}
   patrolSpeed: 2
   chaseSpeed: 6

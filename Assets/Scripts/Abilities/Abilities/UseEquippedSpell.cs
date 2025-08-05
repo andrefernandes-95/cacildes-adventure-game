@@ -46,6 +46,6 @@ namespace AF
         {
         }
 
-        bool HasAnySpellEquipped(CharacterBaseManager characterBaseManager) => characterBaseManager.characterBaseEquipment.GetEquippedAccessories().Any();
+        bool HasAnySpellEquipped(CharacterBaseManager characterBaseManager) => characterBaseManager.characterBaseEquipment.GetEquippedSpells().Any();
     }
 }

@@ -325,7 +325,7 @@ namespace AF
             GetCharacter().health.TakeDamage(incomingDamage.GetTotalDamage());
 
             // Apply poise damage if not stunned
-            if (!isPostureBroken)
+            if (!isPostureBroken && GetCharacter().characterAbstractBlockController.isBlocking == false)
             {
                 GetCharacter().characterPoise.TakePoiseDamage(incomingDamage.poiseDamage);
             }

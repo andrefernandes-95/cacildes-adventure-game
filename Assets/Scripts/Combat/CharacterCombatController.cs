@@ -207,8 +207,8 @@ namespace AF.Combat
 
             foreach (HealthDependantAbility healthDependantAbility in healthDependantAbilities)
             {
-                if (characterManager.health.GetCurrentHealth() >= healthDependantAbility.minimumHealthToUse &&
-                    characterManager.health.GetCurrentHealth() <= healthDependantAbility.maximumHealthToUse
+                if (characterManager.health.GetCurrentHealthPercentage() >= healthDependantAbility.minimumHealthToUse &&
+                    characterManager.health.GetCurrentHealthPercentage() <= healthDependantAbility.maximumHealthToUse
                 )
                 {
                     allCombatAbilities.Add(healthDependantAbility.ability);

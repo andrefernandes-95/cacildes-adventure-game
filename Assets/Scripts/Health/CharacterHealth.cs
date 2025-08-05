@@ -23,19 +23,6 @@ namespace AF.Health
         [SerializeField] bool overrideMaxHealth = false;
 
         [SerializeField] float m_currentHealth;
-        protected float CurrentHealth
-        {
-            get
-            {
-                return m_currentHealth;
-            }
-
-            set
-            {
-                m_currentHealth = Mathf.Clamp(value, 0, GetMaxHealth());
-                UpdateHealthbar();
-            }
-        }
 
         [Header("Events")]
         public UnityEvent onHalfHealth;
@@ -51,26 +38,26 @@ namespace AF.Health
 
         public void Awake()
         {
-            CurrentHealth = GetMaxHealth();
+            SetCurrentHealth(GetMaxHealth());
 
             EventManager.StartListening(EventMessages.ON_PARTY_CHANGED, UpdateHealthSettings);
         }
 
         void UpdateHealthSettings()
         {
-            if (CurrentHealth <= 0)
+            if (GetCurrentHealth() <= 0)
             {
                 return;
             }
 
-            bool wasFullHealthBeforeUpdate = CurrentHealth >= GetMaxHealth();
+            bool wasFullHealthBeforeUpdate = GetCurrentHealth() >= GetMaxHealth();
 
             this.bonusHealthFromCompanions = (
                 !characterManager.IsCompanion() && companionsDatabase.TryGetCompanionCount(out int count) && count > 0) ? HealthUtils.GetExtraHealthBasedOnCompanionsInParty(count) : 0;
 
             if (wasFullHealthBeforeUpdate)
             {
-                CurrentHealth = GetMaxHealth();
+                SetCurrentHealth(GetMaxHealth());
             }
 
             onHealthSettingsChanged?.Invoke();
@@ -78,7 +65,7 @@ namespace AF.Health
 
         public override void RestoreHealth(float value)
         {
-            CurrentHealth += value;
+            SetCurrentHealth(GetCurrentHealth() + value);
 
             ShowHealthRestoredText((int)value);
 
@@ -89,15 +76,15 @@ namespace AF.Health
         {
             ShowHealthbar();
 
-            if (value <= 0 || CurrentHealth <= 0)
+            if (value <= 0 || GetCurrentHealth() <= 0)
             {
                 HideHealthbar();
                 return;
             }
 
-            CurrentHealth -= value;
+            SetCurrentHealth(GetCurrentHealth() - value);
 
-            if (hasRunHalthHealthEvent == false && CurrentHealth <= GetMaxHealth() / 2)
+            if (hasRunHalthHealthEvent == false && GetCurrentHealth() <= GetMaxHealth() / 2)
             {
                 hasRunHalthHealthEvent = true;
                 onHalfHealth?.Invoke();
@@ -105,7 +92,7 @@ namespace AF.Health
 
             onTakeDamage?.Invoke();
 
-            if (CurrentHealth <= 0)
+            if (GetCurrentHealth() <= 0)
             {
                 HandleEnemyDeath();
             }
@@ -154,7 +141,7 @@ namespace AF.Health
 
         public override float GetCurrentHealth()
         {
-            return CurrentHealth;
+            return m_currentHealth;
         }
 
         public override void RestoreFullHealth()
@@ -188,7 +175,8 @@ namespace AF.Health
 
         public override void SetCurrentHealth(float value)
         {
-            this.CurrentHealth = value;
+            this.m_currentHealth = Mathf.Clamp(value, 0, GetMaxHealth());
+            UpdateHealthbar();
         }
 
         public override void SetMaxHealth(int value)

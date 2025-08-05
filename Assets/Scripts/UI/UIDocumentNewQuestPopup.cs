@@ -42,15 +42,16 @@ namespace AF
             QuestParent questParent = EventManager.GetData(EventMessages.ON_QUEST_ADDED) as QuestParent;
             EventManager.Dispose(EventMessages.ON_QUEST_ADDED);
 
+            if (questParent == null)
+            {
+                return;
+            }
+
             questTitle.text = questParent.questName_LocalizedString.GetLocalizedString();
 
             if (questParent.objectives != null && questParent.objectives.Count > 0)
             {
                 questDescription.text = questParent.objectives[0].GetDescription();
-            }
-            else if (questParent.questObjectiveInfos != null && questParent.questObjectiveInfos.Length > 0)
-            {
-                questDescription.text = questParent.questObjectiveInfos[0].objectiveDescription.GetLocalizedString();
             }
 
             root.style.display = DisplayStyle.Flex;

@@ -17,7 +17,16 @@ namespace AF
         private void Awake()
         {
             EventManager.StartListening(EventMessages.ON_MOMENT_START, () => { HasMomentOnGoing = true; });
-            EventManager.StartListening(EventMessages.ON_MOMENT_END, () => { HasMomentOnGoing = false; });
+            EventManager.StartListening(EventMessages.ON_MOMENT_END, () =>
+            {
+                HasMomentOnGoing = false;
+            });
+        }
+
+        public bool CanInteractWithTriggers()
+        {
+
+            return true;
         }
     }
 }

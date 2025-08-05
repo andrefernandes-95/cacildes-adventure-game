@@ -1,5 +1,7 @@
 namespace AF
 {
+    using System.Collections.Generic;
+    using System.Linq;
     using AF.Ladders;
     using UnityEngine;
 
@@ -15,16 +17,18 @@ namespace AF
 
         void ConsumeItem()
         {
-            Consumable consumable = playerManager.equipmentDatabase.GetCurrentConsumable();
+            // Get the first available consumable in inventory that matches the current equipped consumable
+            Consumable consumable = playerManager.playerInventory.GetAvailableConsumables(
+                playerManager.equipmentDatabase.GetCurrentConsumable()
+            ).FirstOrDefault();
 
             if (!CanConsume(consumable))
             {
                 return;
             }
 
-            int itemAmount = playerManager.playerInventory.GetConsumableAmount(consumable);
 
-            if (itemAmount <= 1 && !consumable.isRenewable)
+            if (playerManager.playerInventory.GetAvailableConsumables(consumable).Count <= 1 && !consumable.isRenewable)
             {
                 playerManager.equipmentDatabase.UnequipConsumable(playerManager.equipmentDatabase.currentConsumableIndex);
             }
@@ -50,7 +54,7 @@ namespace AF
                 return false;
             }
 
-            if (playerManager.playerInventory.GetConsumableAmount(consumable) <= 0)
+            if (playerManager.playerInventory.GetAvailableConsumables(consumable).Count <= 0)
             {
                 if (consumable.isRenewable)
                 {

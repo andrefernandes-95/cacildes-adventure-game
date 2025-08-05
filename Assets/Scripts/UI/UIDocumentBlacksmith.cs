@@ -35,6 +35,7 @@ namespace AF
 
         [Header("SFX")]
         public AudioClip sfxOnEnterMenu;
+        public float sfxOnEnterMenuVolume = .5f;
 
         [Header("UI Components")]
         public UIDocument uIDocument;
@@ -81,7 +82,7 @@ namespace AF
         {
             this.root = uIDocument.rootVisualElement;
 
-            bgmManager.PlaySound(sfxOnEnterMenu, null);
+            bgmManager.PlaySound(sfxOnEnterMenu, null, sfxOnEnterMenuVolume);
             cursorManager.ShowCursor();
 
             ItemNamePreview = root.Q<Label>("ItemNamePreview");

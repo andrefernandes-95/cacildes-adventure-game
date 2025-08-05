@@ -15,6 +15,8 @@ namespace AF
         [Header("Alchemy Info")]
         public RecipesDatabase recipesDatabase;
 
+        public GenericTrigger currentGenericTrigger;
+
         private void Awake()
         {
             gameObject.SetActive(false);

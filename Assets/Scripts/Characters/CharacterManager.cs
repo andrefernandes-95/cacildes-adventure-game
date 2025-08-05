@@ -11,6 +11,7 @@ using AF.Companions;
 using UnityEngine.AI;
 using System.Collections.Generic;
 using System.Linq;
+using AF.Shops;
 
 
 namespace AF
@@ -34,6 +35,7 @@ namespace AF
         public CharacterActivityManager characterActivityManager;
         public CharacterConsumableManager characterConsumableManager;
         public CharacterLoot characterLoot;
+        public CharacterShop characterShop;
 
         // Animator Overrides
         [HideInInspector] public AnimatorOverrideController animatorOverrideController;

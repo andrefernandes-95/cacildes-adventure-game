@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using AF.Inventory;
 using AYellowpaper.SerializedCollections;
+using EditorAttributes;
 using UnityEngine;
 using UnityEngine.Localization;
 
@@ -19,6 +20,8 @@ namespace AF
 
         [Header("Gold")]
         public int baseGold = 100;
+        [HelpBox("If true, will ignore the combatant base gold. Useful for bosses and specific enemies")]
+        [SerializeField] bool useBaseGold = false;
         public int bonusGold = 0;
 
         [Header("Options")]
@@ -48,9 +51,15 @@ namespace AF
 
         public IEnumerator GiveLoot_Coroutine()
         {
-            int goldBasis = lootOwner.combatant != null && lootOwner.combatant.characterGold != null
+            int goldBasis = !useBaseGold && lootOwner.combatant != null && lootOwner.combatant.characterGold != null
                 ? lootOwner.combatant.characterGold.gold
                 : baseGold;
+
+            if (lootOwner.characterShop.shop != null)
+            {
+                // Add gold from shop
+                goldBasis += lootOwner.characterShop.shop.shopGold;
+            }
 
             int goldToReceive = goldBasis + bonusGold;
 

@@ -303,18 +303,18 @@ namespace AF
 
             if (incomingDamage.postureDamage > 0)
             {
-                incomingDamage.postureDamage -= Mathf.Max(1, CurrentDamageAbsorbed.postureDamage);
+                incomingDamage.postureDamage = Mathf.Max(1, incomingDamage.postureDamage - CurrentDamageAbsorbed.postureDamage);
             }
 
             if (incomingDamage.poiseDamage > 0)
             {
-                incomingDamage.poiseDamage -= Mathf.Max(1, CurrentDamageAbsorbed.poiseDamage);
+                incomingDamage.poiseDamage = Mathf.Max(1, incomingDamage.poiseDamage - CurrentDamageAbsorbed.poiseDamage);
             }
 
             if (incomingDamage.pushForce > 0)
             {
-                incomingDamage.pushForce -= CurrentDamageAbsorbed.pushForce;
-                incomingDamage.pushForce = Mathf.Max(0, incomingDamage.pushForce);
+                incomingDamage.pushForce = CurrentDamageAbsorbed.pushForce;
+                incomingDamage.pushForce = Mathf.Max(1, incomingDamage.pushForce - incomingDamage.pushForce);
             }
         }
 

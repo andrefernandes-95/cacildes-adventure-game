@@ -55,7 +55,7 @@ namespace AF
             {
                 if (usePercentage)
                 {
-                    int points = (int)amountInPercentage * characterBaseManager.health.GetMaxHealth();
+                    int points = (int)(amountInPercentage * characterBaseManager.health.GetMaxHealth());
 
                     characterBaseManager.health.RestoreHealth(points);
                 }

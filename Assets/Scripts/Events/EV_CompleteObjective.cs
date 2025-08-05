@@ -1,8 +1,9 @@
+using System;
 using System.Collections;
 
 namespace AF
 {
-
+    [Obsolete]
     public class EV_ProgressQuest : EventBase
     {
         public QuestParent questParent;
@@ -10,7 +11,6 @@ namespace AF
 
         public override IEnumerator Dispatch()
         {
-            questParent.SetProgress(questProgress);
             yield return null;
         }
 

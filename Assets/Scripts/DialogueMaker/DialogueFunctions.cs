@@ -11,6 +11,8 @@ namespace AF
         Dictionary<string, DialogueEvent> dialogueEvents = new();
         bool hasInitializedDialogueEvents = false;
 
+        public List<string> eventsRun;
+
         void CollectDialogueEvents()
         {
             if (hasInitializedDialogueEvents)
@@ -34,11 +36,22 @@ namespace AF
         {
             story.BindExternalFunction("isDoingChickensQuest", () =>
             {
-                return bearQuest.questProgress != -1 && bearQuest.IsCompleted() == false;
+                return bearQuest.hasStarted && bearQuest.IsCompleted() == false;
             });
+
             story.BindExternalFunction("runEvent", (string eventId) =>
             {
                 RunEvent(eventId);
+
+                if (!eventsRun.Contains(eventId))
+                {
+                    eventsRun.Add(eventId);
+                }
+            });
+
+            story.BindExternalFunction("hasRunEvent", (string eventId) =>
+            {
+                return eventsRun.Contains(eventId);
             });
         }
 

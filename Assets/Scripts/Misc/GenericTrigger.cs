@@ -27,6 +27,8 @@ namespace AF
 
         bool canInteract = true;
 
+        Transform playerCameraTransform;
+
         MomentManager _momentManager;
         UIManager _uiManager;
         UIDocumentKeyPrompt _uIDocumentKeyPrompt;
@@ -115,9 +117,38 @@ namespace AF
             DisableKeyPrompt();
         }
 
+        Transform GetPlayerCameraTransform()
+        {
+            if (playerCameraTransform == null)
+            {
+                var camera = Camera.main;
+                if (camera != null)
+                {
+                    playerCameraTransform = camera.transform;
+                }
+            }
+            return playerCameraTransform;
+        }
+
+        bool IsFacingObject()
+        {
+            Transform playerTransform = GetPlayerCameraTransform();
+            if (playerTransform == null) return false;
+
+            Vector3 toTarget = (transform.position - playerTransform.position).normalized;
+            float dot = Vector3.Dot(playerTransform.forward, toTarget);
+
+            float angle = Mathf.Acos(dot) * Mathf.Rad2Deg;
+            return angle <= 30f;
+        }
+
         bool CanInteract()
         {
-            if (GetUIManager().IsShowingFullScreenGUI() || GetMomentManager().HasMomentOnGoing)
+            if (GetUIManager().IsShowingFullScreenGUI() || !GetMomentManager().CanInteractWithTriggers())
+            {
+                return false;
+            }
+            if (!IsFacingObject())
             {
                 return false;
             }

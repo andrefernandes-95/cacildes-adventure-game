@@ -40,6 +40,8 @@ namespace AF.Inventory
         public List<CraftingMaterial> ownedCraftingMaterials = new();
         public List<UpgradeMaterial> ownedUpgradeMaterials = new();
 
+        public List<string> idsOfUsedConsumables = new();
+
         [Header("Databases")]
         public EquipmentDatabase equipmentDatabase;
 
@@ -136,6 +138,7 @@ namespace AF.Inventory
             ownedKeyItems.Clear();
             ownedCraftingMaterials.Clear();
             ownedUpgradeMaterials.Clear();
+            idsOfUsedConsumables.Clear();
         }
 
         public void SetDefaultItems(PlayerManager playerManager)
@@ -164,14 +167,7 @@ namespace AF.Inventory
 
         public void ReplenishItems()
         {
-            foreach (var item in ownedItems)
-            {
-                if (item.Value.usages > 0)
-                {
-                    item.Value.amount += item.Value.usages;
-                    item.Value.usages = 0;
-                }
-            }
+            idsOfUsedConsumables.Clear();
         }
 
         public void AddItem(Item itemToAdd)

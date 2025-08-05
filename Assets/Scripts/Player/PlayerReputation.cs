@@ -19,6 +19,7 @@ namespace AF.Reputation
             playerStatsDatabase.IncreaseReputation(value);
 
             soundbank.PlaySound(soundbank.reputationIncreased);
+
             notificationManager.ShowNotification(
                 String.Format(
                     LocalizationSettings.StringDatabase.GetLocalizedString("UIDocuments", "You won reputation: +{0} points! Current reputation: {1}"),

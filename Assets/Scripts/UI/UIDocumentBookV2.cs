@@ -340,7 +340,7 @@ namespace AF
             notePage.style.display = DisplayStyle.Flex;
 
             notePageTitle.text = pageElements.title;
-            notePageText.text = pageElements.content;
+            notePageText.text = FormatText(pageElements.content);
         }
 
         void ShowCover()
@@ -476,7 +476,7 @@ namespace AF
             if (!string.IsNullOrEmpty(elements.content))
             {
                 string textContent = elements.content;
-                textContent = textContent.Replace("[br]", "\n");
+                textContent = FormatText(textContent);
                 var label = new Label(textContent);
 
                 label.style.whiteSpace = WhiteSpace.PreWrap;
@@ -485,6 +485,11 @@ namespace AF
                 label.AddToClassList("book-chapter-paragraph");
                 container.Add(label);
             }
+        }
+
+        string FormatText(string textContent)
+        {
+            return textContent.Replace("[br]", "\n");
         }
 
     }

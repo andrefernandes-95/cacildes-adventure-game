@@ -40,8 +40,8 @@ MonoBehaviour:
     m_FallbackState: 0
     m_WaitForCompletion: 0
     m_LocalVariables: []
-  sprite: {fileID: 21300000, guid: 6b323cb552c72384f91f39926eeece0e, type: 3}
-  itemValue: {fileID: 0}
+  sprite: {fileID: 21300000, guid: dd1984ca83a813945aa047f15a462ce2, type: 3}
+  itemValue: {fileID: 11400000, guid: 9c40663a7e895cc4798723422281c4ec, type: 2}
   value: 180
   itemWeight: {fileID: 0}
   isRenewable: 0
@@ -49,13 +49,15 @@ MonoBehaviour:
     _serializedList:
     - Key: {fileID: 11400000, guid: f2b88e6605a2aea4d851ea27aa57652e, type: 2}
       Value: 1
-  dropRateOnEnemies: 0.2
+  dropRateOnEnemies: 0.15
   notes: 
   location: 
   canBeUpgraded: 1
   level: 1
+  upgradeMaterialData: {fileID: 11400000, guid: 99d82098b8d36614f930b2cabac10c00, type: 2}
   damage:
-    physical: 60
+    basePhysicalDamage: 0
+    physical: 40
     fire: 0
     frost: 0
     magic: 0
@@ -68,145 +70,14 @@ MonoBehaviour:
     weaponAttackType: 0
     statusEffects:
     - statusEffect: {fileID: 11400000, guid: f7dd06633468f614eb39e316fece5345, type: 2}
-      amountPerHit: 5
+      amountPerHit: 9
     ignoreBlocking: 0
     canNotBeParried: 0
     damageType: 0
     strengthScaling: 5
     dexterityScaling: 5
     intelligenceScaling: 5
-  weaponUpgrades:
-  - goldCostForUpgrade: 100
-    newDamage:
-      physical: 80
-      fire: 0
-      frost: 0
-      magic: 0
-      lightning: 0
-      darkness: 0
-      water: 0
-      postureDamage: 0
-      poiseDamage: 0
-      pushForce: 0
-      weaponAttackType: 0
-      statusEffects:
-      - statusEffect: {fileID: 11400000, guid: f7dd06633468f614eb39e316fece5345, type: 2}
-        amountPerHit: 6
-      ignoreBlocking: 0
-      canNotBeParried: 0
-      damageType: 0
-      strengthScaling: 5
-      dexterityScaling: 5
-      intelligenceScaling: 5
-    upgradeMaterials:
-      _serializedList:
-      - Key: {fileID: 11400000, guid: 972d348c035257f4282fc9a4bfda91ee, type: 2}
-        Value: 3
-  - goldCostForUpgrade: 200
-    newDamage:
-      physical: 100
-      fire: 0
-      frost: 0
-      magic: 0
-      lightning: 0
-      darkness: 0
-      water: 0
-      postureDamage: 0
-      poiseDamage: 0
-      pushForce: 0
-      weaponAttackType: 0
-      statusEffects:
-      - statusEffect: {fileID: 11400000, guid: f7dd06633468f614eb39e316fece5345, type: 2}
-        amountPerHit: 7
-      ignoreBlocking: 0
-      canNotBeParried: 0
-      damageType: 0
-      strengthScaling: 5
-      dexterityScaling: 5
-      intelligenceScaling: 5
-    upgradeMaterials:
-      _serializedList:
-      - Key: {fileID: 11400000, guid: 972d348c035257f4282fc9a4bfda91ee, type: 2}
-        Value: 3
-  - goldCostForUpgrade: 400
-    newDamage:
-      physical: 120
-      fire: 0
-      frost: 0
-      magic: 0
-      lightning: 0
-      darkness: 0
-      water: 0
-      postureDamage: 0
-      poiseDamage: 0
-      pushForce: 0
-      weaponAttackType: 0
-      statusEffects:
-      - statusEffect: {fileID: 11400000, guid: f7dd06633468f614eb39e316fece5345, type: 2}
-        amountPerHit: 8
-      ignoreBlocking: 0
-      canNotBeParried: 0
-      damageType: 0
-      strengthScaling: 5
-      dexterityScaling: 5
-      intelligenceScaling: 5
-    upgradeMaterials:
-      _serializedList:
-      - Key: {fileID: 11400000, guid: aaf2ac4a8ab9e6a4696b0aa4a4f5eed5, type: 2}
-        Value: 3
-  - goldCostForUpgrade: 800
-    newDamage:
-      physical: 140
-      fire: 0
-      frost: 0
-      magic: 0
-      lightning: 0
-      darkness: 0
-      water: 0
-      postureDamage: 0
-      poiseDamage: 0
-      pushForce: 0
-      weaponAttackType: 0
-      statusEffects:
-      - statusEffect: {fileID: 11400000, guid: f7dd06633468f614eb39e316fece5345, type: 2}
-        amountPerHit: 9
-      ignoreBlocking: 0
-      canNotBeParried: 0
-      damageType: 0
-      strengthScaling: 5
-      dexterityScaling: 5
-      intelligenceScaling: 5
-    upgradeMaterials:
-      _serializedList:
-      - Key: {fileID: 11400000, guid: a6ce8505d6a30a64dbab4d9c2f6bd140, type: 2}
-        Value: 1
-  - goldCostForUpgrade: 1600
-    newDamage:
-      physical: 160
-      fire: 0
-      frost: 0
-      magic: 0
-      lightning: 0
-      darkness: 0
-      water: 0
-      postureDamage: 0
-      poiseDamage: 0
-      pushForce: 0
-      weaponAttackType: 0
-      statusEffects:
-      - statusEffect: {fileID: 11400000, guid: f7dd06633468f614eb39e316fece5345, type: 2}
-        amountPerHit: 10
-      ignoreBlocking: 0
-      canNotBeParried: 0
-      damageType: 0
-      strengthScaling: 5
-      dexterityScaling: 5
-      intelligenceScaling: 5
-    upgradeMaterials:
-      _serializedList:
-      - Key: {fileID: 11400000, guid: aa13cb668cefc0941ada0756ef86bbf6, type: 2}
-        Value: 1
-  weaponSound: {fileID: 0}
+  weaponSound: {fileID: 11400000, guid: 30f1fce38ecd2644e9950396c63354cc, type: 2}
   weaponSize: 0
   weaponPrefab: {fileID: 3810091752881605239, guid: f4541e13443d49b4a8ca18670f10a76b, type: 3}
   strengthRequired: 0
@@ -214,7 +85,7 @@ MonoBehaviour:
   intelligenceRequired: 0
   positiveReputationRequired: 0
   negativeReputationRequired: 0
-  weaponType: {fileID: 0}
+  weaponType: {fileID: 11400000, guid: 5e177155fd37bfb4489148131f410194, type: 2}
   staminaCostPerAttack: 30
   strengthScaling: 5
   dexterityScaling: 2
@@ -287,10 +158,10 @@ MonoBehaviour:
   th_heavyAttackCombos: 1
   halveDamage: 0
   speedPenalty: 0.015
-  oneHandAttackSpeedPenalty: 1.05
-  oh_HeavyAttackSpeedPenalty: 1
+  oneHandAttackSpeedPenalty: 1
+  oh_HeavyAttackSpeedPenalty: 0.75
   twoHandAttackSpeedPenalty: 1
-  th_HeavyAttackSpeedPenalty: 1
+  th_HeavyAttackSpeedPenalty: 0.75
   amountOfGoldReceivedPerHit: 0
   doubleCoinsUponKillingEnemies: 0
   doubleDamageDuringNightTime: 0
@@ -300,16 +171,16 @@ MonoBehaviour:
   isHolyWeapon: 0
   isHexWeapon: 0
   projectileType: {fileID: 0}
-  blockAbsorption: 0.7
+  weaponBlockAbsorption: 0.8
   shouldRegenerateMana: 0
   ignoreSpellsAnimationClips: 0
-  rightHandPosition: {x: 8.24, y: 4.45, z: 0.26}
-  rightHandRotation: {x: 188.439, y: -104.274, z: 84.843}
-  leftHandPosition: {x: 9.18, y: -3.44, z: 2.45}
-  leftHandRotation: {x: 169.467, y: -472.416, z: 102.224}
+  rightHandPosition: {x: -0.043, y: 0.101, z: 0.019}
+  rightHandRotation: {x: -66.851, y: -59.357, z: 40.299}
+  leftHandPosition: {x: 0.019, y: 0.085, z: 0.033}
+  leftHandRotation: {x: -64.775, y: 28.815, z: -15.007}
   useTwoHandingTransform: 1
-  twoHandingPosition: {x: 6.1, y: 0.5, z: 3.5}
-  twoHandingRotation: {x: 172.026, y: -109.809, z: 99.728}
+  twoHandingPosition: {x: -0.048, y: 0.063, z: 0.054}
+  twoHandingRotation: {x: -61.823, y: -31.507, z: 14.04}
   useCustomTwoHandingBlockTransforms: 0
   th_BlockPosition: {x: 0, y: 0, z: 0}
   th_BlockRotation: {x: 0, y: 0, z: 0}

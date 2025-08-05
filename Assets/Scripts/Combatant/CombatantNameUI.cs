@@ -17,6 +17,8 @@ namespace AF
             characterManager.targetManager.onTargetSet_Event.AddListener(ShowCombatantName);
             characterManager.targetManager.onClearTarget_Event.AddListener(HideCombatantName);
 
+            textMeshPro.text = "";
+
             HandleOnEnable();
         }
 
@@ -37,6 +39,11 @@ namespace AF
 
         void ShowCombatantName()
         {
+            if (characterManager != null && characterManager.characterBossController != null && characterManager.characterBossController.IsBoss())
+            {
+                return;
+            }
+
             if (characterManager == null || characterManager.combatant == null || characterManager.combatant.combatantName.IsEmpty)
             {
                 textMeshPro.text = "";

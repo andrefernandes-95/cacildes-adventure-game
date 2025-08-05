@@ -14,6 +14,7 @@ namespace AF
 
         [Header("Quests")]
         public QuestsDatabase questsDatabase;
+        public QuestManager questManager;
 
         [Header("Components")]
         [SerializeField] StarterAssetsInputs starterAssetsInputs;
@@ -89,7 +90,7 @@ namespace AF
                 return;
             }
 
-            questsDatabase.SetQuestToTrack(selectedQuest);
+            selectedQuest.TrackQuest();
             RedrawUI();
             soundbank.PlaySound(trackQuestSound);
 
@@ -107,7 +108,7 @@ namespace AF
             var questListScroll = root.Q<ScrollView>("QuestListScroll");
             questListScroll.Clear();
 
-            var reversedQuests = questsDatabase.questsReceived.AsEnumerable().Reverse().ToList();
+            var reversedQuests = questManager.GetQuestsStarted().AsEnumerable().Reverse().ToList();
 
             for (int i = 0; i < reversedQuests.Count; i++)
             {
@@ -136,7 +137,7 @@ namespace AF
 
                 clone.Q<VisualElement>("CompletedIcon").style.display = isCompleted ? DisplayStyle.Flex : DisplayStyle.None;
                 clone.Q<VisualElement>("IncompleteIcon").style.display = !isCompleted ? DisplayStyle.Flex : DisplayStyle.None;
-                clone.Q<VisualElement>("TrackIcon").style.display = quest.IsTracked() ? DisplayStyle.Flex : DisplayStyle.None;
+                clone.Q<VisualElement>("TrackIcon").style.display = quest.isTracked ? DisplayStyle.Flex : DisplayStyle.None;
 
                 questListScroll.Add(clone);
             }
@@ -171,7 +172,7 @@ namespace AF
 
         public void TrackObjective(QuestParent quest)
         {
-            questsDatabase.SetQuestToTrack(quest);
+            quest.TrackQuest();
             RedrawUI();
         }
 
@@ -189,7 +190,7 @@ namespace AF
             root.Q<VisualElement>("QuestIcon").style.backgroundImage = new StyleBackground(Utils.Texture2DToSprite(selectedQuest.questIcon as Texture2D));
             root.Q<Toggle>("QuestCompleted").value = selectedQuest.IsCompleted();
             root.Q<Label>("QuestDescription").text = selectedQuest.questDescription.IsEmpty ? "" : selectedQuest.questDescription.GetLocalizedString();
-            root.Q<VisualElement>("TrackQuestImage").style.display = selectedQuest.IsTracked() ? DisplayStyle.Flex : DisplayStyle.None;
+            root.Q<VisualElement>("TrackQuestImage").style.display = selectedQuest.isTracked ? DisplayStyle.Flex : DisplayStyle.None;
 
             var trackQuestLabel = root.Q<Button>("TrackQuest").Q<Label>();
             var trackIcon = root.Q<Button>("TrackQuest").Q<VisualElement>("Track");
@@ -198,7 +199,7 @@ namespace AF
             trackIcon.style.display = DisplayStyle.None;
             untrackIcon.style.display = DisplayStyle.None;
 
-            if (selectedQuest.IsTracked())
+            if (selectedQuest.isTracked)
             {
                 untrackIcon.style.display = DisplayStyle.Flex;
                 trackQuestLabel.text = !Utils.IsPortuguese() ? "Untrack Quest" : "Desafixar Missão";
@@ -241,16 +242,9 @@ namespace AF
 
             if (selectedQuest.objectives != null && selectedQuest.objectives.Count > 0)
             {
-                for (int i = 0; i < selectedQuest.questObjectives.Length; i++)
+                for (int i = 0; i < selectedQuest.objectives.Count; i++)
                 {
                     DrawObjective(selectedQuest, selectedQuest.objectives[i], i, objectiveScrollView);
-                }
-            }
-            else
-            {
-                for (int i = 0; i < selectedQuest.questObjectives.Length; i++)
-                {
-                    DrawObjective(selectedQuest, selectedQuest.questObjectives[i], i, objectiveScrollView);
                 }
             }
         }
@@ -280,8 +274,12 @@ namespace AF
         public void DrawObjective(QuestParent questParent, QuestObjective questObjective, int index, ScrollView scrollView)
         {
             bool isCompleted = questParent.IsObjectiveCompleted(questObjective);
-            bool isLocked = !isCompleted && index > questParent.questProgress;
-            bool isCurrent = index == questParent.questProgress;
+
+            QuestObjective currentObjective = questParent.GetCurrentObjective();
+
+            bool isCurrentObjective = questObjective == currentObjective;
+
+            bool isLocked = !questParent.IsObjectiveCompleted(questObjective) && !isCurrentObjective;
 
             var entry = questInfoButton.CloneTree();
             var descLabel = entry.Q<Label>("Description");
@@ -293,7 +291,7 @@ namespace AF
             descLabel.style.fontSize = isLocked ? 16 : 24;
             descLabel.style.color = Color.white;
             descLabel.style.marginRight = 10;
-            descLabel.style.unityFontStyleAndWeight = isCurrent ? FontStyle.Bold : FontStyle.Normal;
+            descLabel.style.unityFontStyleAndWeight = isCurrentObjective ? FontStyle.Bold : FontStyle.Normal;
 
             var checkbox = entry.Q<Toggle>("ObjectiveCompletedCheckbox");
             checkbox.value = isCompleted;
@@ -347,92 +345,6 @@ namespace AF
                 if (objectiveInfo != null && !isLocked && objectiveInfo.location != null && objectiveInfo.closestBonfire != null)
                 {
                     DrawLocation(objectiveInfo.location.GetName(), objectiveInfo.closestBonfire.GetName(), objectiveInfo.closestBonfire.image, entry.Q("CardDetails"));
-                }
-            }
-        }
-
-        // TODO: Remove
-        public void DrawObjective(QuestParent questParent, string questObjective, int index, ScrollView scrollView)
-        {
-            bool isCompleted = questParent.IsObjectiveCompleted(questObjective);
-            bool isLocked = !isCompleted && index > questParent.questProgress;
-            bool isCurrent = index == questParent.questProgress;
-
-            var entry = questInfoButton.CloneTree();
-            var descLabel = entry.Q<Label>("Description");
-
-            entry.Q<Label>("Type").text = Utils.IsPortuguese() ? "Objetivo" : "Objective";
-            entry.Q<Label>("Label").style.display = DisplayStyle.None;
-
-            descLabel.text = isLocked ? (Utils.IsPortuguese() ? "Objetivo ainda não revelado" : "Unrevelead objective") : questParent.questObjectives_LocalizedString[index].GetLocalizedString();
-            descLabel.style.fontSize = isLocked ? 16 : 24;
-            descLabel.style.color = Color.white;
-            descLabel.style.marginRight = 10;
-            descLabel.style.unityFontStyleAndWeight = isCurrent ? FontStyle.Bold : FontStyle.Normal;
-
-            var checkbox = entry.Q<Toggle>("ObjectiveCompletedCheckbox");
-            checkbox.value = isCompleted;
-            checkbox.style.display = isLocked ? DisplayStyle.None : DisplayStyle.Flex;
-
-            var image = entry.Q<VisualElement>("Image");
-            if (isLocked)
-            {
-                image.style.backgroundImage = new StyleBackground(unrevealedObjectiveSprite);
-                image.style.display = DisplayStyle.Flex;
-                image.style.width = 120;
-                image.style.height = 120;
-                entry.style.opacity = 0.5f;
-            }
-            else
-            {
-                if (questParent.objectives != null && questParent.objectives.Count > 0)
-                {
-                    var info = index < questParent.objectives.Count ? questParent.objectives[index] : null;
-                    if (info?.objectiveImage != null)
-                    {
-                        image.style.backgroundImage = new StyleBackground(info.objectiveImage);
-                        image.style.display = DisplayStyle.Flex;
-                    }
-                    else
-                    {
-                        image.style.display = DisplayStyle.None;
-                    }
-                }
-                else // TODO Remove
-                {
-                    var info = index < questParent.questObjectiveInfos.Length ? questParent.questObjectiveInfos[index] : null;
-                    if (info?.objectiveImage != null)
-                    {
-                        image.style.backgroundImage = new StyleBackground(info.objectiveImage);
-                        image.style.display = DisplayStyle.Flex;
-                    }
-                    else
-                    {
-                        image.style.display = DisplayStyle.None;
-                    }
-                }
-            }
-
-            entry.Q<Button>().RegisterCallback<FocusInEvent>(ev => scrollView.ScrollTo(entry));
-            scrollView.Add(entry);
-
-            if (questParent.objectives != null && questParent.objectives.Count > 0)
-            {
-                var objectiveInfo = index < questParent.objectives.Count ? questParent.objectives[index] : null;
-
-                if (objectiveInfo != null && !isLocked && objectiveInfo.location != null && objectiveInfo.closestBonfire != null)
-                {
-                    DrawLocation(objectiveInfo.location.GetName(), objectiveInfo.closestBonfire.GetName(), objectiveInfo.closestBonfire.image, entry.Q("CardDetails"));
-                }
-            }
-            else
-            {
-                // TODO: OLD STUFF, Remove
-                var objectiveInfo = index < questParent.questObjectiveInfos.Length ? questParent.questObjectiveInfos[index] : null;
-
-                if (objectiveInfo != null && !isLocked && !objectiveInfo.location.IsEmpty)
-                {
-                    DrawLocation(objectiveInfo.location.GetLocalizedString(), objectiveInfo.closestBonfire.GetLocalizedString(), objectiveInfo.locationImage, entry.Q("CardDetails"));
                 }
             }
         }

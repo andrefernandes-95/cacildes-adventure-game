@@ -1,12 +1,11 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using AF.Inventory;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.Localization;
 using UnityEngine.Localization.Settings;
 using UnityEngine.UIElements;
+using static AF.Shop;
 
 namespace AF.Shops
 {
@@ -104,7 +103,7 @@ namespace AF.Shops
             playerManager.playerComponentManager.DisableComponents();
 
             Invoke(nameof(DisplayCursor), 0f);
-            DrawBuyMenu(characterShop);
+            DrawBuyMenu();
         }
 
         /// <summary>
@@ -120,7 +119,7 @@ namespace AF.Shops
             playerManager.playerComponentManager.DisableComponents();
 
             Invoke(nameof(DisplayCursor), 0f);
-            DrawSellMenu(characterShop);
+            DrawSellMenu();
         }
 
         void DisplayCursor()
@@ -169,7 +168,7 @@ namespace AF.Shops
             this.gameObject.SetActive(false);
         }
 
-        void SetupCharactersGUI(CharacterShop characterShop, bool playerIsBuying)
+        void SetupCharactersGUI(Shop shop, bool playerIsBuying)
         {
             if (playerIsBuying)
             {
@@ -177,106 +176,39 @@ namespace AF.Shops
                 buyerGold.text = playerStatsDatabase.gold.ToString() + " " + coins_LocalizedString.GetLocalizedString();
                 buyerIcon.style.backgroundImage = new StyleBackground(playerManager.GetPlayerPortrait());
 
-                sellerName.text = characterShop.character.GetCharacterName();
-                sellerGold.text = characterShop.shopGold.ToString();
-                sellerIcon.style.backgroundImage = new StyleBackground(characterShop.character.avatar);
+                sellerName.text = shop.character.GetCharacterName();
+                sellerGold.text = shop.shopGold.ToString();
+                sellerIcon.style.backgroundImage = new StyleBackground(shop.character.avatar);
             }
             else
             {
-                buyerName.text = characterShop.character.GetCharacterName();
-                buyerGold.text = characterShop.shopGold.ToString() + " " + coins_LocalizedString.GetLocalizedString();
-                buyerIcon.style.backgroundImage = new StyleBackground(characterShop.character.avatar);
+                buyerName.text = shop.character.GetCharacterName();
+                buyerGold.text = shop.shopGold.ToString() + " " + coins_LocalizedString.GetLocalizedString();
+                buyerIcon.style.backgroundImage = new StyleBackground(shop.character.avatar);
 
                 sellerName.text = playerManager.gameSettings.playerName;
                 sellerGold.text = playerStatsDatabase.gold.ToString();
                 sellerIcon.style.backgroundImage = new StyleBackground(playerManager.GetPlayerPortrait());
             }
 
-            root.Q<Label>("AppliedDiscountsLabel").text = characterShop.GetShopDiscountsDescription(inventoryDatabase, playerManager.statsBonusController, playerIsBuying);
+            root.Q<Label>("AppliedDiscountsLabel").text = shop.GetShopDiscountsDescription(inventoryDatabase, playerManager.statsBonusController, playerIsBuying);
         }
 
-        void DrawBuyMenu(CharacterShop characterShop)
+        void DrawBuyMenu()
         {
-            SetupCharactersGUI(characterShop, true);
-
-            List<Item> shopItemsToDisplay = new();
-
-            foreach (var item in characterShop.itemsToSell)
-            {
-                Item clonedItem = item.Key;
-
-                if (item.Value.dontShowIfPlayerAreadyOwns && inventoryDatabase.HasItem(item.Key))
-                {
-                    continue;
-                }
-
-                if (item.Key.tradingItemRequirements != null && item.Key.tradingItemRequirements.Count() > 0)
-                {
-                    bool hasAllItems = true;
-
-                    foreach (var requiredItemForTrading in item.Key.tradingItemRequirements)
-                    {
-                        if (!inventoryDatabase.HasItem(requiredItemForTrading.Key))
-                        {
-                            hasAllItems = false;
-                        }
-                    }
-
-                    if (!hasAllItems)
-                    {
-                        continue;
-                    }
-                }
-
-                shopItemsToDisplay.Add(clonedItem);
-            }
-
-            DrawItemsList(shopItemsToDisplay, true, characterShop);
+            Shop shop = currentCharacterShop.shop;
+            SetupCharactersGUI(shop, true);
+            DrawItemsList(shop.GetAvailableItemsForSale(playerManager), true);
         }
 
-        void DrawSellMenu(CharacterShop characterShop)
+        void DrawSellMenu()
         {
-            SetupCharactersGUI(characterShop, false);
+            SetupCharactersGUI(currentCharacterShop.shop, false);
 
-            List<Item> shopItemsToDisplay = new();
-
-            foreach (var item in inventoryDatabase.ownedItems)
-            {
-                if (item.Key is KeyItem)
-                {
-                    continue;
-                }
-
-                // Don't sell unique items like spells and so on
-                if (item.Key.isRenewable)
-                {
-                    continue;
-                }
-
-                if (characterShop.itemsThatCanBeSold != null && characterShop.itemsThatCanBeSold.Length > 0 && !characterShop.itemsThatCanBeSold.Contains(item.Key))
-                {
-                    continue;
-                }
-
-                if (item.Key is Weapon)
-                {
-                    for (int i = 0; i < item.Value.amount; i++)
-                    {
-                        shopItemsToDisplay.Add(item.Key);
-                    }
-                }
-                else
-                {
-                    shopItemsToDisplay.Add(item.Key);
-                }
-            }
-
-
-
-            DrawItemsList(shopItemsToDisplay, false, characterShop);
+            DrawItemsList(currentCharacterShop.shop.GetDesirableItemsFromSeller(playerManager), false);
         }
 
-        void DrawBuySellLabel(Button buySellButton, Item item, bool isPlayerBuying, CharacterShop characterShop)
+        void DrawBuySellLabel(Button buySellButton, Item item, bool isPlayerBuying)
         {
             buySellButton.Q<VisualElement>("RequiredItemSprite").style.display = DisplayStyle.None;
             buySellButton.Q<VisualElement>("OriginalValueContainer").style.display = DisplayStyle.None;
@@ -286,7 +218,7 @@ namespace AF.Shops
 
             if (ShopUtils.ItemRequiresCoinsToBeBought(item))
             {
-                int finalValue = characterShop.GetItemEvaluation(item, inventoryDatabase, playerManager.statsBonusController, isPlayerBuying);
+                int finalValue = currentCharacterShop.shop.GetItemEvaluation(item, inventoryDatabase, playerManager.statsBonusController, isPlayerBuying);
 
                 if (item.GetValue() != finalValue)
                 {
@@ -306,7 +238,7 @@ namespace AF.Shops
             }
         }
 
-        bool PlayerCanBuy(CharacterShop characterShop, Item item)
+        bool PlayerCanBuy(Shop characterShop, Item item)
         {
             if (item.tradingItemRequirements != null && item.tradingItemRequirements.Count > 0)
             {
@@ -331,14 +263,14 @@ namespace AF.Shops
             return playerStatsDatabase.gold >= finalValue;
         }
 
-        bool ShopCanBuy(CharacterShop characterShop, Item item)
+        bool ShopCanBuy(Shop shop, Item item)
         {
-            int finalValue = characterShop.GetItemEvaluation(item, inventoryDatabase, playerManager.statsBonusController, false);
+            int finalValue = shop.GetItemEvaluation(item, inventoryDatabase, playerManager.statsBonusController, false);
 
-            return characterShop.shopGold >= finalValue;
+            return shop.shopGold >= finalValue;
         }
 
-        void DrawItemsList(List<Item> itemsToSell, bool playerIsBuying, CharacterShop characterShop)
+        void DrawItemsList(List<ShopItem> itemsToSell, bool playerIsBuying)
         {
             root.Q<ScrollView>().Clear();
 
@@ -347,22 +279,31 @@ namespace AF.Shops
             Button exitButton = SetupExitButton(root.Q<ScrollView>());
 
             int i = 0;
-            foreach (var item in itemsToSell)
+            foreach (var shopitem in itemsToSell)
             {
                 int currentIndex = i;
+                Item item = shopitem.item;
 
                 VisualElement cloneButton = buySellButton.CloneTree();
                 Button buySellItemButton = cloneButton.Q<Button>("BuySellButton");
 
                 cloneButton.Q<IMGUIContainer>("ItemIcon").style.backgroundImage = new StyleBackground(item.sprite);
-                cloneButton.Q<Label>("ItemName").text = ShopUtils.GetItemDisplayName(item, playerIsBuying, inventoryDatabase, characterShop.itemsToSell);
 
-                bool playerCanBuy = playerIsBuying && PlayerCanBuy(characterShop, item);
-                bool playerCanSell = !playerIsBuying && ShopCanBuy(characterShop, item);
+                string itemName = item.GetName();
+                if (item is UpgradableItem upgradableItem)
+                {
+                    itemName += $" +{upgradableItem.level}";
+                }
+                itemName += $" ({shopitem.stock})";
+
+                cloneButton.Q<Label>("ItemName").text = itemName;
+
+                bool playerCanBuy = playerIsBuying && PlayerCanBuy(currentCharacterShop.shop, item);
+                bool playerCanSell = !playerIsBuying && ShopCanBuy(currentCharacterShop.shop, item);
 
                 buySellItemButton.style.opacity = (playerIsBuying && playerCanBuy || !playerIsBuying && playerCanSell) ? 1 : 0.5f;
 
-                DrawBuySellLabel(buySellItemButton, item, playerIsBuying, characterShop);
+                DrawBuySellLabel(buySellItemButton, item, playerIsBuying);
 
                 buySellItemButton.RegisterCallback<PointerEnterEvent>((ev) =>
                 {
@@ -381,11 +322,11 @@ namespace AF.Shops
 
                     if (playerCanBuy)
                     {
-                        BuyItem(item, characterShop);
+                        BuyItem(shopitem);
                     }
                     else if (playerCanSell)
                     {
-                        SellItem(item, characterShop);
+                        SellItem(shopitem);
                     }
                 },
                 () =>
@@ -426,15 +367,17 @@ namespace AF.Shops
             );
         }
 
-        void BuyItem(Item item, CharacterShop characterShop)
+        void BuyItem(ShopItem shopItem)
         {
-            int price = characterShop.GetItemEvaluation(
+            Item item = shopItem.item;
+
+            int price = currentCharacterShop.shop.GetItemEvaluation(
                 item,
                 inventoryDatabase,
                 playerManager.statsBonusController,
                 true);
 
-            if (!PlayerCanBuy(characterShop, item))
+            if (!PlayerCanBuy(currentCharacterShop.shop, item))
             {
                 return;
             }
@@ -445,7 +388,7 @@ namespace AF.Shops
                 {
 
                     uIDocumentPlayerGold.LoseGold(price);
-                    characterShop.shopGold += price;
+                    currentCharacterShop.shop.shopGold += price;
                 },
                 (onItemsTraded) =>
                 {
@@ -463,16 +406,18 @@ namespace AF.Shops
                     notificationManager.ShowNotification(
                         LocalizationSettings.StringDatabase.GetLocalizedString("UIDocuments", "Bought") + " " + item.GetName() + "", item.sprite);
 
-                    characterShop.RemoveItem(receivedItem, 1);
+                    shopItem.onItemSold?.Invoke();
 
-                    DrawBuyMenu(characterShop);
+                    DrawBuyMenu();
                 }
             );
         }
 
-        void SellItem(Item item, CharacterShop characterShop)
+        void SellItem(ShopItem shopItem)
         {
-            int price = characterShop.GetItemEvaluation(
+            Item item = shopItem.item;
+
+            int price = currentCharacterShop.shop.GetItemEvaluation(
                         item,
                         inventoryDatabase,
                         playerManager.statsBonusController,
@@ -480,20 +425,20 @@ namespace AF.Shops
 
 
             uIDocumentPlayerGold.AddGold(price);
-            characterShop.shopGold -= price;
+            currentCharacterShop.shop.shopGold -= price;
 
             // Remove item from player
             playerManager.playerInventory.RemoveItem(item, 1);
 
-            // Give item to NPC
-            characterShop.AddItem(item, 1);
+            shopItem.onItemSold?.Invoke();
 
             soundbank.PlaySound(soundbank.uiItemReceived);
             notificationManager.ShowNotification(
                 LocalizationSettings.StringDatabase.GetLocalizedString("UIDocuments", "Sold") + " " + item.GetName() + "", item.sprite);
 
-            DrawSellMenu(characterShop);
+            DrawSellMenu();
         }
+
 
         void RenderItemPreview(Item item)
         {

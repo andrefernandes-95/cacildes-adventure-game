@@ -1,6 +1,4 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using AF.Events;
 using GameAnalyticsSDK;
 using TigerForge;
@@ -17,42 +15,30 @@ namespace AF
         [Header("Quest Type")]
         public QuestType questType;
 
+        [Header("Status")]
+        public bool hasStarted = false;
+        public bool isTracked = false;
+
         [TextArea]
         public new string name;
         public LocalizedString questName_LocalizedString;
-
         public Texture questIcon;
-
-        [Header("Quest Objectives")]
-        [Obsolete("Use objectives")]
-        public string[] questObjectives;
-        [Obsolete("Use objectives")]
-        public LocalizedString[] questObjectives_LocalizedString;
-        [Obsolete("Use objectives")]
-        public QuestObjectiveInfo[] questObjectiveInfos;
 
         [Header("Quest Objectives Data")]
         public List<QuestObjective> objectives = new();
-
         public Character questGiver;
         public Character[] relatedCharacters;
 
-        [Header("Quest Progress")]
-        public int questProgress = -1;
         public List<QuestObjective> completedObjectives = new();
 
         [Header("Quest Description")]
         public LocalizedString questDescription;
 
-
-        [Header("Databases")]
-        public QuestsDatabase questsDatabase;
-
         [Header("Testing")]
         public bool useDefaultQuestProgress = false;
         public int defaultQuestProgress = 0;
 
-#if UNITY_EDITOR 
+#if UNITY_EDITOR
 
         private void OnEnable()
         {
@@ -71,72 +57,32 @@ namespace AF
 
         public void Clear()
         {
-            questProgress = useDefaultQuestProgress ? defaultQuestProgress : -1;
+            hasStarted = false;
+            isTracked = false;
+            completedObjectives.Clear();
         }
 
         public bool IsCompleted()
         {
-            return questProgress + 1 > questObjectives.Length;
+            return hasStarted && completedObjectives.Count >= objectives.Count;
         }
 
-        /// <summary>
-        /// Unity Event
-        /// </summary>
-        /// <param name="progress"></param>
-        public void SetProgress(int progress)
+        public void CompleteObjective(QuestObjective questObjective)
         {
-            if (!questsDatabase.ContainsQuest(this) && progress != -1)
-            {
-                questsDatabase.AddQuest(this);
-            }
+            StartQuest();
 
-            questProgress = progress;
+            if (!completedObjectives.Contains(questObjective))
+            {
+                completedObjectives.Add(questObjective);
+            }
 
             EventManager.EmitEvent(EventMessages.ON_QUESTS_PROGRESS_CHANGED);
 
-            if (questObjectives != null && questProgress >= 0 && questProgress < questObjectives.Length)
-            {
-                string questObjective = questObjectives[questProgress];
-
-                if (!string.IsNullOrEmpty(questObjective))
-                {
-                    LogAnalytic(AnalyticsUtils.OnQuestProgressed(name, questObjective));
-                }
-            }
-
-            if (IsCompleted() && IsTracked())
+            if (IsCompleted() && isTracked)
             {
                 // Untrack quest
-                questsDatabase.UntrackQuest(this);
+                UntrackQuest();
             }
-        }
-
-        public void SetProgressIfHigher(int progress)
-        {
-            if (questProgress >= progress)
-            {
-                return;
-            }
-
-            SetProgress(progress);
-        }
-
-        /// <summary>
-        /// Unity Event
-        /// </summary>
-        public void Track()
-        {
-            questsDatabase.SetQuestToTrack(this);
-        }
-
-        public bool IsTracked()
-        {
-            return questsDatabase.IsQuestTracked(this);
-        }
-
-        public bool IsObjectiveCompleted(string questObjective)
-        {
-            return questProgress > Array.IndexOf(questObjectives, questObjective);
         }
 
         public bool IsObjectiveCompleted(QuestObjective questObjective)
@@ -144,19 +90,45 @@ namespace AF
             return completedObjectives.Contains(questObjective);
         }
 
-        void LogAnalytic(string eventName)
+        public void TrackQuest()
         {
-            if (!GameAnalytics.Initialized)
-            {
-                GameAnalytics.Initialize();
-            }
-
-            GameAnalytics.NewDesignEvent(eventName);
+            isTracked = true;
+            EventManager.EmitEvent(EventMessages.ON_QUEST_TRACKED);
         }
 
-        public bool HasStarted()
+        public void UntrackQuest()
         {
-            return questProgress != -1;
+            isTracked = false;
+            EventManager.EmitEvent(EventMessages.ON_QUEST_TRACKED);
+        }
+
+        public void StartQuest()
+        {
+            if (!hasStarted)
+            {
+                hasStarted = true;
+                EventManager.EmitEventData(EventMessages.ON_QUEST_ADDED, this);
+            }
+        }
+
+        public QuestObjective GetCurrentObjective()
+        {
+            if (objectives == null)
+            {
+                return null;
+            }
+
+            if (completedObjectives.Count <= 0)
+            {
+                return objectives[0];
+            }
+
+            if (completedObjectives.Count >= objectives.Count)
+            {
+                return null;
+            }
+
+            return objectives[completedObjectives.Count];
         }
     }
 }

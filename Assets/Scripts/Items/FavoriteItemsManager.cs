@@ -50,14 +50,14 @@ namespace AF
                 return;
             }
 
-            Item currentItem = equipmentDatabase.GetCurrentConsumable();
+            Consumable currentItem = equipmentDatabase.GetCurrentConsumable();
 
             if (currentItem == null)
             {
                 return;
             }
 
-            int itemAmount = inventoryDatabase.GetItemAmount(currentItem);
+            int itemAmount = playerManager.playerInventory.GetAvailableConsumables(currentItem).Count;
 
             if (itemAmount <= 1 && !currentItem.isRenewable)
             {

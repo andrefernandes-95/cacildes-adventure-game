@@ -43,6 +43,7 @@ namespace AF
         public PlayerStatsDatabase playerStatsDatabase;
         public QuestsDatabase questsDatabase;
         public GameSettings gameSettings;
+        public QuestManager questManager;
 
         [Header("Unequipped Textures")]
         public Texture2D unequippedSpellSlot;
@@ -316,7 +317,7 @@ namespace AF
                 : new StyleBackground(unequippedWeaponSlot);
 
             quickItemName.text = equipmentDatabase.GetCurrentConsumable() != null ?
-                equipmentDatabase.GetCurrentConsumable().GetName() + $" ({playerManager.playerInventory.GetConsumableAmount(equipmentDatabase.GetCurrentConsumable())})"
+                equipmentDatabase.GetCurrentConsumable().GetName() + $" ({playerManager.playerInventory.GetAvailableConsumables(equipmentDatabase.GetCurrentConsumable()).Count})"
                 : "";
 
 
@@ -385,21 +386,22 @@ namespace AF
 
         void UpdateQuestTracking()
         {
-            root.Q("CurrentObjectives").style.display = questsDatabase.trackedQuests.Count > 0 ? DisplayStyle.Flex : DisplayStyle.None;
+            root.Q("CurrentObjectives").style.display = questManager.GetTrackedQuests().Count > 0 ? DisplayStyle.Flex : DisplayStyle.None;
 
             var highlightedMissionsContainer = root.Q("HighlightedMissions");
             highlightedMissionsContainer.Clear();
 
-            foreach (QuestParent trackedQust in questsDatabase.trackedQuests)
+            List<QuestParent> trackedQuests = questManager.GetTrackedQuests();
+            foreach (QuestParent trackedQuest in trackedQuests)
             {
                 VisualElement clone = highlightedMissinEntry.CloneTree();
 
-                if (trackedQust.questProgress < trackedQust.questObjectives_LocalizedString.Length)
+                if (trackedQuest.GetCurrentObjective() != null)
                 {
-                    clone.Q<Label>("QuestObjective").text = trackedQust.questObjectives_LocalizedString[trackedQust.questProgress].GetLocalizedString();
+                    clone.Q<Label>("QuestObjective").text = trackedQuest.GetCurrentObjective().GetDescription();
                 }
 
-                clone.Q<Label>("QuestType").text = trackedQust.questName_LocalizedString.GetLocalizedString();
+                clone.Q<Label>("QuestType").text = trackedQuest.questName_LocalizedString.GetLocalizedString();
                 highlightedMissionsContainer.Add(clone);
             }
         }

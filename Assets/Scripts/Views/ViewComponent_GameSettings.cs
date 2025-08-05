@@ -17,7 +17,6 @@ namespace AF
 
         [Header("Quest To Allow New Game Plus")]
         public QuestParent questParentToAllowNewGamePlus;
-        public int[] rangeOfQuestToAllowNewGamePlus;
 
         // Sub-menus
         VisualElement controlsMenu;
@@ -170,7 +169,7 @@ namespace AF
 
         void SetupNewGamePlusButtons()
         {
-            if (questParentToAllowNewGamePlus != null && rangeOfQuestToAllowNewGamePlus.Contains(questParentToAllowNewGamePlus.questProgress))
+            if (questParentToAllowNewGamePlus != null && questParentToAllowNewGamePlus.IsCompleted())
             {
                 UIUtils.SetupButton(newGamePlusButton, () =>
                 {

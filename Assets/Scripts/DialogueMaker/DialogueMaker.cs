@@ -65,7 +65,7 @@ namespace AF
                 {
                     var split = text.Split(new[] { ':' }, 2);
                     characterName = split[0].Trim();
-                    text = split[1].Trim();
+                    text = split[1];
                 }
 
                 if (!string.IsNullOrEmpty(text))
@@ -87,6 +87,9 @@ namespace AF
                     }
 
                     OnMessageEnd();
+
+                    // Wait until input has been fully processed so we dont accidentally trigger unwanted GenericTriggers
+                    yield return new WaitUntil(() => playerManager.starterAssetsInputs.interact == false);
                 }
             }
 

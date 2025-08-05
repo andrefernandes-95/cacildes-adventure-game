@@ -1,27 +1,32 @@
 EXTERNAL runEvent(eventId)
 
-- Petra: Have you seen my sister, Thelma? She’s missing…  I’m starting to fear the worst.
+- Petra: Have you seen my sister? She looks a lot like me... just younger.  
 
-* [Do you know where she might have gone?]
-    Petra: She saw boats come in—no flags, no lanterns—slipping into the cove near the abandoned wharf. Like they didn’t want to be seen.
-    <>She said something felt off. That they were here for her. She wouldn’t say why—just grabbed her bow and left before I could stop her.
-    <>She told me not to follow. Said she could handle it alone. But that was last night. She should’ve been back by now.
+* [Do you have any idea where she went?]
+    Petra: She took her bow and headed toward the Abandoned Wharf. Said she saw ships coming in. That place hasn’t seen a crew in years, so I understood her curiosity...
+    <>But she’s been gone far too long. I’m starting to worry.
 
-    ** [I’ll go to the abandoned wharf and look for her.]
-        Petra: You would? Thank you. The forest doesn’t forget those who stand with her.
+    ** [I’ll go look for her. Where exactly is the wharf?]
+        ~ runEvent("Increase Reputation By 1 Point")
+        ~ runEvent("Start Petra Quest")
+        Petra: Thank you. If you came by the Slepbone Pathway, there's an old ladder carved into the cliffside — overgrown with moss, but still solid.  
+        <>It’ll take you straight down to the wharf. And if the path confuses you, look for a weathered signpost. It still points true.
 
-    ** [That sounds dangerous. What do I get if I help?]
+    ** [I have a younger brother. I get it. I’ll see what I can do.]
+        ~ runEvent("Increase Reputation By 1 Point")
+        ~ runEvent("Start Petra Quest")
+        Petra: Then you understand. Thank you. If you came by the Slepbone Pathway, there's a hidden ladder carved into the cliffs — mossy, but steady.  
+        <>It leads straight to the wharf. Watch for an old sign if the trail gets tricky.
+
+    ** [Ships... an abandoned port? Sounds risky. What's in it for me?]
         ~ runEvent("Decrease Reputation by 1 point")
-        Petra: You're bargaining while a life might be at stake? ...Fine. Help bring her back, and the tribe will make sure you’re rewarded. We don’t forget those who aid us.
+        Petra: Right. Should’ve guessed you'd only lift a finger for coin. Forget I asked.
         -> END
-    ** [I’ll see what I can do. No promises.]
-        Petra: Fair enough. Just… if you find her, guide her back to me. Please.
 
-    - Cacildes: How do I get to the abandoned wharf?
+    ** [I’ll see what I can do — no promises.]
+        ~ runEvent("Start Petra Quest")
+        Petra: Fair enough. Just... if you find her, make sure she's safe. Please.
 
-    - Petra: If you came from the Slepbone Pathway, there’s a hidden ladder carved into the cliffs—covered in moss, but still holding strong. 
-    <>It leads straight down to the wharf. Or look for road sign for help if the path twists on you.
-
-    - Cacildes: Got it. I’ll see what I can do.
+* [Goodbye]
 
 -> END

@@ -22,7 +22,8 @@ namespace AF
 
         public Dictionary<StatusEffect, CharacterStatusEffectUI> statusEffectBars = new();
 
-        private void Awake()
+        // Subscribe after Awake() to ensure all health posture values have been calculated first
+        private void Start()
         {
             characterBaseManager = GetComponentInParent<CharacterBaseManager>();
 

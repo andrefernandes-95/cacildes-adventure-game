@@ -10,13 +10,13 @@ namespace AF
 
         public override IEnumerator Dispatch()
         {
-            if (!quest.HasStarted())
+            if (!quest.hasStarted)
             {
-                quest.SetProgress(0);
+                quest.StartQuest();
 
                 if (trackQuest)
                 {
-                    quest.Track();
+                    quest.TrackQuest();
                 }
             }
 

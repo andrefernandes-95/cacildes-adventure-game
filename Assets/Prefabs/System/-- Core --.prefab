@@ -4496,6 +4496,53 @@ Transform:
   - {fileID: 6479649804796271719}
   m_Father: {fileID: 2536479631842179830}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &498708946697177256
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2608891231149619155}
+  - component: {fileID: 5393001533579407144}
+  m_Layer: 0
+  m_Name: Shop Database
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2608891231149619155
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 498708946697177256}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5309569914379906045}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5393001533579407144
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 498708946697177256}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a28c02f64458be41a20c3a0b92e6b8d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  allShops:
+  - {fileID: 11400000, guid: a75b01e9306be79469b770ed0c1b3a5f, type: 2}
+  gameSession: {fileID: 11400000, guid: 806862db69fa7244189bed36885b18a4, type: 2}
 --- !u!1 &510274043313444909
 GameObject:
   m_ObjectHideFlags: 0
@@ -31857,7 +31904,6 @@ MonoBehaviour:
   gameSettings: {fileID: 11400000, guid: c45719dc8e6e81947b7f2a5be9b2993a, type: 2}
   inputs: {fileID: 3450680162556713538}
   questParentToAllowNewGamePlus: {fileID: 11400000, guid: 8cd8aa047a4c20945ba09d140896d24c, type: 2}
-  rangeOfQuestToAllowNewGamePlus: 0100000002000000
   saveManager: {fileID: 7611835834280718335}
   gameSession: {fileID: 11400000, guid: 806862db69fa7244189bed36885b18a4, type: 2}
   soundbank: {fileID: 7321280117501162532}
@@ -33864,6 +33910,7 @@ MonoBehaviour:
   questPrefabButton: {fileID: 9197481963319205126, guid: 3b18703d924191049b0797535349152f, type: 3}
   questInfoButton: {fileID: 9197481963319205126, guid: bdad704499d5c9f42857422fa694132f, type: 3}
   questsDatabase: {fileID: 11400000, guid: 6385a39d04c1cad43ac7513da2ad6b40, type: 2}
+  questManager: {fileID: 6825649313841880435}
   starterAssetsInputs: {fileID: 3450680162556713538}
   unrevealedObjectiveSprite: {fileID: 21300000, guid: a95758fbd96d04b4e953453fa39127b7, type: 3}
   trackQuestSound: {fileID: 8300000, guid: 8856d0b734bead244a9fce2b3960ab64, type: 3}
@@ -44488,6 +44535,7 @@ GameObject:
   - component: {fileID: 7896689136054864766}
   - component: {fileID: 6154612153591458018}
   - component: {fileID: 1628314599164878575}
+  - component: {fileID: 6519289722788959043}
   m_Layer: 8
   m_Name: "\U0001F6E1\uFE0F Block (Player)"
   m_TagString: Untagged
@@ -44544,6 +44592,18 @@ MonoBehaviour:
       - m_Target: {fileID: 1628314599164878575}
         m_TargetAssemblyTypeName: AF.CharacterAbstractBlockController, AF
         m_MethodName: BeginParrying
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 6519289722788959043}
+        m_TargetAssemblyTypeName: UnityEngine.AudioSource, UnityEngine
+        m_MethodName: Play
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -44696,6 +44756,103 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   isCounterAttacking: 0
+--- !u!82 &6519289722788959043
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4198746306214095488}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: 3faf71a6a00c4014c9894a896c2b6ba9, type: 3}
+  m_Resource: {fileID: 8300000, guid: 3faf71a6a00c4014c9894a896c2b6ba9, type: 3}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &4206562377752553806
 GameObject:
   m_ObjectHideFlags: 0
@@ -56597,6 +56754,7 @@ MonoBehaviour:
   blacksmithBackgroundImage: {fileID: 21300000, guid: eef0806d9240d7547b06afe391bc2840, type: 3}
   goldSprite: {fileID: 21300000, guid: 73bd41d271c7a864d93da71916152f12, type: 3}
   sfxOnEnterMenu: {fileID: 8300000, guid: e40cdf53289609441bd96ba7e91c1d84, type: 3}
+  sfxOnEnterMenuVolume: 0.5
   uIDocument: {fileID: 6527807959055076932}
   uIDocumentBonfireMenu: {fileID: 6967777918374765681}
   uIDocumentPlayerGold: {fileID: 8239534056808693025}
@@ -58576,6 +58734,8 @@ Transform:
   - {fileID: 384615932179501648}
   - {fileID: 7805878155734745742}
   - {fileID: 8215763201639180109}
+  - {fileID: 2608891231149619155}
+  - {fileID: 4814290954054197507}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5309569914516403008
@@ -58979,6 +59139,7 @@ MonoBehaviour:
   playerStatsDatabase: {fileID: 11400000, guid: 5700f759ff00d104a97ef4af25190ddd, type: 2}
   questsDatabase: {fileID: 11400000, guid: 6385a39d04c1cad43ac7513da2ad6b40, type: 2}
   gameSettings: {fileID: 11400000, guid: c45719dc8e6e81947b7f2a5be9b2993a, type: 2}
+  questManager: {fileID: 6825649313841880435}
   unequippedSpellSlot: {fileID: 2800000, guid: e986e5afeb1147542b9645375914fb99, type: 3}
   unequippedWeaponSlot: {fileID: 2800000, guid: 70e07ab1b9f326b4bae30fe839d609ea, type: 3}
   unequippedConsumableSlot: {fileID: 2800000, guid: 9e74211e038c08249aaba9146aac9ef6, type: 3}
@@ -59777,6 +59938,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   soundbank: {fileID: 7321280117501162532}
   recipesDatabase: {fileID: 11400000, guid: c6ee84f65e9f6f746a93959f9be72442, type: 2}
+  currentGenericTrigger: {fileID: 0}
 --- !u!114 &8297465216963157232
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -60502,6 +60664,65 @@ Transform:
   - {fileID: 2010162779884126356}
   m_Father: {fileID: 2502701740412939986}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &5417988718818362834
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4814290954054197507}
+  - component: {fileID: 6825649313841880435}
+  m_Layer: 0
+  m_Name: Quest Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4814290954054197507
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5417988718818362834}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5309569914379906045}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6825649313841880435
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5417988718818362834}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 99b67713800d7a14fb6b12e37a768c99, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  allQuests:
+  - {fileID: 11400000, guid: 80f076c28931f1a42801f13bcd6c68e4, type: 2}
+  - {fileID: 11400000, guid: 8cd8aa047a4c20945ba09d140896d24c, type: 2}
+  - {fileID: 11400000, guid: 1bbaf2bdcda1f7440be0a2cd6cf9be45, type: 2}
+  - {fileID: 11400000, guid: ca0b03230578a7a4b91ba107764bf7e4, type: 2}
+  - {fileID: 11400000, guid: 521ca45e0b50eb7428b9c7c5bd2b7021, type: 2}
+  - {fileID: 11400000, guid: 2f8ad9fbfe1e72b4e9eab5d2ef279a04, type: 2}
+  - {fileID: 11400000, guid: f76dd2c90b67e774badd7d1f9f41c428, type: 2}
+  - {fileID: 11400000, guid: 6ef87d0e5dbd0804496c3b48d5f8c630, type: 2}
+  - {fileID: 11400000, guid: fcbaa36378d29a043b89eb604955d106, type: 2}
+  - {fileID: 11400000, guid: bbb4134a0c6c7ba459ffff34a74e1785, type: 2}
+  - {fileID: 11400000, guid: 28d4c0d57d3dc2b4690882adff077b9e, type: 2}
+  - {fileID: 11400000, guid: 7c0d5d75e8f56ce4896cf9f9c5fa4804, type: 2}
+  - {fileID: 11400000, guid: cfa466c11a4ddb946b37423e38ab16ff, type: 2}
+  - {fileID: 11400000, guid: 404cfceaebcd3b34893e926281d724f0, type: 2}
 --- !u!1 &5441577176058205595
 GameObject:
   m_ObjectHideFlags: 0
@@ -62823,6 +63044,7 @@ MonoBehaviour:
   gameSession: {fileID: 11400000, guid: 806862db69fa7244189bed36885b18a4, type: 2}
   errorHandler: {fileID: 7390676712175806445}
   uIDocumentCharacterCustomization: {fileID: 7173039414540753141}
+  uIManager: {fileID: 7631411710013860570}
 --- !u!1 &5832565686831665623
 GameObject:
   m_ObjectHideFlags: 0
@@ -65393,6 +65615,7 @@ MonoBehaviour:
   notificationManager: {fileID: 6922590514710513798}
   gameSettings: {fileID: 11400000, guid: c45719dc8e6e81947b7f2a5be9b2993a, type: 2}
   momentManager: {fileID: 5296014410988751150}
+  questManager: {fileID: 6825649313841880435}
   canSave: 1
   SAVE_FILES_FOLDER: QuickSave
 --- !u!1 &6265902340761769546
@@ -75509,6 +75732,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bearQuest: {fileID: 11400000, guid: 2f8ad9fbfe1e72b4e9eab5d2ef279a04, type: 2}
+  eventsRun: []
 --- !u!1 &7418204573941617396
 GameObject:
   m_ObjectHideFlags: 0

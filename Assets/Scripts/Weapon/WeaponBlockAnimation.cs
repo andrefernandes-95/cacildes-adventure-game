@@ -39,39 +39,39 @@ namespace AF
 
             if (block_lockOn_run_backwards != null)
             {
-                animationOverrides.Add(new() { animationName = "ARPG_Warrior_Guard_Run_Backward_Rootmotion", animationClip = block_lockOn_run_backwards });
+                animationOverrides.Add(new() { animationName = "Cacildes - Block - Back - Run", animationClip = block_lockOn_run_backwards });
             }
             if (block_lockOn_run_backwards_left != null)
             {
-                animationOverrides.Add(new() { animationName = "ARPG_Warrior_Guard_Run_Backward_Left_Rootmotion", animationClip = block_lockOn_run_backwards_left });
+                animationOverrides.Add(new() { animationName = "Cacildes - Block - Back - Run Left", animationClip = block_lockOn_run_backwards_left });
             }
             if (block_lockOn_run_backwards_right != null)
             {
-                animationOverrides.Add(new() { animationName = "ARPG_Warrior_Guard_Run_Backward_Right_Rootmotion", animationClip = block_lockOn_run_backwards_right });
+                animationOverrides.Add(new() { animationName = "Cacildes - Block - Back - Run Right", animationClip = block_lockOn_run_backwards_right });
             }
             if (block_lockOn_run_forward != null)
             {
-                animationOverrides.Add(new() { animationName = "ARPG_Warrior_Guard_Run_Forward_Rootmotion", animationClip = block_lockOn_run_forward });
+                animationOverrides.Add(new() { animationName = "Cacildes - Block - Front - Run", animationClip = block_lockOn_run_forward });
             }
             if (block_lockOn_run_forward_left != null)
             {
-                animationOverrides.Add(new() { animationName = "ARPG_Warrior_Guard_Run_Forward_Left_Rootmotion", animationClip = block_lockOn_run_forward_left });
+                animationOverrides.Add(new() { animationName = "Cacildes - Block - Front - Run Left", animationClip = block_lockOn_run_forward_left });
             }
             if (block_lockOn_run_forward_right != null)
             {
-                animationOverrides.Add(new() { animationName = "ARPG_Warrior_Guard_Run_Forward_Right_Rootmotion", animationClip = block_lockOn_run_forward_right });
+                animationOverrides.Add(new() { animationName = "Cacildes - Block - Front - Run Right", animationClip = block_lockOn_run_forward_right });
             }
             if (block_lockOn_run_right != null)
             {
-                animationOverrides.Add(new() { animationName = "ARPG_Warrior_Guard_Run_Rightward_Rootmotion", animationClip = block_lockOn_run_right });
+                animationOverrides.Add(new() { animationName = "Cacildes - Block - Run Right", animationClip = block_lockOn_run_right });
             }
             if (block_lockOn_run_left != null)
             {
-                animationOverrides.Add(new() { animationName = "ARPG_Warrior_Guard_Run_Leftward_Rootmotion", animationClip = block_lockOn_run_left });
+                animationOverrides.Add(new() { animationName = "Cacildes - Block - Run Left", animationClip = block_lockOn_run_left });
             }
             if (block_lockOn_idle != null)
             {
-                animationOverrides.Add(new() { animationName = "ARPG_Warrior_Guard", animationClip = block_lockOn_idle });
+                animationOverrides.Add(new() { animationName = "Cacildes - Block", animationClip = block_lockOn_idle });
             }
 
             if (block_hit_reaction != null)

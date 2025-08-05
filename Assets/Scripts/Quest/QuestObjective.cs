@@ -14,6 +14,8 @@ namespace AF
 
     public class QuestObjective : ScriptableObject
     {
+        public QuestParent questParent;
+
         [AssetPreview]
         public Sprite objectiveImage;
 

@@ -12,6 +12,8 @@ namespace AF
         public ErrorHandler errorHandler;
         public UIDocumentCharacterCustomization uIDocumentCharacterCustomization;
 
+        [SerializeField] UIManager uIManager;
+
         UIDocumentTitleScreen _uIDocumentTitleScreen;
 
         private void Start()
@@ -54,6 +56,10 @@ namespace AF
                 return false;
             }
 
+            if (uIManager.IsShowingFullScreenGUI())
+            {
+                return false;
+            }
 
             if (IsTitleScreenActive())
             {

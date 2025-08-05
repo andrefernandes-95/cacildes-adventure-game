@@ -45,8 +45,6 @@ namespace AF.Events
 
         protected GenericTrigger genericTrigger;
 
-        float timeToReenableTrigger = 1f;
-
         private void Awake()
         {
             CollectEventsFromChildren();
@@ -115,11 +113,6 @@ namespace AF.Events
             isRunning = false;
             EventManager.EmitEvent(EventMessages.ON_MOMENT_END);
 
-            Invoke(nameof(ReenableTrigger), timeToReenableTrigger);
-        }
-
-        void ReenableTrigger()
-        {
             if (genericTrigger != null)
             {
                 genericTrigger.TurnCapturable();

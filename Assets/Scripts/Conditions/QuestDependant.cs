@@ -11,17 +11,11 @@ namespace AF.Conditions
     {
         public QuestParent questParent;
 
-        [Obsolete("Use objectives")]
-        public int[] questProgresses;
-
         [Header("Progress Requirements")]
         public bool questMustNotHaveStarted = false;
-        public bool questMustBeCompleted = false;
+        public bool questMustHaveStarted = false;
         public QuestObjective[] requiredObjectives;
-
-        [Header("Quest Status Options")]
-        public bool shouldBeWithinRange = true;
-        public bool shouldBeOutsideRange = false;
+        public bool questMustBeCompleted = false;
 
         [Header("Settings")]
         public bool listenForQuestChanges = true;
@@ -37,6 +31,7 @@ namespace AF.Conditions
 
             if (listenForQuestChanges)
             {
+                EventManager.StartListening(EventMessages.ON_QUEST_ADDED, Evaluate);
                 EventManager.StartListening(EventMessages.ON_QUESTS_PROGRESS_CHANGED, Evaluate);
             }
         }
@@ -49,28 +44,19 @@ namespace AF.Conditions
             {
                 if (questMustNotHaveStarted)
                 {
-                    isActive = !questParent.HasStarted();
+                    isActive = !questParent.hasStarted;
                 }
-                else if (questMustBeCompleted)
+                else if (questMustHaveStarted)
                 {
-                    isActive = questParent.IsCompleted();
-
+                    isActive = questParent.hasStarted;
                 }
                 else if (requiredObjectives != null && requiredObjectives.Length > 0)
                 {
                     isActive = requiredObjectives.All(obj => questParent.IsObjectiveCompleted(obj));
                 }
-                // TODO: Legacy Code, remove
-                else if (questProgresses != null)
+                else if (questMustBeCompleted)
                 {
-                    if (shouldBeWithinRange)
-                    {
-                        isActive = questProgresses.Contains(questParent.questProgress);
-                    }
-                    else if (shouldBeOutsideRange)
-                    {
-                        isActive = !questProgresses.Contains(questParent.questProgress);
-                    }
+                    isActive = questParent.IsCompleted();
                 }
             }
 

@@ -1,66 +1,20 @@
 # IN PROGRESS
 
 
-- Iron Arrow Recipe - Broken Iron Arrow
-
-- Add hide and shard chest to blacksmith
-- Add blacksmith hammer weapon
-- Add focus to callback on scroll view exit buttons, which I forgot to do
-- Forest Wanderer Weapon
-
-- Blacksmith Explained Book
+-UNtrack quest button not working
+- Lets continue Petra quest
 
 
-- Orange juice not respawning, and also not curign player, also animation should be faster
+- Play around with shops and serialize them
 - Spells should spend mana
-
-
-
-- Create blacksmith with amensia under beach cavern explaining blacksmith mechanics
-
-- Bugs pressing E in when reading books and notes open them again
-
-
-# IN DEV
-
-
-- bug dialogo quadrado no gamepad
-
-
-- Do enemy damage weakeness based on combatant
-
-# Reload Mechanic and Fixing Gold
-i die in the boss fight against balbino - it will be active because main quest is not over
-in the boat, replace steel key with a lever, this way, the boss fight always triggers safely even if we die
-reload to last rested bonfire (or Cacildes Home if none is found in the save file) - need to store last bonfire rested at
-- Fix gold dupping by not reloading save data, we need to check boss story events to not use monobehaviour ids, and rely on quest progress instead
-
-
-
-In Dev:
-
-
-[CRAFTING]
-
-- Crafting upgrades to +10
-- Create Iron Shards up to 10
-- We should be able to upgrade spells and armors
-
-[UI]
-
-- Add Damage Type Label to weapons (Slash, Blunt, etc)
-
-[CORE_MECHANICS]
 
 To Do:
 - Add category to received items popup
-- Inventory weight, if too heavy, do heavy roll ( do not hinder jump )
 - Rework stat scale to work with module operators for every 2 or 3 levels (25 bonus to health every level)
 - BUG: Accessories can be equipped on other slots
 - expliccar q aguenar abilidades da mais dano
 - Add chest that uses another script for adding items, to avoid bugs with armors
 - Weapon should have abilities for right trigger and right bumper and left trigger (this way, the amount of combos is dependant on the weapon itself)
-- Unify Player and Enemy Actions (Block, Parry, Shooting Bow, Throwing Firebomb, Consuming Orange Juice)
 - Music HUD showing which music is playing
 - Remove staffs
 - Make item popups pop up animation
@@ -68,12 +22,24 @@ To Do:
 - Add note to boss tokens which is: Talk to Altaire in Snailcliff to unlock boss weapons
 - Add total game progress
 - Buff weapons made easier
-- PS4 Gamepad not showing correct icns
 - Review enemies
 - Backpack accessory - allow more items in th eback
 - BUG: TH when unarmed is not adding extra bonus
-- On Gamepad, Pressing left analogue should also enable running
 - Explain that slimes are resistant to axes because of their bodies.. some weapons are not ideal for some enemies
+
+KNOWN BUGS:
+
+?? - Bug in samurai fight, isBusy is still on even onf Idle animation during combat
+- Add focus to callback on scroll view exit buttons, which I forgot to do
+
+# Reload Mechanic and Fixing Gold
+i die in the boss fight against balbino - it will be active because main quest is not over
+in the boat, replace steel key with a lever, this way, the boss fight always triggers safely even if we die
+reload to last rested bonfire (or Cacildes Home if none is found in the save file) - need to store last bonfire rested at
+- Fix gold dupping by not reloading save data, we need to check boss story events to not use monobehaviour ids, and rely on quest progress instead
+
+- Thief should steal player weapon - ability
+
 
 Low:
 - Made wood sword upgradeable
@@ -95,7 +61,6 @@ Low:
 - Add different music to cecily town
 - Soldier in Impossible City has guard dialogue
 - Add note explaining scroll wheel distance
-- Remove walk
 - improve main story bosses
 - Improve Roberto boss fight
 - Captain drinking bottles always appear outside main quest near the orc cavern
@@ -115,6 +80,8 @@ Low:
 - Ring that allows any weapon to use powerstance regardless of differnet categories
 - Elixir that reveals illusionary walls
 - Confusion Status Effect
+- Inventory weight, if too heavy, do heavy roll ( do not hinder jump )
+
 
 - Bug: If tree trunk kills a slime but was in a previous fight with us, it wont return to us. Current Target is set to player, but thats it
 
@@ -132,7 +99,7 @@ Done:
 - Cloaks as accessories, same as pauldrons
 - Add Stats to characters, and refactor stats bonus controller
 - Add database for items with json descriptions
-
-# DONE
-- Test PS4 Controls (Fixed by checking the AutoSwitch on PlayerInput, UI Input module must be null)
-
+- On Gamepad, Pressing left analogue should also enable running
+- PS4 Gamepad not showing correct icns
+- Unify Player and Enemy Actions (Block, Parry, Shooting Bow, Throwing Firebomb, Consuming Orange Juice)
+- Remove walk

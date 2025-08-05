@@ -6,13 +6,11 @@ namespace AF
     using AYellowpaper.SerializedCollections;
     using UnityEngine;
     using UnityEngine.Localization;
-
     [CreateAssetMenu(fileName = "Combatant", menuName = "Combatant / New Combatant", order = 0)]
     public class Combatant : ScriptableObject
     {
         [Header("Info")]
         public LocalizedString combatantName;
-
         public bool isHumanoid = true;
 
         [Header("Locomotion Settings")]
@@ -56,17 +54,6 @@ namespace AF
         public float darknessBonus = 1f;
         public float waterBonus = 1f;
 
-        [Header("Status Effect Maximum Resistances")]
-        public int poisonResistance = 25;
-        public int bleedResistance = 25;
-        public int frostbiteResistance = 25;
-        public int burntResistance = 25;
-        public int curseResistance = 25;
-        public int drownResistance = 25;
-        public int confusionResistance = 25;
-        public int paralysisResistance = 25;
-        public int slownessResistance = 25;
-
         [SerializedDictionary("Status", "The width of the status resistance bar")]
         public SerializedDictionary<StatusEffect, float> statusEffectResistances = new();
 
@@ -79,7 +66,6 @@ namespace AF
         [Header("Loot")]
         public List<LootableItem> loot = new();
         public CharacterGold characterGold;
-
 
         public int GetCurrentLevel()
         {

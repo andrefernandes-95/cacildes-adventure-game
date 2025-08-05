@@ -15,6 +15,8 @@ namespace AF
             characterManager.characterAbilityManager.SetCurrentAbility(this);
             characterManager.RotateTowardsTarget(characterManager.rotationSpeed * 10f);
 
+            HandleAttackSpeed(characterManager);
+
             string hashAttack = "";
             if (isHeavyAttack)
             {
@@ -81,6 +83,32 @@ namespace AF
 
         public override void OnFinished(PlayerManager playerManager)
         {
+        }
+
+        void HandleAttackSpeed(CharacterManager characterManager)
+        {
+            Weapon currentWeapon;
+
+            if (isRightHand)
+            {
+                currentWeapon = characterManager.characterWeaponsManager.GetCurrentRightWeapon();
+            }
+            else
+            {
+                currentWeapon = characterManager.characterWeaponsManager.GetCurrentLeftWeapon();
+            }
+
+            if (currentWeapon != null)
+            {
+                if (characterManager.characterWeaponsManager.IsTwoHanding())
+                {
+                    characterManager.animator.speed = isHeavyAttack ? currentWeapon.th_HeavyAttackSpeedPenalty : currentWeapon.twoHandAttackSpeedPenalty;
+                }
+                else
+                {
+                    characterManager.animator.speed = isHeavyAttack ? currentWeapon.oh_HeavyAttackSpeedPenalty : currentWeapon.oneHandAttackSpeedPenalty;
+                }
+            }
         }
     }
 }

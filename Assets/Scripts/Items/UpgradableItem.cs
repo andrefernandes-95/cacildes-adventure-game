@@ -48,9 +48,14 @@ namespace AF
 
         public int GetBonusPoisePerLevel(int initialPoise, int level)
         {
-            if (level == 0 || initialPoise == 0)
+            if (initialPoise == 0)
             {
                 return 0;
+            }
+
+            if (level == 0)
+            {
+                return initialPoise;
             }
 
             float total = initialPoise;
@@ -72,9 +77,14 @@ namespace AF
 
         public int GetBonusPosturePerLevel(int initialPosture, int level)
         {
-            if (level == 0 || initialPosture == 0)
+            if (initialPosture == 0)
             {
                 return 0;
+            }
+
+            if (level == 0)
+            {
+                return initialPosture;
             }
 
             float total = initialPosture;
@@ -96,9 +106,14 @@ namespace AF
 
         public int GetBonusStatusEffectAmountPerHitPerLevel(float initialAmountPerHit, int level)
         {
-            if (level == 0 || initialAmountPerHit <= 0)
+            if (initialAmountPerHit <= 0)
             {
                 return 0;
+            }
+
+            if (level == 0)
+            {
+                return Mathf.CeilToInt(initialAmountPerHit);
             }
 
             float total = initialAmountPerHit;

@@ -49,7 +49,6 @@ namespace AF
         public new void ReplenishItems()
         {
             inventoryDatabase.ReplenishItems();
-
             uIDocumentPlayerHUDV2.UpdateEquipment();
         }
 
@@ -526,6 +525,10 @@ namespace AF
                         LocalizationSettings.StringDatabase.GetLocalizedString("UIDocuments", "The item has been preserved for future use.")
                     );
                 }
+                else if (consumable.isRenewable)
+                {
+                    inventoryDatabase.idsOfUsedConsumables.Add(consumable.itemID);
+                }
                 else
                 {
                     inventoryDatabase.RemoveConsumable(consumable);
@@ -536,6 +539,32 @@ namespace AF
         public override int GetConsumableAmount(Consumable consumable)
         {
             return inventoryDatabase.GetConsumableAmount(consumable);
+        }
+
+        List<Consumable> GetAllConsumableInstances(Consumable consumable)
+        {
+            return inventoryDatabase.ownedConsumables.Where(c => c.EqualsTo(consumable)).OfType<Consumable>().ToList();
+        }
+
+        /// <summary>
+        /// Gets all consumables that are available, meaning that for some like orange juice, are still awaiting their usage
+        /// </summary>
+        /// <param name="consumable"></param>
+        /// <returns></returns>
+        public List<Consumable> GetAvailableConsumables(Consumable consumable)
+        {
+            List<Consumable> allConsumableInstances = playerManager.playerInventory.GetAllConsumableInstances(consumable);
+
+            List<Consumable> allAvailableConsumables = new();
+            foreach (Consumable c in allConsumableInstances)
+            {
+                if (!playerManager.playerInventory.inventoryDatabase.idsOfUsedConsumables.Contains(c.itemID))
+                {
+                    allAvailableConsumables.Add(c);
+                }
+            }
+
+            return allAvailableConsumables;
         }
 
     }

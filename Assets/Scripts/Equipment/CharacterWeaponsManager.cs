@@ -242,6 +242,12 @@ namespace AF.Equipment
             return isTwoHanding;
         }
 
+        public void SetIsTwoHanding(bool value)
+        {
+            isTwoHanding = value;
+            UpdateEquipment();
+        }
+
         public override bool HasRangeWeapon()
         {
             return false;

@@ -41,6 +41,7 @@ namespace AF
         public NotificationManager notificationManager;
         public GameSettings gameSettings;
         public MomentManager momentManager;
+        public QuestManager questManager;
 
         // Flags that allow us to save the game
         bool hasBossFightOnGoing = false;
@@ -199,6 +200,8 @@ namespace AF
 
             quickSaveWriter.Write("ownedItems", keyValuePairs);
 
+            quickSaveWriter.Write("idsOfUsedConsumables", inventoryDatabase.idsOfUsedConsumables);
+
             SaveUtils.SaveItems(quickSaveWriter, playerManager.playerInventory.inventoryDatabase);
         }
         void SavePickups(QuickSaveWriter quickSaveWriter)
@@ -209,16 +212,7 @@ namespace AF
 
         void SaveQuests(QuickSaveWriter quickSaveWriter)
         {
-            SerializedDictionary<string, int> payload = new();
-
-            questsDatabase.questsReceived.ForEach(questReceived =>
-            {
-                payload.Add("Quests/" + questReceived.name,
-                    questReceived.questProgress);
-            });
-
-            quickSaveWriter.Write("questsReceived", payload);
-            quickSaveWriter.Write("trackedQuests", questsDatabase.trackedQuests.Select(trackedQuest => trackedQuest.name).ToArray());
+            questManager.OnSave(quickSaveWriter);
         }
 
         void SaveFlags(QuickSaveWriter quickSaveWriter)
@@ -361,6 +355,11 @@ namespace AF
         {
             inventoryDatabase.Clear();
 
+            if (quickSaveReader.TryRead("idsOfUsedConsumables", out List<string> idsOfUsedConsumables))
+            {
+                inventoryDatabase.idsOfUsedConsumables = idsOfUsedConsumables;
+            }
+
             quickSaveReader.TryRead("ownedItems", out SerializedDictionary<string, ItemAmount> ownedItems);
 
             if (ownedItems != null && ownedItems.Count > 0)
@@ -401,31 +400,7 @@ namespace AF
 
         void LoadQuests(QuickSaveReader quickSaveReader)
         {
-            questsDatabase.questsReceived.Clear();
-
-            quickSaveReader.TryRead("questsReceived", out SerializedDictionary<string, int> savedQuestsReceived);
-
-            foreach (var savedQuest in savedQuestsReceived)
-            {
-                QuestParent questParent = Resources.Load<QuestParent>(savedQuest.Key);
-                questParent.questProgress = savedQuest.Value;
-
-                questsDatabase.questsReceived.Add(questParent);
-            }
-
-            if (quickSaveReader.TryRead("trackedQuests", out string[] trackedQuestNames))
-            {
-                questsDatabase.trackedQuests.Clear();
-
-                foreach (var trackedQuestName in trackedQuestNames)
-                {
-                    QuestParent loadedQuest = Resources.Load<QuestParent>("Quests/" + trackedQuestName);
-                    if (loadedQuest != null)
-                    {
-                        questsDatabase.SetQuestToTrack(loadedQuest);
-                    }
-                }
-            }
+            questManager.OnLoad(quickSaveReader);
         }
 
         void LoadFlags(QuickSaveReader quickSaveReader)

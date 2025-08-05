@@ -23,14 +23,12 @@ namespace AF.Health
         {
             this.characterBaseManager = characterBaseManager;
 
-            characterBaseManager.health.onShowHealthbar.AddListener(OnUpdateHealthbar);
+            characterBaseManager.health.onShowHealthbar.AddListener(ShowHealthbar);
             characterBaseManager.health.onUpdateHealthbar.AddListener(OnUpdateHealthbar);
             characterBaseManager.health.onHideHealthbar.AddListener(OnHideHealthbar);
 
-
             OnHideHealthbar();
         }
-
 
         void ShowHealthbar()
         {
@@ -60,7 +58,7 @@ namespace AF.Health
 
         void OnUpdateHealthbar()
         {
-            if (characterBaseManager.health.GetCurrentHealth() <= 0 || IsBoss())
+            if (IsBoss())
             {
                 OnHideHealthbar();
                 return;
@@ -73,9 +71,9 @@ namespace AF.Health
 
             currentAndMaxHealthValue.text = $"{(int)currentHealth}/{maxHealth}";
 
-            if (!gameObject.activeSelf)
+            if (characterBaseManager.health.GetCurrentHealth() <= 0)
             {
-                ShowHealthbar();
+                OnHideHealthbar();
             }
         }
 

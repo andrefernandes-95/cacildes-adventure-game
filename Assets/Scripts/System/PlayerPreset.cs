@@ -197,15 +197,13 @@ namespace AF
             {
                 int questObjectiveCount = completedQuest.objectives != null && completedQuest.objectives.Count > 0
                     ? completedQuest.objectives.Count
-                    : completedQuest.questObjectives.Length;
+                    : 0;
 
-                completedQuest.SetProgress(questObjectiveCount);
             }
 
             if (currentQuest != null)
             {
-                currentQuest.SetProgress(currentQuestProgress);
-                currentQuest.Track();
+                currentQuest.TrackQuest();
             }
         }
 
