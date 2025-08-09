@@ -51,6 +51,7 @@ namespace AF
         public CompanionsSceneManager companionsSceneManager;
         public PlayerActivityManager playerActivityManager;
         public PlayerConsumableManager playerConsumableManager;
+        public PlayerBuffManager playerBuffManager;
 
         [Header("Databases")]
         public PlayerStatsDatabase playerStatsDatabase;

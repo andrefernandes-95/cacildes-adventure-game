@@ -81,7 +81,7 @@ namespace AF
             }
 
             // Do not damage ourselves
-            if (shooter.transform.root == damageReceiver.GetCharacter().transform.root)
+            if (shooter.transform.root == damageReceiver.GetCharacter()?.transform.root)
             {
                 return false;
             }

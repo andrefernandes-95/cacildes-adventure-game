@@ -22,8 +22,3 @@ Color: 3D2518
 
 - A moral da história, tingida de sangue e ironia: nunca ripostes contra alguém que não estudaste. Deixa-os atacar primeiro. Deixa-os falhar. Esquiva-te até conheceres o ritmo deles — ou sobe a uma rocha e espera. Só então, talvez, devas erguer os braços e ripostar.
 <>Ah, e usa armadura. E se estiveres a cavalo — mete o maldito elmo.
-
-
-- Annex
-# Image: Assets/Resources/Images/Parrying (PT).png
-- End

@@ -68,7 +68,11 @@ namespace AF
         {
             characterWeaponHitbox.trailRenderer.enabled = false;
             characterWeaponHitbox.DisableHitbox();
-            characterWeaponHitbox.GetComponent<MeshRenderer>().enabled = false;
+            if (characterWeaponHitbox.TryGetComponent<MeshRenderer>(out var meshRenderer))
+            {
+                meshRenderer.enabled = false;
+            }
+
             characterWeaponHitbox.GetComponent<BoxCollider>().enabled = false;
             characterWeaponHitbox.GetComponent<Rigidbody>().Sleep();
             characterWeaponHitbox.GetComponent<Rigidbody>().linearVelocity = Vector3.zero;

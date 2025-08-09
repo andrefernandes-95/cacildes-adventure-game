@@ -21,7 +21,3 @@ Color: 3D2518
 
 - The moral, stained in blood and irony: never parry what you haven’t studied. Let them swing first. Let them fail. Dodge until you’ve learned their rhythm—or climb a rock and wait. Only then, maybe, should you raise your arms and parry away.
 <>Also, wear armor. Especially pants. And if you’re riding a horse—put on the damn helmet.
-
-- Annex
-# Image: Assets/Resources/Images/Parrying.png
-- End

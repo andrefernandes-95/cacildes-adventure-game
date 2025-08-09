@@ -27,6 +27,9 @@ namespace AF
                 hashAttack = CombatUtils.GetLightAttackAnimationName(attackIndex, !isRightHand, characterManager.characterBaseWeaponsManager.CanPowerStance());
             }
 
+            Debug.Log($"Use Weapon Attack for character {characterManager.name}, will use: {hashAttack}");
+
+
             characterManager.PlayCrossFadeBusyAnimationWithRootMotion(hashAttack, .1f);
         }
 

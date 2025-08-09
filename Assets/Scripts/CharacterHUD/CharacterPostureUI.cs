@@ -60,8 +60,8 @@ namespace AF.Health
 
             float currentValue = characterBaseManager.characterPosture.currentPostureDamage;
             int maxValue = characterBaseManager.characterPosture.GetMaxPostureDamage();
-            slider.maxValue = maxValue * 0.01f;
-            slider.value = currentValue * 0.01f;
+            slider.value = currentValue / maxValue;
+            slider.maxValue = 1f;
 
             currentAndMaxValue.text = $"{(int)currentValue}/{maxValue}";
 

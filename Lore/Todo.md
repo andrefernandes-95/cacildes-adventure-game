@@ -1,9 +1,17 @@
 # IN PROGRESS
 
 
--UNtrack quest button not working
-- Lets continue Petra quest
+- Mead, need to work on it
 
+- UNtrack quest button not working 
+- Remover lock on ref das galinhas
+- I think save game is resetting favorite managers
+
+
+- Bear should give a boss token
+- Make Lara Shop
+- Lets continue Petra quest
+- Enemy Posture should increase every time its broke
 
 - Play around with shops and serialize them
 - Spells should spend mana

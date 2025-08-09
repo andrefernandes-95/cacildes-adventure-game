@@ -2,10 +2,9 @@ using System;
 using AF.Health;
 using UnityEngine;
 using UnityEngine.Localization;
-using UnityEngine.Localization.Settings;
 using UnityEngine.UIElements;
 
-namespace AF.UI.EquipmentMenu
+namespace AF
 {
     public class ItemTooltip : MonoBehaviour
     {
@@ -242,9 +241,6 @@ namespace AF.UI.EquipmentMenu
                 SetupRefs();
             }
 
-            // Load item descriptions for tooltips
-            playerManager.playerInventory.inventoryDatabase.LoadDescriptionsData();
-
             tooltip.style.display = DisplayStyle.Flex;
         }
 
@@ -295,7 +291,7 @@ namespace AF.UI.EquipmentMenu
             string itemName = GetItemName(item);
 
             tooltipItemName.text = itemName;
-            tooltipItemDescription.text = playerManager.playerInventory.inventoryDatabase.GetItemDescription(item);
+            tooltipItemDescription.text = item.GetDescription();
 
             if (item is Weapon weapon)
             {

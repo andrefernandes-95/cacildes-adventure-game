@@ -246,9 +246,9 @@ namespace AF.Shops
 
                 foreach (var requiredTradingItem in item.tradingItemRequirements)
                 {
-                    if (
-                        !inventoryDatabase.HasItem(requiredTradingItem.Key)
-                        || inventoryDatabase.ownedItems[requiredTradingItem.Key].amount < requiredTradingItem.Value)
+                    List<Item> requiredItems = inventoryDatabase.ownedConsumables.Where(consumable => consumable != null && consumable.EqualsTo(requiredTradingItem.Key)).OfType<Item>().ToList();
+
+                    if (requiredItems.Count < requiredTradingItem.Value)
                     {
                         canBuy = false;
                         break;
@@ -395,7 +395,7 @@ namespace AF.Shops
                     foreach (var tradedItem in onItemsTraded)
                     {
 
-                        playerManager.playerInventory.RemoveItem(tradedItem.Key, tradedItem.Value);
+                        playerManager.playerInventory.RemoveConsumable(tradedItem.Key as Consumable);
                     }
                 },
                 (receivedItem) =>
@@ -403,6 +403,7 @@ namespace AF.Shops
                     // Give item to player
                     playerManager.playerInventory.AddItem(item, 1);
                     soundbank.PlaySound(soundbank.uiItemReceived);
+
                     notificationManager.ShowNotification(
                         LocalizationSettings.StringDatabase.GetLocalizedString("UIDocuments", "Bought") + " " + item.GetName() + "", item.sprite);
 

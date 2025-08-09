@@ -14,23 +14,23 @@ namespace AF
         [SerializeField] Image sliderFill;
         [SerializeField] Image effectIcon;
 
-        public void UpdateUI(StatusEffect statusEffect, float amount, float maxAmount, bool isApplied)
+        public void UpdateUI(string buildUpName, string appliedName, Sprite icon, Color barColor, float amount, float maxAmount, bool isApplied)
         {
             if (isApplied)
             {
                 sliderBackground.color = Color.black;
-                statusEffectLabel.text = statusEffect.GetAppliedName();
+                statusEffectLabel.text = appliedName;
             }
             else
             {
                 sliderBackground.color = Color.white;
-                statusEffectLabel.text = statusEffect.GetName();
+                statusEffectLabel.text = buildUpName;
             }
 
-            sliderFill.color = statusEffect.barColor;
-            slider.maxValue = maxAmount * 0.01f;
-            slider.value = amount * 0.01f;
-            effectIcon.sprite = statusEffect.icon;
+            sliderFill.color = barColor;
+            slider.maxValue = 1f;
+            slider.value = amount / maxAmount;
+            effectIcon.sprite = icon;
 
             amountLabel.text = $"{(int)amount}/{(int)maxAmount}";
         }

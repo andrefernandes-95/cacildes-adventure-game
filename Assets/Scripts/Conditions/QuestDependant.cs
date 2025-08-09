@@ -42,21 +42,24 @@ namespace AF.Conditions
 
             if (questParent != null)
             {
-                if (questMustNotHaveStarted)
+                if (questMustBeCompleted)
                 {
-                    isActive = !questParent.hasStarted;
+                    isActive = questParent.IsCompleted();
                 }
-                else if (questMustHaveStarted)
-                {
-                    isActive = questParent.hasStarted;
-                }
-                else if (requiredObjectives != null && requiredObjectives.Length > 0)
+                // Quest must not have been completed and requires objectives
+                else if (questParent.IsCompleted() == false && requiredObjectives != null && requiredObjectives.Length > 0)
                 {
                     isActive = requiredObjectives.All(obj => questParent.IsObjectiveCompleted(obj));
                 }
-                else if (questMustBeCompleted)
+                // Quest has started and no objectives completed
+                else if (questMustHaveStarted && questParent.completedObjectives.Count <= 0)
                 {
-                    isActive = questParent.IsCompleted();
+                    isActive = questParent.hasStarted;
+                }
+                // Quest not started
+                else if (questMustNotHaveStarted)
+                {
+                    isActive = !questParent.hasStarted;
                 }
             }
 

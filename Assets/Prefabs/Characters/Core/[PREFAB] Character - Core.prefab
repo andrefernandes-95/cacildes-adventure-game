@@ -2953,7 +2953,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b20663c4ac9a14640ac632a1dcce4237, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  physicalAttackBonus: 0
   heavyAttackBonusDamage: 50
   unarmedLightAttackPostureDamage: 18
   unarmedPostureDamageBonus: 10
@@ -35018,6 +35017,7 @@ Transform:
   - {fileID: 2023680068749838771}
   - {fileID: 380799787922699100}
   - {fileID: 1118436753305935581}
+  - {fileID: 5012916889321352799}
   m_Father: {fileID: 6242450190264014007}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3705549246472038351
@@ -38046,6 +38046,7 @@ MonoBehaviour:
   characterBaseActivityManager: {fileID: 8105309312477364072}
   characterBaseConsumableManager: {fileID: 5880498836130299295}
   characterHUD: {fileID: 5189808774040190907}
+  characterBaseBuffManager: {fileID: 6193433127975113308}
   companionID: {fileID: 0}
   characterCombatController: {fileID: 8518529533467014141}
   targetManager: {fileID: 2735465378605405321}
@@ -38062,6 +38063,7 @@ MonoBehaviour:
   characterConsumableManager: {fileID: 5880498836130299295}
   characterLoot: {fileID: 2331984330916286163}
   characterShop: {fileID: 4143778435181749395}
+  characterBuffManager: {fileID: 6193433127975113308}
   animatorOverrideController: {fileID: 0}
   patrolSpeed: 2
   chaseSpeed: 6
@@ -53983,6 +53985,52 @@ SkinnedMeshRenderer:
     m_Center: {x: -28.218605, y: -3.313792, z: 7.2826385}
     m_Extent: {x: 19.66013, y: 7.7359705, z: 16.556309}
   m_DirtyAABB: 0
+--- !u!1 &5732758359233213029
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5012916889321352799}
+  - component: {fileID: 6193433127975113308}
+  m_Layer: 22
+  m_Name: "Character Buff Manager \U0001F4AB"
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5012916889321352799
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5732758359233213029}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1438186108084557261}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6193433127975113308
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5732758359233213029}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9731d8842275e0545893000ba711dded, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentBuffs: []
+  characterManager: {fileID: 1759811369383153655}
 --- !u!1 &5735739584433001535
 GameObject:
   m_ObjectHideFlags: 0

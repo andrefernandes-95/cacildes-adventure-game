@@ -6,6 +6,7 @@ namespace AF
     using AF.Shops;
     using AF.Stats;
     using EditorAttributes;
+    using UnityEditor;
     using UnityEngine;
     using UnityEngine.Events;
 
@@ -69,6 +70,31 @@ namespace AF
         [Header("Quest Based Discount Settings")]
         public QuestObjective questObjectiveThatGivesDiscounts;
         [Range(0, 1f)] public float discountForQuestObjective = 0.15f;
+
+
+
+#if UNITY_EDITOR
+        private void OnEnable()
+        {
+            // No need to populate the list; it's serialized directly
+            EditorApplication.playModeStateChanged += OnPlayModeStateChanged;
+        }
+
+        private void OnPlayModeStateChanged(PlayModeStateChange state)
+        {
+            if (state == PlayModeStateChange.ExitingPlayMode)
+            {
+                // Clear the list when exiting play mode
+                Clear();
+            }
+        }
+#endif
+        public void Clear()
+        {
+            itemsBought.Clear();
+            itemsBoughtFromPlayer.Clear();
+            itemsBoughtThatNeverRestock.Clear();
+        }
 
         public void TryRestock(int currentDay)
         {
@@ -166,6 +192,7 @@ namespace AF
                     stock = 1,
                     dontShowIfPlayerAreadyOwns = uniqueItemTemplate.dontShowIfPlayerAreadyOwns,
                     requiredQuestObjective = uniqueItemTemplate.requiredQuestObjective,
+                    onItemSold = new UnityEvent()
                 };
 
                 shopItemForSale.onItemSold.AddListener(() =>

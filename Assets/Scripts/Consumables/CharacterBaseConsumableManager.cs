@@ -1,5 +1,7 @@
 namespace AF
 {
+    using System.Collections;
+    using System.Collections.Generic;
     using UnityEngine;
 
     public abstract class CharacterBaseConsumableManager : MonoBehaviour
@@ -44,5 +46,6 @@ namespace AF
         }
 
         public abstract CharacterBaseManager GetCharacter();
+
     }
 }

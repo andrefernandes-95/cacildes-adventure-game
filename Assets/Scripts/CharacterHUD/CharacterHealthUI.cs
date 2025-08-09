@@ -66,8 +66,8 @@ namespace AF.Health
 
             float currentHealth = characterBaseManager.health.GetCurrentHealth();
             int maxHealth = characterBaseManager.health.GetMaxHealth();
-            slider.value = currentHealth * 0.01f;
-            slider.maxValue = characterBaseManager.health.GetMaxHealth() * 0.01f;
+            slider.value = currentHealth / maxHealth;
+            slider.maxValue = 1f;
 
             currentAndMaxHealthValue.text = $"{(int)currentHealth}/{maxHealth}";
 

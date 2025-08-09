@@ -640,7 +640,7 @@ namespace AF
 
                     if (!string.IsNullOrEmpty(consumableId))
                     {
-                        Consumable match = characterBaseInventory.GetConsumables().First(
+                        Consumable match = characterBaseInventory.GetConsumables().FirstOrDefault(
                             item => item.itemID == consumableId);
 
                         if (match != null)
@@ -655,7 +655,7 @@ namespace AF
             quickSaveReader.TryRead<string>("helmet", out string helmetId);
             if (!string.IsNullOrEmpty(helmetId))
             {
-                Helmet match = characterBaseInventory.GetHelmets().First(
+                Helmet match = characterBaseInventory.GetHelmets().FirstOrDefault(
                     item => item.itemID == helmetId);
 
                 if (match != null)
@@ -672,7 +672,7 @@ namespace AF
             quickSaveReader.TryRead<string>("armor", out string armorId);
             if (!string.IsNullOrEmpty(armorId))
             {
-                Armor match = characterBaseInventory.GetArmors().First(
+                Armor match = characterBaseInventory.GetArmors().FirstOrDefault(
                     item => item.itemID == armorId);
 
                 if (match != null)
@@ -689,7 +689,7 @@ namespace AF
             quickSaveReader.TryRead<string>("gauntlet", out string gauntletId);
             if (!string.IsNullOrEmpty(gauntletId))
             {
-                Gauntlet match = characterBaseInventory.GetGauntlets().First(
+                Gauntlet match = characterBaseInventory.GetGauntlets().FirstOrDefault(
                     item => item.itemID == gauntletId);
 
                 if (match != null)
@@ -706,7 +706,7 @@ namespace AF
             quickSaveReader.TryRead<string>("legwear", out string legwearId);
             if (!string.IsNullOrEmpty(legwearId))
             {
-                Legwear match = characterBaseInventory.GetLegwears().First(
+                Legwear match = characterBaseInventory.GetLegwears().FirstOrDefault(
                     item => item.itemID == legwearId);
 
                 if (match != null)

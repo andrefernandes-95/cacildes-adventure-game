@@ -30,10 +30,12 @@ namespace AF
         [Header("Options")]
         [SerializeField] float exitAmbushCrossFade = 0.2f;
 
-        [SerializeField] string ambushIdle = "Ambush [Skeleton] - Idle";
-        [SerializeField] string ambushExit = "Ambush [Skeleton]";
+        [SerializeField] string ambushIdle = "Ambush - Idle";
+        [SerializeField] string ambushExit = "Ambush";
 
         bool hasSubscribedToOnTakeDamageEvent = false;
+
+        Coroutine PlayAmbushAnimationCoroutine;
 
         private void Awake()
         {
@@ -60,13 +62,26 @@ namespace AF
         {
             onStateEnter?.Invoke();
 
-            characterManager.PlayBusyAnimationWithRootMotion(ambushIdle);
+            if (PlayAmbushAnimationCoroutine != null)
+            {
+                StopCoroutine(PlayAmbushAnimationCoroutine);
+            }
+
+            PlayAmbushAnimationCoroutine = StartCoroutine(PlayAmbushAnimation());
 
             if (!hasSubscribedToOnTakeDamageEvent)
             {
                 characterManager.health.onTakeDamage.AddListener(OnTakeDamage);
                 hasSubscribedToOnTakeDamageEvent = true;
             }
+        }
+
+        // Delay ambush animation execution to next frame to give time for Awake and Start to run and update the
+        // character animations for weapons and other stuff
+        IEnumerator PlayAmbushAnimation()
+        {
+            yield return new WaitForEndOfFrame();
+            characterManager.PlayBusyAnimationWithRootMotion(ambushIdle);
         }
 
         public override void OnStateExit(StateManager stateManager)

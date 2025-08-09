@@ -36,6 +36,7 @@ namespace AF
         public CharacterConsumableManager characterConsumableManager;
         public CharacterLoot characterLoot;
         public CharacterShop characterShop;
+        public CharacterBuffManager characterBuffManager;
 
         // Animator Overrides
         [HideInInspector] public AnimatorOverrideController animatorOverrideController;
@@ -81,11 +82,25 @@ namespace AF
         [SerializeField] List<AnimationOverride> oh_unarmedAnimationOverrides = new();
         [SerializeField] List<AnimationOverride> th_unarmedAnimationOverrides = new();
 
-        [HideInInspector] AIHumanoidAnimationOverrideHelper aIHumanoidAnimationOverrideHelper => GetComponent<AIHumanoidAnimationOverrideHelper>();
-        [HideInInspector] GenericCreatureAnimationOverrideHelper genericCreatureAnimationOverrideHelper => GetComponent<GenericCreatureAnimationOverrideHelper>();
+        [HideInInspector] AIHumanoidAnimationOverrideHelper aIHumanoidAnimationOverrideHelper;
+        [HideInInspector] GenericCreatureAnimationOverrideHelper genericCreatureAnimationOverrideHelper;
 
         private void Awake()
         {
+            Debug.Log($"Awake running for character {gameObject.name}");
+            if (TryGetComponent<AIHumanoidAnimationOverrideHelper>(out var aIHumanoidAnimationOverrideHelperResult))
+            {
+                Debug.Log($"Found aIHumanoidAnimationOverrideHelperResult");
+                this.aIHumanoidAnimationOverrideHelper = aIHumanoidAnimationOverrideHelperResult;
+            }
+            if (TryGetComponent<GenericCreatureAnimationOverrideHelper>(out var genericCreatureAnimationOverrideHelperResult))
+            {
+                Debug.Log($"Found genericCreatureAnimationOverrideHelperResult");
+
+                this.genericCreatureAnimationOverrideHelper = genericCreatureAnimationOverrideHelperResult;
+            }
+            Debug.Log($"End of running search for ai humanoid or generic creature");
+
             SetupAnimatorOverrides();
 
             initialPosition = transform.position;
@@ -196,9 +211,12 @@ namespace AF
 
                 AddOrReplaceOverride(list, overrides);
             }
-            else // IS HUMANOID
-            {
 
+            Debug.Log($"{gameObject.name} is humanoid? {genericCreatureAnimationOverrideHelper == null}");
+
+            // IS HUMANOID
+            if (genericCreatureAnimationOverrideHelper == null)
+            {
                 // Always apply unarmed first
                 AddOrReplaceOverride(oh_unarmedAnimationOverrides, overrides);
 
@@ -268,6 +286,7 @@ namespace AF
         private void OnAnimatorMove()
         {
             Vector3 gravity = characterGravity.ignoreGravity ? new Vector3(0, characterGravity.initialY, 0) : Physics.gravity;
+
 
             if (animator.applyRootMotion && characterController.enabled)
             {

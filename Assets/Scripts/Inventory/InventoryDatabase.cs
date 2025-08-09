@@ -4,8 +4,6 @@ using System.Linq;
 using AYellowpaper.SerializedCollections;
 using UnityEditor;
 using UnityEngine;
-using YamlDotNet.Serialization;
-using YamlDotNet.Serialization.NamingConventions;
 
 [System.Serializable]
 public class ItemData
@@ -59,58 +57,11 @@ namespace AF.Inventory
 
         public void LoadDescriptionsData()
         {
-            if (itemDictionary.Count > 0)
-            {
-                return;
-            }
-
-            string yamlContent = file.text;
-
-            var deserializer = new DeserializerBuilder()
-                .WithNamingConvention(NullNamingConvention.Instance)  // No naming conversion
-                .IgnoreUnmatchedProperties()
-                .Build();
-
-            var result = deserializer.Deserialize<Dictionary<string, ItemData>>(yamlContent);
-
-            if (result != null)
-            {
-                itemDictionary.Clear();
-
-                // Step 2: Flatten items into individual keys
-                foreach (var item in result)
-                {
-                    ItemData itemInfo = item.Value;
-
-                    if (itemInfo.Items != null)
-                    {
-                        foreach (string itemName in itemInfo.Items)
-                        {
-                            if (!itemDictionary.ContainsKey(itemName))
-                            {
-                                itemDictionary.Add(itemName, itemInfo);
-                            }
-                            else
-                            {
-                                Debug.LogWarning($"Duplicate item key '{itemName}' found in YAML. Skipping.");
-                            }
-                        }
-                    }
-                }
-            }
-            else
-            {
-                Debug.LogError("Failed to parse YAML armor data.");
-            }
+            return;
         }
 
         public string GetItemDescription(Item item)
         {
-            if (itemDictionary.ContainsKey(item.name))
-            {
-                return Utils.IsPortuguese() ? itemDictionary[item.name].PT_Description : itemDictionary[item.name].EN_Description;
-            }
-
             return item.GetDescription();
         }
 
@@ -264,11 +215,11 @@ namespace AF.Inventory
                 Gauntlet gauntlet => ownedGauntlets.Exists(x => x == itemToFind),
                 Armor armor => ownedArmors.Exists(x => x == itemToFind),
                 Legwear legwear => ownedLegwears.Exists(x => x == itemToFind),
-                Consumable consumable => ownedConsumables.Exists(x => x == itemToFind),
+                Consumable consumable => ownedConsumables.Exists(x => x.EqualsTo(itemToFind)),
                 Accessory accessory => ownedAccessories.Exists(x => x == itemToFind),
                 UpgradeMaterial upgradeMaterial => ownedUpgradeMaterials.Exists(x => x == itemToFind),
                 CraftingMaterial craftingMaterial => ownedCraftingMaterials.Exists(x => x.EqualsTo(itemToFind)),
-                KeyItem keyItem => ownedKeyItems.Exists(x => x == itemToFind),
+                KeyItem keyItem => ownedKeyItems.Exists(x => x.EqualsTo(itemToFind)),
                 _ => false,
             };
         }

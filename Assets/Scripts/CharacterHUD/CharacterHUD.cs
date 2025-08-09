@@ -15,10 +15,10 @@ namespace AF
         [SerializeField] CombatantNameUI combatantNameUI;
 
         [Header("Prefabs")]
-        [SerializeField] CharacterStatusEffectUI characterStatusEffectUIPrefab;
+        public CharacterStatusEffectUI characterStatusEffectUIPrefab;
 
         [Header("References")]
-        [SerializeField] Transform hudContainerToSpawnObjects;
+        public Transform hudContainerToSpawnObjects;
 
         public Dictionary<StatusEffect, CharacterStatusEffectUI> statusEffectBars = new();
 
@@ -57,7 +57,12 @@ namespace AF
         {
             if (statusEffectBars.ContainsKey(statusEffectToUpdate))
             {
-                statusEffectBars[statusEffectToUpdate].UpdateUI(statusEffectToUpdate, amount, maxAmount, isApplied);
+                statusEffectBars[statusEffectToUpdate].UpdateUI(
+                    statusEffectToUpdate.GetName(),
+                    statusEffectToUpdate.GetAppliedName(),
+                    statusEffectToUpdate.icon,
+                    statusEffectToUpdate.barColor,
+                     amount, maxAmount, isApplied);
             }
         }
 

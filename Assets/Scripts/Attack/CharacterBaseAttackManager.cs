@@ -12,7 +12,6 @@
 
         [Header("Status attack bonus")]
         [Tooltip("Increased by buffs like potions, or equipment like accessories")]
-        public float physicalAttackBonus = 0f;
         [SerializeField] int heavyAttackBonusDamage = 50;
 
         [Header("Unarmed Attack Options")]
@@ -95,7 +94,7 @@
                     clonedDamage.Combine(damageBonus);
                 }
 
-                return clonedDamage;
+                return GetCharacter().characterBaseBuffManager.EnhanceAttackDamage(clonedDamage);
             }
 
             clonedDamage = rightWeaponCurrentDamage.Clone();
@@ -105,7 +104,7 @@
                 clonedDamage.Combine(damageBonus);
             }
 
-            return clonedDamage;
+            return GetCharacter().characterBaseBuffManager.EnhanceAttackDamage(clonedDamage);
         }
 
         public void CalculateCurrentDamage()
@@ -208,10 +207,7 @@
             {
                 float twoHandMultiplier = twoHandAttackBonusMultiplier + GetCharacter().statsBonusController.twoHandAttackBonusMultiplier;
 
-                twoHandAttackBonus = (int)(
-                    weaponDamage.physical * twoHandMultiplier - weaponDamage.physical);
-
-                weaponDamage.physical += twoHandAttackBonus;
+                weaponDamage.physical = (int)(weaponDamage.physical * twoHandMultiplier);
             }
 
             // + Attack the lower the rep
@@ -333,23 +329,6 @@
             }
 
             return 0;
-        }
-
-        /// <summary>
-        /// Unity Event
-        /// </summary>
-        /// <param name="value"></param>
-        public void SetBonusPhysicalAttack(int value)
-        {
-            physicalAttackBonus = value;
-        }
-
-        /// <summary>
-        /// Unity Event
-        /// </summary>
-        public void ResetBonusPhysicalAttack()
-        {
-            physicalAttackBonus = 0f;
         }
 
         /// <summary>

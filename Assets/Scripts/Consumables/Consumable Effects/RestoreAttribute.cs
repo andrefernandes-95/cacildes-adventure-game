@@ -3,7 +3,7 @@ using UnityEngine;
 namespace AF
 {
     [CreateAssetMenu(menuName = "Consumable Effect / Restore Attribute")]
-    public class RestoreAttribute : ConsumableEffect
+    public class RestoreAttribute : DrinkableConsumableEffect
     {
         [Header("Attribute Type")]
         [SerializeField] bool restoreHealth = false;
@@ -18,38 +18,9 @@ namespace AF
         [SerializeField] bool usePercentage = false;
         [SerializeField][Range(0f, 1f)] float amountInPercentage = .8f;
 
-        [Header("Animation")]
-        [SerializeField] string startAnimation = "Drinking";
-
-        [Header("Item Graphics")]
-        [SerializeField] GameObject consumableGraphic;
-        [SerializeField] Vector3 consumableLocalPosition;
-        [SerializeField] Vector3 consumableLocalRotation;
-
-        [Header("VFX")]
-        [SerializeField] GameObject healingVfxPrefab;
-
-        GameObject potionPrefabInstance;
-        GameObject healingVfxPrefabInstance;
-
-        public override void OnStart(CharacterBaseManager characterBaseManager)
-        {
-            characterBaseManager.characterBaseWeaponsManager.HideEquipment();
-
-            potionPrefabInstance = Instantiate(consumableGraphic, characterBaseManager.characterTransformHelper.rightHand);
-            potionPrefabInstance.transform.localPosition = consumableLocalPosition;
-            potionPrefabInstance.transform.localRotation = Quaternion.Euler(consumableLocalRotation);
-
-            characterBaseManager.PlayBusyAnimationWithRootMotion(startAnimation);
-        }
-
         public override void OnUse(CharacterBaseManager characterBaseManager)
         {
-            if (healingVfxPrefab != null)
-            {
-                healingVfxPrefabInstance = Instantiate(healingVfxPrefab, characterBaseManager.transform);
-                healingVfxPrefabInstance.transform.parent = null;
-            }
+            base.OnUse(characterBaseManager);
 
             if (restoreHealth)
             {
@@ -87,21 +58,6 @@ namespace AF
                 {
                     playerManager2.staminaStatManager.RestoreStaminaPoints(amountToRestore);
                 }
-            }
-        }
-
-        public override void OnEnd(CharacterBaseManager characterBaseManager)
-        {
-            characterBaseManager.characterBaseWeaponsManager.ShowEquipment();
-
-            if (potionPrefabInstance != null)
-            {
-                Destroy(potionPrefabInstance);
-            }
-
-            if (healingVfxPrefabInstance != null)
-            {
-                Destroy(healingVfxPrefabInstance, 5f);
             }
         }
     }

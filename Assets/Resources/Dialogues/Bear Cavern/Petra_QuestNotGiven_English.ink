@@ -8,15 +8,15 @@ EXTERNAL runEvent(eventId)
 
     ** [I’ll go look for her. Where exactly is the wharf?]
         ~ runEvent("Increase Reputation By 1 Point")
-        ~ runEvent("Start Petra Quest")
         Petra: Thank you. If you came by the Slepbone Pathway, there's an old ladder carved into the cliffside — overgrown with moss, but still solid.  
         <>It’ll take you straight down to the wharf. And if the path confuses you, look for a weathered signpost. It still points true.
+        ~ runEvent("Start Petra Quest")
 
     ** [I have a younger brother. I get it. I’ll see what I can do.]
         ~ runEvent("Increase Reputation By 1 Point")
-        ~ runEvent("Start Petra Quest")
         Petra: Then you understand. Thank you. If you came by the Slepbone Pathway, there's a hidden ladder carved into the cliffs — mossy, but steady.  
         <>It leads straight to the wharf. Watch for an old sign if the trail gets tricky.
+        ~ runEvent("Start Petra Quest")
 
     ** [Ships... an abandoned port? Sounds risky. What's in it for me?]
         ~ runEvent("Decrease Reputation by 1 point")
@@ -24,8 +24,8 @@ EXTERNAL runEvent(eventId)
         -> END
 
     ** [I’ll see what I can do — no promises.]
-        ~ runEvent("Start Petra Quest")
         Petra: Fair enough. Just... if you find her, make sure she's safe. Please.
+        ~ runEvent("Start Petra Quest")
 
 * [Goodbye]
 
