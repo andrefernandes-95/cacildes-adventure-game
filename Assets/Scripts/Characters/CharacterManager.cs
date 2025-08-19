@@ -631,17 +631,8 @@ namespace AF
 
         public void HandleAgentRotation()
         {
-            // ---- ROTATION ----
-            // Option A: use agent.desiredVelocity
             Vector3 lookDir = agent.desiredVelocity;
             lookDir.y = 0;
-
-            // Fallback: use next corner in path if desiredVelocity is too small
-            if (agent.path.corners.Length > 1)
-            {
-                lookDir = agent.path.corners[1] - transform.position;
-                lookDir.y = 0;
-            }
 
             Quaternion targetRotation = Quaternion.LookRotation(lookDir);
             transform.rotation = Quaternion.Slerp(
