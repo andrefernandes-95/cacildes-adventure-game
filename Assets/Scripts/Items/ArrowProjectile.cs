@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using AF.Health;
 using AF.Shooting;
 using UnityEngine;
@@ -24,7 +25,7 @@ namespace AF
 
         CharacterBaseManager shooter;
 
-        bool hasCollided = false;
+        List<Collider> collisions = new();
 
         public ForceMode GetForceMode()
         {
@@ -55,15 +56,27 @@ namespace AF
             calculatedDamage = arrow.damage.Clone();
             calculatedDamage.ScaleProjectile(shooter.characterBaseAttackManager, shooter.characterBaseWeaponsManager.GetCurrentLeftWeapon());
 
-            rigidbody.AddForce(transform.forward * GetForwardVelocity(), forceMode);
+
+            // Calculate direction toward target
+            Vector3 direction = transform.forward;
+
+            if (shooter.GetTarget() != null)
+            {
+                direction = (shooter.GetTarget().transform.position + (shooter.GetTarget().transform.up * .75f) - transform.position).normalized;
+            }
+
+            // Apply force in target direction
+            rigidbody.AddForce(direction * GetForwardVelocity(), forceMode);
         }
 
         void OnTriggerEnter(Collider other)
         {
-            if (hasCollided)
+            if (collisions.Contains(other))
             {
                 return;
             }
+
+            collisions.Add(other);
 
             other.TryGetComponent(out CharacterBaseDamageReceiver damageReceiver);
 
@@ -91,7 +104,6 @@ namespace AF
 
         public void HandleCollision(CharacterBaseDamageReceiver damageReceiver)
         {
-            hasCollided = true;
 
             damageReceiver.TakeDamage(calculatedDamage);
 

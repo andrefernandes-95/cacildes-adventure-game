@@ -67,12 +67,11 @@ namespace AF
 
             if (GetPlayerManager().statsBonusController != null)
             {
-                var additionalCoinPercentage = GetPlayerManager().statsBonusController.additionalCoinPercentage;
+                var additionalCoinMultiplier = GetPlayerManager().statsBonusController.additionalCoinMultiplier;
 
-                if (additionalCoinPercentage != 0)
+                if (additionalCoinMultiplier != 0)
                 {
-                    var additionalCoin = (int)Mathf.Ceil(goldToReceive * additionalCoinPercentage / 100);
-
+                    var additionalCoin = (int)(goldToReceive * additionalCoinMultiplier);
                     goldToReceive += additionalCoin;
                 }
 

@@ -1,5 +1,6 @@
 using AF.Companions;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.Events;
 
 namespace AF
@@ -105,7 +106,9 @@ namespace AF
 
         State FollowPlayer()
         {
-            characterManager.SetAgentDestination(playerManager.transform.position);
+            NavMeshPath navMeshPath = new();
+            characterManager.agent.CalculatePath(playerManager.transform.position, navMeshPath);
+            characterManager.agent.SetPath(navMeshPath);
 
             float distanceToTarget = Vector3.Distance(characterManager.transform.position, playerManager.transform.position);
 

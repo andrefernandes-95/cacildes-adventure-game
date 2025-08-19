@@ -72,6 +72,12 @@ namespace AF
 
         public override bool CanUseAbility(CharacterBaseManager character)
         {
+            // If attempting a left hand attack, check if we are not two handing
+            if (!isRightHand)
+            {
+                return character.characterBaseWeaponsManager.IsTwoHanding() == false;
+            }
+
             return true;
         }
 

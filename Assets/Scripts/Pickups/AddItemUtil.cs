@@ -3,17 +3,29 @@ using System.Collections.Generic;
 using System.Linq;
 using AF.Inventory;
 using AYellowpaper.SerializedCollections;
+using EditorAttributes;
 using UnityEngine;
 
 namespace AF.Pickups
 {
     public class AddItemUtil : MonoBehaviour
     {
+        [System.Serializable]
+        public class ItemToAdd
+        {
+            public Item item;
+            public int amount;
+        }
+
         [Header("Data")]
 
+        [HelpBox("Obsolete - use itemsObtained")]
         [Header("Effect Instances")]
-        [SerializedDictionary("Item", "Quantity")]
+        [Obsolete("Use itemsObtained")]
         public SerializedDictionary<Item, ItemAmount> itemsToAdd;
+
+        [Header("Items To Receive")]
+        public List<ItemToAdd> itemsObtained = new();
 
         // Scene References
         UIDocumentReceivedItemPrompt uIDocumentReceivedItemPrompt;
@@ -27,26 +39,19 @@ namespace AF.Pickups
 
             List<UIDocumentReceivedItemPrompt.ItemsReceived> itemsToDisplay = new();
 
-            foreach (var item in itemsToAdd)
-            {
-                if (item.Value.chanceToGet != 100)
-                {
-                    int chance = UnityEngine.Random.Range(0, 100);
-                    if (chance > item.Value.chanceToGet)
-                    {
-                        continue;
-                    }
-                }
+            List<ItemToAdd> itemsList = GetItemsToAdd();
 
+            foreach (var item in itemsList)
+            {
                 itemsToDisplay.Add(new()
                 {
-                    itemName = item.Key.GetName(),
-                    quantity = item.Value.amount,
-                    sprite = item.Key.sprite,
+                    itemName = item.item.GetName(),
+                    quantity = item.amount,
+                    sprite = item.item.sprite,
                     isCard = false
                 });
 
-                GetPlayerInventory().AddItem(item.Key, item.Value.amount);
+                GetPlayerInventory().AddItem(item.item, item.amount);
 
             }
 
@@ -54,7 +59,7 @@ namespace AF.Pickups
 
             GetSoundbank().PlaySound(GetSoundbank().uiItemReceived);
 
-            playerInventory.playerManager.companionsSceneManager.GiveLootToCompanions(itemsToAdd.Select(x => x.Key).ToList());
+            playerInventory.playerManager.companionsSceneManager.GiveLootToCompanions(GetItemsToAdd().Select(x => x.item).ToList());
         }
 
         UIDocumentReceivedItemPrompt GetUIDocumentReceivedItemPrompt()
@@ -85,6 +90,25 @@ namespace AF.Pickups
             }
 
             return playerInventory;
+        }
+
+        List<ItemToAdd> GetItemsToAdd()
+        {
+            if (itemsObtained != null && itemsObtained.Count > 0)
+            {
+                return itemsObtained;
+            }
+
+            return itemsToAdd.Select(x =>
+            {
+                ItemToAdd itemToAdd = new()
+                {
+                    item = x.Key,
+                    amount = x.Value.amount
+                };
+
+                return itemToAdd;
+            }).ToList();
         }
     }
 }

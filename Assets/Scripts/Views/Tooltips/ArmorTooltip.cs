@@ -43,10 +43,13 @@ namespace AF
             }
 
             // Finally create the tooltip
-            itemTooltip.CreateTooltip(
-                GUIIconsDatabase.physicalAbsorption,
-                Color.white,
-                damageLabel);
+            if (!string.IsNullOrEmpty(damageLabel))
+            {
+                itemTooltip.CreateTooltip(
+                    GUIIconsDatabase.physicalAbsorption,
+                    Color.white,
+                    damageLabel);
+            }
 
             if (armor.GetDamageAbsorbed().poiseDamage > 0)
             {
@@ -99,7 +102,7 @@ namespace AF
                 itemTooltip.CreateTooltip(GUIIconsDatabase.statusEffects, Color.white, armor.GetFormattedStatusCancellationRates());
             }
 
-            CreateAdditionalGoldTooltip(armor.additionalCoinPercentage);
+            CreateAdditionalGoldTooltip(armor.additionalCoinMultiplier);
 
             ShowStatTooltip(
                 armor.vitalityBonus,
@@ -173,11 +176,11 @@ namespace AF
                 return;
             }
 
-            string label = $"+{additionalCoinPercentage}% Gold found on enemies";
+            string label = $"+{additionalCoinPercentage * 100}% Gold found on enemies";
 
             if (Utils.IsPortuguese())
             {
-                label = $"+{additionalCoinPercentage}% Ouro encontrado em inimigos";
+                label = $"+{additionalCoinPercentage * 100}% Ouro encontrado em inimigos";
             }
 
             itemTooltip.CreateTooltip(

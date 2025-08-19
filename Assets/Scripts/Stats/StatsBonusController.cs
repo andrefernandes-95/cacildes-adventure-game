@@ -44,7 +44,7 @@ namespace AF.Stats
         public bool ignoreWeaponRequirements = false;
 
         [Header("Gold & Experience")]
-        public float additionalCoinPercentage = 0;
+        public float additionalCoinMultiplier = 0f;
 
         [Header("Block & Parry")]
         public int parryPostureDamageBonus = 0;
@@ -157,7 +157,7 @@ namespace AF.Stats
             UpdateEquipmentPhysicalDefense(currentHelmet, currentArmor, currentGauntlet, currentLegwear, currentAccessories);
             UpdateStatusEffectResistances(currentHelmet, currentArmor, currentGauntlet, currentLegwear, currentAccessories);
             UpdateAttributes(currentRightWeapon, currentLeftWeapon, currentHelmet, currentArmor, currentGauntlet, currentLegwear, currentAccessories, currentRightShield, currentLeftShield);
-            UpdateAdditionalCoinPercentage(currentHelmet, currentArmor, currentGauntlet, currentLegwear, currentAccessories);
+            UpdateAdditionalCoinMultiplier(currentHelmet, currentArmor, currentGauntlet, currentLegwear, currentAccessories);
         }
 
         void UpdateStatusEffectCancellationRates()
@@ -539,18 +539,29 @@ namespace AF.Stats
             }
         }
 
-        void UpdateAdditionalCoinPercentage(Helmet helmet, Armor armor, Gauntlet gauntlet, Legwear legwear, List<Accessory> accessories)
+        void UpdateAdditionalCoinMultiplier(Helmet helmet, Armor armor, Gauntlet gauntlet, Legwear legwear, List<Accessory> accessories)
         {
-            additionalCoinPercentage = GetEquipmentCoinPercentage(helmet)
-                                   + GetEquipmentCoinPercentage(armor)
-                                   + GetEquipmentCoinPercentage(gauntlet)
-                                   + GetEquipmentCoinPercentage(legwear)
-                                   + accessories.Sum(x => x == null ? 0 : x.additionalCoinPercentage);
-        }
+            additionalCoinMultiplier = 0f;
 
-        float GetEquipmentCoinPercentage(ArmorBase equipment)
-        {
-            return equipment != null ? equipment.additionalCoinPercentage : 0f;
+            if (helmet?.additionalCoinMultiplier > 0)
+            {
+                additionalCoinMultiplier += helmet.additionalCoinMultiplier;
+            }
+            if (armor?.additionalCoinMultiplier > 0)
+            {
+                additionalCoinMultiplier += armor.additionalCoinMultiplier;
+            }
+            if (gauntlet?.additionalCoinMultiplier > 0)
+            {
+                additionalCoinMultiplier += gauntlet.additionalCoinMultiplier;
+            }
+            if (legwear?.additionalCoinMultiplier > 0)
+            {
+                additionalCoinMultiplier += legwear.additionalCoinMultiplier;
+            }
+
+            float sumFromAccessories = accessories.Sum(x => x == null ? 0 : x.additionalCoinMultiplier);
+            additionalCoinMultiplier += sumFromAccessories;
         }
 
         public bool ShouldDoubleCoinFromFallenEnemy()

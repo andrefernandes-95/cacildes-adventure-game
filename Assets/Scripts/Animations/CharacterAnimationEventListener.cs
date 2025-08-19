@@ -65,35 +65,6 @@ namespace AF.Animations
             }
         }
 
-        private void OnAnimatorMove()
-        {
-            if (ignoreAnimatorSpeed || characterManager.isCuttingDistanceToTarget)
-            {
-                return;
-            }
-
-            if (characterManager.isBusy)
-            {
-                characterManager.animator.SetFloat(speedParameter, 0f);
-                return;
-            }
-
-            if (overrideChaseSpeed >= 0 && characterManager.agent.speed > 0)
-            {
-                characterManager.animator.SetFloat(speedParameter, overrideChaseSpeed);
-            }
-            // Patrolling / Running / Fleeing
-            else if (characterManager.agent.enabled && characterManager.agent.velocity.magnitude > 0.1f)
-            {
-                float speed = characterManager.ShouldRun() ? 1f : 0.5f;
-                characterManager.animator.SetFloat(speedParameter, speed);
-            }
-            else
-            {
-                characterManager.animator.SetFloat(speedParameter, 0f);
-            }
-        }
-
         public void OnLeftFootstep()
         {
             onLeftFootstep?.Invoke();

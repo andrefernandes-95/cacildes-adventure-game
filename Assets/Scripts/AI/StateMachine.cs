@@ -71,6 +71,7 @@ namespace AF
         {
             if (characterManager.agent.enabled)
             {
+                characterManager.HandleAgentRotation();
                 characterManager.agent.transform.localPosition = Vector3.zero;
                 characterManager.agent.transform.localRotation = Quaternion.identity;
             }

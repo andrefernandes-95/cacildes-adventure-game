@@ -42,7 +42,7 @@ namespace AF
                 // If the linecast hits an obstacle before reaching the player
                 if (hit.transform != player)
                 {
-                    float desiredDistance = Mathf.Clamp(hit.distance, minCameraDistance, maxCameraDistance);
+                    float desiredDistance = Mathf.Clamp(hit.distance, minCameraDistance, GetMaxCameraDistance());
                     cinemachineFramingTransposer.m_CameraDistance = Mathf.Lerp(cinemachineFramingTransposer.m_CameraDistance, desiredDistance, Time.deltaTime * zoomSpeed * 2);
 
                     isZoomedIn = true;
@@ -50,14 +50,19 @@ namespace AF
                 }
                 else if (!isZoomedIn)
                 {
-                    cinemachineFramingTransposer.m_CameraDistance = Mathf.Lerp(cinemachineFramingTransposer.m_CameraDistance, maxCameraDistance, Time.deltaTime * zoomSpeed);
+                    cinemachineFramingTransposer.m_CameraDistance = Mathf.Lerp(cinemachineFramingTransposer.m_CameraDistance, GetMaxCameraDistance(), Time.deltaTime * zoomSpeed);
                 }
             }
             else if (!isZoomedIn)
             {
                 // If the linecast doesn't hit anything, reset to the max distance
-                cinemachineFramingTransposer.m_CameraDistance = Mathf.Lerp(cinemachineFramingTransposer.m_CameraDistance, maxCameraDistance, Time.deltaTime * zoomSpeed);
+                cinemachineFramingTransposer.m_CameraDistance = Mathf.Lerp(cinemachineFramingTransposer.m_CameraDistance, GetMaxCameraDistance(), Time.deltaTime * zoomSpeed);
             }
+        }
+
+        public float GetMaxCameraDistance()
+        {
+            return Mathf.Min(gameSettings.maximumCameraDistanceToPlayer, maxCameraDistance);
         }
     }
 }

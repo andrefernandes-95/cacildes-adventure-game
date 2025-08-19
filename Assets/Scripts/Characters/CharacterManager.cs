@@ -85,6 +85,8 @@ namespace AF
         [HideInInspector] AIHumanoidAnimationOverrideHelper aIHumanoidAnimationOverrideHelper;
         [HideInInspector] GenericCreatureAnimationOverrideHelper genericCreatureAnimationOverrideHelper;
 
+        public string speedParameter = "Speed";
+
         private void Awake()
         {
             Debug.Log($"Awake running for character {gameObject.name}");
@@ -163,6 +165,13 @@ namespace AF
                 }
 
                 RotateTowardsTarget(rotationSpeed);
+            }
+
+            HandleSpeed();
+
+            if (isCuttingDistanceToTarget)
+            {
+                HandleCuttingDistance();
             }
         }
 
@@ -283,7 +292,7 @@ namespace AF
             animator.runtimeAnimatorController = animatorOverrideController;
         }
 
-        private void OnAnimatorMove()
+        /*private void OnAnimatorMove()
         {
             Vector3 gravity = characterGravity.ignoreGravity ? new Vector3(0, characterGravity.initialY, 0) : Physics.gravity;
 
@@ -307,15 +316,7 @@ namespace AF
 
                     characterController.Move(speed * Time.deltaTime * direction);
 
-                    // Manually rotate to face agent's path direction
-                    Vector3 toTarget = agent.steeringTarget - transform.position;
-                    toTarget.y = 0;
-
-                    if (toTarget.sqrMagnitude > 0.001f)
-                    {
-                        Quaternion targetRotation = Quaternion.LookRotation(toTarget);
-                        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
-                    }
+                    HandleAgentRotation();
                 }
                 else
                 {
@@ -333,9 +334,34 @@ namespace AF
                     characterController.Move(rootMotionPosition);
                 }
             }
+        }*/
+
+        void HandleSpeed()
+        {
+            if (isCuttingDistanceToTarget)
+            {
+                return;
+            }
+
+            if (isBusy)
+            {
+                animator.SetFloat(speedParameter, 0f);
+                return;
+            }
+
+            // Patrolling / Running / Fleeing
+            else if (agent.enabled && agent.velocity.magnitude > 0.1f)
+            {
+                float speed = ShouldRun() ? 1f : 0.5f;
+                animator.SetFloat(speedParameter, speed);
+            }
+            else
+            {
+                animator.SetFloat(speedParameter, 0f);
+            }
         }
 
-        void HandleCuttingDistance(ref Vector3 rootMotionPosition)
+        void HandleCuttingDistance()
         {
             if (targetManager.currentTarget == null)
             {
@@ -346,7 +372,10 @@ namespace AF
 
             if (distanceToTarget >= agent.stoppingDistance)
             {
-                rootMotionPosition *= cutDistanceToTargetSpeed;
+                Vector3 dir = targetManager.currentTarget.transform.position - transform.position;
+                dir.y = 0;
+
+                characterController.Move(cutDistanceToTargetSpeed * Time.deltaTime * dir);
             }
 
             if (distanceToTarget >= 0)
@@ -362,7 +391,11 @@ namespace AF
                 return characterAbilityManager.currentAbility.GetDamage(this);
             }
 
-            return characterCombatController.GetCurrentDamage();
+            // Fallback for animation-based attacks like ambushes,
+            // Evaluate hitboxes
+            return characterBaseAttackManager.GetAttackDamage();
+
+            // return characterCombatController.GetCurrentDamage();
         }
 
         /// <summary>
@@ -594,6 +627,28 @@ namespace AF
         public bool ShouldRun()
         {
             return GetTarget() != null || IsCompanion();
+        }
+
+        public void HandleAgentRotation()
+        {
+            // ---- ROTATION ----
+            // Option A: use agent.desiredVelocity
+            Vector3 lookDir = agent.desiredVelocity;
+            lookDir.y = 0;
+
+            // Fallback: use next corner in path if desiredVelocity is too small
+            if (agent.path.corners.Length > 1)
+            {
+                lookDir = agent.path.corners[1] - transform.position;
+                lookDir.y = 0;
+            }
+
+            Quaternion targetRotation = Quaternion.LookRotation(lookDir);
+            transform.rotation = Quaternion.Slerp(
+                transform.rotation,
+                targetRotation,
+                rotationSpeed * Time.deltaTime
+            );
         }
     }
 }

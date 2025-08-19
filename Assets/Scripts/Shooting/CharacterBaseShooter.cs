@@ -42,7 +42,7 @@ namespace AF.Shooting
             DestroyArrowPlaceholder();
 
             Arrow currentArrow = GetCurrentArrow();
-            if (currentArrow != null)
+            if (currentArrow != null && currentArrow.arrowPlaceholderPrefab != null)
             {
                 arrowPlaceholder = Instantiate(currentArrow.arrowPlaceholderPrefab, characterBaseManager.characterTransformHelper.rightHand);
 

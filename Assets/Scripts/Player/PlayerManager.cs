@@ -176,6 +176,11 @@ namespace AF
                     ignoreBlocking: false
                 ));
             }
+
+            if (other.TryGetComponent<Destroyable>(out var destroyable))
+            {
+                destroyable.OnDamage(this, () => { });
+            }
         }
 
         public void UpdateAnimatorOverrideControllerClips()

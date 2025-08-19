@@ -50,8 +50,7 @@ namespace AF
         public int movementSpeedBonus = 0;
 
         [Header("Coins")]
-        [Range(0, 100f)]
-        public float additionalCoinPercentage = 0f;
+        public float additionalCoinMultiplier = 0f;
 
         [Header("Reputation")]
         public int reputationBonus = 0;
