@@ -25,5 +25,6 @@ namespace AF.Inventory
     {
         public Item item;
         public int amount;
+        [Range(0f, 100f)] public float chanceToGet = 100f;
     }
 }

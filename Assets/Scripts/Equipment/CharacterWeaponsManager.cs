@@ -10,7 +10,9 @@ namespace AF.Equipment
 
         [Header("Right Weapons")]
         [SerializeField] Weapon[] rightHandWeapons = new Weapon[3];
+        public Weapon[] RightHandWeapons => rightHandWeapons;
         [SerializeField] Weapon[] leftHandWeapons = new Weapon[3];
+        public Weapon[] LeftHandWeapons => leftHandWeapons;
         int currentRightWeaponIndex = 0;
         int currentLeftWeaponIndex = 0;
 
@@ -250,7 +252,7 @@ namespace AF.Equipment
 
         public override bool HasRangeWeapon()
         {
-            return false;
+            return leftHandWeapons.Any(x => x != null && x.damage.weaponAttackType == WeaponAttackType.Range);
         }
 
         protected override float GetCharacterUnarmedDefenseAbsorption()

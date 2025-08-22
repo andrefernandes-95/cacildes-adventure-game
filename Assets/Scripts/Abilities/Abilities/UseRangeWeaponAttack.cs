@@ -50,6 +50,11 @@ namespace AF
 
         public override bool CanUseAbility(CharacterBaseManager character)
         {
+            if (!character.characterBaseWeaponsManager.HasRangeWeapon())
+            {
+                return false;
+            }
+
             return true;
         }
 

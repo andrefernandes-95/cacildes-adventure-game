@@ -51,7 +51,7 @@ namespace AF
             var selectedAbility = queuedAbilities[0];
             queuedAbilities.RemoveAt(0);
 
-            if (selectedAbility != null)
+            if (selectedAbility != null && selectedAbility.CanUseAbility(playerManager))
             {
                 selectedAbility.OnPrepare(playerManager);
             }

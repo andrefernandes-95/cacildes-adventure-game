@@ -42,7 +42,10 @@ namespace AF
             }
 
             queuedAbilities.Add(ability);
-            if (ability.next != null && Random.Range(0, 1f) >= ability.chanceToCombo)
+
+            if (
+                ability.next != null
+                && Random.Range(0, 1f) >= ability.chanceToCombo)
             {
                 queuedAbilities.Add(ability.next);
             }

@@ -72,6 +72,11 @@ namespace AF
 
         public override bool CanUseAbility(CharacterBaseManager character)
         {
+            if (IsTargetTooFarAway(character))
+            {
+                return false;
+            }
+
             // If attempting a left hand attack, check if we are not two handing
             if (!isRightHand)
             {
@@ -118,6 +123,21 @@ namespace AF
                     characterManager.animator.speed = isHeavyAttack ? currentWeapon.oh_HeavyAttackSpeedPenalty : currentWeapon.oneHandAttackSpeedPenalty;
                 }
             }
+        }
+
+        bool IsTargetTooFarAway(CharacterBaseManager characterBaseManager)
+        {
+            if (characterBaseManager.GetTarget() == null)
+            {
+                return true;
+            }
+
+            if (minimumDistanceToTargetToUse <= 0)
+            {
+                return false;
+            }
+
+            return Vector3.Distance(characterBaseManager.transform.position, characterBaseManager.GetTarget().transform.position) > minimumDistanceToTargetToUse;
         }
     }
 }

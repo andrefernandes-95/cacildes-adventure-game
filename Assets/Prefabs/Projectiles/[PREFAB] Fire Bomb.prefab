@@ -31,7 +31,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0.091, z: 0}
-  m_LocalScale: {x: 0.23147601, y: 0.23147601, z: 0.23147601}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4395197710605064113}
@@ -99,10 +99,10 @@ Rigidbody:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3948082079069157228}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Mass: 0.6
-  m_Drag: 0
-  m_AngularDrag: 0
+  m_LinearDamping: 0
+  m_AngularDamping: 0
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -135,7 +135,9 @@ MonoBehaviour:
   forceMode: 0
   forwardVelocity: 500
   useOwnDirection: 0
+  upwardsVelocity: 1
   damage:
+    basePhysicalDamage: 0
     physical: 0
     fire: 150
     frost: 0
@@ -153,6 +155,9 @@ MonoBehaviour:
     ignoreBlocking: 0
     canNotBeParried: 0
     damageType: 0
+    strengthScaling: 5
+    dexterityScaling: 5
+    intelligenceScaling: 5
   scaleWithIntelligence: 0
   rigidBody: {fileID: 2120020690103127277}
   disappearingFx: {fileID: 0}

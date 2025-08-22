@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,9 +15,10 @@ namespace AF
 
         [Header("Loot and Experience")]
 
-        [SerializedDictionary("Item", "Chance To Get")]
+        public LootTable lootTableData;
+
+        [Obsolete("Use Loot Tables")]
         public SerializedDictionary<Item, LootItemAmount> lootTable;
-        [SerializeField] bool useLootTable = false;
 
         [Header("Gold")]
         public int baseGold = 100;
@@ -94,7 +96,7 @@ namespace AF
 
             bool hasPlayedFanfare = false;
 
-            if (useLootTable)
+            if (false)
             {
                 foreach (var dropCurrency in lootTable)
                 {
@@ -103,7 +105,7 @@ namespace AF
                         continue;
                     }
 
-                    float calc_dropChance = Random.Range(0, 100f);
+                    float calc_dropChance = UnityEngine.Random.Range(0, 100f);
 
                     if (calc_dropChance <= dropCurrency.Value.chanceToGet)
                     {
@@ -117,13 +119,13 @@ namespace AF
                     }
                 }
             }
-            else if (lootOwner.combatant != null && lootOwner.combatant.loot.Count > 0)
+            else if (lootTableData != null && lootTableData.loot.Count > 0)
             {
-                foreach (LootableItem lootableItem in lootOwner.combatant.loot)
+                foreach (var lootableItem in lootTableData.loot)
                 {
-                    float calc_dropChance = Random.Range(0, 1f);
+                    float calc_dropChance = UnityEngine.Random.Range(0, 100f);
 
-                    if (calc_dropChance <= lootableItem.item.dropRateOnEnemies)
+                    if (calc_dropChance <= lootableItem.chanceToGet)
                     {
                         if (hasPlayedFanfare == false)
                         {
@@ -187,25 +189,25 @@ namespace AF
 
         void AddInventoryToLootTab(Dictionary<Item, int> items)
         {
-            foreach (Weapon wp in lootOwner.characterBaseInventory.GetWeapons())
+            foreach (Weapon wp in lootOwner.characterWeaponsManager.RightHandWeapons)
             {
-                if (!items.ContainsKey(wp) && wp.ShouldDrop())
+                if (wp != null && !items.ContainsKey(wp) && wp.ShouldDrop())
                 {
                     items.Add(wp, 1);
                 }
             }
-            foreach (Shield shield in lootOwner.characterBaseInventory.GetShields())
+            foreach (Weapon wp in lootOwner.characterWeaponsManager.LeftHandWeapons)
             {
-                if (!items.ContainsKey(shield) && shield.ShouldDrop())
+                if (wp != null && !items.ContainsKey(wp) && wp.ShouldDrop())
                 {
-                    items.Add(shield, 1);
+                    items.Add(wp, 1);
                 }
             }
             foreach (Arrow arrow in lootOwner.characterBaseInventory.GetArrows())
             {
                 if (!items.ContainsKey(arrow) && arrow.ShouldDrop())
                 {
-                    items.Add(arrow, Random.Range(3, 9));
+                    items.Add(arrow, UnityEngine.Random.Range(3, 9));
                 }
             }
             foreach (Spell skill in lootOwner.characterBaseInventory.GetSpells())
@@ -353,11 +355,11 @@ namespace AF
                 AddInventoryToLootTab(itemsToReceive);
             }
 
-            if (useLootTable)
+            if (false)
             {
                 foreach (var dropCurrency in lootTable)
                 {
-                    float calc_dropChance = Random.Range(0, 100f);
+                    float calc_dropChance = UnityEngine.Random.Range(0, 100f);
 
                     if (calc_dropChance <= dropCurrency.Value.chanceToGet)
                     {
@@ -365,13 +367,13 @@ namespace AF
                     }
                 }
             }
-            else if (lootOwner.combatant != null && lootOwner.combatant.loot.Count > 0)
+            else if (lootTableData != null && lootTableData.loot.Count > 0)
             {
-                foreach (LootableItem lootableItem in lootOwner.combatant.loot)
+                foreach (var lootableItem in lootTableData.loot)
                 {
-                    float calc_dropChance = Random.Range(0, 1f);
+                    float calc_dropChance = UnityEngine.Random.Range(0, 100f);
 
-                    if (calc_dropChance <= lootableItem.item.dropRateOnEnemies)
+                    if (calc_dropChance <= lootableItem.chanceToGet)
                     {
                         itemsToReceive.Add(lootableItem.item, lootableItem.amount);
                     }

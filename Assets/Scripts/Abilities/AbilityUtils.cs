@@ -6,25 +6,24 @@ namespace AF
     {
         public static Damage GetAbilityDamageForAIAttack(CharacterBaseManager attacker, Damage abilityDamage)
         {
-            Weapon attackingWeapon = null;
+            Damage attackingWeaponDamage = null;
             HitboxType attackingHitbox = attacker.characterBaseAttackManager.attackingHitboxType;
 
             // Handle weapon-based attacks
             switch (attackingHitbox)
             {
                 case HitboxType.RIGHT_HAND:
-                    attackingWeapon = attacker.characterBaseWeaponsManager.GetCurrentRightWeapon();
+                    attackingWeaponDamage = attacker.characterBaseAttackManager.rightWeaponCurrentDamage;
                     break;
                 case HitboxType.LEFT_HAND:
-                    attackingWeapon = attacker.characterBaseWeaponsManager.GetCurrentLeftWeapon();
+                    attackingWeaponDamage = attacker.characterBaseAttackManager.leftWeaponCurrentDamage;
                     break;
             }
 
-            if (attackingWeapon != null)
+            if (attackingWeaponDamage != null)
             {
-                Damage weaponDamage = attackingWeapon.damage.Clone();
-                weaponDamage.Combine(abilityDamage);
-                return weaponDamage;
+                attackingWeaponDamage.Combine(abilityDamage);
+                return attackingWeaponDamage;
             }
 
             // Handle unarmed attacks

@@ -189,6 +189,17 @@ namespace AF.Animations
             characterManager.FaceTarget();
         }
 
+
+        public void FaceTargetImmediately()
+        {
+            if (characterManager.targetManager.currentTarget == null)
+            {
+                return;
+            }
+
+            characterManager.FaceTargetImmediately();
+        }
+
         public void EnableRootMotion()
         {
             characterManager.animator.applyRootMotion = true;

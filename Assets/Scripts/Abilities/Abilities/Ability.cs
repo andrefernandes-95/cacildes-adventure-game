@@ -13,6 +13,7 @@ namespace AF
 
         [Header("Cooldown")]
         public float cooldown = 5f;
+        public float minimumDistanceToTargetToUse = 0f;
 
         public abstract void OnPrepare(CharacterManager characterManager);
         public abstract void OnPrepare(PlayerManager characterManager);

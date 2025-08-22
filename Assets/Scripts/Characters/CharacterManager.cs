@@ -37,6 +37,7 @@ namespace AF
         public CharacterLoot characterLoot;
         public CharacterShop characterShop;
         public CharacterBuffManager characterBuffManager;
+        public CharacterTeleportManager characterTeleportManager;
 
         // Animator Overrides
         [HideInInspector] public AnimatorOverrideController animatorOverrideController;
@@ -164,15 +165,15 @@ namespace AF
                     return;
                 }
 
+                if (agent.enabled)
+                {
+                    return;
+                }
+
                 RotateTowardsTarget(rotationSpeed);
             }
 
             HandleSpeed();
-
-            if (isCuttingDistanceToTarget)
-            {
-                HandleCuttingDistance();
-            }
         }
 
         public void UpdateAnimatorOverrideControllerClips(string animationName, AnimationClip animationClip)
@@ -236,13 +237,19 @@ namespace AF
 
                 // Apply right-hand weapon overrides
                 Weapon currentWeapon = characterWeaponsManager.GetCurrentRightWeapon();
-                if (currentWeapon != null && currentWeapon.weaponAnimationData != null)
+                if (currentWeapon != null)
                 {
-                    AddOrReplaceOverride(currentWeapon.weaponAnimationData.GetRightHandAnimationsForAI(), overrides);
+                    WeaponAnimation currentWeaponAnimationData = currentWeapon.aIWeaponAnimationData != null
+                        ? currentWeapon.aIWeaponAnimationData : currentWeapon.weaponAnimationData;
 
-                    if (characterWeaponsManager.IsTwoHanding())
+                    if (currentWeaponAnimationData != null)
                     {
-                        AddOrReplaceOverride(currentWeapon.weaponAnimationData.GetTwoHandAnimationsForAI(), overrides);
+                        AddOrReplaceOverride(currentWeaponAnimationData.GetRightHandAnimationsForAI(), overrides);
+
+                        if (characterWeaponsManager.IsTwoHanding())
+                        {
+                            AddOrReplaceOverride(currentWeaponAnimationData.GetTwoHandAnimationsForAI(), overrides);
+                        }
                     }
                 }
 
@@ -250,9 +257,12 @@ namespace AF
                 Weapon leftWeapon = characterWeaponsManager.GetCurrentLeftWeapon();
                 if (leftWeapon != null && !characterWeaponsManager.IsTwoHanding())
                 {
-                    if (leftWeapon.weaponAnimationData != null)
+                    WeaponAnimation leftWeaponAnimationData = leftWeapon.aIWeaponAnimationData != null
+                    ? leftWeapon.aIWeaponAnimationData : leftWeapon.weaponAnimationData;
+
+                    if (leftWeaponAnimationData != null)
                     {
-                        AddOrReplaceOverride(leftWeapon.weaponAnimationData.GetLeftHandAnimationsForAI(), overrides);
+                        AddOrReplaceOverride(leftWeaponAnimationData.GetLeftHandAnimationsForAI(), overrides);
                     }
 
                     // If left weapons is a range weapon, override the animations for shooting
@@ -292,10 +302,9 @@ namespace AF
             animator.runtimeAnimatorController = animatorOverrideController;
         }
 
-        /*private void OnAnimatorMove()
+        private void OnAnimatorMove()
         {
             Vector3 gravity = characterGravity.ignoreGravity ? new Vector3(0, characterGravity.initialY, 0) : Physics.gravity;
-
 
             if (animator.applyRootMotion && characterController.enabled)
             {
@@ -334,7 +343,7 @@ namespace AF
                     characterController.Move(rootMotionPosition);
                 }
             }
-        }*/
+        }
 
         void HandleSpeed()
         {
@@ -361,7 +370,7 @@ namespace AF
             }
         }
 
-        void HandleCuttingDistance()
+        void HandleCuttingDistance(ref Vector3 rootMotionPosition)
         {
             if (targetManager.currentTarget == null)
             {
@@ -372,10 +381,7 @@ namespace AF
 
             if (distanceToTarget >= agent.stoppingDistance)
             {
-                Vector3 dir = targetManager.currentTarget.transform.position - transform.position;
-                dir.y = 0;
-
-                characterController.Move(cutDistanceToTargetSpeed * Time.deltaTime * dir);
+                rootMotionPosition *= cutDistanceToTargetSpeed;
             }
 
             if (distanceToTarget >= 0)

@@ -3805,13 +3805,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   characterManager: {fileID: 1759811369383153655}
-  minimumTeleportRadiusFromTarget: 5
-  maximumTeleportRadiusFromTarget: 10
-  teleportNearPlayer: 0
+  teleportPoints: []
   onTeleport:
     m_PersistentCalls:
       m_Calls: []
-  areaName: 
 --- !u!1 &446381694889221528
 GameObject:
   m_ObjectHideFlags: 0
@@ -16904,9 +16901,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb0eda87a20996648865cf7fe6d7d60e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lootTableData: {fileID: 11400000, guid: 6b37fd611299e3347ade1ee12bef5a29, type: 2}
   lootTable:
     _serializedList: []
-  useLootTable: 0
   baseGold: 100
   useBaseGold: 0
   bonusGold: 0
@@ -37924,6 +37921,7 @@ GameObject:
   - component: {fileID: 2874624405175151235}
   - component: {fileID: 9038299807041895652}
   - component: {fileID: 8790543926545046353}
+  - component: {fileID: 1197276377834554478}
   m_Layer: 11
   m_Name: '[PREFAB] Character - Core'
   m_TagString: Enemy
@@ -38064,6 +38062,7 @@ MonoBehaviour:
   characterLoot: {fileID: 2331984330916286163}
   characterShop: {fileID: 4143778435181749395}
   characterBuffManager: {fileID: 6193433127975113308}
+  characterTeleportManager: {fileID: 913187011442243768}
   animatorOverrideController: {fileID: 0}
   patrolSpeed: 2
   chaseSpeed: 6
@@ -38528,6 +38527,23 @@ MonoBehaviour:
   m_IgnoreFromBuild: 1
   m_ApplyToChildren: 1
   m_AffectedAgents: ffffffff
+--- !u!114 &1197276377834554478
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3997564124374027944}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 909d917d73a63f940ac158d02e936645, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pushLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  canPush: 1
+  strength: 2
 --- !u!1 &4009649962498306880
 GameObject:
   m_ObjectHideFlags: 0
@@ -72737,7 +72753,7 @@ NavMeshAgent:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7571371957101350228}
-  m_Enabled: 0
+  m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.3
   m_Speed: 3.5

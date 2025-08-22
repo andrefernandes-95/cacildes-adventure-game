@@ -117,6 +117,7 @@ namespace AF
 
         [Header("Optional - Animation Templates")]
         public WeaponAnimation weaponAnimationData;
+        [Tooltip("Optional")] public WeaponAnimation aIWeaponAnimationData;
         public WeaponRangeAnimation weaponRangeAnimation;
 
         // TODO: This needs to be divided between right and left 

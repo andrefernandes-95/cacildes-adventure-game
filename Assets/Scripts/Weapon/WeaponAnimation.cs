@@ -50,6 +50,17 @@ namespace AF
         [SerializeField] AnimationClip knockdown;
         [SerializeField] AnimationClip knockdownGetup;
 
+        [Header("One Hand Lock On")]
+        [SerializeField] AnimationClip oh_lockOnRunBackRight;
+        [SerializeField] AnimationClip oh_lockOnRunBackLeft;
+        [SerializeField] AnimationClip oh_lockOnRunBack;
+        [SerializeField] AnimationClip oh_lockOnRunForward;
+        [SerializeField] AnimationClip oh_lockOnRunForwardRight;
+        [SerializeField] AnimationClip oh_lockOnRunForwardLeft;
+        [SerializeField] AnimationClip oh_lockOnRunLeft;
+        [SerializeField] AnimationClip oh_lockOnRunRight;
+
+
         public List<AnimationOverride> GetOneHandAnimations()
         {
             List<AnimationOverride> animationOverrides = new();
@@ -110,6 +121,44 @@ namespace AF
             if (oh_RunAttack != null)
             {
                 animationOverrides.Add(new() { animationName = "Cacildes - Run Attack", animationClip = oh_RunAttack });
+            }
+
+            if (oh_RunAttack != null)
+            {
+                animationOverrides.Add(new() { animationName = "Cacildes - Run Attack", animationClip = oh_RunAttack });
+            }
+
+            if (oh_lockOnRunBack != null)
+            {
+                animationOverrides.Add(new() { animationName = "core_oh_run_B_01", animationClip = oh_lockOnRunBack });
+            }
+            if (oh_lockOnRunBackRight != null)
+            {
+                animationOverrides.Add(new() { animationName = "core_oh_run_BR_01", animationClip = oh_lockOnRunBackRight });
+            }
+            if (oh_lockOnRunBackLeft != null)
+            {
+                animationOverrides.Add(new() { animationName = "core_oh_run_BL_01", animationClip = oh_lockOnRunBackLeft });
+            }
+            if (oh_lockOnRunForward != null)
+            {
+                animationOverrides.Add(new() { animationName = "core_oh_run_F_01", animationClip = oh_lockOnRunForward });
+            }
+            if (oh_lockOnRunForwardRight != null)
+            {
+                animationOverrides.Add(new() { animationName = "core_oh_run_FR_01", animationClip = oh_lockOnRunForwardRight });
+            }
+            if (oh_lockOnRunForwardLeft != null)
+            {
+                animationOverrides.Add(new() { animationName = "core_oh_run_FL_01", animationClip = oh_lockOnRunForwardLeft });
+            }
+            if (oh_lockOnRunLeft != null)
+            {
+                animationOverrides.Add(new() { animationName = "core_oh_run_L_01", animationClip = oh_lockOnRunLeft });
+            }
+            if (oh_lockOnRunRight != null)
+            {
+                animationOverrides.Add(new() { animationName = "core_oh_run_R_01", animationClip = oh_lockOnRunRight });
             }
 
             return animationOverrides;

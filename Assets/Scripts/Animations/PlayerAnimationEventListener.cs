@@ -152,6 +152,11 @@ namespace AF.Animations
 
         }
 
+        public void FaceTargetImmediately()
+        {
+
+        }
+
         public void SetAnimatorBool_True(string parameterName)
         {
             playerManager.animator.SetBool(parameterName, true);

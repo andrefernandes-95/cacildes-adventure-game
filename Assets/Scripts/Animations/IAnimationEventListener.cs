@@ -31,6 +31,7 @@ namespace AF.Animations
         public void EnableRotation();
         public void DisableRotation();
         public void FaceTarget();
+        public void FaceTargetImmediately();
 
         public void OnFireArrow();
         public void OnFireMultipleArrows();

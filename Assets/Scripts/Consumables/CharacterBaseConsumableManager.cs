@@ -7,6 +7,7 @@ namespace AF
     public abstract class CharacterBaseConsumableManager : MonoBehaviour
     {
         Consumable currentConsumable;
+        public Consumable CurrentConsumable => currentConsumable;
 
         public void ResetStates()
         {
