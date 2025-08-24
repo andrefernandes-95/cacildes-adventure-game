@@ -43,6 +43,9 @@ namespace AF
                 playerManager.playerStats.GetVitality(),
                 playerStatsDatabase.levelMultiplierForHealth);
 
+            int extraBasedOnHealthMultiplier = (int)(baseValue * playerManager.statsBonusController.healthBonusMultiplier);
+            baseValue += extraBasedOnHealthMultiplier;
+
             if (hasHealthCutInHalf)
             {
                 return (int)baseValue / 2;

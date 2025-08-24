@@ -50,10 +50,15 @@ namespace AF
 
         public int GetMaxMana()
         {
-            return Formulas.CalculateStatForLevel(
+            int baseValue = Formulas.CalculateStatForLevel(
                 playerStatsDatabase.maxMana + playerManager.statsBonusController.magicBonus,
                 playerManager.playerStats.GetIntelligence(),
                 playerStatsDatabase.levelMultiplierForMana);
+
+            int extraBasedOnManaMultiplier = (int)(baseValue * playerManager.statsBonusController.manaBonusMultiplier);
+            baseValue += extraBasedOnManaMultiplier;
+
+            return baseValue;
         }
 
         public float GetCurrentMana()

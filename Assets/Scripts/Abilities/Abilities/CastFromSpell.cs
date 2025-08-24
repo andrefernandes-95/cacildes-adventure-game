@@ -72,6 +72,11 @@ namespace AF
             damage.Multiply(playerManager.playerAbilityManager.GetChargingAmountMultiplier());
             ApplyDamageScaling(playerManager);
 
+            if (!spell.AreRequirementsMet(playerManager))
+            {
+                damage.Multiply(0.1f);
+            }
+
             ReleaseSpellGameObject(playerManager, new[] { "Enemy" });
         }
 

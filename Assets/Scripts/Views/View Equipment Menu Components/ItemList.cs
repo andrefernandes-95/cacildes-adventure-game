@@ -743,15 +743,7 @@ namespace AF.UI.EquipmentMenu
                     {
                         if (!isEquipped)
                         {
-                            if (!spell.AreRequirementsMet(playerManager))
-                            {
-                                notificationManager.ShowNotification(LocalizationSettings.StringDatabase.GetLocalizedString("UIDocuments", "Can not equip spell. Requirements not met!"), notificationManager.systemError);
-                                ignoreRerender = true;
-                            }
-                            else
-                            {
-                                equipmentDatabase.EquipSpell(item as Spell, slotIndex);
-                            }
+                            equipmentDatabase.EquipSpell(item as Spell, slotIndex);
                         }
                         else
                         {

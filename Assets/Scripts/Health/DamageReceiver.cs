@@ -66,9 +66,6 @@ namespace AF
                     character.targetManager.SetTarget(attacker);
                 }
 
-                RecoverFromStunnedStateWhenAttacked();
-
-
                 if (TryParryIncomingDamage(attacker, incomingDamage))
                 {
                     return;
@@ -86,6 +83,8 @@ namespace AF
 
             onTakeDamage?.Invoke(incomingDamage);
             isTakingDamage = true;
+
+            RecoverFromStunnedStateWhenAttacked();
         }
 
         /// <summary>

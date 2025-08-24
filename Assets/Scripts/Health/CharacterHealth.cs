@@ -131,6 +131,9 @@ namespace AF.Health
 
             int value = Utils.ScaleWithCurrentNewGameIteration(maxHealthValue + bonusHealth + bonusHealthFromCompanions, gameSession.currentGameIteration, gameSession.newGamePlusScalingFactor);
 
+            int extraBasedOnHealthMultiplier = (int)(value * characterManager.statsBonusController.healthBonusMultiplier);
+            value += extraBasedOnHealthMultiplier;
+
             if (hasHealthCutInHalf)
             {
                 return (int)value / 2;

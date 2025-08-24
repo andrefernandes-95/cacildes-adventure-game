@@ -11,6 +11,9 @@ namespace AF.Stats
     public class StatsBonusController : MonoBehaviour
     {
         [Header("Attribute Bonus")]
+        public float healthBonusMultiplier = 0f;
+        public float manaBonusMultiplier = 0f;
+        public float staminaBonusMultiplier = 0f;
         public int healthBonus = 0;
         public int magicBonus = 0;
         public int staminaBonus = 0;
@@ -391,6 +394,8 @@ namespace AF.Stats
 
             twoHandAttackBonusMultiplier = heavyAttackBonusMultiplier = jumpAttackBonusMultiplier = slashDamageMultiplier =
             pierceDamageMultiplier = bluntDamageMultiplier = footDamageMultiplier = physicalAttackBonus = 0f;
+
+            healthBonusMultiplier = manaBonusMultiplier = staminaBonusMultiplier = 0f;
         }
 
         void ApplyWeaponAttributes(Weapon currentWeapon)
@@ -458,6 +463,10 @@ namespace AF.Stats
                 staminaRegenerationBonus += accessory?.staminaRegenBonus ?? 0;
 
                 postureDecreaseRateBonus += accessory?.postureDecreaseRateBonus ?? 0;
+
+                healthBonusMultiplier += accessory?.healthBonusMultiplier ?? 0;
+                staminaBonusMultiplier += accessory?.staminaBonusMultiplier ?? 0;
+                manaBonusMultiplier += accessory?.manaBonusMultiplier ?? 0;
 
 
                 if (accessory != null)

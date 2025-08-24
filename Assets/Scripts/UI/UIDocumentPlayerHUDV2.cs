@@ -94,7 +94,7 @@ namespace AF
         {
             EventManager.StartListening(
                 EventMessages.ON_EQUIPMENT_CHANGED,
-                UpdateEquipment);
+                OnEquipmentChanged);
 
             EventManager.StartListening(
                 EventMessages.ON_TWO_HANDING_CHANGED,
@@ -288,6 +288,18 @@ namespace AF
         public void HideEquipment()
         {
             equipmentContainer.visible = false;
+        }
+
+        public void UpdateHealthManaAndStaminaBars()
+        {
+            OnHealthChanged();
+            OnManaChanged();
+            OnStaminaChanged();
+        }
+
+        void OnEquipmentChanged()
+        {
+            UpdateEquipment();
         }
 
         public void UpdateEquipment()

@@ -258,7 +258,7 @@ public class EquipmentDatabase : ScriptableObject
 
     public void EquipHelmet(Helmet equip)
     {
-        helmet = equip;
+        helmet = Instantiate(equip);
 
         EventManager.EmitEvent(EventMessages.ON_EQUIPMENT_CHANGED);
     }
@@ -271,7 +271,7 @@ public class EquipmentDatabase : ScriptableObject
 
     public void EquipArmor(Armor equip, bool emitEvent = true)
     {
-        armor = equip;
+        armor = Instantiate(equip);
 
         if (emitEvent)
         {
@@ -287,7 +287,7 @@ public class EquipmentDatabase : ScriptableObject
 
     public void EquipGauntlet(Gauntlet equip)
     {
-        gauntlet = equip;
+        gauntlet = Instantiate(equip);
         EventManager.EmitEvent(EventMessages.ON_EQUIPMENT_CHANGED);
     }
 
@@ -299,7 +299,7 @@ public class EquipmentDatabase : ScriptableObject
 
     public void EquipLegwear(Legwear equip, bool emitEvent = true)
     {
-        legwear = equip;
+        legwear = Instantiate(equip);
 
         if (emitEvent)
         {
@@ -315,7 +315,7 @@ public class EquipmentDatabase : ScriptableObject
 
     public void EquipAccessory(Accessory accessory, int slotIndex)
     {
-        accessories[slotIndex] = accessory;
+        accessories[slotIndex] = Instantiate(accessory);
         EventManager.EmitEvent(EventMessages.ON_EQUIPMENT_CHANGED);
     }
 

@@ -18,6 +18,7 @@ namespace AF
             }
 
             CreateAttributeBonusTooltip(accessory);
+            CreateAttributeBonusMultiplierTooltip(accessory);
 
             if (accessory.physicalAttackBonus != 0)
             {
@@ -134,6 +135,45 @@ namespace AF
                 if (value > 0)
                 {
                     string line = $"+{value} {(Utils.IsPortuguese() ? entry.Value.ptText : entry.Value.enText)}";
+
+                    // Apply color if defined
+
+                    string hexColor = ColorUtility.ToHtmlStringRGB(entry.Value.color);
+                    line = $"<color=#{hexColor}>{line}</color>";
+
+                    label += line + "\n";
+                }
+            }
+
+            // Finally create the tooltip
+            itemTooltip.CreateTooltip(
+                GUIIconsDatabase.bonusStats,
+                Color.white,
+                label);
+        }
+
+        void CreateAttributeBonusMultiplierTooltip(Accessory accessory)
+        {
+            if (accessory.healthBonusMultiplier <= 0 && accessory.manaBonusMultiplier <= 0 && accessory.staminaBonusMultiplier <= 0)
+            {
+                return;
+            }
+
+            string label = "";
+
+            Dictionary<string, (float value, string enText, string ptText, Color color)> damageTypes = new()
+            {
+                { "healthBonus",  (accessory.healthBonusMultiplier * 100,  "Health Points", "Pontos de Vida", GUIIconsDatabase.healthColor) },
+                { "magicBonus",  (accessory.manaBonusMultiplier * 100,  "Mana Points", "Pontos de Mana", GUIIconsDatabase.manaColor) },
+                { "staminaBonus",  (accessory.staminaBonusMultiplier * 100,  "Stamina Points", "Pontos de Stamina", GUIIconsDatabase.staminaColor) },
+            };
+
+            foreach (var entry in damageTypes)
+            {
+                float value = entry.Value.value;
+                if (value > 0)
+                {
+                    string line = $"+{value}% {(Utils.IsPortuguese() ? entry.Value.ptText : entry.Value.enText)}";
 
                     // Apply color if defined
 

@@ -184,7 +184,7 @@ namespace AF
                 return;
             }
 
-            if (GetCharacter().characterPosture.isStunned)
+            if (GetCharacter() != null && GetCharacter().characterPosture.isStunned)
             {
                 GetCharacter().characterPosture.RecoverFromStunned();
             }
@@ -317,7 +317,7 @@ namespace AF
         {
             bool isPostureBroken = GetCharacter().characterPosture.TakePostureDamage(incomingDamage.postureDamage);
 
-            if (isPostureBroken)
+            if (isPostureBroken || GetCharacter().characterPosture.isStunned)
             {
                 incomingDamage.physical += GetCharacter().characterPosture.GetPostureDamageBonus();
             }

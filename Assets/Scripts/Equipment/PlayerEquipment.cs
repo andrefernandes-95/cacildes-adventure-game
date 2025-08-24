@@ -4,54 +4,61 @@ namespace AF
     {
         public PlayerManager playerManager;
 
+        protected override void UpdateEquipmentValues()
+        {
+            base.UpdateEquipmentValues();
+
+            playerManager.uIDocumentPlayerHUDV2.UpdateHealthManaAndStaminaBars();
+        }
+
         protected override void SetHelmet(Helmet helmet)
         {
-            playerManager.equipmentDatabase.helmet = Instantiate(helmet);
+            playerManager.equipmentDatabase.EquipHelmet(helmet);
         }
 
         protected override void ClearHelmet()
         {
-            playerManager.equipmentDatabase.helmet = null;
+            playerManager.equipmentDatabase.UnequipHelmet();
         }
 
         protected override void SetAccessory(Accessory accessory, int slotIndex)
         {
-            playerManager.equipmentDatabase.accessories[slotIndex] = Instantiate(accessory);
+            playerManager.equipmentDatabase.EquipAccessory(accessory, slotIndex);
         }
 
         protected override void ClearAccessory(int slotIndex)
         {
-            playerManager.equipmentDatabase.accessories[slotIndex] = null;
+            playerManager.equipmentDatabase.UnequipAccessory(slotIndex);
         }
 
         protected override void SetArmor(Armor armor)
         {
-            playerManager.equipmentDatabase.armor = Instantiate(armor);
+            playerManager.equipmentDatabase.EquipArmor(armor);
         }
 
         protected override void ClearArmor()
         {
-            playerManager.equipmentDatabase.armor = null;
+            playerManager.equipmentDatabase.UnequipArmor();
         }
 
         protected override void SetGauntlets(Gauntlet gauntlet)
         {
-            playerManager.equipmentDatabase.gauntlet = Instantiate(gauntlet);
+            playerManager.equipmentDatabase.EquipGauntlet(gauntlet);
         }
 
         protected override void ClearGauntlets()
         {
-            playerManager.equipmentDatabase.gauntlet = null;
+            playerManager.equipmentDatabase.UnequipGauntlet();
         }
 
         protected override void SetLegwear(Legwear legwear)
         {
-            playerManager.equipmentDatabase.legwear = Instantiate(legwear);
+            playerManager.equipmentDatabase.EquipLegwear(legwear);
         }
 
         protected override void ClearLegwear()
         {
-            playerManager.equipmentDatabase.legwear = null;
+            playerManager.equipmentDatabase.UnequipLegwear();
         }
 
         public override Helmet GetEquippedHelmet()

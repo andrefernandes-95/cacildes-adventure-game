@@ -7,6 +7,10 @@ namespace AF
     [CreateAssetMenu(menuName = "Items / Accessory / New Accessory")]
     public class Accessory : ArmorBase
     {
+        [Header("Attribute Bonus")]
+        [Range(0, 1f)] public float healthBonusMultiplier = 0f;
+        [Range(0, 1f)] public float manaBonusMultiplier = 0f;
+        [Range(0, 1f)] public float staminaBonusMultiplier = 0f;
 
         [Header("Stat Bonuses")]
         public int healthBonus = 0;
