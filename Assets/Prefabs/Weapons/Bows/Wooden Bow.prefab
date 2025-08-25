@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &185692037897544052
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2651706947789672692}
+  m_Layer: 0
+  m_Name: Shooting Ref
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2651706947789672692
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 185692037897544052}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.217, y: -0.162, z: 0.042}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1172684492838779624}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1175613108481408414
 GameObject:
   m_ObjectHideFlags: 0
@@ -133,6 +164,7 @@ GameObject:
   - component: {fileID: 6628442523165365284}
   - component: {fileID: 7808638608803640468}
   - component: {fileID: 5320884396037284573}
+  - component: {fileID: 7948785609766621940}
   m_Layer: 0
   m_Name: Wooden Bow
   m_TagString: Untagged
@@ -155,6 +187,8 @@ Transform:
   m_Children:
   - {fileID: 1172684930631881292}
   - {fileID: 1172686698386079214}
+  - {fileID: 5849925625420288208}
+  - {fileID: 2651706947789672692}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6628442523165365284
@@ -187,6 +221,7 @@ MonoBehaviour:
   characterTwoHandRef: {fileID: 0}
   characterWeaponBuffs: {fileID: 0}
   shouldDisableHitboxOnStart: 1
+  hitboxType: 0
   weapon: {fileID: 11400000, guid: 31267c9149f0cb74ca68440da6dbd48f, type: 2}
 --- !u!114 &7808638608803640468
 MonoBehaviour:
@@ -338,6 +373,20 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &7948785609766621940
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1176016301392021686}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 52145cfb93cf02d4ba209caf3b1fd4c0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  arrowProjectileRef: {fileID: 5849925625420288208}
+  shootingRef: {fileID: 2651706947789672692}
 --- !u!1 &1176037581405321070
 GameObject:
   m_ObjectHideFlags: 0
@@ -368,5 +417,36 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1172636177629504914}
+  m_Father: {fileID: 1172684492838779624}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &7156206487730443220
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5849925625420288208}
+  m_Layer: 0
+  m_Name: Arrow Ref
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5849925625420288208
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7156206487730443220}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.217, y: -0.162, z: -0.355}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
   m_Father: {fileID: 1172684492838779624}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

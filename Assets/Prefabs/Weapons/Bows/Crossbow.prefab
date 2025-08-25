@@ -1,5 +1,67 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &3409240815060853502
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8399290815720065761}
+  m_Layer: 0
+  m_Name: Projectile Ref
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8399290815720065761
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3409240815060853502}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.054, z: 0.461}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1666924704707566116}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &8562386034249513227
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 860630329903014616}
+  m_Layer: 0
+  m_Name: Shooting Ref
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &860630329903014616
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8562386034249513227}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.054, z: 0.461}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1666924704707566116}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1666924704707690660
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -75,7 +137,13 @@ PrefabInstance:
     m_RemovedComponents:
     - {fileID: 95444110768599592, guid: cb6232a083cec354face1959a8bfa209, type: 3}
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 400000, guid: df8a6350c12eb9c4ca71b3767e6c8642, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8399290815720065761}
+    - targetCorrespondingSourceObject: {fileID: 400000, guid: df8a6350c12eb9c4ca71b3767e6c8642, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 860630329903014616}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 100000, guid: df8a6350c12eb9c4ca71b3767e6c8642, type: 3}
       insertIndex: -1
@@ -86,7 +154,15 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 100000, guid: df8a6350c12eb9c4ca71b3767e6c8642, type: 3}
       insertIndex: -1
       addedObject: {fileID: 6449472912525298379}
+    - targetCorrespondingSourceObject: {fileID: 100000, guid: df8a6350c12eb9c4ca71b3767e6c8642, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1522779572215103591}
   m_SourcePrefab: {fileID: 100100000, guid: df8a6350c12eb9c4ca71b3767e6c8642, type: 3}
+--- !u!4 &1666924704707566116 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 400000, guid: df8a6350c12eb9c4ca71b3767e6c8642, type: 3}
+  m_PrefabInstance: {fileID: 1666924704707690660}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1666924704707724804 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 100000, guid: df8a6350c12eb9c4ca71b3767e6c8642, type: 3}
@@ -122,6 +198,7 @@ MonoBehaviour:
   characterTwoHandRef: {fileID: 0}
   characterWeaponBuffs: {fileID: 0}
   shouldDisableHitboxOnStart: 1
+  hitboxType: 0
   weapon: {fileID: 11400000, guid: 5d9c2ede73a6ae84488e6473681d1d99, type: 2}
 --- !u!114 &3985060347835460159
 MonoBehaviour:
@@ -273,3 +350,17 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &1522779572215103591
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1666924704707724804}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 52145cfb93cf02d4ba209caf3b1fd4c0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  arrowProjectileRef: {fileID: 8399290815720065761}
+  shootingRef: {fileID: 860630329903014616}

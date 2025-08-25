@@ -60,6 +60,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -104,7 +107,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1.79, y: 1.47, z: 1.65}
+  m_Size: {x: 2.07, y: 1.93, z: 1.65}
   m_Center: {x: 0.009458423, y: 1.1780218, z: -0.028076738}
 --- !u!114 &8566053080296499809
 MonoBehaviour:
@@ -120,12 +123,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   detectEnemies: 1
   damage:
+    basePhysicalDamage: 0
     physical: 0
     fire: 0
     frost: 0
     magic: 0
     lightning: 0
     darkness: 0
+    water: 0
     postureDamage: 0
     poiseDamage: 0
     pushForce: 0
@@ -135,3 +140,7 @@ MonoBehaviour:
       amountPerHit: 10
     ignoreBlocking: 0
     canNotBeParried: 0
+    damageType: 0
+    strengthScaling: 5
+    dexterityScaling: 5
+    intelligenceScaling: 5

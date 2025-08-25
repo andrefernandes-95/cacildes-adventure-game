@@ -553,12 +553,6 @@ namespace AF
             bool isSprinting = IsSprinting();
             float targetSpeed = isSprinting ? SprintSpeed : RunSpeed;
 
-            if (playerManager.playerShootingManager.IsAimingBowOrCrossbow())
-            {
-                targetSpeed = WalkSpeed;
-            }
-
-
             if (lockOnManager.isLockedOn)
             {
                 targetSpeed = LockOnSpeed;

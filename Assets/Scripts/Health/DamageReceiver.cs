@@ -71,10 +71,7 @@ namespace AF
                     return;
                 }
 
-                if (TryBlockIncomingDamageForAI(attacker, incomingDamage))
-                {
-                    return;
-                }
+                TryBlockIncomingDamageForAI(attacker, ref incomingDamage);
 
                 HandleAngleHitFrom(attacker);
             }

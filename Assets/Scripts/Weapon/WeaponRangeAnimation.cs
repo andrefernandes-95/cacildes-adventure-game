@@ -7,7 +7,7 @@ namespace AF
     [CreateAssetMenu(menuName = "Items / Weapon / New Weapon Range Animation")]
     public class WeaponRangeAnimation : ScriptableObject
     {
-        [Header("Blocking")]
+        [Header("Weapon Aiming")]
         [SerializeField] AnimationClip sprint;
         [SerializeField] AnimationClip run;
         [SerializeField] AnimationClip aimIdle;
@@ -15,7 +15,8 @@ namespace AF
         [SerializeField] AnimationClip aimFire;
         [SerializeField] AnimationClip aimFireLockedOn;
 
-        public List<AnimationOverride> GetAnimations()
+
+        public List<AnimationOverride> GetAnimations(bool isAI)
         {
             List<AnimationOverride> animationOverrides = new();
 
@@ -38,6 +39,11 @@ namespace AF
             if (aimFire != null)
             {
                 animationOverrides.Add(new() { animationName = "Cacildes - Aim Fire", animationClip = aimFire });
+
+                if (isAI)
+                {
+                    animationOverrides.Add(new() { animationName = "AI - Aim Fire", animationClip = aimFire });
+                }
             }
             if (aimFireLockedOn != null)
             {

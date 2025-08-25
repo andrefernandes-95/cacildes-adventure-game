@@ -258,6 +258,11 @@ namespace AF.Shooting
                 return;
             }
 
+            if (Time.timeScale < 1f)
+            {
+                return;
+            }
+
             isAiming = false;
             aimingCamera.SetActive(false);
             lookAtConstraint.constraintActive = false;

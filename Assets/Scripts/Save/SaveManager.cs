@@ -50,6 +50,9 @@ namespace AF
 
         public string SAVE_FILES_FOLDER = "QuickSave";
 
+        [Header("Bow Debug Tools")]
+        public bool useBowDebugTools = false; // For position the bow and arrows during editor, it shouldnt be in this script but just reusing Update methods
+
         private void Awake()
         {
             EventManager.StartListening(EventMessages.ON_BOSS_BATTLE_BEGINS, () => { hasBossFightOnGoing = true; });
@@ -618,6 +621,18 @@ namespace AF
             if (Input.GetKeyDown(KeyCode.F9))
             {
                 LoadLastSavedGame(false);
+            }
+
+            if (useBowDebugTools)
+            {
+                if (Input.GetKeyDown(KeyCode.F2))
+                {
+                    Time.timeScale = 0f;
+                }
+                if (Input.GetKeyDown(KeyCode.F3))
+                {
+                    Time.timeScale = 1f;
+                }
             }
         }
 

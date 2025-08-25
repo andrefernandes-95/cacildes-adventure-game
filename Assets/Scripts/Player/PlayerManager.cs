@@ -224,7 +224,7 @@ namespace AF
                 // If left weapons is a range weapon, override the animations for shooting
                 if (leftWeapon.weaponRangeAnimation != null)
                 {
-                    AddOrReplaceOverride(leftWeapon.weaponRangeAnimation.GetAnimations(), overrides);
+                    AddOrReplaceOverride(leftWeapon.weaponRangeAnimation.GetAnimations(false), overrides);
                 }
             }
 

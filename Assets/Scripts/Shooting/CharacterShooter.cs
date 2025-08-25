@@ -33,8 +33,19 @@ namespace AF.Shooting
 
             GameObject projectile = GetCurrentArrow().arrowProjectile.gameObject;
 
+            CharacterWeaponHitbox currentRangeWeapon = characterBaseManager.characterBaseWeaponsManager.currentShieldInstance;
 
             Transform origin = characterBaseManager.characterTransformHelper.rightHand.transform;
+
+            if (currentRangeWeapon != null
+                && currentRangeWeapon.weapon != null
+                && currentRangeWeapon.weapon.damage.weaponAttackType == WeaponAttackType.Range
+                && currentRangeWeapon.TryGetComponent<RangeWeaponProjectileRef>(out var rangeWeaponProjectileRef)
+                )
+            {
+                origin = rangeWeaponProjectileRef.shootingRef;
+            }
+
             GameObject projectileInstance = Instantiate(projectile.gameObject, origin.position, Quaternion.identity);
             projectileInstance.TryGetComponent<Projectile>(out var projectileInstanceComponent);
             if (projectileInstanceComponent != null)

@@ -202,12 +202,14 @@ namespace AF
             return false;
         }
 
-        protected bool TryBlockIncomingDamageForAI(CharacterBaseManager attacker, Damage incomingDamage)
+        protected bool TryBlockIncomingDamageForAI(CharacterBaseManager attacker, ref Damage incomingDamage)
         {
             if (!GetCharacter().characterAbstractBlockController.CanBlockDamage(incomingDamage))
             {
                 return false;
             }
+
+            incomingDamage = GetCharacter().characterBaseWeaponsManager.GetCurrentShieldDefenseAbsorption(incomingDamage);
 
             GetCharacter().characterAbstractBlockController.BlockAttack(incomingDamage);
             return true;

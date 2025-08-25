@@ -41,10 +41,17 @@ namespace AF.Shooting
         {
             DestroyArrowPlaceholder();
 
+            CharacterWeaponHitbox currentRangeWeapon = characterBaseManager.characterBaseWeaponsManager.currentShieldInstance;
             Arrow currentArrow = GetCurrentArrow();
-            if (currentArrow != null && currentArrow.arrowPlaceholderPrefab != null)
+            if (currentArrow != null
+                && currentArrow.arrowPlaceholderPrefab != null
+                && currentRangeWeapon != null
+                && currentRangeWeapon.weapon != null
+                && currentRangeWeapon.weapon.damage.weaponAttackType == WeaponAttackType.Range
+                && currentRangeWeapon.TryGetComponent<RangeWeaponProjectileRef>(out var rangeWeaponProjectileRef)
+                )
             {
-                arrowPlaceholder = Instantiate(currentArrow.arrowPlaceholderPrefab, characterBaseManager.characterTransformHelper.rightHand);
+                arrowPlaceholder = Instantiate(currentArrow.arrowPlaceholderPrefab, rangeWeaponProjectileRef.arrowProjectileRef.transform);
 
                 characterBaseManager.combatAudioSource.PlayOneShot(currentArrow.drawArrowSfx);
             }

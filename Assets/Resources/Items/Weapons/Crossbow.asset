@@ -54,7 +54,9 @@ MonoBehaviour:
   location: 
   canBeUpgraded: 1
   level: 1
+  upgradeMaterialData: {fileID: 0}
   damage:
+    basePhysicalDamage: 0
     physical: 25
     fire: 0
     frost: 0
@@ -73,127 +75,6 @@ MonoBehaviour:
     strengthScaling: 5
     dexterityScaling: 5
     intelligenceScaling: 5
-  weaponUpgrades:
-  - goldCostForUpgrade: 100
-    newDamage:
-      physical: 40
-      fire: 0
-      frost: 0
-      magic: 0
-      lightning: 0
-      darkness: 0
-      water: 0
-      postureDamage: 10
-      poiseDamage: 1
-      pushForce: 2
-      weaponAttackType: 3
-      statusEffects: []
-      ignoreBlocking: 0
-      canNotBeParried: 0
-      damageType: 0
-      strengthScaling: 5
-      dexterityScaling: 5
-      intelligenceScaling: 5
-    upgradeMaterials:
-      _serializedList:
-      - Key: {fileID: 11400000, guid: aa134ad2e066ac64b9c730d6f924c095, type: 2}
-        Value: 1
-  - goldCostForUpgrade: 200
-    newDamage:
-      physical: 60
-      fire: 0
-      frost: 0
-      magic: 0
-      lightning: 0
-      darkness: 0
-      water: 0
-      postureDamage: 10
-      poiseDamage: 1
-      pushForce: 2
-      weaponAttackType: 3
-      statusEffects: []
-      ignoreBlocking: 0
-      canNotBeParried: 0
-      damageType: 0
-      strengthScaling: 5
-      dexterityScaling: 5
-      intelligenceScaling: 5
-    upgradeMaterials:
-      _serializedList:
-      - Key: {fileID: 11400000, guid: aa134ad2e066ac64b9c730d6f924c095, type: 2}
-        Value: 3
-  - goldCostForUpgrade: 400
-    newDamage:
-      physical: 80
-      fire: 0
-      frost: 0
-      magic: 0
-      lightning: 0
-      darkness: 0
-      water: 0
-      postureDamage: 10
-      poiseDamage: 1
-      pushForce: 2.2
-      weaponAttackType: 3
-      statusEffects: []
-      ignoreBlocking: 0
-      canNotBeParried: 0
-      damageType: 0
-      strengthScaling: 5
-      dexterityScaling: 5
-      intelligenceScaling: 5
-    upgradeMaterials:
-      _serializedList:
-      - Key: {fileID: 11400000, guid: aa134ad2e066ac64b9c730d6f924c095, type: 2}
-        Value: 3
-  - goldCostForUpgrade: 800
-    newDamage:
-      physical: 100
-      fire: 0
-      frost: 0
-      magic: 0
-      lightning: 0
-      darkness: 0
-      water: 0
-      postureDamage: 10
-      poiseDamage: 1
-      pushForce: 2.6
-      weaponAttackType: 3
-      statusEffects: []
-      ignoreBlocking: 0
-      canNotBeParried: 0
-      damageType: 0
-      strengthScaling: 5
-      dexterityScaling: 5
-      intelligenceScaling: 5
-    upgradeMaterials:
-      _serializedList:
-      - Key: {fileID: 11400000, guid: b3492d5ff4d527d449ff4cf1ef0a8688, type: 2}
-        Value: 1
-  - goldCostForUpgrade: 1600
-    newDamage:
-      physical: 120
-      fire: 0
-      frost: 0
-      magic: 0
-      lightning: 0
-      darkness: 0
-      water: 0
-      postureDamage: 10
-      poiseDamage: 1
-      pushForce: 2.8
-      weaponAttackType: 3
-      statusEffects: []
-      ignoreBlocking: 0
-      canNotBeParried: 0
-      damageType: 0
-      strengthScaling: 5
-      dexterityScaling: 5
-      intelligenceScaling: 5
-    upgradeMaterials:
-      _serializedList:
-      - Key: {fileID: 11400000, guid: b3492d5ff4d527d449ff4cf1ef0a8688, type: 2}
-        Value: 2
   weaponSound: {fileID: 0}
   weaponSize: 0
   weaponPrefab: {fileID: 1666924704707724804, guid: a4a88e6bb90c739499720146adf746f3, type: 3}
@@ -222,6 +103,7 @@ MonoBehaviour:
   twoHandOverrides: []
   blockOverrides: []
   weaponAnimationData: {fileID: 0}
+  aIWeaponAnimationData: {fileID: 0}
   weaponRangeAnimation: {fileID: 11400000, guid: e8c569df22b46e24592f69dafc847a62, type: 2}
   oh_weaponAnimationOverrides: []
   th_weaponAnimationOverrides: []
@@ -244,21 +126,21 @@ MonoBehaviour:
   isHolyWeapon: 0
   isHexWeapon: 0
   projectileType: {fileID: 11400000, guid: 25a25c25bebdcb54186e736e057bdd91, type: 2}
-  blockAbsorption: 1
+  weaponBlockAbsorption: 0.8
   shouldRegenerateMana: 0
   ignoreSpellsAnimationClips: 0
   rightHandPosition: {x: 0, y: 0, z: 0}
   rightHandRotation: {x: 0, y: 0, z: 0}
-  leftHandPosition: {x: 9.37, y: -5.53, z: -6.08}
-  leftHandRotation: {x: 186.737, y: -20.96002, z: -156.471}
+  leftHandPosition: {x: 0.027, y: 0.108, z: 0.021}
+  leftHandRotation: {x: 304.84973, y: 174.98784, z: 163.63748}
   useTwoHandingTransform: 1
   twoHandingPosition: {x: 0, y: 0, z: 0}
   twoHandingRotation: {x: 0, y: 0, z: 0}
   useCustomTwoHandingBlockTransforms: 0
   th_BlockPosition: {x: 0, y: 0, z: 0}
   th_BlockRotation: {x: 0, y: 0, z: 0}
-  aimingPosition: {x: 2.1, y: 3, z: 15.2}
-  aimingRotation: {x: 17.147, y: 146.853, z: -145.571}
+  aimingPosition: {x: 0.02, y: 0.08, z: 0.05}
+  aimingRotation: {x: 307, y: 187, z: 114.19999}
   references:
     version: 2
     RefIds: []

@@ -9855,13 +9855,13 @@ GameObject:
   - component: {fileID: 1931065486573753595}
   - component: {fileID: 8370337710929638287}
   - component: {fileID: 2889251296107970122}
-  - component: {fileID: 5513055638133921008}
   - component: {fileID: 6084345699659758724}
   - component: {fileID: 2904445533131223167}
   - component: {fileID: 4901283304887213610}
   - component: {fileID: -389826466638702227}
   - component: {fileID: 5208995084661814156}
   - component: {fileID: 531293599656622800}
+  - component: {fileID: -2065165289358437886}
   m_Layer: 1
   m_Name: Ability - Poison Sword
   m_TagString: Projectile
@@ -14738,42 +14738,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0.5}
---- !u!114 &5513055638133921008
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4873570611558579489}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 36c4d83f68dbeb742a83043ec012b711, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Speed: 16
-  lifetime: 3
-  impact: {fileID: 5845028760078734301, guid: ac2c3614e69b43a48a433d1ccfb60970, type: 3}
-  detachFX: {fileID: 8671138007189601400}
-  spawnPoint: {fileID: 0}
-  playerYOffset: 1
-  isFromPlayer: 1
-  shouldHomeOnTarget: 0
-  shouldHomeOnPlayer: 0
-  isHoming: 0
-  homingTarget: {fileID: 0}
-  homingTargetOffset: {x: 0, y: 0, z: 0}
-  delayBeforeSettingHoming: 1
-  maxHomingTargetDistanceToTriggerIsHoming: 3
-  maxHomingTargetDistanceToDeactivate: 1
-  radius: 5
-  distance: 10
-  enemyLayer:
-    serializedVersion: 2
-    m_Bits: 0
-  lockOnToNearestEnemy: 0
-  onCollisionEvent:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!114 &6084345699659758724
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14801,6 +14765,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   projectile: {fileID: 0}
   damage:
+    basePhysicalDamage: 0
     physical: 0
     fire: 0
     frost: 0
@@ -14826,8 +14791,8 @@ MonoBehaviour:
   onParticleDamage:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 5513055638133921008}
-        m_TargetAssemblyTypeName: PMFX_ProjectilesFX, MightyVFX
+      - m_Target: {fileID: -2065165289358437886}
+        m_TargetAssemblyTypeName: PMFX_TargetProjectile, AF
         m_MethodName: OnCollision
         m_Mode: 1
         m_Arguments:
@@ -15110,6 +15075,27 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &-2065165289358437886
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4873570611558579489}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c390bd99a49e414fb39522923a1c053, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Speed: 15
+  lifetime: 3
+  impact: {fileID: 5845028760078734301, guid: ac2c3614e69b43a48a433d1ccfb60970, type: 3}
+  detachFX: {fileID: 8671138007189601400}
+  caster: {fileID: 0}
+  target: {fileID: 0}
+  onCollisionEvent:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &5046270919088531037
 GameObject:
   m_ObjectHideFlags: 0
