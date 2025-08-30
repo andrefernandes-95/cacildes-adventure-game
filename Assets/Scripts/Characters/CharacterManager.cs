@@ -38,6 +38,8 @@ namespace AF
         public CharacterShop characterShop;
         public CharacterBuffManager characterBuffManager;
         public CharacterTeleportManager characterTeleportManager;
+        public CharacterWeaknessesManager characterWeaknessesManager;
+        public CharacterWeaponBuffManager characterWeaponBuffManager;
 
         // Animator Overrides
         [HideInInspector] public AnimatorOverrideController animatorOverrideController;
@@ -149,6 +151,8 @@ namespace AF
             characterConsumableManager.ResetStates();
 
             faceTarget = false;
+
+            (health as CharacterHealth)?.CheckIfShouldDie();
         }
 
         private void Update()
@@ -275,9 +279,12 @@ namespace AF
                 // Lastly, check for any additional weapon animation overrides that have the highest priority
                 if (currentWeapon != null)
                 {
-                    if (characterWeaponsManager.IsTwoHanding() && currentWeapon.th_weaponAnimationOverrides.Count > 0)
+                    if (characterWeaponsManager.IsTwoHanding())
                     {
-                        AddOrReplaceOverride(currentWeapon.th_weaponAnimationOverrides, overrides);
+                        if (currentWeapon.th_weaponAnimationOverrides.Count > 0)
+                        {
+                            AddOrReplaceOverride(currentWeapon.th_weaponAnimationOverrides, overrides);
+                        }
                     }
                     else if (currentWeapon.oh_weaponAnimationOverrides.Count > 0)
                     {
@@ -382,6 +389,11 @@ namespace AF
             if (distanceToTarget >= agent.stoppingDistance)
             {
                 rootMotionPosition *= cutDistanceToTargetSpeed;
+            }
+
+            if (rootMotionPosition.x <= 0 && rootMotionPosition.z <= 0)
+            {
+                rootMotionPosition = cutDistanceToTargetSpeed * Time.deltaTime * transform.forward;
             }
 
             if (distanceToTarget >= 0)

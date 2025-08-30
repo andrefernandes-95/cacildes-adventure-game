@@ -58,6 +58,8 @@ namespace AF
         public CharacterBaseConsumableManager characterBaseConsumableManager;
         public CharacterHUD characterHUD;
         public CharacterBaseBuffManager characterBaseBuffManager;
+        public CharacterBaseWeaknessesManager characterBaseWeaknessesManager;
+        public CharacterBaseWeaponBuffManager characterBaseWeaponBuffManager;
 
         public abstract void ResetStates();
 

@@ -8,6 +8,14 @@ namespace AF
     {
         [SerializeField] GameObject onDestroyVfx;
 
+        /// <summary>
+        /// Unity Event
+        /// </summary>
+        public void OnDamageEvent()
+        {
+            OnDamage(null, null);
+        }
+
         public void OnDamage(CharacterBaseManager attacker, Action onDamageInflicted)
         {
             Instantiate(onDestroyVfx, transform.position, Quaternion.identity);

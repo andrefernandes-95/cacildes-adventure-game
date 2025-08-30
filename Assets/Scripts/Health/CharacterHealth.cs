@@ -92,12 +92,17 @@ namespace AF.Health
 
             onTakeDamage?.Invoke();
 
+            CheckIfShouldDie();
+
+            onHealthChange?.Invoke();
+        }
+
+        public void CheckIfShouldDie()
+        {
             if (GetCurrentHealth() <= 0)
             {
                 HandleEnemyDeath();
             }
-
-            onHealthChange?.Invoke();
         }
 
         void HandleEnemyDeath()
@@ -117,12 +122,25 @@ namespace AF.Health
             characterManager.characterLoot.GiveLoot();
 
             // Play Death Animation
-            characterManager.PlayBusyAnimationWithRootMotion("Dying");
+            PlayDeathAnimation();
 
             // Disable enemy colliders so they don't block doors and other places
             HandleCollisions(false);
             HideHealthbar();
+
+            // If is boss, handle boss stuff
+            if (characterManager.characterBossController != null && characterManager.characterBossController.IsBoss())
+            {
+                characterManager.characterBossController.OnAllBossesDead();
+            }
         }
+
+        public void PlayDeathAnimation()
+        {
+            // Play Death Animation
+            characterManager.PlayBusyAnimationWithRootMotion("Dying");
+        }
+
 
         public override int GetMaxHealth()
         {

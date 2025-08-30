@@ -33,6 +33,7 @@ namespace AF
             UpdateCurrentLeftWeapon();
 
             GetCharacter().characterBaseAttackManager.CalculateCurrentDamage();
+            GetCharacter().characterBaseWeaponBuffManager.OnEquipmentChanged();
         }
 
         public void ResetStates()

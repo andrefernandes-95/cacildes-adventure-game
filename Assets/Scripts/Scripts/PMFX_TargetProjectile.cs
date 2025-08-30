@@ -38,8 +38,9 @@ public class PMFX_TargetProjectile : MonoBehaviour, IAbilityInstance
         {
             Vector3 directionToTarget = target.characterTransformHelper.torso.transform.position - transform.position;
             transform.rotation = Quaternion.LookRotation(directionToTarget);
-            rigidBody.linearVelocity = transform.forward * Speed;
         }
+
+        rigidBody.linearVelocity = transform.forward * Speed;
     }
 
     public void OnCollision()

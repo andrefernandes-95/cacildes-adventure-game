@@ -81,6 +81,11 @@ namespace AF
                 return false;
             }
 
+            if (GetCharacter().health.GetCurrentHealth() <= 0)
+            {
+                return false;
+            }
+
             return true;
         }
 

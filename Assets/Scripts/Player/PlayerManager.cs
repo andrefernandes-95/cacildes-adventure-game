@@ -52,6 +52,8 @@ namespace AF
         public PlayerActivityManager playerActivityManager;
         public PlayerConsumableManager playerConsumableManager;
         public PlayerBuffManager playerBuffManager;
+        public PlayerWeaknessesManager playerWeaknessesManager;
+        public PlayerWeaponBuffManager playerWeaponBuffManager;
 
         [Header("Databases")]
         public PlayerStatsDatabase playerStatsDatabase;
@@ -231,9 +233,12 @@ namespace AF
             // Lastly, check for any additional weapon animation overrides that have the highest priority
             if (currentWeapon != null)
             {
-                if (equipmentDatabase.isTwoHanding && currentWeapon.th_weaponAnimationOverrides.Count > 0)
+                if (equipmentDatabase.isTwoHanding)
                 {
-                    AddOrReplaceOverride(currentWeapon.th_weaponAnimationOverrides, overrides);
+                    if (currentWeapon.th_weaponAnimationOverrides.Count > 0)
+                    {
+                        AddOrReplaceOverride(currentWeapon.th_weaponAnimationOverrides, overrides);
+                    }
                 }
                 else if (currentWeapon.oh_weaponAnimationOverrides.Count > 0)
                 {

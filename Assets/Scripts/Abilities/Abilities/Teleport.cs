@@ -62,6 +62,11 @@ namespace AF
 
         public override bool CanUseAbility(CharacterBaseManager character)
         {
+            if (character is CharacterManager characterManager)
+            {
+                return characterManager.characterTeleportManager.teleportPoints.Count > 0;
+            }
+
             return true;
         }
 

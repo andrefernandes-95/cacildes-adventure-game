@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using AF.Companions;
 using AF.Flags;
 using AF.Inventory;
@@ -117,26 +118,21 @@ namespace AF
 
         void LoadInventory()
         {
+            PlayerInventory playerInventory = FindAnyObjectByType<PlayerInventory>(FindObjectsInactive.Include);
+
             if (loadAllItems)
             {
                 Item[] items = Resources.LoadAll<Item>("Items");
                 foreach (var item in items)
                 {
-                    inventoryDatabase.AddItem(item);
+                    playerInventory.AddItem(item, 99);
                 }
                 return;
             }
 
             foreach (var ownedItem in ownedItems)
             {
-                if (ownedItem.Key is Weapon wp)
-                {
-                    inventoryDatabase.AddWeapon(wp, ownedItem.Value.amount);
-                }
-                else
-                {
-                    inventoryDatabase.AddItem(ownedItem.Key, ownedItem.Value.amount);
-                }
+                playerInventory.AddItem(ownedItem.Key, ownedItem.Value.amount);
             }
         }
 
@@ -185,10 +181,12 @@ namespace AF
                 }
             }
 
-            equipmentDatabase.EquipHelmet(helmet);
-            equipmentDatabase.EquipArmor(armor);
-            equipmentDatabase.EquipLegwear(legwear);
-            equipmentDatabase.EquipGauntlet(gauntlet);
+            PlayerInventory playerInventory = FindAnyObjectByType<PlayerInventory>(FindObjectsInactive.Include);
+
+            equipmentDatabase.EquipHelmet(playerInventory.GetHelmets().FirstOrDefault(x => x == helmet));
+            equipmentDatabase.EquipArmor(playerInventory.GetArmors().FirstOrDefault(x => x == armor));
+            equipmentDatabase.EquipLegwear(playerInventory.GetLegwears().FirstOrDefault(x => x == legwear));
+            equipmentDatabase.EquipGauntlet(playerInventory.GetGauntlets().FirstOrDefault(x => x == gauntlet));
         }
 
         void LoadQuests()

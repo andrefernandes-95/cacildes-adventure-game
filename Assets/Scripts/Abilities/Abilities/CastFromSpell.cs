@@ -104,9 +104,14 @@ namespace AF
                 }
             }
 
-            if (instance.TryGetComponent(out IAbilityInstance abilityInstance))
+            IAbilityInstance[] abilityInstances = instance.GetComponents<IAbilityInstance>();
+
+            if (abilityInstances.Length > 0)
             {
-                abilityInstance.CastAbility(caster, target);
+                foreach (IAbilityInstance entry in abilityInstances)
+                {
+                    entry.CastAbility(caster, target);
+                }
             }
 
             ApplySpellStatusEffects(caster);

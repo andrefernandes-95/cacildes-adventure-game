@@ -316,6 +316,8 @@ namespace AF
                 incomingDamage.pushForce = CurrentDamageAbsorbed.pushForce;
                 incomingDamage.pushForce = Mathf.Max(1, incomingDamage.pushForce - incomingDamage.pushForce);
             }
+
+            character.characterBaseWeaknessesManager.ModifyBasedOnCurrentWeaknesses(incomingDamage);
         }
 
     }

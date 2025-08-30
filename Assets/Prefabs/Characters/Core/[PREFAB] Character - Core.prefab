@@ -3900,6 +3900,52 @@ SkinnedMeshRenderer:
     m_Center: {x: 27.447521, y: 2.4881706, z: -7.69405}
     m_Extent: {x: 19.94347, y: 9.598751, z: 16.105919}
   m_DirtyAABB: 0
+--- !u!1 &454279434131312429
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1952524393606602246}
+  - component: {fileID: 4176517707101198413}
+  m_Layer: 22
+  m_Name: "\u2744\uFE0F Character Weaknesses Manager"
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1952524393606602246
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 454279434131312429}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1438186108084557261}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4176517707101198413
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 454279434131312429}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3201f1d9f16a4a34eaacd4b1e22a69ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  appliedWeaknesses: []
+  characterManager: {fileID: 1759811369383153655}
 --- !u!1 &455120211137086741
 GameObject:
   m_ObjectHideFlags: 0
@@ -7722,6 +7768,52 @@ SkinnedMeshRenderer:
     m_Center: {x: -15.679912, y: -0.27777767, z: 0}
     m_Extent: {x: 20.23898, y: 15.40277, z: 13.306488}
   m_DirtyAABB: 0
+--- !u!1 &799022533022554537
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3877017500443013299}
+  - component: {fileID: 3161193166830341740}
+  m_Layer: 22
+  m_Name: "Character Weapon Buff Manager \U0001F525"
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3877017500443013299
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 799022533022554537}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1438186108084557261}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3161193166830341740
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 799022533022554537}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c89ab02e1972210468abefb9e6ed7705, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentBuffs: []
+  characterManager: {fileID: 1759811369383153655}
 --- !u!1 &813606651368319532
 GameObject:
   m_ObjectHideFlags: 0
@@ -35015,6 +35107,8 @@ Transform:
   - {fileID: 380799787922699100}
   - {fileID: 1118436753305935581}
   - {fileID: 5012916889321352799}
+  - {fileID: 1952524393606602246}
+  - {fileID: 3877017500443013299}
   m_Father: {fileID: 6242450190264014007}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3705549246472038351
@@ -38048,6 +38142,8 @@ MonoBehaviour:
   characterBaseConsumableManager: {fileID: 5880498836130299295}
   characterHUD: {fileID: 5189808774040190907}
   characterBaseBuffManager: {fileID: 6193433127975113308}
+  characterBaseWeaknessesManager: {fileID: 4176517707101198413}
+  characterBaseWeaponBuffManager: {fileID: 3161193166830341740}
   companionID: {fileID: 0}
   characterCombatController: {fileID: 8518529533467014141}
   targetManager: {fileID: 2735465378605405321}
@@ -38066,6 +38162,8 @@ MonoBehaviour:
   characterShop: {fileID: 4143778435181749395}
   characterBuffManager: {fileID: 6193433127975113308}
   characterTeleportManager: {fileID: 913187011442243768}
+  characterWeaknessesManager: {fileID: 4176517707101198413}
+  characterWeaponBuffManager: {fileID: 3161193166830341740}
   animatorOverrideController: {fileID: 0}
   patrolSpeed: 2
   chaseSpeed: 6

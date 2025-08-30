@@ -104,7 +104,9 @@
                 clonedDamage.Combine(damageBonus);
             }
 
-            return GetCharacter().characterBaseBuffManager.EnhanceAttackDamage(clonedDamage);
+            Damage enhancedDamageWithCharacterBuffs = GetCharacter().characterBaseBuffManager.EnhanceAttackDamage(clonedDamage);
+            Damage enhancedDamageWithWeaponBuffs = GetCharacter().characterBaseWeaponBuffManager.EnhanceAttackDamage(enhancedDamageWithCharacterBuffs);
+            return enhancedDamageWithWeaponBuffs;
         }
 
         public void CalculateCurrentDamage()
@@ -376,7 +378,7 @@
             }
         }
 
-        int GetBonusAttackPerLevel(int level)
+        public int GetBonusAttackPerLevel(int level)
         {
             if (level == 0)
             {

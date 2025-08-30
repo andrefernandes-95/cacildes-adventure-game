@@ -34,6 +34,7 @@ namespace AF
     public enum WeaponElementType
     {
         None,
+        Physical,
         Fire,
         Frost,
         Lightning,
@@ -41,6 +42,23 @@ namespace AF
         Darkness,
         Water,
     }
+
+
+
+    public enum WeaponBuffType
+    {
+        None,
+        Physical,
+        Fire,
+        Frost,
+        Lightning,
+        Magic,
+        Darkness,
+        Water,
+        Bleed,
+        Poison
+    }
+
 
     public enum PushForce
     {

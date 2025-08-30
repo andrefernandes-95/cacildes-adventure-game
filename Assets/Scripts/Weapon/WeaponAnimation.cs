@@ -60,6 +60,16 @@ namespace AF
         [SerializeField] AnimationClip oh_lockOnRunLeft;
         [SerializeField] AnimationClip oh_lockOnRunRight;
 
+        [Header("Two Hand Lock On")]
+        [SerializeField] AnimationClip th_lockOnRunBackRight;
+        [SerializeField] AnimationClip th_lockOnRunBackLeft;
+        [SerializeField] AnimationClip th_lockOnRunBack;
+        [SerializeField] AnimationClip th_lockOnRunForward;
+        [SerializeField] AnimationClip th_lockOnRunForwardRight;
+        [SerializeField] AnimationClip th_lockOnRunForwardLeft;
+        [SerializeField] AnimationClip th_lockOnRunLeft;
+        [SerializeField] AnimationClip th_lockOnRunRight;
+
 
         public List<AnimationOverride> GetOneHandAnimations()
         {
@@ -117,10 +127,6 @@ namespace AF
             if (oh_HeavyAttack3 != null)
             {
                 animationOverrides.Add(new() { animationName = "Cacildes - Heavy Attack - 3", animationClip = oh_HeavyAttack3 });
-            }
-            if (oh_RunAttack != null)
-            {
-                animationOverrides.Add(new() { animationName = "Cacildes - Run Attack", animationClip = oh_RunAttack });
             }
 
             if (oh_RunAttack != null)
@@ -254,6 +260,40 @@ namespace AF
                 animationOverrides.Add(new() { animationName = "Cacildes - Run Attack", animationClip = th_RunAttack });
             }
 
+
+            if (th_lockOnRunBack != null)
+            {
+                animationOverrides.Add(new() { animationName = "core_oh_run_B_01", animationClip = th_lockOnRunBack });
+            }
+            if (th_lockOnRunBackRight != null)
+            {
+                animationOverrides.Add(new() { animationName = "core_oh_run_BR_01", animationClip = th_lockOnRunBackRight });
+            }
+            if (th_lockOnRunBackLeft != null)
+            {
+                animationOverrides.Add(new() { animationName = "core_oh_run_BL_01", animationClip = th_lockOnRunBackLeft });
+            }
+            if (th_lockOnRunForward != null)
+            {
+                animationOverrides.Add(new() { animationName = "core_oh_run_F_01", animationClip = th_lockOnRunForward });
+            }
+            if (th_lockOnRunForwardRight != null)
+            {
+                animationOverrides.Add(new() { animationName = "core_oh_run_FR_01", animationClip = th_lockOnRunForwardRight });
+            }
+            if (th_lockOnRunForwardLeft != null)
+            {
+                animationOverrides.Add(new() { animationName = "core_oh_run_FL_01", animationClip = th_lockOnRunForwardLeft });
+            }
+            if (th_lockOnRunLeft != null)
+            {
+                animationOverrides.Add(new() { animationName = "core_oh_run_L_01", animationClip = th_lockOnRunLeft });
+            }
+            if (th_lockOnRunRight != null)
+            {
+                animationOverrides.Add(new() { animationName = "core_oh_run_R_01", animationClip = th_lockOnRunRight });
+            }
+
             animationOverrides.AddRange(weaponBlockAnimation.GetTwoHandBlockingAnimations());
 
             return animationOverrides;
@@ -287,6 +327,11 @@ namespace AF
             if (dying != null) animationOverrides.Add(new() { animationName = "AI Humanoid - Dying", animationClip = dying });
             if (knockdown != null) animationOverrides.Add(new() { animationName = "AI Humanoid - Posture Break", animationClip = knockdown });
             if (knockdownGetup != null) animationOverrides.Add(new() { animationName = "AI Humanoid - Posture Break - Exit", animationClip = knockdownGetup });
+
+            if (oh_RunAttack != null)
+            {
+                animationOverrides.Add(new() { animationName = "Cacildes - Run Attack", animationClip = oh_RunAttack });
+            }
 
             return animationOverrides;
         }
@@ -338,6 +383,11 @@ namespace AF
             if (dying != null) animationOverrides.Add(new() { animationName = "AI Humanoid - Dying", animationClip = dying });
             if (knockdown != null) animationOverrides.Add(new() { animationName = "AI Humanoid - Posture Break", animationClip = knockdown });
             if (knockdownGetup != null) animationOverrides.Add(new() { animationName = "AI Humanoid - Posture Break - Exit", animationClip = knockdownGetup });
+
+            if (th_RunAttack != null)
+            {
+                animationOverrides.Add(new() { animationName = "Cacildes - Run Attack", animationClip = th_RunAttack });
+            }
 
             return animationOverrides;
         }
