@@ -103,6 +103,13 @@ namespace AF
         public void RecoverFromStunned()
         {
             isStunned = false;
+
+            // Do not interrupt backstab animation
+            if (characterBaseManager.characterBaseDamageReceiver.isBackstabbed)
+            {
+                return;
+            }
+
             onDamageWhileStunned?.Invoke();
         }
 

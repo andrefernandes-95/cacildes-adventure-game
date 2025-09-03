@@ -1,3 +1,4 @@
+using AF.Health;
 using AF.Stats;
 using EditorAttributes;
 using UnityEngine;
@@ -12,6 +13,7 @@ namespace AF
 
         public GameObject projectile;
         public float manaCostPerCast = 20;
+        public int staminaCostPerCast = 20;
 
         [Header("Animations")]
         public AnimationClip castAnimationOverride;
@@ -107,6 +109,51 @@ namespace AF
 
         public bool HasAbility() => ability != null;
 
+        public Damage GetSpellDamageForCurrentLevel(Damage damage)
+        {
+            return GetSpellDamageForGivenLevel(damage, this.level);
+        }
 
+        public Damage GetSpellDamageForGivenLevel(Damage damage, int level)
+        {
+            Damage clonedDamage = damage.Clone();
+
+            clonedDamage.physical = GetCurrentPhysicalAttackForLevel(damage, level);
+            clonedDamage.fire = GetFireAttackForLevel(damage, level);
+            clonedDamage.frost = GetFrostAttackForLevel(damage, level);
+            clonedDamage.lightning = GetLightningAttackForLevel(damage, level);
+            clonedDamage.darkness = GetDarknessAttackForLevel(damage, level);
+            clonedDamage.magic = GetMagicAttackForLevel(damage, level);
+            clonedDamage.water = GetWaterAttackForLevel(damage, level);
+
+            return clonedDamage;
+        }
+
+        public int GetCurrentPhysicalAttackForLevel(Damage damage, int level)
+        {
+            if (damage == null || damage.physical <= 0)
+            {
+                return 0;
+            }
+
+            return damage.physical + GetBonusAttackPerLevel(level);
+        }
+
+        public int GetFireAttackForLevel(Damage damage, int level) => GetElementalAttackForLevel(damage.fire, level);
+        public int GetFrostAttackForLevel(Damage damage, int level) => GetElementalAttackForLevel(damage.frost, level);
+        public int GetLightningAttackForLevel(Damage damage, int level) => GetElementalAttackForLevel(damage.lightning, level);
+        public int GetDarknessAttackForLevel(Damage damage, int level) => GetElementalAttackForLevel(damage.darkness, level);
+        public int GetWaterAttackForLevel(Damage damage, int level) => GetElementalAttackForLevel(damage.water, level);
+        public int GetMagicAttackForLevel(Damage damage, int level) => GetElementalAttackForLevel(damage.magic, level);
+
+        int GetElementalAttackForLevel(int baseElementalDamage, int level)
+        {
+            if (baseElementalDamage <= 0)
+            {
+                return 0;
+            }
+
+            return baseElementalDamage + GetBonusAttackPerLevel(level);
+        }
     }
 }

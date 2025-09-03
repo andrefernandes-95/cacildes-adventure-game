@@ -12,14 +12,11 @@ namespace AF
 
         public const string TOOLTIP = "ItemTooltip";
         VisualElement tooltip;
-        VisualElement itemInfo;
         VisualElement tooltipItemSprite;
         Label tooltipItemName;
         Label tooltipItemDescription;
 
         [HideInInspector] public VisualElement tooltipEffectsContainer;
-        Label itemWeightLabel;
-        Label itemValueLabel;
 
         public VisualTreeAsset itemEffectTooltipEntry;
 
@@ -119,9 +116,7 @@ namespace AF
         public LocalizedString fireDMGAbsorption;
         public LocalizedString frostDMGAbsorption;
         public LocalizedString lightningDMGAbsorption;
-        public LocalizedString magicDMGAbsorption;
         public LocalizedString darknessDMGAbsorption;
-        public LocalizedString waterDMGAbsorption;
         // "{0}% Posture Damage Absorption"
         public LocalizedString postureDamageAbsorptionLabel;
         // "{0}% Slash Damage Absorption"
@@ -140,7 +135,6 @@ namespace AF
         public LocalizedString lightningDmgDealtToEnemiesPerBlockLabel;
         public LocalizedString magicDmgDealtToEnemiesPerBlockLabel;
         public LocalizedString darknessDmgDealtToEnemiesPerBlockLabel;
-        public LocalizedString waterDmgDealtToEnemiesPerBlockLabel;
         // "+{0} Parry Window Duration Bonus"
         public LocalizedString parryWindowDurationBonusLabel;
         // "+{0} Posture DMG per Parry"
@@ -152,32 +146,6 @@ namespace AF
         // "+{0}% Stamina Regen. Speed Bonus"
         public LocalizedString staminaRegenSpeedBonus;
         // $"+{0} Physical Defense"
-        public LocalizedString physicalDefenseBonus;
-        // $"+{0} Fire Defense"
-        public LocalizedString fireDefenseBonus;
-        public LocalizedString frostDefenseBonus;
-        public LocalizedString lightningDefenseBonus;
-        public LocalizedString magicDefenseBonus;
-        public LocalizedString darknessDefenseBonus;
-        public LocalizedString waterDefenseBonus;
-        // "+{0} Strength"
-        public LocalizedString strengthBonus;
-        public LocalizedString dexterityBonus;
-        // "{0} Reputation"
-        public LocalizedString reputationBonus;
-        // "+{0}% Better Prices"
-        public LocalizedString betterPrices;
-
-        // "{0} Physical DMG dealt to attacking enemies"
-        public LocalizedString physicalDamageDealtToAttackingEnemies;
-        public LocalizedString fireDamageDealtToAttackingEnemies;
-        public LocalizedString frostDamageDealtToAttackingEnemies;
-        public LocalizedString lightningDamageDealtToAttackingEnemies;
-        public LocalizedString magicDamageDealtToAttackingEnemies;
-        public LocalizedString darknessDamageDealtToAttackingEnemies;
-
-        // "x{0}% damage on projectiles"
-        public LocalizedString damageOnProjectilesBonus;
 
         // "+{0} Health Points"
         public LocalizedString healthPoints;
@@ -200,7 +168,6 @@ namespace AF
         // "+{0} Backstab Angle Bonus"
         public LocalizedString backStabAngleBonus;
         // "{0} Mana Points required to cast"
-        public LocalizedString manaPointsRequiredToCast;
 
         // "Crafting material (Use in a alchemy table)"
         public LocalizedString craftingMaterialLabel;
@@ -219,18 +186,11 @@ namespace AF
 
         // Attack bonus when two handing
         public LocalizedString multiplierWhenTwoHanding;
-        public LocalizedString lostUponUse;
-
-        public LocalizedString strengthDamageLabel;
-        public LocalizedString dexterityDamageLabel;
-        public LocalizedString intelligenceDamageLabel;
-        public LocalizedString twoHandDamageLabel;
-        public LocalizedString jumpingDamageLabel;
-
         [Header("Components")]
         [SerializeField] WeaponTooltip weaponTooltip;
         [SerializeField] ArmorTooltip armorTooltip;
         [SerializeField] AccessoryTooltip accessoryTooltip;
+        [SerializeField] SpellTooltip spellTooltip;
 
         private void OnEnable()
         {
@@ -254,13 +214,10 @@ namespace AF
             root = uIDocument.rootVisualElement;
 
             tooltip = root.Q<VisualElement>(TOOLTIP);
-            itemInfo = tooltip.Q<VisualElement>("ItemInfo");
             tooltipItemSprite = root.Q<VisualElement>("ItemTooltipContainer").Q<VisualElement>("ItemSprite");
             tooltipItemName = root.Q<VisualElement>("ItemTooltipContainer").Q<Label>("ItemName");
             tooltipItemDescription = root.Q<VisualElement>("ItemTooltipContainer").Q<Label>("ItemDescription");
             tooltipEffectsContainer = tooltip.Q<VisualElement>("ItemAttributes");
-            itemWeightLabel = tooltip.Q<VisualElement>("WeightAndValueContainer").Q<VisualElement>("Weight").Q<Label>();
-            itemValueLabel = tooltip.Q<VisualElement>("WeightAndValueContainer").Q<VisualElement>("Value").Q<Label>();
             weaponTypeLabel = tooltip.Q<Label>("WeaponAttackType");
         }
 
@@ -316,7 +273,8 @@ namespace AF
             }
             else if (item is Spell spell)
             {
-                DrawSpell(spell);
+                spellTooltip.DrawSpellEffects(spell);
+                // DrawSpell(spell);
             }
             else if (item is UpgradeMaterial upgradeMaterial)
             {
@@ -902,44 +860,6 @@ namespace AF
             }
         }
 
-        void DrawSpell(Spell spell)
-        {
-            if (spell.HasRequirements())
-            {
-                CreateTooltip(
-                    requirementsSprite,
-                    spell.AreRequirementsMet(playerManager) ? Color.white : requirementsNotMet,
-                    spell.DrawRequirements(playerManager));
-            }
-
-            if (spell.GetShortDescription() != null && spell.GetShortDescription().Length > 0)
-            {
-                CreateTooltip(statusEffectsSprite, Color.white, spell.GetShortDescription());
-            }
-            if (spell.manaCostPerCast > 0)
-            {
-
-                CreateTooltip(
-                    spellCastSprite,
-                    Color.white,
-                    String.Format(
-                        manaPointsRequiredToCast.GetLocalizedString(),
-                        spell.manaCostPerCast
-                ));
-
-            }
-
-            if (spell.statusEffects != null && spell.statusEffects.Length > 0)
-            {
-                CreateTooltip(statusEffectsSprite, Color.white, spell.GetFormattedAppliedStatusEffects());
-            }
-
-            /*            if (spell.isFaithSpell)
-                        {
-                            CreateTooltip(holyWeaponSprite, Color.white, $"Faith Spell (improves with reputation)");
-                        }*/
-
-        }
 
         void DrawCraftingMaterial(CraftingMaterial craftingMaterial)
         {

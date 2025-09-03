@@ -69,13 +69,14 @@ namespace AF
 
         public override void OnUse(PlayerManager playerManager)
         {
-            damage.Multiply(playerManager.playerAbilityManager.GetChargingAmountMultiplier());
-            ApplyDamageScaling(playerManager);
+            Damage clonedDamage = ScalingUtils.GetAbilityDamageForPlayerSpell(
+                GetDamage(playerManager),
+                playerManager,
+                playerManager.characterBaseEquipment.GetCurrentEquippedSpell());
 
-            if (!spell.AreRequirementsMet(playerManager))
-            {
-                damage.Multiply(0.1f);
-            }
+            clonedDamage.Multiply(playerManager.playerAbilityManager.GetChargingAmountMultiplier());
+
+            this.damage = clonedDamage;
 
             ReleaseSpellGameObject(playerManager, new[] { "Enemy" });
         }

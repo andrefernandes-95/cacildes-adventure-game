@@ -109,7 +109,7 @@ namespace AF.Health
             }
 
             // Apply bonus damage based on scaling and stats
-            int bonusFromSTR = GetBonusFromStrength(characterBaseManager.characterBaseStats.GetStrength());
+            int bonusFromSTR = ScalingUtils.GetBonusAttackPerLevel(characterBaseManager.characterBaseStats.GetStrength(), ScalingUtils.StatType.STRENGTH, this.strengthScaling);
 
             return bonusFromSTR;
         }
@@ -122,7 +122,7 @@ namespace AF.Health
             }
 
             // Apply bonus damage based on scaling and stats
-            int bonusFromDEX = GetBonusFromDexterity(characterBaseManager.characterBaseStats.GetDexterity());
+            int bonusFromDEX = ScalingUtils.GetBonusAttackPerLevel(characterBaseManager.characterBaseStats.GetDexterity(), ScalingUtils.StatType.DEXTERITY, this.dexterityScaling);
 
             return bonusFromDEX;
         }
@@ -135,7 +135,7 @@ namespace AF.Health
             }
 
             // Apply bonus damage based on scaling and stats
-            int bonusFromINT = GetBonusFromIntelligence(characterBaseManager.characterBaseStats.GetIntelligence());
+            int bonusFromINT = ScalingUtils.GetBonusAttackPerLevel(characterBaseManager.characterBaseStats.GetIntelligence(), ScalingUtils.StatType.INTELLIGENCE, this.intelligenceScaling);
 
             return bonusFromINT;
         }
@@ -168,91 +168,6 @@ namespace AF.Health
                 }
 
                 this.statusEffects = newEffects.ToArray();
-            }
-        }
-
-        public void ScaleSpell(
-            CharacterBaseAttackManager attackStatManager,
-            Weapon currentWeapon,
-            int playerReputation,
-            bool isFaithSpell,
-            bool isHexSpell,
-            bool shouldDoubleDamage)
-        {
-            float multiplier = shouldDoubleDamage ? 2 : 1f;
-
-            if (this.fire > 0)
-            {
-                this.fire += (int)(currentWeapon.GetWeaponFireAttack(attackStatManager) + GetIntelligenceBonus(attackStatManager.GetCharacter()) * multiplier);
-            }
-
-            if (this.frost > 0)
-            {
-                this.frost += (int)(currentWeapon.GetWeaponFrostAttack(attackStatManager) + GetIntelligenceBonus(attackStatManager.GetCharacter()) * multiplier);
-            }
-
-            if (this.magic > 0)
-            {
-                this.magic += (int)(currentWeapon.GetWeaponMagicAttack(attackStatManager) + GetIntelligenceBonus(attackStatManager.GetCharacter()) * multiplier);
-            }
-
-            if (this.lightning > 0)
-            {
-                this.lightning += (int)(
-                    currentWeapon.GetWeaponLightningAttack(playerReputation, attackStatManager) + GetIntelligenceBonus(attackStatManager.GetCharacter()) * multiplier);
-            }
-
-            if (this.darkness > 0)
-            {
-                this.darkness += (int)(currentWeapon.GetWeaponDarknessAttack(playerReputation, attackStatManager)
-                    + GetIntelligenceBonus(attackStatManager.GetCharacter()) * multiplier);
-            }
-
-            if (this.water > 0)
-            {
-                this.water += (int)(currentWeapon.GetWeaponWaterAttack(attackStatManager) + GetIntelligenceBonus(attackStatManager.GetCharacter()) * multiplier);
-            }
-
-            if (this.pushForce > 0 && isFaithSpell)
-            {
-                this.pushForce += playerReputation > 0 ? (playerReputation * 0.1f) : 0;
-            }
-
-            Damage weaponDamage = currentWeapon.GetWeaponDamage(attackStatManager);
-
-            if (weaponDamage.statusEffects != null && weaponDamage.statusEffects.Length > 0)
-            {
-                List<StatusEffectEntry> updatedStatusEffects = new List<StatusEffectEntry>();
-
-                // First, copy all existing status effects
-                foreach (StatusEffectEntry existingEffect in this.statusEffects)
-                {
-                    updatedStatusEffects.Add(new StatusEffectEntry() { amountPerHit = existingEffect.amountPerHit, statusEffect = existingEffect.statusEffect });
-                }
-
-                // Then, combine with weapon status effects
-                foreach (StatusEffectEntry weaponStatusEffectEntry in weaponDamage.statusEffects)
-                {
-                    StatusEffectEntry existingEffect = updatedStatusEffects.Find(x => x.statusEffect == weaponStatusEffectEntry.statusEffect);
-
-                    if (existingEffect != null)
-                    {
-                        // Create a new entry with combined amount
-                        int index = updatedStatusEffects.IndexOf(existingEffect);
-                        updatedStatusEffects[index] = new StatusEffectEntry()
-                        {
-                            statusEffect = existingEffect.statusEffect,
-                            amountPerHit = existingEffect.amountPerHit + weaponStatusEffectEntry.amountPerHit
-                        };
-                    }
-                    else
-                    {
-                        // Add a new copy of the weapon status effect
-                        updatedStatusEffects.Add(new StatusEffectEntry() { amountPerHit = weaponStatusEffectEntry.amountPerHit, statusEffect = weaponStatusEffectEntry.statusEffect });
-                    }
-                }
-
-                this.statusEffects = updatedStatusEffects.ToArray();
             }
         }
 
@@ -322,9 +237,11 @@ namespace AF.Health
             Damage copy = this.Clone();
 
             // Apply bonus damage based on scaling and stats
-            int bonusFromSTR = GetBonusFromStrength(STR);
-            int bonusFromDEX = GetBonusFromDexterity(DEX);
-            int bonusFromINT = GetBonusFromIntelligence(INT);
+            int bonusFromSTR = ScalingUtils.GetBonusAttackPerLevel(STR, ScalingUtils.StatType.STRENGTH, this.strengthScaling);
+
+            int bonusFromDEX = ScalingUtils.GetBonusAttackPerLevel(DEX, ScalingUtils.StatType.DEXTERITY, this.dexterityScaling);
+
+            int bonusFromINT = ScalingUtils.GetBonusAttackPerLevel(INT, ScalingUtils.StatType.INTELLIGENCE, this.intelligenceScaling);
 
             if (copy.physical > 0)
             {
@@ -358,49 +275,6 @@ namespace AF.Health
             return copy;
         }
 
-        int GetBonusFromStrength(int STR)
-        {
-            return (int)(STR * SCALING_LEVEL_MULTIPLIER * GetStrengthScaling());
-        }
-
-        int GetBonusFromDexterity(int DEX)
-        {
-            return (int)(DEX * SCALING_LEVEL_MULTIPLIER * GetDexterityScaling());
-        }
-
-        int GetBonusFromIntelligence(int INT)
-        {
-            return (int)(INT * SCALING_LEVEL_MULTIPLIER * GetIntelligenceScaling());
-        }
-
-        float GetStrengthScaling()
-        {
-            return GetScalingMultiplier(strengthScaling);
-        }
-
-        float GetDexterityScaling()
-        {
-            return GetScalingMultiplier(dexterityScaling);
-        }
-
-        float GetIntelligenceScaling()
-        {
-            return GetScalingMultiplier(intelligenceScaling);
-        }
-
-        float GetScalingMultiplier(Scaling scaling)
-        {
-            return scaling switch
-            {
-                Scaling.S => S,
-                Scaling.A => A,
-                Scaling.B => B,
-                Scaling.C => C,
-                Scaling.D => D,
-                Scaling.E => E,
-                _ => 1f
-            };
-        }
 
         public void Combine(Damage other)
         {
@@ -448,5 +322,6 @@ namespace AF.Health
                 this.statusEffects = combinedEffects.ToArray();
             }
         }
+
     }
 }

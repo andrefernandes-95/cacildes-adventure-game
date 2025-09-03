@@ -129,7 +129,7 @@ namespace AF
                 }
             }
 
-            if (GetCharacter().characterBaseAttackManager.attackingHitboxType == HitboxType.LEFT_FOOT)
+            if (GetCharacter().characterBaseAttackManager.attackingHitboxType == HitboxType.LEFT_HAND)
             {
                 Weapon leftHandWeapon = GetCharacter().characterBaseWeaponsManager.GetCurrentLeftWeapon();
                 if (leftHandWeapon != null)

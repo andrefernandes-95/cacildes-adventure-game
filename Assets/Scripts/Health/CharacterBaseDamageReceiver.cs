@@ -68,6 +68,7 @@ namespace AF
         public bool waitingForBackstab = false;
         public bool hasFlatulence = false;
         public bool isTakingDamage = false;
+        public bool isBackstabbed = false;
 
         public abstract CharacterBaseManager GetCharacter();
 
@@ -75,6 +76,7 @@ namespace AF
         {
             canTakeDamage = true;
             isTakingDamage = false;
+            isBackstabbed = false;
         }
 
         public abstract void HandleIncomingDamage(CharacterBaseManager attacker, UnityAction<Damage> onTakeDamage);
@@ -304,6 +306,8 @@ namespace AF
             }
 
             waitingForBackstab = false;
+            isBackstabbed = true;
+
             GetCharacter().PlayBusyHashedAnimationWithRootMotion(hashBackstabExecuted);
 
             // Apply Damage

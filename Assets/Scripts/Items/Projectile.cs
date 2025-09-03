@@ -129,8 +129,7 @@ namespace AF
             {
                 if (scaleWithIntelligence)
                 {
-                    damage.ScaleSpell(
-                        playerManager.characterBaseAttackManager, playerManager.characterBaseWeaponsManager.GetCurrentLeftWeapon(), 0, false, false, false);
+                    damage.ScaleWithStats(playerManager.playerStats.GetStrength(), playerManager.playerStats.GetDexterity(), playerManager.playerStats.GetIntelligence());
                 }
                 else if (playerManager.characterBaseAttackManager.HasRangeWeaponEquipped())
                 {

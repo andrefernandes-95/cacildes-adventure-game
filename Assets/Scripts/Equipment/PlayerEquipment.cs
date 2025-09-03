@@ -129,5 +129,10 @@ namespace AF
         {
             playerManager.equipmentDatabase.UnequipSpell(slotIndex);
         }
+
+        public override Spell GetCurrentEquippedSpell()
+        {
+            return playerManager.equipmentDatabase.GetCurrentSpell();
+        }
     }
 }

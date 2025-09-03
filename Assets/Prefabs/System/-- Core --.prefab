@@ -56795,6 +56795,7 @@ MonoBehaviour:
   alchemyBackgroundImage: {fileID: 0}
   cookingBackgroundImage: {fileID: 0}
   blacksmithBackgroundImage: {fileID: 21300000, guid: eef0806d9240d7547b06afe391bc2840, type: 3}
+  spellSmithingBackgroundImage: {fileID: 0}
   goldSprite: {fileID: 21300000, guid: 73bd41d271c7a864d93da71916152f12, type: 3}
   sfxOnEnterMenu: {fileID: 8300000, guid: e40cdf53289609441bd96ba7e91c1d84, type: 3}
   sfxOnEnterMenuVolume: 0.5
@@ -56808,6 +56809,7 @@ MonoBehaviour:
   bgmManager: {fileID: 2614391276045409048}
   soundbank: {fileID: 7321280117501162532}
   returnToBonfire: 0
+  isUpgradingSpells: 0
   recipesDatabase: {fileID: 11400000, guid: c6ee84f65e9f6f746a93959f9be72442, type: 2}
   inventoryDatabase: {fileID: 11400000, guid: 65e0aa89b01ed68448508a15a2a90114, type: 2}
   playerStatsDatabase: {fileID: 11400000, guid: 5700f759ff00d104a97ef4af25190ddd, type: 2}
@@ -87316,6 +87318,7 @@ MonoBehaviour:
   waitingForBackstab: 0
   hasFlatulence: 0
   isTakingDamage: 0
+  isBackstabbed: 0
   playerManager: {fileID: 4363140735506542586}
 --- !u!1 &8426132323219580007
 GameObject:
@@ -93739,6 +93742,7 @@ GameObject:
   - component: {fileID: 1462404610040672513}
   - component: {fileID: 1213111801638821723}
   - component: {fileID: 574518281452235284}
+  - component: {fileID: 6149427300033688219}
   m_Layer: 0
   m_Name: ViewEquipment - Item Tooltip
   m_TagString: Untagged
@@ -94074,29 +94078,11 @@ MonoBehaviour:
     m_FallbackState: 0
     m_WaitForCompletion: 0
     m_LocalVariables: []
-  magicDMGAbsorption:
-    m_TableReference:
-      m_TableCollectionName: GUID:dbb3674ad34b76b458d72593e4ca5a4a
-    m_TableEntryReference:
-      m_KeyId: 1440075052089344
-      m_Key: 
-    m_FallbackState: 0
-    m_WaitForCompletion: 0
-    m_LocalVariables: []
   darknessDMGAbsorption:
     m_TableReference:
       m_TableCollectionName: GUID:dbb3674ad34b76b458d72593e4ca5a4a
     m_TableEntryReference:
       m_KeyId: 1440155045855232
-      m_Key: 
-    m_FallbackState: 0
-    m_WaitForCompletion: 0
-    m_LocalVariables: []
-  waterDMGAbsorption:
-    m_TableReference:
-      m_TableCollectionName: GUID:dbb3674ad34b76b458d72593e4ca5a4a
-    m_TableEntryReference:
-      m_KeyId: 16303253237923840
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 0
@@ -94191,15 +94177,6 @@ MonoBehaviour:
     m_FallbackState: 0
     m_WaitForCompletion: 0
     m_LocalVariables: []
-  waterDmgDealtToEnemiesPerBlockLabel:
-    m_TableReference:
-      m_TableCollectionName: GUID:dbb3674ad34b76b458d72593e4ca5a4a
-    m_TableEntryReference:
-      m_KeyId: 16302012382445568
-      m_Key: 
-    m_FallbackState: 0
-    m_WaitForCompletion: 0
-    m_LocalVariables: []
   parryWindowDurationBonusLabel:
     m_TableReference:
       m_TableCollectionName: GUID:dbb3674ad34b76b458d72593e4ca5a4a
@@ -94250,168 +94227,6 @@ MonoBehaviour:
       m_TableCollectionName: GUID:dbb3674ad34b76b458d72593e4ca5a4a
     m_TableEntryReference:
       m_KeyId: 1456057380372480
-      m_Key: 
-    m_FallbackState: 0
-    m_WaitForCompletion: 0
-    m_LocalVariables: []
-  physicalDefenseBonus:
-    m_TableReference:
-      m_TableCollectionName: GUID:dbb3674ad34b76b458d72593e4ca5a4a
-    m_TableEntryReference:
-      m_KeyId: 1458098647465984
-      m_Key: 
-    m_FallbackState: 0
-    m_WaitForCompletion: 0
-    m_LocalVariables: []
-  fireDefenseBonus:
-    m_TableReference:
-      m_TableCollectionName: GUID:dbb3674ad34b76b458d72593e4ca5a4a
-    m_TableEntryReference:
-      m_KeyId: 1458165538226176
-      m_Key: 
-    m_FallbackState: 0
-    m_WaitForCompletion: 0
-    m_LocalVariables: []
-  frostDefenseBonus:
-    m_TableReference:
-      m_TableCollectionName: GUID:dbb3674ad34b76b458d72593e4ca5a4a
-    m_TableEntryReference:
-      m_KeyId: 1458227664257024
-      m_Key: 
-    m_FallbackState: 0
-    m_WaitForCompletion: 0
-    m_LocalVariables: []
-  lightningDefenseBonus:
-    m_TableReference:
-      m_TableCollectionName: GUID:dbb3674ad34b76b458d72593e4ca5a4a
-    m_TableEntryReference:
-      m_KeyId: 1458303115591680
-      m_Key: 
-    m_FallbackState: 0
-    m_WaitForCompletion: 0
-    m_LocalVariables: []
-  magicDefenseBonus:
-    m_TableReference:
-      m_TableCollectionName: GUID:dbb3674ad34b76b458d72593e4ca5a4a
-    m_TableEntryReference:
-      m_KeyId: 1458401614626816
-      m_Key: 
-    m_FallbackState: 0
-    m_WaitForCompletion: 0
-    m_LocalVariables: []
-  darknessDefenseBonus:
-    m_TableReference:
-      m_TableCollectionName: GUID:dbb3674ad34b76b458d72593e4ca5a4a
-    m_TableEntryReference:
-      m_KeyId: 1458482866683904
-      m_Key: 
-    m_FallbackState: 0
-    m_WaitForCompletion: 0
-    m_LocalVariables: []
-  waterDefenseBonus:
-    m_TableReference:
-      m_TableCollectionName: GUID:dbb3674ad34b76b458d72593e4ca5a4a
-    m_TableEntryReference:
-      m_KeyId: 26230183663894528
-      m_Key: 
-    m_FallbackState: 0
-    m_WaitForCompletion: 0
-    m_LocalVariables: []
-  strengthBonus:
-    m_TableReference:
-      m_TableCollectionName: GUID:dbb3674ad34b76b458d72593e4ca5a4a
-    m_TableEntryReference:
-      m_KeyId: 1458544539729920
-      m_Key: 
-    m_FallbackState: 0
-    m_WaitForCompletion: 0
-    m_LocalVariables: []
-  dexterityBonus:
-    m_TableReference:
-      m_TableCollectionName: GUID:dbb3674ad34b76b458d72593e4ca5a4a
-    m_TableEntryReference:
-      m_KeyId: 1458603192877056
-      m_Key: 
-    m_FallbackState: 0
-    m_WaitForCompletion: 0
-    m_LocalVariables: []
-  reputationBonus:
-    m_TableReference:
-      m_TableCollectionName: GUID:dbb3674ad34b76b458d72593e4ca5a4a
-    m_TableEntryReference:
-      m_KeyId: 1458650001309696
-      m_Key: 
-    m_FallbackState: 0
-    m_WaitForCompletion: 0
-    m_LocalVariables: []
-  betterPrices:
-    m_TableReference:
-      m_TableCollectionName: GUID:dbb3674ad34b76b458d72593e4ca5a4a
-    m_TableEntryReference:
-      m_KeyId: 1460964539891712
-      m_Key: 
-    m_FallbackState: 0
-    m_WaitForCompletion: 0
-    m_LocalVariables: []
-  physicalDamageDealtToAttackingEnemies:
-    m_TableReference:
-      m_TableCollectionName: GUID:dbb3674ad34b76b458d72593e4ca5a4a
-    m_TableEntryReference:
-      m_KeyId: 1461112712069120
-      m_Key: 
-    m_FallbackState: 0
-    m_WaitForCompletion: 0
-    m_LocalVariables: []
-  fireDamageDealtToAttackingEnemies:
-    m_TableReference:
-      m_TableCollectionName: GUID:dbb3674ad34b76b458d72593e4ca5a4a
-    m_TableEntryReference:
-      m_KeyId: 1461224569962496
-      m_Key: 
-    m_FallbackState: 0
-    m_WaitForCompletion: 0
-    m_LocalVariables: []
-  frostDamageDealtToAttackingEnemies:
-    m_TableReference:
-      m_TableCollectionName: GUID:dbb3674ad34b76b458d72593e4ca5a4a
-    m_TableEntryReference:
-      m_KeyId: 1461291347476480
-      m_Key: 
-    m_FallbackState: 0
-    m_WaitForCompletion: 0
-    m_LocalVariables: []
-  lightningDamageDealtToAttackingEnemies:
-    m_TableReference:
-      m_TableCollectionName: GUID:dbb3674ad34b76b458d72593e4ca5a4a
-    m_TableEntryReference:
-      m_KeyId: 1461355822317568
-      m_Key: 
-    m_FallbackState: 0
-    m_WaitForCompletion: 0
-    m_LocalVariables: []
-  magicDamageDealtToAttackingEnemies:
-    m_TableReference:
-      m_TableCollectionName: GUID:dbb3674ad34b76b458d72593e4ca5a4a
-    m_TableEntryReference:
-      m_KeyId: 1461421475758080
-      m_Key: 
-    m_FallbackState: 0
-    m_WaitForCompletion: 0
-    m_LocalVariables: []
-  darknessDamageDealtToAttackingEnemies:
-    m_TableReference:
-      m_TableCollectionName: GUID:dbb3674ad34b76b458d72593e4ca5a4a
-    m_TableEntryReference:
-      m_KeyId: 1461503776391168
-      m_Key: 
-    m_FallbackState: 0
-    m_WaitForCompletion: 0
-    m_LocalVariables: []
-  damageOnProjectilesBonus:
-    m_TableReference:
-      m_TableCollectionName: GUID:dbb3674ad34b76b458d72593e4ca5a4a
-    m_TableEntryReference:
-      m_KeyId: 1461574341361664
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 0
@@ -94515,15 +94330,6 @@ MonoBehaviour:
     m_FallbackState: 0
     m_WaitForCompletion: 0
     m_LocalVariables: []
-  manaPointsRequiredToCast:
-    m_TableReference:
-      m_TableCollectionName: GUID:dbb3674ad34b76b458d72593e4ca5a4a
-    m_TableEntryReference:
-      m_KeyId: 1475572638023680
-      m_Key: 
-    m_FallbackState: 0
-    m_WaitForCompletion: 0
-    m_LocalVariables: []
   craftingMaterialLabel:
     m_TableReference:
       m_TableCollectionName: GUID:dbb3674ad34b76b458d72593e4ca5a4a
@@ -94578,63 +94384,10 @@ MonoBehaviour:
     m_FallbackState: 0
     m_WaitForCompletion: 0
     m_LocalVariables: []
-  lostUponUse:
-    m_TableReference:
-      m_TableCollectionName: GUID:dbb3674ad34b76b458d72593e4ca5a4a
-    m_TableEntryReference:
-      m_KeyId: 29005114189414400
-      m_Key: 
-    m_FallbackState: 0
-    m_WaitForCompletion: 0
-    m_LocalVariables: []
-  strengthDamageLabel:
-    m_TableReference:
-      m_TableCollectionName: GUID:dbb3674ad34b76b458d72593e4ca5a4a
-    m_TableEntryReference:
-      m_KeyId: 43812198546276352
-      m_Key: 
-    m_FallbackState: 0
-    m_WaitForCompletion: 0
-    m_LocalVariables: []
-  dexterityDamageLabel:
-    m_TableReference:
-      m_TableCollectionName: GUID:dbb3674ad34b76b458d72593e4ca5a4a
-    m_TableEntryReference:
-      m_KeyId: 43812400220995584
-      m_Key: 
-    m_FallbackState: 0
-    m_WaitForCompletion: 0
-    m_LocalVariables: []
-  intelligenceDamageLabel:
-    m_TableReference:
-      m_TableCollectionName: GUID:dbb3674ad34b76b458d72593e4ca5a4a
-    m_TableEntryReference:
-      m_KeyId: 43812528700915712
-      m_Key: 
-    m_FallbackState: 0
-    m_WaitForCompletion: 0
-    m_LocalVariables: []
-  twoHandDamageLabel:
-    m_TableReference:
-      m_TableCollectionName: GUID:dbb3674ad34b76b458d72593e4ca5a4a
-    m_TableEntryReference:
-      m_KeyId: 43812600201216000
-      m_Key: 
-    m_FallbackState: 0
-    m_WaitForCompletion: 0
-    m_LocalVariables: []
-  jumpingDamageLabel:
-    m_TableReference:
-      m_TableCollectionName: GUID:dbb3674ad34b76b458d72593e4ca5a4a
-    m_TableEntryReference:
-      m_KeyId: 43812730702790656
-      m_Key: 
-    m_FallbackState: 0
-    m_WaitForCompletion: 0
-    m_LocalVariables: []
   weaponTooltip: {fileID: 574518281452235284}
   armorTooltip: {fileID: 1462404610040672513}
   accessoryTooltip: {fileID: 1213111801638821723}
+  spellTooltip: {fileID: 6149427300033688219}
   references:
     version: 2
     RefIds: []
@@ -94676,6 +94429,21 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a0fd9a4070de12e4e9acdc6b9896c465, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemTooltip: {fileID: 7513142749045417841}
+  GUIIconsDatabase: {fileID: 11400000, guid: 6abbe4a5e22b2ee42b53db69bb5f07e4, type: 2}
+  playerManager: {fileID: 4363140735506542586}
+--- !u!114 &6149427300033688219
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9136521502558565786}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 962f5899338c89240a4c585d3867827b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   itemTooltip: {fileID: 7513142749045417841}

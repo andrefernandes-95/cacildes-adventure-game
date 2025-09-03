@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be4d00b11068c3041ad034b507e91d4a, type: 3}
   m_Name: Magic Barrier
   m_EditorClassIdentifier: 
+  itemID: 
   nameLocalized:
     m_TableReference:
       m_TableCollectionName: GUID:bfeeac13f16b59940b4195364a8d9ed7
@@ -40,14 +41,20 @@ MonoBehaviour:
     m_WaitForCompletion: 0
     m_LocalVariables: []
   sprite: {fileID: 21300000, guid: 09f15afd40b030140810d1a144ed5663, type: 3}
+  itemValue: {fileID: 0}
   value: 300
+  itemWeight: {fileID: 0}
   isRenewable: 0
   tradingItemRequirements:
     _serializedList:
     - Key: {fileID: 11400000, guid: 8ffb73737109a10499c8b4841d82e80e, type: 2}
       Value: 1
+  dropRateOnEnemies: 0.2
   notes: 
   location: Found in Maerimond Cavern near knight before Maerimond boss fight
+  canBeUpgraded: 1
+  level: 1
+  upgradeMaterialData: {fileID: 11400000, guid: dbfa67740be5ad74ead0aa94329d4396, type: 2}
   spellType: {fileID: 11400000, guid: fb300815f48a40a499e86eb0f041e6dd, type: 2}
   projectile: {fileID: 1597810799027298, guid: 0058d5de97db72045a6e7a53526e4937, type: 3}
   manaCostPerCast: 20
@@ -62,7 +69,6 @@ MonoBehaviour:
   spawnOnLockedOnEnemies: 0
   ignoreSpawnFromCamera: 0
   parentToPlayer: 0
-  intelligenceRequired: 10
   positiveReputationRequired: 0
   negativeReputationRequired: 0
   ability: {fileID: 11400000, guid: 530808dc646219a42946e86bab636d37, type: 2}

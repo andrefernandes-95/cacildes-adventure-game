@@ -61,6 +61,11 @@ namespace AF
 
         public override void PlayHitReaction()
         {
+            if (characterManager.characterBaseDamageReceiver.isBackstabbed)
+            {
+                return;
+            }
+
             if (characterManager is CharacterManager aiCharacter && aiCharacter.combatant != null && aiCharacter.combatant.isHumanoid)
             {
                 // Directional damage

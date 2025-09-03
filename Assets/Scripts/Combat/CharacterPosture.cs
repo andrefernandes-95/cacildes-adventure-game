@@ -25,7 +25,7 @@ namespace AF
 
         public override bool CanPlayPostureDamagedEvent()
         {
-            return true;
+            return characterBaseManager.characterBaseDamageReceiver.isBackstabbed == false;
         }
 
         public override int GetMaxPostureDamage()

@@ -132,5 +132,38 @@ namespace AF
 
             return Mathf.CeilToInt(total);
         }
+
+
+        public bool CanBeUpgradedFurther()
+        {
+            return canBeUpgraded && upgradeMaterialData != null && upgradeMaterialData.upgradeMaterials.Length > 0 && this.level <= upgradeMaterialData.upgradeMaterials.Length - 1;
+        }
+
+        public string GetMaterialCostForNextLevel(CharacterBaseManager characterBaseManager)
+        {
+            if (CanBeUpgradedFurther() && upgradeMaterialData != null && upgradeMaterialData.upgradeMaterials[this.level] != null)
+            {
+                int nextLevel = this.level + 1;
+                string text = Utils.IsPortuguese() ? $"<size=80%>Itens necessários para melhorar arma para nível +{nextLevel}:" : $"<size=80%>Required items to upgrade weapon to level +{nextLevel}:";
+                text += "\n";
+                text += "<size=100%>";
+
+                UpgradeMaterialData.UpgradeMaterialEntry upgradeData = upgradeMaterialData.upgradeMaterials[this.level];
+
+                if (upgradeData != null)
+                {
+                    int amountOwned = characterBaseManager.characterBaseInventory.GetCraftingMaterialAmount(upgradeData.upgradeMaterial);
+                    text += $"x{upgradeData.amount} {upgradeData.upgradeMaterial.GetName()} ";
+                    text += Utils.IsPortuguese() ? $"(Possuis {amountOwned})" : $"(You Own {amountOwned})";
+                    text += "\n";
+                }
+
+                return text;
+            }
+
+            return "";
+        }
+
+
     }
 }

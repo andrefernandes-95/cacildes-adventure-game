@@ -20,6 +20,8 @@ namespace AF
         [Header("Unity Events")]
         [SerializeField] UnityEvent onActvitiyPerformed;
 
+        [SerializeField] float exitCrossFade = .1f;
+
         public override void OnActivityStart(CharacterBaseManager activityTarget)
         {
             activityTarget.transform.position = transformRef.transform.position;
@@ -43,7 +45,7 @@ namespace AF
         IEnumerator Wait(CharacterBaseManager activityTarget)
         {
             yield return new WaitForSeconds(durationInSeconds);
-            activityTarget.PlayCrossFadeBusyAnimationWithRootMotion(animationToTransitionTo, .25f);
+            activityTarget.PlayCrossFadeBusyAnimationWithRootMotion(animationToTransitionTo, exitCrossFade);
         }
 
         public override void OnActivityEnd(CharacterBaseManager activityTarget)

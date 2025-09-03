@@ -51,7 +51,7 @@ namespace AF.Dialogue
 
             if (characterGreeting.shouldFacePlayerWhenGreeting)
             {
-                characterManager.FaceInitialRotation();
+                //characterManager.FaceInitialRotation();
             }
 
             isGreeting = false;

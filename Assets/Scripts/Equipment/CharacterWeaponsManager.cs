@@ -290,11 +290,11 @@ namespace AF.Equipment
         {
             if (isRightHand)
             {
-                rightHandWeapons[slot] = weapon;
+                rightHandWeapons[slot] = Instantiate(weapon);
             }
             else
             {
-                leftHandWeapons[slot] = weapon;
+                leftHandWeapons[slot] = Instantiate(weapon);
             }
 
             UpdateEquipment();

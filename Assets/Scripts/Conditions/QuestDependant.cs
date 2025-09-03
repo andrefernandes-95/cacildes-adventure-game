@@ -16,6 +16,7 @@ namespace AF.Conditions
         public bool questMustHaveStarted = false;
         public QuestObjective[] requiredObjectives;
         public bool questMustBeCompleted = false;
+        public bool whileQuestIsNotCompleted = false;
 
         [Header("Settings")]
         public bool listenForQuestChanges = true;
@@ -42,7 +43,11 @@ namespace AF.Conditions
 
             if (questParent != null)
             {
-                if (questMustBeCompleted)
+                if (whileQuestIsNotCompleted)
+                {
+                    isActive = !questParent.IsCompleted();
+                }
+                else if (questMustBeCompleted)
                 {
                     isActive = questParent.IsCompleted();
                 }

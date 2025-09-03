@@ -242,5 +242,10 @@ namespace AF
 
             GetCompanionState().spells[slotIndex] = null;
         }
+
+        public override Spell GetCurrentEquippedSpell()
+        {
+            return GetCompanionState().spells[0];
+        }
     }
 }

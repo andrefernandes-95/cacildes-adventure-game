@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using AF.Equipment;
 using AF.Events;
+using AF.Health;
 using AF.Inventory;
 using AF.Music;
 using GameAnalyticsSDK;
@@ -31,6 +32,7 @@ namespace AF
         public Sprite alchemyBackgroundImage;
         public Sprite cookingBackgroundImage;
         public Sprite blacksmithBackgroundImage;
+        public Sprite spellSmithingBackgroundImage;
         public Sprite goldSprite;
 
         [Header("SFX")]
@@ -52,6 +54,8 @@ namespace AF
         public Soundbank soundbank;
 
         [HideInInspector] public bool returnToBonfire = false;
+
+        public bool isUpgradingSpells = false;
 
         [Header("Databases")]
         public RecipesDatabase recipesDatabase;
@@ -123,6 +127,21 @@ namespace AF
         {
             LogAnalytic(AnalyticsUtils.OnUIButtonClick("Blacksmith"));
 
+            isUpgradingSpells = false;
+
+            this.craftActivity = CraftActivity.BLACKSMITH;
+            this.gameObject.SetActive(true);
+        }
+
+        /// <summary>
+        /// Unity Event
+        /// </summary>
+        public void OpenSpellSmithingMenu()
+        {
+            LogAnalytic(AnalyticsUtils.OnUIButtonClick("Blacksmith"));
+
+            isUpgradingSpells = true;
+
             this.craftActivity = CraftActivity.BLACKSMITH;
             this.gameObject.SetActive(true);
         }
@@ -133,6 +152,8 @@ namespace AF
         public void OpenAlchemyMenu()
         {
             LogAnalytic(AnalyticsUtils.OnUIButtonClick("Alchemy"));
+
+            isUpgradingSpells = false;
 
             this.craftActivity = CraftActivity.ALCHEMY;
             this.gameObject.SetActive(true);
@@ -168,6 +189,7 @@ namespace AF
 
             this.gameObject.SetActive(false);
             cursorManager.HideCursor();
+            isUpgradingSpells = false;
         }
 
         void ClearPreviews()
@@ -183,7 +205,7 @@ namespace AF
 
         void SetupActivity()
         {
-            root.Q<VisualElement>("ImageBack").style.backgroundImage = new StyleBackground(blacksmithBackgroundImage);
+            root.Q<VisualElement>("ImageBack").style.backgroundImage = new StyleBackground(isUpgradingSpells ? spellSmithingBackgroundImage : blacksmithBackgroundImage);
             root.Q<Label>("CraftActivityTitle").text = Utils.IsPortuguese() ? "Melhorar Equipamento" : "Upgrade Equipment";
         }
 
@@ -268,40 +290,51 @@ namespace AF
 
             List<UpgradableItem> upgradableItems = new();
 
-            List<Weapon> weaponsForUpgrade = inventoryDatabase.ownedWeapons.Where(weapon => weapon != null && weapon.canBeUpgraded).ToList();
-            foreach (Weapon wp in weaponsForUpgrade)
+            if (!isUpgradingSpells)
             {
-                upgradableItems.Add(wp);
-            }
+                List<Weapon> weaponsForUpgrade = inventoryDatabase.ownedWeapons.Where(weapon => weapon != null && weapon.canBeUpgraded).ToList();
+                foreach (Weapon wp in weaponsForUpgrade)
+                {
+                    upgradableItems.Add(wp);
+                }
 
-            List<Helmet> helmets = inventoryDatabase.ownedHelmets.Where(helmet => helmet != null && helmet.canBeUpgraded).ToList();
-            foreach (Helmet helmet in helmets)
-            {
-                upgradableItems.Add(helmet);
-            }
+                List<Helmet> helmets = inventoryDatabase.ownedHelmets.Where(helmet => helmet != null && helmet.canBeUpgraded).ToList();
+                foreach (Helmet helmet in helmets)
+                {
+                    upgradableItems.Add(helmet);
+                }
 
-            List<Armor> armors = inventoryDatabase.ownedArmors.Where(armor => armor != null && armor.canBeUpgraded).ToList();
-            foreach (Armor armor in armors)
-            {
-                upgradableItems.Add(armor);
-            }
+                List<Armor> armors = inventoryDatabase.ownedArmors.Where(armor => armor != null && armor.canBeUpgraded).ToList();
+                foreach (Armor armor in armors)
+                {
+                    upgradableItems.Add(armor);
+                }
 
-            List<Gauntlet> gauntlets = inventoryDatabase.ownedGauntlets.Where(gauntlet => gauntlet != null && gauntlet.canBeUpgraded).ToList();
-            foreach (Gauntlet gauntlet in gauntlets)
-            {
-                upgradableItems.Add(gauntlet);
-            }
+                List<Gauntlet> gauntlets = inventoryDatabase.ownedGauntlets.Where(gauntlet => gauntlet != null && gauntlet.canBeUpgraded).ToList();
+                foreach (Gauntlet gauntlet in gauntlets)
+                {
+                    upgradableItems.Add(gauntlet);
+                }
 
-            List<Legwear> legwears = inventoryDatabase.ownedLegwears.Where(legwear => legwear != null && legwear.canBeUpgraded).ToList();
-            foreach (Legwear legwear in legwears)
-            {
-                upgradableItems.Add(legwear);
-            }
+                List<Legwear> legwears = inventoryDatabase.ownedLegwears.Where(legwear => legwear != null && legwear.canBeUpgraded).ToList();
+                foreach (Legwear legwear in legwears)
+                {
+                    upgradableItems.Add(legwear);
+                }
 
-            List<Accessory> accessories = inventoryDatabase.ownedAccessories.Where(accessory => accessory != null && accessory.canBeUpgraded).ToList();
-            foreach (Accessory accessory in accessories)
+                List<Accessory> accessories = inventoryDatabase.ownedAccessories.Where(accessory => accessory != null && accessory.canBeUpgraded).ToList();
+                foreach (Accessory accessory in accessories)
+                {
+                    upgradableItems.Add(accessory);
+                }
+            }
+            else
             {
-                upgradableItems.Add(accessory);
+                List<Spell> spells = inventoryDatabase.ownedSpells.Where(spell => spell != null && spell.canBeUpgraded).ToList();
+                foreach (Spell spell in spells)
+                {
+                    upgradableItems.Add(spell);
+                }
             }
 
             foreach (UpgradableItem upgradableItem in upgradableItems)
@@ -396,6 +429,10 @@ namespace AF
             {
                 UpdateWeaponIfEquipped(weapon);
             }
+            else if (upgradableItem is Spell spell)
+            {
+                UpdateSpellIfEquipped(spell);
+            }
             else if (upgradableItem is Helmet helmet)
             {
                 UpdateEquipmentIfEquipped(
@@ -489,6 +526,93 @@ namespace AF
 
             int currentWaterAttack = weapon.GetWaterAttackForLevel(weapon.level);
             int nextWaterAttack = weapon.GetWaterAttackForLevel(nextLevel);
+
+            if (currentPhysicalAttack != 0)
+            {
+                PhysicalAttack.style.display = DisplayStyle.Flex;
+                PhysicalAttack.text =
+                    Utils.IsPortuguese()
+                        ? $"Ataque Físico: {currentPhysicalAttack} > {nextPhysicalAttack}"
+                        : $"Physical Attack: {currentPhysicalAttack} > {nextPhysicalAttack}";
+            }
+            if (currentFireAttack != 0)
+            {
+                FireAttack.style.display = DisplayStyle.Flex;
+                FireAttack.text =
+                    Utils.IsPortuguese()
+                        ? $"Ataque de Fogo: {currentFireAttack} > {nextFireAttack}"
+                        : $"Fire Attack: {currentFireAttack} > {nextFireAttack}";
+            }
+            if (currentFrostAttack != 0)
+            {
+                FrostAttack.style.display = DisplayStyle.Flex;
+                FrostAttack.text =
+                    Utils.IsPortuguese()
+                        ? $"Ataque de Gelo: {currentFrostAttack} > {nextFrostAttack}"
+                        : $"Frost Attack: {currentFrostAttack} > {nextFrostAttack}";
+            }
+            if (currentLightningAttack != 0)
+            {
+                LightningAttack.style.display = DisplayStyle.Flex;
+                LightningAttack.text =
+                     Utils.IsPortuguese()
+                         ? $"Ataque Elétrico: {currentLightningAttack} > {nextLightningAttack}"
+                         : $"Lightning Attack: {currentLightningAttack} > {nextLightningAttack}";
+            }
+            if (currentMagicAttack != 0)
+            {
+                MagicAttack.style.display = DisplayStyle.Flex;
+                MagicAttack.text =
+                    Utils.IsPortuguese()
+                        ? $"Ataque Mágico: {currentMagicAttack} > {nextMagicAttack}"
+                        : $"Magic Attack: {currentMagicAttack} > {nextMagicAttack}";
+            }
+            if (currentDarknessAttack != 0)
+            {
+                DarknessAttack.style.display = DisplayStyle.Flex;
+                DarknessAttack.text =
+                    Utils.IsPortuguese()
+                        ? $"Ataque das Sombras: {currentDarknessAttack} > {nextDarknessAttack}"
+                        : $"Darkness Attack: {currentDarknessAttack} > {nextDarknessAttack}";
+            }
+            if (currentWaterAttack != 0)
+            {
+                WaterAttack.style.display = DisplayStyle.Flex;
+                WaterAttack.text =
+                    Utils.IsPortuguese()
+                        ? $"Ataque de Água: {currentWaterAttack} > {nextWaterAttack}"
+                        : $"Water Attack: {currentWaterAttack} > {nextWaterAttack}";
+            }
+
+            AttackDifferencesContainer.style.display = DisplayStyle.Flex;
+        }
+
+        void DrawAttackDifferencesForSpell(Spell spell)
+        {
+            Damage spellDamage = ScalingUtils.GetAbilityDamageForPlayerSpell(spell.ability.GetDamage(playerManager), playerManager, spell);
+
+            var nextLevel = spell.level + 1;
+
+            int currentPhysicalAttack = spell.GetCurrentPhysicalAttackForLevel(spellDamage, spell.level);
+            int nextPhysicalAttack = spell.GetCurrentPhysicalAttackForLevel(spellDamage, nextLevel);
+
+            int currentFireAttack = spell.GetFireAttackForLevel(spellDamage, spell.level);
+            int nextFireAttack = spell.GetFireAttackForLevel(spellDamage, nextLevel);
+
+            int currentFrostAttack = spell.GetFrostAttackForLevel(spellDamage, spell.level);
+            int nextFrostAttack = spell.GetFrostAttackForLevel(spellDamage, nextLevel);
+
+            int currentLightningAttack = spell.GetLightningAttackForLevel(spellDamage, spell.level);
+            int nextLightningAttack = spell.GetLightningAttackForLevel(spellDamage, nextLevel);
+
+            int currentMagicAttack = spell.GetMagicAttackForLevel(spellDamage, spell.level);
+            int nextMagicAttack = spell.GetMagicAttackForLevel(spellDamage, nextLevel);
+
+            int currentDarknessAttack = spell.GetDarknessAttackForLevel(spellDamage, spell.level);
+            int nextDarknessAttack = spell.GetDarknessAttackForLevel(spellDamage, nextLevel);
+
+            int currentWaterAttack = spell.GetWaterAttackForLevel(spellDamage, spell.level);
+            int nextWaterAttack = spell.GetWaterAttackForLevel(spellDamage, nextLevel);
 
             if (currentPhysicalAttack != 0)
             {
@@ -714,6 +838,11 @@ namespace AF
                 DrawAttackDifferences(weapon);
             }
 
+            if (upgradableItem is Spell spell)
+            {
+                DrawAttackDifferencesForSpell(spell);
+            }
+
             if (upgradableItem is Shield shield)
             {
                 DrawBlockAbsorptionDifferences(shield);
@@ -783,7 +912,7 @@ namespace AF
                 {
                     // Reequip
                     playerManager.characterBaseEquipment.UnequipWeapon(i, true);
-                    playerManager.characterBaseEquipment.EquipWeapon(Instantiate(weaponInInventory), i, true);
+                    playerManager.characterBaseEquipment.EquipWeapon(weaponInInventory, i, true);
 
                     hasFoundMatch = true;
                     break;
@@ -803,7 +932,42 @@ namespace AF
                 {
                     // Reequip
                     playerManager.characterBaseEquipment.UnequipWeapon(i, false);
-                    playerManager.characterBaseEquipment.EquipWeapon(Instantiate(weaponInInventory), i, false);
+                    playerManager.characterBaseEquipment.EquipWeapon(weaponInInventory, i, false);
+                    break;
+                }
+            }
+        }
+
+        void UpdateSpellIfEquipped(Spell spellAfterUpgrade)
+        {
+            if (spellAfterUpgrade == null)
+            {
+                return;
+            }
+
+            // Update weapon in inventory first
+            int indexOfSpellInInventory = playerManager.playerInventory.inventoryDatabase.ownedSpells.FindIndex(x => x != null && x.itemID == spellAfterUpgrade.itemID);
+            if (indexOfSpellInInventory != -1)
+            {
+                playerManager.playerInventory.inventoryDatabase.ownedSpells[indexOfSpellInInventory].level = spellAfterUpgrade.level;
+            }
+            else
+            {
+                return;
+            }
+
+            Spell spellInInventory = playerManager.playerInventory.inventoryDatabase.ownedSpells[indexOfSpellInInventory];
+
+            // Then check if spell is equipped - if it is, we need to reequip it
+            for (int i = 0; i < playerManager.equipmentDatabase.spells.Length; i++)
+            {
+                Spell potentialSpell = playerManager.equipmentDatabase.spells[i];
+
+                if (potentialSpell != null && potentialSpell.itemID == spellInInventory.itemID)
+                {
+                    // Reequip
+                    playerManager.characterBaseEquipment.UnequipSpell(i);
+                    playerManager.characterBaseEquipment.EquipSpell(spellInInventory, i);
                     break;
                 }
             }
@@ -831,7 +995,7 @@ namespace AF
             if (currentlyEquippedItem != null && currentlyEquippedItem.itemID == itemInInventory.itemID)
             {
                 UnequipAction?.Invoke();
-                EquipAction?.Invoke(Instantiate(itemInInventory));
+                EquipAction?.Invoke(itemInInventory);
             }
         }
     }

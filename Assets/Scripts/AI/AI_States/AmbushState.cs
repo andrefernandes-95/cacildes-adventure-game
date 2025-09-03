@@ -36,6 +36,7 @@ namespace AF
         bool hasSubscribedToOnTakeDamageEvent = false;
 
         Coroutine PlayAmbushAnimationCoroutine;
+        Coroutine BeginAmbushCoroutine;
 
         private void Awake()
         {
@@ -106,17 +107,24 @@ namespace AF
         /// </summary>
         public void BeginAmbush()
         {
-            BeginAmbush(0f);
+            if (BeginAmbushCoroutine != null)
+            {
+                StopCoroutine(BeginAmbushCoroutine);
+            }
+
+            BeginAmbushCoroutine = StartCoroutine(BeginAmbush_Coroutine());
         }
 
         // TODO: Remove float begin ambush once we finish changing every ambush state enemy in the game
-        public void BeginAmbush(float beginAmbush)
+        IEnumerator BeginAmbush_Coroutine()
         {
+            yield return new WaitForEndOfFrame();
+
             if (ambushHasBegun)
             {
                 // if enemy is awake, we should skip to FinishAmbush() since that will make us chase the target
                 FinishAmbush();
-                return;
+                yield break;
             }
 
             ambushHasBegun = true;

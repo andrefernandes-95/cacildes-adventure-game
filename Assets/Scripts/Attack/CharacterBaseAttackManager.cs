@@ -83,21 +83,16 @@
 
         public Damage GetAttackDamage()
         {
-            Damage clonedDamage = null;
+            Damage clonedDamage;
 
             if (attackingHitboxType == HitboxType.LEFT_HAND)
             {
                 clonedDamage = leftWeaponCurrentDamage.Clone();
-
-                if (damageBonus != null)
-                {
-                    clonedDamage.Combine(damageBonus);
-                }
-
-                return GetCharacter().characterBaseBuffManager.EnhanceAttackDamage(clonedDamage);
             }
-
-            clonedDamage = rightWeaponCurrentDamage.Clone();
+            else
+            {
+                clonedDamage = rightWeaponCurrentDamage.Clone();
+            }
 
             if (damageBonus != null)
             {

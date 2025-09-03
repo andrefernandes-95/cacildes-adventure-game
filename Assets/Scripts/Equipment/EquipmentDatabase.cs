@@ -116,7 +116,7 @@ public class EquipmentDatabase : ScriptableObject
 
     public void EquipWeapon(Weapon weapon, int slotIndex)
     {
-        weapons[slotIndex] = weapon;
+        weapons[slotIndex] = Instantiate(weapon);
 
         EventManager.EmitEvent(EventMessages.ON_EQUIPMENT_CHANGED);
     }
@@ -142,7 +142,7 @@ public class EquipmentDatabase : ScriptableObject
 
     public void EquipShield(Weapon shield, int slotIndex)
     {
-        shields[slotIndex] = shield;
+        shields[slotIndex] = Instantiate(shield);
 
         CheckIfWeShouldAutoEquipAmmo(shield);
 
@@ -186,7 +186,7 @@ public class EquipmentDatabase : ScriptableObject
 
     public void EquipArrow(Arrow arrow, int slotIndex)
     {
-        arrows[slotIndex] = arrow;
+        arrows[slotIndex] = Instantiate(arrow);
         EventManager.EmitEvent(EventMessages.ON_EQUIPMENT_CHANGED);
     }
     public void UnequipArrow(int slotIndex)
@@ -204,7 +204,7 @@ public class EquipmentDatabase : ScriptableObject
 
     public void EquipSpell(Spell spell, int slotIndex, bool emitEvent = true)
     {
-        spells[slotIndex] = spell;
+        spells[slotIndex] = Instantiate(spell);
 
         if (emitEvent)
         {
@@ -225,7 +225,7 @@ public class EquipmentDatabase : ScriptableObject
 
     public void EquipConsumable(Consumable consumable, int slotIndex)
     {
-        consumables[slotIndex] = consumable;
+        consumables[slotIndex] = Instantiate(consumable);
 
         EventManager.EmitEvent(EventMessages.ON_EQUIPMENT_CHANGED);
     }

@@ -1,5 +1,6 @@
 namespace AF
 {
+    using System.Linq;
     using AF.Health;
     using UnityEngine;
 
@@ -63,8 +64,14 @@ namespace AF
 
         public override void OnUse(PlayerManager playerManager)
         {
-            damage.Multiply(playerManager.playerAbilityManager.GetChargingAmountMultiplier());
-            ApplyDamageScaling(playerManager);
+            Damage clonedDamage = ScalingUtils.GetAbilityDamageForPlayerSpell(
+                GetDamage(playerManager),
+                playerManager,
+                playerManager.characterBaseEquipment.GetCurrentEquippedSpell());
+
+            clonedDamage.Multiply(playerManager.playerAbilityManager.GetChargingAmountMultiplier());
+
+            this.damage = clonedDamage;
 
             caster = playerManager;
             target = playerManager.lockOnManager.nearestLockOnTarget != null

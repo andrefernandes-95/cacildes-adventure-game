@@ -11,10 +11,6 @@ Altaire: This forge... it lies cold. Its flame was sealed centuries past, bound 
     <> His restless spirit lingers, chained in stone and wrath. 
     <> Stir him from his prison. Let his roar break the shackles, and his fire surge unto me... that I may awaken this forge.
     <> I see doubt upon your face. Fear not — I shall see you rewarded.
-        ** [Some things are best left buried...]
-            Altaire: Perhaps. Yet consider... who decrees what must slumber, and what must waken? 
-            <> Was his silence born of justice... or of treachery? 
-            <> The answer lies not in caution, but in will.
         ** [And how does one rouse such a spirit?]
             Altaire: With courage. With folly. With both.
 
@@ -29,7 +25,11 @@ Altaire: This forge... it lies cold. Its flame was sealed centuries past, bound 
             Altaire: I will remain here, to shape the flame once it is loosed.
 
             ~ runEvent("Start Maerimond Quest")
-
+        ** [Some things are best left buried...]
+            Altaire: Perhaps. Yet consider... who decrees what must slumber, and what must waken? 
+            <> Was his silence born of justice... or of treachery? 
+            <> The answer lies not in caution, but in will.
+            
 * [Not now.]
     Altaire: Then so be it. The forge waits as I wait. 
     <> Return when your resolve is steadied.

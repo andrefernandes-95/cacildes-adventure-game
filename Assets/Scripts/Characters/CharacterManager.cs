@@ -12,6 +12,7 @@ using UnityEngine.AI;
 using System.Collections.Generic;
 using System.Linq;
 using AF.Shops;
+using AF.Detection;
 
 
 namespace AF
@@ -40,6 +41,7 @@ namespace AF
         public CharacterTeleportManager characterTeleportManager;
         public CharacterWeaknessesManager characterWeaknessesManager;
         public CharacterWeaponBuffManager characterWeaponBuffManager;
+        public Sight sight;
 
         // Animator Overrides
         [HideInInspector] public AnimatorOverrideController animatorOverrideController;
@@ -92,19 +94,14 @@ namespace AF
 
         private void Awake()
         {
-            Debug.Log($"Awake running for character {gameObject.name}");
             if (TryGetComponent<AIHumanoidAnimationOverrideHelper>(out var aIHumanoidAnimationOverrideHelperResult))
             {
-                Debug.Log($"Found aIHumanoidAnimationOverrideHelperResult");
                 this.aIHumanoidAnimationOverrideHelper = aIHumanoidAnimationOverrideHelperResult;
             }
             if (TryGetComponent<GenericCreatureAnimationOverrideHelper>(out var genericCreatureAnimationOverrideHelperResult))
             {
-                Debug.Log($"Found genericCreatureAnimationOverrideHelperResult");
-
                 this.genericCreatureAnimationOverrideHelper = genericCreatureAnimationOverrideHelperResult;
             }
-            Debug.Log($"End of running search for ai humanoid or generic creature");
 
             SetupAnimatorOverrides();
 
@@ -124,6 +121,7 @@ namespace AF
 
         private void Start()
         {
+
             UpdateAnimationsBasedOnEquippedWeapons();
 
             defaultAnimationHash = animator.GetCurrentAnimatorStateInfo(0).fullPathHash;
@@ -225,8 +223,6 @@ namespace AF
 
                 AddOrReplaceOverride(list, overrides);
             }
-
-            Debug.Log($"{gameObject.name} is humanoid? {genericCreatureAnimationOverrideHelper == null}");
 
             // IS HUMANOID
             if (genericCreatureAnimationOverrideHelper == null)
@@ -649,15 +645,18 @@ namespace AF
 
         public void HandleAgentRotation()
         {
-            Vector3 lookDir = agent.desiredVelocity;
-            lookDir.y = 0;
+            if (agent.velocity.magnitude > 0.01f)
+            {
+                Vector3 lookDir = agent.desiredVelocity;
+                lookDir.y = 0;
 
-            Quaternion targetRotation = Quaternion.LookRotation(lookDir);
-            transform.rotation = Quaternion.Slerp(
-                transform.rotation,
-                targetRotation,
-                rotationSpeed * Time.deltaTime
-            );
+                Quaternion targetRotation = Quaternion.LookRotation(lookDir);
+                transform.rotation = Quaternion.Slerp(
+                    transform.rotation,
+                    targetRotation,
+                    rotationSpeed * Time.deltaTime
+                );
+            }
         }
     }
 }

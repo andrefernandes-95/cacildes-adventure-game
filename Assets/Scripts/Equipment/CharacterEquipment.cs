@@ -118,5 +118,10 @@ namespace AF
         {
             return spells;
         }
+
+        public override Spell GetCurrentEquippedSpell()
+        {
+            return spells[0];
+        }
     }
 }

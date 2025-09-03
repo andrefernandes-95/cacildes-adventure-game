@@ -113,6 +113,7 @@ namespace AF
         public abstract Legwear GetEquippedLegwear();
         public abstract Accessory[] GetEquippedAccessories();
         public abstract Spell[] GetEquippedSpells();
+        public abstract Spell GetCurrentEquippedSpell();
 
         protected abstract void SetAccessory(Accessory accessory, int slotIndex);
         protected abstract void ClearAccessory(int slotIndex);
