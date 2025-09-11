@@ -108,7 +108,12 @@ namespace AF
             SetButtonTexts();
             RegisterButtonCallbacks();
 
-            bool canFastTravel = currentBonfire.bonfireSite != null && currentBonfire.bonfireSite.canFastTravel || currentBonfire.canUseTravelToOtherMaps;
+            if (currentBonfire == null)
+            {
+                Debug.LogError("currentBonfire is null!");
+            }
+
+            bool canFastTravel = currentBonfire != null && currentBonfire.bonfireSite != null && currentBonfire.bonfireSite.canFastTravel || currentBonfire.canUseTravelToOtherMaps;
             travelButton.style.display = (currentBonfire != null && canFastTravel) ? DisplayStyle.Flex : DisplayStyle.None;
 
             exitBonfireButton.Focus();

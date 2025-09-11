@@ -1,0 +1,1 @@
+General Alcino: Viaja até à Ponte Oeste. O Capitão Pleias comanda a guarnição por lá — quando não se está a afogar em vinho. Diz-lhe: “Ergam as canecas.” Ele vai perceber que vens da minha parte.

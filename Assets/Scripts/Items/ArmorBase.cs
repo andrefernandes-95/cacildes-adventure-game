@@ -46,7 +46,6 @@ namespace AF
         public float staminaRegenBonus = 0f;
 
         [Header("Speed Penalties")]
-        public float speedPenalty = 0;
         public int movementSpeedBonus = 0;
 
         [Header("Coins")]

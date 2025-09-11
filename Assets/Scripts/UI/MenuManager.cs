@@ -28,6 +28,7 @@ namespace AF
         public UIDocumentGameOver uIDocumentGameOver;
         public UIDocumentShopMenu uIDocumentShopMenu;
         public UIDocumentCharacterCustomization uIDocumentCharacterCustomization;
+        public UIDocumentDialogueWindow uIDocumentDialogueWindow;
 
         public PlayerManager playerManager;
         public UIDocumentPlayerHUDV2 uIDocumentPlayerHUDV2;
@@ -263,6 +264,11 @@ namespace AF
             }
 
             if (uIDocumentCharacterCustomization.isActiveAndEnabled)
+            {
+                return false;
+            }
+
+            if (uIDocumentDialogueWindow.isActiveAndEnabled)
             {
                 return false;
             }

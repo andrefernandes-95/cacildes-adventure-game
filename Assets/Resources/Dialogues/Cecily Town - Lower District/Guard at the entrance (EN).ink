@@ -31,10 +31,10 @@ Town Guard (Gate): Hail, citizen. What brings you through the gate today?
     ~ runEvent("Hide Cameras")   
 
 * [Heard any rumours?]
-    Town Guard (Gate): {shuffle:
-        - Folks say an old man’s been living in the sewers, hiding from his debts. Strange way to live, if you ask me.
-        - Hard to tell an elf from an orc at night… ‘til the wind carries the scent. Sweet herbs for elves, damp rot for orcs.
-        - Legend says General Alcino escaped hell and gave up his prince status to live free among humans. I find it hard to believe a demon prince would find solace among our kin. But then I look at him drinking and eating pork shoulder at the tavern… and it’s like he’s found heaven. I don’t know.
+    {shuffle:
+        - Town Guard (Gate): Folks say an old man’s been living in the sewers, hiding from his debts. Strange way to live, if you ask me.
+        - Town Guard (Gate): Hard to tell an elf from an orc at night… ‘til the wind carries the scent. Sweet herbs for elves, damp rot for orcs.
+        - Town Guard (Gate): Legend says General Alcino escaped hell and gave up his prince status to live free among humans. I find it hard to believe a demon prince would find solace among our kin. But then I look at him drinking and eating pork shoulder at the tavern… and it’s like he’s found heaven. I don’t know.
     }
 
 * [Goodbye]  

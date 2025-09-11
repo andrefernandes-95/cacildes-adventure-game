@@ -159,7 +159,7 @@ namespace AF.UI
 
         private void Update()
         {
-            if (UnityEngine.Cursor.visible == false)
+            if (UnityEngine.Cursor.visible == false && isActiveAndEnabled)
             {
                 cursorManager.ShowCursor();
             }

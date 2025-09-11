@@ -162,10 +162,9 @@ namespace AF.Shops
         void ExitShop()
         {
             currentCharacterShop?.onShopExit?.Invoke();
-
             playerManager.playerComponentManager.EnableComponents();
-            cursorManager.HideCursor();
             this.gameObject.SetActive(false);
+            cursorManager.HideCursor();
         }
 
         void SetupCharactersGUI(Shop shop, bool playerIsBuying)

@@ -44,6 +44,7 @@ namespace AF
 
         [Header("Inventory")]
         public bool chanceToNotLoseItemUponConsumption = false;
+        public int bonusWeightLoad = 0;
 
         public override void OnEquip(CharacterBaseManager character)
         {

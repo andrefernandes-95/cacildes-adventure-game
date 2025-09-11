@@ -30,6 +30,9 @@ namespace AF
             Cursor.lockState = CursorLockMode.None;
         }
 
+        /// <summary>
+        /// HideCursor() should be the last call onDisable on UI Documents, because CanHideCursor() may return false if the active ui document window is not yet disabled
+        /// </summary>
         public void HideCursor()
         {
             if (CanHideCursor())

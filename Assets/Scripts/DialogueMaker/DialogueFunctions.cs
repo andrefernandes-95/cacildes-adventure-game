@@ -7,6 +7,9 @@ namespace AF
     public class DialogueFunctions : MonoBehaviour
     {
         [SerializeField] QuestParent bearQuest;
+        [SerializeField] QuestParent robertoQuest;
+        [SerializeField] QuestObjective robertoKilledObjective;
+        [SerializeField] PlayerManager playerManager;
 
         Dictionary<string, DialogueEvent> dialogueEvents = new();
         bool hasInitializedDialogueEvents = false;
@@ -37,6 +40,26 @@ namespace AF
             story.BindExternalFunction("isDoingChickensQuest", () =>
             {
                 return bearQuest.hasStarted && bearQuest.IsCompleted() == false;
+            });
+
+            story.BindExternalFunction("hasBegunRobertoQuest", () =>
+            {
+                return robertoQuest.hasStarted;
+            });
+
+            story.BindExternalFunction("hasKilledRobertoAndIsWaitingForAReward", () =>
+            {
+                return robertoQuest.IsObjectiveCompleted(robertoKilledObjective) && robertoQuest.IsCompleted() == false;
+            });
+
+            story.BindExternalFunction("hasCompletedRobertoQuest", () =>
+            {
+                return robertoQuest.IsCompleted();
+            });
+
+            story.BindExternalFunction("getReputation", () =>
+            {
+                return playerManager.playerStats.GetReputation();
             });
 
             story.BindExternalFunction("runEvent", (string eventId) =>

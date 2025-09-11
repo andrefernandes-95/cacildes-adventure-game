@@ -3,7 +3,7 @@
     * [What do the Forest Wanderers do?]
     Petra: We look after the trees, water the roots, and keep a record for those who’ll come after us.  
     <>We make sure nature doesn’t get drained dry by folks who don’t care.  
-    <>We’ve got a special job from Vael’Noor herself: guarding the oaks of Slepbone.
+    <>We’ve got a special job from Mithriel herself: guarding the oaks of Slepbone.
 
     Petra: You know, it’s a huge honor to be called upon by our goddess. When things get tough, it’s that calling that keeps us going and trusting the mission.
 

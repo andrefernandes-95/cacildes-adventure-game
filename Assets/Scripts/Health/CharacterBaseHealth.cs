@@ -23,7 +23,7 @@ namespace AF.Health
         [HideInInspector] public UnityEvent<int> onHealthRestoredUI;
 
         [Header("Quests")]
-        public Weapon weaponRequiredToKill;
+        public string weaponRequiredToKill;
         public bool hasBeenHitWithRequiredWeapon = false;
         public UnityEvent onKilledWithRightWeapon;
         public UnityEvent onKilledWithWrongWeapon;
@@ -94,7 +94,7 @@ namespace AF.Health
 
         public void CheckIfHasBeenKilledWithRightWeapon()
         {
-            if (weaponRequiredToKill == null)
+            if (string.IsNullOrEmpty(weaponRequiredToKill))
             {
                 return;
             }

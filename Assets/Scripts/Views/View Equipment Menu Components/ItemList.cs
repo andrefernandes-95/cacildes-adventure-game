@@ -219,10 +219,10 @@ namespace AF.UI.EquipmentMenu
 
             if (isRightHandSlot)
             {
-                return equipmentDatabase.weapons[slotIndex] == item;
+                return item != null && equipmentDatabase.weapons[slotIndex] != null && equipmentDatabase.weapons[slotIndex].itemID == item.itemID;
             }
 
-            return equipmentDatabase.shields[slotIndex] == item;
+            return item != null && equipmentDatabase.shields[slotIndex] != null && equipmentDatabase.shields[slotIndex].itemID == item.itemID;
         }
 
         bool IsItemEquipped(Item item, int slotIndex)
@@ -402,19 +402,19 @@ namespace AF.UI.EquipmentMenu
             List<Weapon> currentList = (isRightHandSlot ? equipmentDatabase.weapons : equipmentDatabase.shields).ToList();
 
             // Don't skip if already equipped in the target slot
-            if (currentList[slotIndex] == weapon)
+            if (currentList[slotIndex]?.itemID == weapon?.itemID)
                 return false;
 
             // Check all slots in both weapons and shields for duplicates, excluding the target slot
             for (int i = 0; i < equipmentDatabase.weapons.Length; i++)
             {
-                if (equipmentDatabase.weapons[i] == weapon)
+                if (equipmentDatabase.weapons[i]?.itemID == weapon?.itemID)
                     return true;
             }
 
             for (int i = 0; i < equipmentDatabase.shields.Length; i++)
             {
-                if (equipmentDatabase.shields[i] == weapon)
+                if (equipmentDatabase.shields[i]?.itemID == weapon?.itemID)
                     return true;
             }
 
@@ -523,7 +523,7 @@ namespace AF.UI.EquipmentMenu
                     }
                 };
 
-                SetupItemButton(instance, item, isRightHandSlot);
+                SetupItemButton(instance, item, isRightHandSlot, slotIndex);
 
                 this.itemsScrollView.Add(instance);
             }
@@ -759,7 +759,7 @@ namespace AF.UI.EquipmentMenu
                     //PopulateScrollView<T>(showOnlyKeyItems, slotIndex);
                 };
 
-                SetupItemButton(instance, item, false);
+                SetupItemButton(instance, item, false, slotIndex);
 
                 this.itemsScrollView.Add(instance);
             }
@@ -768,7 +768,7 @@ namespace AF.UI.EquipmentMenu
         }
 
 
-        void SetupItemButton(TemplateContainer instance, Item item, bool equippingOnRightHand)
+        void SetupItemButton(TemplateContainer instance, Item item, bool equippingOnRightHand, int slotIndex)
         {
             Button btn = instance.Q<Button>("EquipButton");
             void ShowTooltipAndStats(Item item)
@@ -777,13 +777,13 @@ namespace AF.UI.EquipmentMenu
                 itemTooltip.PrepareTooltipForItem(item);
                 itemTooltip.DisplayTooltip(btn);
 
-                playerStatsAndAttributesUI.DrawStats(item, equippingOnRightHand);
+                playerStatsAndAttributesUI.DrawStats(item, equippingOnRightHand, slotIndex);
             }
 
             void HideTooltipAndClearStats()
             {
                 itemTooltip.gameObject.SetActive(false);
-                playerStatsAndAttributesUI.DrawStats(null, false);
+                playerStatsAndAttributesUI.DrawStats(null, false, -1);
             }
 
             instance.RegisterCallback<MouseEnterEvent>(ev =>

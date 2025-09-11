@@ -31,10 +31,10 @@ Town Guard (Gate): Saudações, cidadão. O que o traz pelo portão hoje?
     ~ runEvent("Hide Cameras")   
 
 * [Ouvir rumores?]
-    Town Guard (Gate): {shuffle:
-        - Diz-se que um velho tem vivido nos esgotos, a fugir das suas dívidas. Estranha forma de viver, se me perguntas.
-        - Difícil distinguir um elfo de um orc à noite… até que o vento leve o cheiro. Ervas doces para os elfos, humidade e podridão para os orcs.
-        - Diz-se que o General Alcino escapou do inferno e abdicou do seu título de príncipe para viver livre entre os humanos. Difícil acreditar que um príncipe demónio encontraria paz entre o nosso povo. Mas depois olho para ele a beber e a devorar pernil na taberna… parece que encontrou o paraíso. Não sei.
+    {shuffle:
+        - Town Guard (Gate): Diz-se que um velho tem vivido nos esgotos, a fugir das suas dívidas. Estranha forma de viver, se me perguntas.
+        - Town Guard (Gate): Difícil distinguir um elfo de um orc à noite… até que o vento leve o cheiro. Ervas doces para os elfos, humidade e podridão para os orcs.
+        - Town Guard (Gate): Diz-se que o General Alcino escapou do inferno e abdicou do seu título de príncipe para viver livre entre os humanos. Difícil acreditar que um príncipe demónio encontraria paz entre o nosso povo. Mas depois olho para ele a beber e a devorar pernil na taberna… parece que encontrou o paraíso. Não sei.
     }
 
 * [Adeus]  

@@ -43,6 +43,7 @@ namespace AF.Stats
 
         [Header("Equipment Modifiers")]
         public float weightPenalty = 0f;
+        public int bonusWeightLoad = 0;
         public int equipmentPoise = 0;
         public bool ignoreWeaponRequirements = false;
 
@@ -103,7 +104,6 @@ namespace AF.Stats
         public Dictionary<StatusEffect, float> statusEffectResistances = new();
         public Dictionary<StatusEffect, float> statusEffectDelayRates = new();
 
-
         private void Awake()
         {
             // TODO: This needs to be a character event, not global, otherwise it will run every time the player changes his equipment!
@@ -152,8 +152,7 @@ namespace AF.Stats
             List<Accessory> currentAccessories = GetCurrentAccessories();
 
             UpdateStatusEffectCancellationRates();
-            UpdateWeightPenalty(currentRightWeapon, currentLeftWeapon, currentRightShield, currentLeftShield,
-            currentHelmet, currentArmor, currentGauntlet, currentLegwear, currentAccessories);
+            UpdateWeightPenalty(currentHelmet, currentArmor, currentGauntlet, currentLegwear, currentAccessories);
 
             UpdateArmorPoise(currentHelmet, currentArmor, currentGauntlet, currentLegwear, currentAccessories);
 
@@ -222,45 +221,40 @@ namespace AF.Stats
             }
         }
 
-        void UpdateWeightPenalty(Weapon rightWeapon, Weapon leftWeapon, Shield rightShield, Shield leftShield,
-        Helmet helmet, Armor armor, Gauntlet gauntlet, Legwear legwear, List<Accessory> accessories)
+        float GetItemWeight(Item item) => item == null ? 0 : item.GetWeight();
+
+        void UpdateWeightPenalty(Helmet helmet, Armor armor, Gauntlet gauntlet, Legwear legwear, List<Accessory> accessories)
         {
             weightPenalty = 0f;
 
-            if (rightWeapon != null)
+            foreach (Weapon wp in character.characterBaseWeaponsManager.GetRightWeapons())
             {
-                weightPenalty += rightWeapon.speedPenalty;
+                weightPenalty += GetItemWeight(wp);
             }
-            if (leftWeapon != null)
+
+            foreach (Weapon wp in character.characterBaseWeaponsManager.GetLeftWeapons())
             {
-                weightPenalty += leftWeapon.speedPenalty;
+                weightPenalty += GetItemWeight(wp);
             }
-            if (rightShield != null)
-            {
-                weightPenalty += rightShield.speedPenalty;
-            }
-            if (leftShield != null)
-            {
-                weightPenalty += leftShield.speedPenalty;
-            }
+
             if (helmet != null)
             {
-                weightPenalty += helmet.speedPenalty;
+                weightPenalty += GetItemWeight(helmet);
             }
             if (armor != null)
             {
-                weightPenalty += armor.speedPenalty;
+                weightPenalty += GetItemWeight(armor);
             }
             if (gauntlet != null)
             {
-                weightPenalty += gauntlet.speedPenalty;
+                weightPenalty += GetItemWeight(gauntlet);
             }
             if (legwear != null)
             {
-                weightPenalty += legwear.speedPenalty;
+                weightPenalty += GetItemWeight(legwear);
             }
 
-            weightPenalty += accessories.Sum(x => x == null ? 0 : x.speedPenalty);
+            weightPenalty += accessories.Sum(x => x == null ? 0 : GetItemWeight(x));
 
             weightPenalty = Mathf.Max(0, weightPenalty); // Ensure weightPenalty is non-negative
         }
@@ -385,7 +379,7 @@ namespace AF.Stats
 
             discountPercentage = spellDamageBonusMultiplier = 0;
 
-            reputationBonus = parryPostureDamageBonus = postureBonus = movementSpeedBonus = 0;
+            reputationBonus = parryPostureDamageBonus = postureBonus = movementSpeedBonus = bonusWeightLoad = 0;
 
             parryPostureWindowBonus = staminaRegenerationBonus = postureDecreaseRateBonus = projectileMultiplierBonus = backStabAngleBonus = 0f;
 
@@ -468,6 +462,7 @@ namespace AF.Stats
                 staminaBonusMultiplier += accessory?.staminaBonusMultiplier ?? 0;
                 manaBonusMultiplier += accessory?.manaBonusMultiplier ?? 0;
 
+                bonusWeightLoad += accessory?.bonusWeightLoad ?? 0;
 
                 if (accessory != null)
                 {

@@ -119,5 +119,15 @@ namespace AF.Equipment
         {
             return playerManager;
         }
+
+        public override Weapon[] GetRightWeapons()
+        {
+            return equipmentDatabase.weapons;
+        }
+
+        public override Weapon[] GetLeftWeapons()
+        {
+            return equipmentDatabase.shields;
+        }
     }
 }

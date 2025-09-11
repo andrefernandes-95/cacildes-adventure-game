@@ -40,7 +40,7 @@ namespace AF
             root = uIDocument.rootVisualElement;
         }
 
-        public void DrawStats(Item item, bool equippingOnRightHand)
+        public void DrawStats(Item item, bool equippingOnRightHand, int slotIndex)
         {
             root.Q<VisualElement>("PlayerName").Q<Label>().text = playerManager.gameSettings.playerName;
 
@@ -49,7 +49,7 @@ namespace AF
             SetGoldForNextLevelLabel();
 
             float baseEquipLoad = playerManager.statsBonusController.weightPenalty;
-            float itemEquipLoad = EquipmentUtils.GetEquipLoadFromItem(item, baseEquipLoad, equipmentDatabase);
+            float itemEquipLoad = EquipmentUtils.GetEquipLoadFromItem(item, baseEquipLoad, equipmentDatabase, slotIndex);
 
             var playerBaseStats = GetPlayerBaseStats();
             var itemBonusStats = GetItemBonusStats(item);
@@ -253,17 +253,17 @@ namespace AF
 
         bool IsLightWeightForGivenValue(float givenWeightPenalty)
         {
-            return givenWeightPenalty <= GetMidWeightThreshold();
+            return playerManager.characterBaseWeight.WillMidroll((int)givenWeightPenalty) == false && playerManager.characterBaseWeight.WillHeavyroll((int)givenWeightPenalty) == false;
         }
 
         bool IsMidWeightForGivenValue(float givenWeightPenalty)
         {
-            return givenWeightPenalty < GetHeavyWeightThreshold() && givenWeightPenalty > GetMidWeightThreshold();
+            return playerManager.characterBaseWeight.WillMidroll((int)givenWeightPenalty) == true && playerManager.characterBaseWeight.WillHeavyroll((int)givenWeightPenalty) == false;
         }
 
         bool IsHeavyWeightForGivenValue(float givenWeightPenalty)
         {
-            return givenWeightPenalty >= GetHeavyWeightThreshold();
+            return playerManager.characterBaseWeight.WillHeavyroll((int)givenWeightPenalty) == true;
         }
 
         string GetWeightLoadLabel(float givenWeightLoad)
@@ -287,8 +287,8 @@ namespace AF
         private void SetWeightLoadLabel(string elementName, float baseValue, float itemValue)
         {
             // Format baseValue and itemValue as percentages with two decimal places
-            string formattedBaseValue = (baseValue * 100).ToString("F2") + "%";
-            string formattedItemValue = (itemValue * 100).ToString("F2") + "%";
+            string formattedBaseValue = baseValue + "";
+            string formattedItemValue = itemValue + "";
 
             string label = formattedBaseValue + $" ({GetWeightLoadLabel(baseValue)})";
 

@@ -569,10 +569,6 @@ namespace AF
                 }
             }
 
-            var weightSpeed = playerManager.statsBonusController.weightPenalty > 0 ? playerManager.statsBonusController.weightPenalty : 0;
-
-            targetSpeed -= weightSpeed;
-
             if (_input.sprint)
             {
                 playerManager.staminaStatManager.DecreaseStamina(runStaminaCost * Time.deltaTime);
@@ -686,10 +682,7 @@ namespace AF
                 playerManager.animator.SetFloat(_animIDSpeed, _animationBlend);
                 playerManager.animator.SetBool(_animIDIsMoving, _input.move.magnitude > 0);
 
-                // Get movement penalties
-                var jumpWeightSpeed = playerManager.statsBonusController.weightPenalty > 0 ? playerManager.statsBonusController.weightPenalty : 0;
-
-                playerManager.animator.SetFloat(_animIDMotionSpeed, inputMagnitude - jumpWeightSpeed);
+                playerManager.animator.SetFloat(_animIDMotionSpeed, inputMagnitude);
             }
         }
 
@@ -739,11 +732,6 @@ namespace AF
 
                         // the square root of H * -2 * G = how much velocity needed to reach desired height
                         _verticalVelocity = Mathf.Sqrt(GetCurrentJumpHeight() * -2f * Gravity);
-
-                        var weightSpeed = playerManager.statsBonusController.weightPenalty > 0 ? playerManager.statsBonusController.weightPenalty : 0;
-
-                        _verticalVelocity -= weightSpeed;
-
 
                         if (isSliding)
                         {

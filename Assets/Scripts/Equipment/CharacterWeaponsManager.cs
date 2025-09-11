@@ -299,5 +299,15 @@ namespace AF.Equipment
 
             UpdateEquipment();
         }
+
+        public override Weapon[] GetRightWeapons()
+        {
+            return RightHandWeapons;
+        }
+
+        public override Weapon[] GetLeftWeapons()
+        {
+            return LeftHandWeapons;
+        }
     }
 }

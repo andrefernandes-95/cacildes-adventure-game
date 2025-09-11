@@ -60,7 +60,7 @@ namespace AF.UI.EquipmentMenu
         void InitUI()
         {
             equipmentSlots.gameObject.SetActive(true);
-            playerStatsAndAttributesUI.DrawStats(null, false);
+            playerStatsAndAttributesUI.DrawStats(null, false, -1);
         }
     }
 }

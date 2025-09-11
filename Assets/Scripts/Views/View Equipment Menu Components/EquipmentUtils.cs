@@ -13,7 +13,7 @@ namespace AF
         public enum AccessoryAttributeType { HEALTH_BONUS, STAMINA_BONUS, MANA_BONUS }
 
 
-        public static float GetEquipLoadFromItem(Item itemToEquip, float currentWeightPenalty, EquipmentDatabase equipmentDatabase)
+        public static float GetEquipLoadFromItem(Item itemToEquip, float currentWeightPenalty, EquipmentDatabase equipmentDatabase, int slotIndex)
         {
             // Define a function to retrieve the current speed penalty from an equipped item.
             Func<Item, float> GetSpeedPenalty = (item) =>
@@ -22,13 +22,13 @@ namespace AF
                     return 0;
 
                 if (item is Accessory accessory)
-                    return accessory.speedPenalty;
+                    return accessory.GetWeight();
 
                 if (item is Weapon weapon)
-                    return weapon.speedPenalty;
+                    return weapon.GetWeight();
 
                 if (item is ArmorBase armor)
-                    return armor.speedPenalty;
+                    return armor.GetWeight();
 
                 return 0;
             };
@@ -37,33 +37,33 @@ namespace AF
             switch (itemToEquip)
             {
                 case Shield shield:
-                    currentWeightPenalty -= GetSpeedPenalty(equipmentDatabase.GetCurrentLeftWeapon());
-                    return Math.Max(0, currentWeightPenalty) + shield.speedPenalty;
+                    currentWeightPenalty -= GetSpeedPenalty(equipmentDatabase.weapons[slotIndex]);
+                    return Math.Max(0, currentWeightPenalty) + shield.GetWeight();
 
                 case Weapon weapon:
-                    currentWeightPenalty -= GetSpeedPenalty(equipmentDatabase.GetCurrentWeapon());
-                    return Math.Max(0, currentWeightPenalty) + weapon.speedPenalty;
+                    currentWeightPenalty -= GetSpeedPenalty(equipmentDatabase.shields[slotIndex]);
+                    return Math.Max(0, currentWeightPenalty) + weapon.GetWeight();
 
                 case Helmet helmet:
                     currentWeightPenalty -= GetSpeedPenalty(equipmentDatabase.helmet);
-                    return Math.Max(0, currentWeightPenalty) + helmet.speedPenalty;
+                    return Math.Max(0, currentWeightPenalty) + helmet.GetWeight();
 
                 case Armor armor:
                     currentWeightPenalty -= GetSpeedPenalty(equipmentDatabase.armor);
-                    return Math.Max(0, currentWeightPenalty) + armor.speedPenalty;
+                    return Math.Max(0, currentWeightPenalty) + armor.GetWeight();
 
                 case Gauntlet gauntlet:
                     currentWeightPenalty -= GetSpeedPenalty(equipmentDatabase.gauntlet);
-                    return Math.Max(0, currentWeightPenalty) + gauntlet.speedPenalty;
+                    return Math.Max(0, currentWeightPenalty) + gauntlet.GetWeight();
 
                 case Legwear legwear:
                     currentWeightPenalty -= GetSpeedPenalty(equipmentDatabase.legwear);
-                    return Math.Max(0, currentWeightPenalty) + legwear.speedPenalty;
+                    return Math.Max(0, currentWeightPenalty) + legwear.GetWeight();
 
                 case Accessory accessory:
                     // Sum speed penalties of all equipped accessories.
                     currentWeightPenalty -= equipmentDatabase.accessories.Sum(GetSpeedPenalty);
-                    return Math.Max(0, currentWeightPenalty) + accessory.speedPenalty;
+                    return Math.Max(0, currentWeightPenalty) + accessory.GetWeight();
 
                 default:
                     return 0f;

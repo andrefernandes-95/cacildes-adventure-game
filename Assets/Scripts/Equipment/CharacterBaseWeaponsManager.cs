@@ -675,5 +675,8 @@ namespace AF
 
             return currentShieldInstance != null && currentShieldInstance.IsHitboxOpen();
         }
+
+        public abstract Weapon[] GetRightWeapons();
+        public abstract Weapon[] GetLeftWeapons();
     }
 }

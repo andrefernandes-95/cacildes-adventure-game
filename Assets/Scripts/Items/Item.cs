@@ -85,7 +85,8 @@ namespace AF
             {
                 return itemWeight.weight;
             }
-            return 0.1f;
+
+            return 0f;
         }
 
         public bool EqualsTo(Item b)

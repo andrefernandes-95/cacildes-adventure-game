@@ -50,6 +50,7 @@ namespace AF.Arena
         public PlayerManager playerManager;
         public NotificationManager notificationManager;
         public UIDocumentPlayerGold uIDocumentPlayerGold;
+        public SceneSettings sceneSettings;
 
         [Header("Databases")]
         public GameSession gameSession;
@@ -92,7 +93,6 @@ namespace AF.Arena
                 EndArena(false);
             });
         }
-
 
         private void Update()
         {
@@ -154,6 +154,11 @@ namespace AF.Arena
             else
             {
                 uIDocumentPlayerGold.LoseGold(playerStatsDatabase.gold - initialGoldWhenStartingArena);
+            }
+
+            if (sceneSettings != null)
+            {
+                sceneSettings.EvaluateDayNightMusic();
             }
         }
 

@@ -92,5 +92,23 @@ namespace AF
             Damage scaledDamageFromSpellLevel = spell.GetSpellDamageForCurrentLevel(scaledDamageForStats);
             return scaledDamageFromSpellLevel;
         }
+
+
+        public static int GetBonusWeightCarriedPerLevel(int end = 0, int str = 0)
+        {
+            int total = 0;
+
+            for (int i = 1; i <= end; i++)
+            {
+                total += 1;
+            }
+
+            for (int i = 1; i <= str; i++)
+            {
+                total += 2;
+            }
+
+            return total;
+        }
     }
 }

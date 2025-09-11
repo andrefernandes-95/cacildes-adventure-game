@@ -79,7 +79,7 @@ namespace AF
         [Header("Quests")]
         public List<QuestParent> completedQuests = new();
         public QuestParent currentQuest;
-        public int currentQuestProgress;
+        public List<QuestObjective> currentQuestCompletedObjectives = new();
 
         [Header("Components")]
         public PlayerStatsDatabase playerStatsDatabase;
@@ -180,28 +180,22 @@ namespace AF
                     equipmentDatabase.EquipConsumable(consumables[i], i);
                 }
             }
-
-            PlayerInventory playerInventory = FindAnyObjectByType<PlayerInventory>(FindObjectsInactive.Include);
-
-            equipmentDatabase.EquipHelmet(playerInventory.GetHelmets().FirstOrDefault(x => x == helmet));
-            equipmentDatabase.EquipArmor(playerInventory.GetArmors().FirstOrDefault(x => x == armor));
-            equipmentDatabase.EquipLegwear(playerInventory.GetLegwears().FirstOrDefault(x => x == legwear));
-            equipmentDatabase.EquipGauntlet(playerInventory.GetGauntlets().FirstOrDefault(x => x == gauntlet));
         }
 
         void LoadQuests()
         {
-            foreach (var completedQuest in completedQuests)
-            {
-                int questObjectiveCount = completedQuest.objectives != null && completedQuest.objectives.Count > 0
-                    ? completedQuest.objectives.Count
-                    : 0;
-
-            }
-
             if (currentQuest != null)
             {
+                currentQuest.StartQuest();
                 currentQuest.TrackQuest();
+
+                if (currentQuestCompletedObjectives != null && currentQuestCompletedObjectives.Count > 0)
+                {
+                    foreach (QuestObjective questObjective in currentQuestCompletedObjectives)
+                    {
+                        currentQuest.CompleteObjective(questObjective);
+                    }
+                }
             }
         }
 

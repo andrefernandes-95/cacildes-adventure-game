@@ -1,55 +1,20 @@
 # IN PROGRESS
 
-
-Breakable boxes
-
-- Mead, need to work on it
-
-- UNtrack quest button not working 
-- Remover lock on ref das galinhas
-- I think save game is resetting favorite managers
-
-
-- Bear should give a boss token
-- Make Lara Shop
-- Lets continue Petra quest
-- Enemy Posture should increase every time its broke
-
-- Play around with shops and serialize them
-- Spells should spend mana
-
 To Do:
 - Add category to received items popup
-- Rework stat scale to work with module operators for every 2 or 3 levels (25 bonus to health every level)
 - BUG: Accessories can be equipped on other slots
 - expliccar q aguenar abilidades da mais dano
 - Add chest that uses another script for adding items, to avoid bugs with armors
 - Weapon should have abilities for right trigger and right bumper and left trigger (this way, the amount of combos is dependant on the weapon itself)
-- Music HUD showing which music is playing
-- Remove staffs
-- Make item popups pop up animation
-- Add note to quest for Maerimond which is : Rewards - Unlock Boss Weapons
-- Add note to boss tokens which is: Talk to Altaire in Snailcliff to unlock boss weapons
 - Add total game progress
-- Buff weapons made easier
-- Review enemies
 - Backpack accessory - allow more items in th eback
-- BUG: TH when unarmed is not adding extra bonus
-- Explain that slimes are resistant to axes because of their bodies.. some weapons are not ideal for some enemies
-
-KNOWN BUGS:
-
-?? - Bug in samurai fight, isBusy is still on even onf Idle animation during combat
+- Healing Orb should cure dead companions
 - Add focus to callback on scroll view exit buttons, which I forgot to do
-
-# Reload Mechanic and Fixing Gold
-i die in the boss fight against balbino - it will be active because main quest is not over
-in the boat, replace steel key with a lever, this way, the boss fight always triggers safely even if we die
-reload to last rested bonfire (or Cacildes Home if none is found in the save file) - need to store last bonfire rested at
-- Fix gold dupping by not reloading save data, we need to check boss story events to not use monobehaviour ids, and rely on quest progress instead
-
 - Thief should steal player weapon - ability
-
+- Spells should spend mana
+- Enemy Posture should increase every time its broke
+- I think save game is resetting favorite managers
+- UNtrack quest button not working 
 
 Low:
 - Made wood sword upgradeable
@@ -90,26 +55,13 @@ Low:
 - Ring that allows any weapon to use powerstance regardless of differnet categories
 - Elixir that reveals illusionary walls
 - Confusion Status Effect
-- Inventory weight, if too heavy, do heavy roll ( do not hinder jump )
-
-
-- Bug: If tree trunk kills a slime but was in a previous fight with us, it wont return to us. Current Target is set to player, but thats it
+- If I kill Roberto with the wrong weapon and run 24 hours in the map, it triggers his dialogue again
 
 BACKLOG:
 
 - Setup Analytics for Unity
+- Add camera damping options
 
-Done:
 
-- Add damage popup when healing too so we know the values
-- Replace cards with skill system (this is done, but we need to still convert some abilities, and also check the chests)
-- Refactor Player Customization
-- Create AI Damage Receiver class
-- Add armors to characters, show graphic if humanoid and using synty character model
-- Cloaks as accessories, same as pauldrons
-- Add Stats to characters, and refactor stats bonus controller
-- Add database for items with json descriptions
-- On Gamepad, Pressing left analogue should also enable running
-- PS4 Gamepad not showing correct icns
-- Unify Player and Enemy Actions (Block, Parry, Shooting Bow, Throwing Firebomb, Consuming Orange Juice)
-- Remove walk
+DONE:
+- Inventory weight, if too heavy, do heavy roll ( do not hinder jump )

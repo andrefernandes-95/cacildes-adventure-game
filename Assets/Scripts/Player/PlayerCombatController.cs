@@ -458,7 +458,7 @@ namespace AF
             {
                 damageReceiverTarget.health?.onDamageFromPlayer.Invoke();
 
-                if (weapon != null && damageReceiverTarget.health.weaponRequiredToKill != null && damageReceiverTarget.health.weaponRequiredToKill == weapon)
+                if (weapon != null && !string.IsNullOrEmpty(damageReceiverTarget.health.weaponRequiredToKill) && weapon.name.Contains(damageReceiverTarget.health.weaponRequiredToKill))
                 {
                     damageReceiverTarget.health.hasBeenHitWithRequiredWeapon = true;
                 }
