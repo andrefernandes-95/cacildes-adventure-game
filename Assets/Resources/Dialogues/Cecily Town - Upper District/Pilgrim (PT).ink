@@ -21,8 +21,8 @@ Peregrino: Viajo como escriba, a compor um livro de homens e lendas. Dentro de d
         *** [Evite Mountainpass — ladrões espreitam nos penhascos.]  
          Peregrino: O vosso aviso pode muito bem salvar-me a vida. Agradeço-vos.  
         *** [Procure os Andarilhos da Floresta, na praia de Slepbone.]  
-         Peregrino: Errantes da Floresta… só o nome já pede um conto. Hei-de vê-los com os meus próprios olhos.  
+         Peregrino: Andarilhos da Floresta… só o nome já pede um conto. Hei-de vê-los com os meus próprios olhos.  
         *** [Segui até Snailcliff — liga os homens aos elfos e aos anões de Sunkenland.]  
-         Peregrino: Uma ponte entre mundos! Então Penhascos de Caracol terá lugar no meu diário.  
+         Peregrino: Uma ponte entre mundos! Então Snailcliff terá lugar no meu diário.  
 
 * [Adeus.]  

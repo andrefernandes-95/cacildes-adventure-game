@@ -1,6 +1,7 @@
 namespace AF
 {
     using System.Collections.Generic;
+    using AF.Flags;
     using Ink.Runtime;
     using UnityEngine;
 
@@ -10,11 +11,12 @@ namespace AF
         [SerializeField] QuestParent robertoQuest;
         [SerializeField] QuestObjective robertoKilledObjective;
         [SerializeField] PlayerManager playerManager;
+        [SerializeField] FlagsDatabase flagsDatabase;
 
         Dictionary<string, DialogueEvent> dialogueEvents = new();
         bool hasInitializedDialogueEvents = false;
 
-        public List<string> eventsRun;
+        const string DIALOGUE_EVENT_PREFIX = "dialogue_event_";
 
         void CollectDialogueEvents()
         {
@@ -65,16 +67,26 @@ namespace AF
             story.BindExternalFunction("runEvent", (string eventId) =>
             {
                 RunEvent(eventId);
-
-                if (!eventsRun.Contains(eventId))
-                {
-                    eventsRun.Add(eventId);
-                }
             });
 
             story.BindExternalFunction("hasRunEvent", (string eventId) =>
             {
-                return eventsRun.Contains(eventId);
+                string key = $"{DIALOGUE_EVENT_PREFIX}${eventId}";
+
+                return flagsDatabase.ContainsFlag(key);
+            });
+
+            story.BindExternalFunction("runEventOnce", (string eventId) =>
+            {
+                string key = $"{DIALOGUE_EVENT_PREFIX}${eventId}";
+
+                if (flagsDatabase.ContainsFlag(key))
+                {
+                    return;
+                }
+
+                flagsDatabase.AddFlag(key);
+                RunEvent(eventId);
             });
         }
 

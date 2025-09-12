@@ -44,6 +44,11 @@ namespace AF.Flags
             AddFlag(flag.name, flag.name);
         }
 
+        public void AddFlag(string flagId)
+        {
+            AddFlag(flagId, flagId);
+        }
+
         public void RemoveFlag(MonoBehaviourID monoBehaviourID)
         {
             if (ContainsFlag(monoBehaviourID.ID))

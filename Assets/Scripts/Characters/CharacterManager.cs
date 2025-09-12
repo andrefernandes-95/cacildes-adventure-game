@@ -149,8 +149,6 @@ namespace AF
             characterConsumableManager.ResetStates();
 
             faceTarget = false;
-
-            (health as CharacterHealth)?.CheckIfShouldDie();
         }
 
         private void Update()

@@ -13,6 +13,12 @@ namespace AF
                 animator.TryGetComponent(out character);
             }
 
+            if (character.health.GetCurrentHealth() <= 0)
+            {
+                character.PlayBusyAnimationWithRootMotion("Dying");
+                return;
+            }
+
             character.ResetStates();
         }
     }

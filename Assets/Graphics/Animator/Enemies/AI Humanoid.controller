@@ -3803,7 +3803,10 @@ AnimatorStateTransition:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: 
-  m_Conditions: []
+  m_Conditions:
+  - m_ConditionMode: 2
+    m_ConditionEvent: isDead
+    m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 6029548306722158242}
   m_Solo: 0
@@ -4394,6 +4397,12 @@ AnimatorController:
     m_DefaultBool: 0
     m_Controller: {fileID: 9100000}
   - m_Name: isCharging
+    m_Type: 4
+    m_DefaultFloat: 0
+    m_DefaultInt: 0
+    m_DefaultBool: 0
+    m_Controller: {fileID: 9100000}
+  - m_Name: isDead
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
@@ -8131,7 +8140,7 @@ AnimatorStateMachine:
     m_Position: {x: -900, y: 810, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 8473606452888329564}
-    m_Position: {x: -540, y: -50, z: 0}
+    m_Position: {x: -540, y: -30, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -5634793739418252089}
     m_Position: {x: -330, y: 240, z: 0}

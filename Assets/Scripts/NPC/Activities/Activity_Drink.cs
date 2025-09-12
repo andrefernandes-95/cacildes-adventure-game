@@ -62,7 +62,7 @@ namespace AF
             yield return new WaitForSeconds(durationInSeconds);
 
             // Transition back to idle
-            activityTarget.PlayCrossFadeBusyAnimationWithRootMotion(animationToTransitionTo, 0.25f);
+            activityTarget.PlayCrossFadeBusyAnimationWithRootMotion(animationToTransitionTo, 0f);
 
             DestroyDrink();
         }
