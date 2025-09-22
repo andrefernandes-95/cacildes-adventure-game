@@ -22,6 +22,9 @@ namespace AF
 
         bool hasChosenDialogueOption = false;
 
+        [Header("Components")]
+        [SerializeField] AudioSource characterAudioSource;
+
         void Awake()
         {
             Character[] allCharacters = Resources.LoadAll<Character>("Characters");
@@ -72,7 +75,10 @@ namespace AF
                 {
                     OnMessageStart();
 
-                    dialogueWindow.DisplayMessageV2(GetCharacter(characterName), text, GetChoices());
+                    Character character = GetCharacter(characterName);
+                    dialogueWindow.DisplayMessageV2(character, text, GetChoices());
+
+                    PlayCharacterGreetingSfx(character);
 
                     if (story.currentChoices.Count > 0)
                     {
@@ -94,6 +100,16 @@ namespace AF
             }
 
             cursorManager.HideCursor();
+        }
+
+        void PlayCharacterGreetingSfx(Character character)
+        {
+            if (character != null && character.dialogueGreetings != null && character.dialogueGreetings.Length > 0 && Random.Range(0, 1f) > .65f)
+            {
+                characterAudioSource.pitch = Random.Range(0.99f, 1.01f);
+                characterAudioSource.volume = 0.5f;
+                characterAudioSource.PlayOneShot(character.dialogueGreetings[Random.Range(0, character.dialogueGreetings.Length)]);
+            }
         }
 
         void OnMessageStart()

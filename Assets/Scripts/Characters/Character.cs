@@ -27,6 +27,9 @@ namespace AF
         [Header("Biography")]
         public LocalizedString biography;
 
+        [Header("Grunts")]
+        public AudioClip[] dialogueGreetings;
+
         public string GetCharacterName()
         {
             if (isPlayer)

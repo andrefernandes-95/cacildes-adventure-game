@@ -1,5 +1,13 @@
 # IN PROGRESS
 
+CECILY TOWN
+
+- Finish library moment with Balbino
+- Fix teleport to the King Castle
+- After finishing library quest, Alcino is automatically talking about west bridge...
+
+
+
 To Do:
 - Add category to received items popup
 - BUG: Accessories can be equipped on other slots
