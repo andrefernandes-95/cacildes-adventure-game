@@ -118,14 +118,19 @@ namespace AF
                 return null;
             }
 
-            if (completedObjectives.Count <= 0)
+            if (!hasStarted)
             {
-                return objectives[0];
+                return null;
             }
 
             if (completedObjectives.Count >= objectives.Count)
             {
                 return null;
+            }
+
+            if (completedObjectives.Count <= 0)
+            {
+                return objectives[0];
             }
 
             return objectives[completedObjectives.Count];

@@ -18,12 +18,10 @@ General Alcino: Him and his orcs are hunting for something called the Cold Fire 
 
 General Alcino: ...
 
-** [Do we have this stone they're looking for?]
+** [Is it true? Do we have this stone they're looking for?]
 
-General Alcino: That's... complicated. Our elven allies do possess a stone that keeps their forests green year - round and grants them unnaturally long lives,
-even by elven standards.
-
-General Alcino: Between you and me, it matches every description of this 'Cold Fire Stone.' But then again, zealots are often choosy about facts.
+General Alcino: Zealots are often choosy about facts. That said, our elven allies do possess a stone that keeps their forests green year - round and grants them unnaturally long lives,
+<> even by elven standards, mind you.
 
 General Alcino: ...
 

@@ -80,6 +80,12 @@ namespace AF
             {
                 characterTwoHandRef.characterBaseManager = character;
             }
+
+            if (combatAudioSource != null)
+            {
+                combatAudioSource.playOnAwake = false;
+                combatAudioSource.spatialBlend = 1f;
+            }
         }
 
         void AssignTrailRenderer()

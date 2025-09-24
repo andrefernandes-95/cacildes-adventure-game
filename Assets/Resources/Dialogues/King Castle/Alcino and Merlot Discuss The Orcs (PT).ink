@@ -1,0 +1,31 @@
+EXTERNAL runEvent(eventId)
+
+~ runEvent("King Headshake")
+
+King Merlot: Então os orcs de Thorum ousam acampar à porta da nossa cidade.
+<> E este Drogo — este fanático consumido pela loucura — acredita que a sua lendária pedra se encontra aqui, na região de Slepbone?
+
+General Alcino: Foi isso que os teus espiões trémulos ouviram antes de se afugentarem das aranhas.
+<> Drogo está convencido de que a Pedra do Fogo Frio está na nossa borda, sim. Fanáticos como ele não precisam de provas.
+
+~ runEvent("King Headshake")
+
+King Merlot: Então, se a guerra se aproxima... devo-te perguntar, General...
+<> Irás ficar do nosso lado? Irás usar esse poder temível que todos os homens receiam?
+
+General Alcino: Quantas vezes terei de ouvir esta pergunta? O teu pai perguntou-me. O pai dele também.
+<> E o pai do pai dele igualmente. A resposta foi não então, é não agora, e será não por todas as eras vindouras.
+<> O meu poder está contido, para o bem de todos nós. Contido, e nunca será libertado.
+
+King Merlot: Já esperava tal resposta. Ainda assim, a esperança persiste, mesmo quando é uma ilusão.
+
+General Alcino: A ilusão dá sabor à vida. E, ainda assim... ultimamente, tenho visto uma sombra crescer através do véu.
+<> A ajuda vem, mas não pela minha mão.
+
+General Alcino: Diz-me, contudo... achas que os nossos aliados élficos conhecem a verdade do que os mantém vivos? O preço da sua chamada longevidade?
+
+~ runEvent("King Angry")
+
+King Merlot: Basta, General. Nem mais uma palavra. Não estamos sozinhos.
+
+General Alcino: Certo. Voltarei para a minha cabana. As guerras não se planeiam sozinhas, infelizmente.

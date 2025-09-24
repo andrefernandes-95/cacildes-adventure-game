@@ -356,7 +356,7 @@ namespace AF
 
             if (!AreRequirementsMet(attackStatManager.GetCharacter()))
             {
-                baseDamage.Multiply(.1f);
+                baseDamage.Multiply(.25f);
             }
 
             return baseDamage;

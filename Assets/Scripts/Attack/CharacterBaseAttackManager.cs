@@ -185,12 +185,17 @@
             }
             weaponDamage.statusEffects = weaponStatusEffectsToAdd.ToArray();
 
+            // Copy other stats from the weapon
+            weaponDamage.pushForce = weapon.damage.pushForce;
+            weaponDamage.ignoreBlocking = weapon.damage.ignoreBlocking;
+            weaponDamage.canNotBeParried = weapon.damage.canNotBeParried;
+
             int twoHandAttackBonus = ApplyWeaponBuffs(weapon, weaponDamage);
 
             // If character doesn't meet the requirements
             if (!DoesCharacterMeetWeaponRequirements(weapon))
             {
-                weaponDamage.Multiply(.1f);
+                weaponDamage.Multiply(.25f);
             }
 
             return (weaponDamage, STRBonus, DEXBonus, INTBonus, twoHandAttackBonus);

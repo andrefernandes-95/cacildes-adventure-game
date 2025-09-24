@@ -9,7 +9,9 @@ namespace AF
     {
         [SerializeField] QuestParent bearQuest;
         [SerializeField] QuestParent robertoQuest;
+        [SerializeField] QuestParent sewersQuest;
         [SerializeField] QuestObjective robertoKilledObjective;
+        [SerializeField] QuestObjective grischaKilledObjective;
         [SerializeField] PlayerManager playerManager;
         [SerializeField] FlagsDatabase flagsDatabase;
 
@@ -87,6 +89,16 @@ namespace AF
 
                 flagsDatabase.AddFlag(key);
                 RunEvent(eventId);
+            });
+
+            story.BindExternalFunction("hasFinishedSewersAndIsReadyForReward", () =>
+            {
+                return sewersQuest.IsObjectiveCompleted(grischaKilledObjective) && sewersQuest.IsCompleted() == false;
+            });
+
+            story.BindExternalFunction("hasStartedSewersQuest", () =>
+            {
+                return sewersQuest.hasStarted;
             });
         }
 

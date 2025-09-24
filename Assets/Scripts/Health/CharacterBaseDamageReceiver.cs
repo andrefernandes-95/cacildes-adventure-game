@@ -273,9 +273,11 @@ namespace AF
 
             var targetPos = GetCharacter().transform.position - Camera.main.transform.position;
             targetPos.y = 0;
+            float finalPushForce = Mathf.Clamp(damage.pushForce * pushForceAbsorption, 0, Mathf.Infinity) * 2.5f;
+
             GetCharacter().characterPushController.ApplyForceSmoothly(
                 targetPos.normalized,
-                Mathf.Clamp(damage.pushForce * pushForceAbsorption, 0, Mathf.Infinity) * 2.5f,
+                finalPushForce,
                 .25f);
         }
 

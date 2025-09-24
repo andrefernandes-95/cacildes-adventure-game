@@ -18,9 +18,9 @@ General Alcino: ...
     General Alcino: ...
 
     ** [E nós temos essa pedra que eles procuram?]  
-        General Alcino: Isso é... complicado. Os nossos aliados élficos possuem uma pedra que mantém as florestas verdes durante todo o ano e lhes concede vidas anormalmente longas, mesmo para padrões élficos.  
-
-        General Alcino: Entre nós, corresponde a todas as descrições desta 'Pedra do Fogo Frio'. Mas, como sabes, os fanáticos raramente se preocupam com factos.  
+        General Alcino: Os fanáticos costumam ser seletivos quanto aos factos.
+        <> Dito isto, os nossos aliados élficos possuem de facto uma pedra que mantém as suas florestas verdejantes todo o ano e lhes concede vidas anormalmente longas,
+        <> mesmo para padrões élficos, repara bem.
 
         General Alcino: ...
 

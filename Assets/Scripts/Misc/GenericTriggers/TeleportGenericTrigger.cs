@@ -17,6 +17,9 @@ namespace AF
         public void OnActivate()
         {
             Teleport();
+
+            // Disable prompt after beginning teleport to avoid user re-interacting with it
+            DisableCapturable();
         }
 
 

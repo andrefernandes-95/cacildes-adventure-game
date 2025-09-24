@@ -177,7 +177,7 @@ namespace AF
             }
 
             bool allPartnersAreDead = isDead && characterManager.partners?.Length > 0
-                && characterManager.partners.All(partner => partner.health.GetCurrentHealth() <= 0);
+                && characterManager.partners.All(partner => partner != null && partner.health.GetCurrentHealth() <= 0);
 
             if (characterManager.partners?.Length > 0 ? allPartnersAreDead : isDead)
             {

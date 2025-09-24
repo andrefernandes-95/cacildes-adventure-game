@@ -179,6 +179,11 @@ namespace AF
 
         public bool IsUsingSyntyModularFantasyHeroModel()
         {
+            if (syntyCharacterModelManager == null)
+            {
+                return false;
+            }
+
             return syntyCharacterModelManager.isUsingSyntyModularFantasyHeroModel;
         }
 

@@ -173,6 +173,11 @@ namespace AF.Health
 
         public void ScaleProjectile(CharacterBaseAttackManager attackStatManager, Weapon currentWeapon)
         {
+            if (currentWeapon == null)
+            {
+                return;
+            }
+
             // Steel arrow might inherit magic from a magical bow, hence don't check if base values are greater than zero
             this.physical += (int)currentWeapon.GetWeaponAttack(attackStatManager);
 

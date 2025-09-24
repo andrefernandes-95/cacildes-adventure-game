@@ -86,7 +86,7 @@ namespace AF
 
             if (!spell.AreRequirementsMet(playerManager))
             {
-                scaledDamageForStats.Multiply(0.1f);
+                scaledDamageForStats.Multiply(0.25f);
             }
 
             Damage scaledDamageFromSpellLevel = spell.GetSpellDamageForCurrentLevel(scaledDamageForStats);
