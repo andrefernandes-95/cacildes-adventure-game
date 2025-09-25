@@ -45,6 +45,9 @@ namespace AF.Events
 
         protected GenericTrigger genericTrigger;
 
+        [Header("Options")]
+        [SerializeField] bool skipTurnCapturableOnMomentEnd = false;
+
         private void Awake()
         {
             CollectEventsFromChildren();
@@ -113,7 +116,7 @@ namespace AF.Events
             isRunning = false;
             EventManager.EmitEvent(EventMessages.ON_MOMENT_END);
 
-            if (genericTrigger != null)
+            if (genericTrigger != null && skipTurnCapturableOnMomentEnd == false)
             {
                 genericTrigger.TurnCapturable();
             }

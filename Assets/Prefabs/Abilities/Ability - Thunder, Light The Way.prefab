@@ -309,6 +309,7 @@ GameObject:
   - component: {fileID: 3582194731744300913}
   - component: {fileID: -1649068288561880790}
   - component: {fileID: -270091769798111239}
+  - component: {fileID: 8924325232069049981}
   m_Layer: 22
   m_Name: Ability - Thunder, Light The Way
   m_TagString: Untagged
@@ -351,6 +352,7 @@ MonoBehaviour:
   onMoment_End:
     m_PersistentCalls:
       m_Calls: []
+  skipTurnCapturableOnMomentEnd: 0
 --- !u!114 &8718627187935699203
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -481,6 +483,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   upOffset: {x: 0, y: 0, z: 0}
+--- !u!114 &8924325232069049981
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6243320882147612497}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de62bf33501046545bb6b8a24ca9f176, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  upOffset: {x: 0, y: 0, z: 0}
+  onParticleCollisionManagers:
+  - {fileID: 8610018620937581607}
+  - {fileID: 4752164854018729273}
+  - {fileID: 8246561330789189041}
+  - {fileID: 2621477183682560422}
 --- !u!1 &6981369798716316593
 GameObject:
   m_ObjectHideFlags: 0
@@ -816,7 +836,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 198963655649139852, guid: 6108438f5e38d0b4b8fed06af6b74254, type: 3}
       propertyPath: CollisionModule.collidesWith.m_Bits
-      value: 4196416
+      value: 4196672
       objectReference: {fileID: 0}
     - target: {fileID: 199087861157585046, guid: 6108438f5e38d0b4b8fed06af6b74254, type: 3}
       propertyPath: m_Materials.Array.size
@@ -896,6 +916,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   projectile: {fileID: 0}
   damage:
+    basePhysicalDamage: 0
     physical: 0
     fire: 0
     frost: 0
@@ -1114,7 +1135,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 198963655649139852, guid: 6108438f5e38d0b4b8fed06af6b74254, type: 3}
       propertyPath: CollisionModule.collidesWith.m_Bits
-      value: 4196416
+      value: 4196672
       objectReference: {fileID: 0}
     - target: {fileID: 199087861157585046, guid: 6108438f5e38d0b4b8fed06af6b74254, type: 3}
       propertyPath: m_Materials.Array.size
@@ -1161,6 +1182,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   projectile: {fileID: 0}
   damage:
+    basePhysicalDamage: 0
     physical: 0
     fire: 0
     frost: 0
@@ -1412,7 +1434,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 198963655649139852, guid: 6108438f5e38d0b4b8fed06af6b74254, type: 3}
       propertyPath: CollisionModule.collidesWith.m_Bits
-      value: 4196416
+      value: 4196672
       objectReference: {fileID: 0}
     - target: {fileID: 199087861157585046, guid: 6108438f5e38d0b4b8fed06af6b74254, type: 3}
       propertyPath: m_Materials.Array.size
@@ -1459,6 +1481,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   projectile: {fileID: 0}
   damage:
+    basePhysicalDamage: 0
     physical: 0
     fire: 0
     frost: 0
@@ -1710,7 +1733,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 198963655649139852, guid: 6108438f5e38d0b4b8fed06af6b74254, type: 3}
       propertyPath: CollisionModule.collidesWith.m_Bits
-      value: 4196416
+      value: 4196672
       objectReference: {fileID: 0}
     - target: {fileID: 199087861157585046, guid: 6108438f5e38d0b4b8fed06af6b74254, type: 3}
       propertyPath: m_Materials.Array.size
@@ -1790,6 +1813,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   projectile: {fileID: 0}
   damage:
+    basePhysicalDamage: 0
     physical: 0
     fire: 0
     frost: 0
