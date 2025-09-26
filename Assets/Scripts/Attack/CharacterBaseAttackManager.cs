@@ -52,7 +52,6 @@
 
         [HideInInspector] public Damage damageBonus;
 
-        StatusEffectEntry[] unarmedStatusEffects = new List<StatusEffectEntry>().ToArray();
 
 
         private void Start()

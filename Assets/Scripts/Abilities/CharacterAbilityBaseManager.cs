@@ -41,7 +41,7 @@ namespace AF
                 return;
             }
 
-            queuedAbilities.Add(ability);
+            queuedAbilities.Add(Instantiate(ability));
 
             if (
                 ability.next != null

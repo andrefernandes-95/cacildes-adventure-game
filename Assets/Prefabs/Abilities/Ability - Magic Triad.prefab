@@ -29492,7 +29492,7 @@ MonoBehaviour:
   eventToInvoke:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 8770927875995087500}
+      - m_Target: {fileID: 3992646100293613143}
         m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
         m_MethodName: set_enabled
         m_Mode: 6
@@ -39423,7 +39423,6 @@ GameObject:
   - component: {fileID: 1049045954915014115}
   - component: {fileID: 2089029522098821548}
   - component: {fileID: 5141748228445587392}
-  - component: {fileID: 8770927875995087500}
   - component: {fileID: 5891049853424483102}
   - component: {fileID: 1602487584652897262}
   - component: {fileID: 1160231570725667361}
@@ -39431,6 +39430,7 @@ GameObject:
   - component: {fileID: 2552395476468018543}
   - component: {fileID: -6509136690356392873}
   - component: {fileID: 4599672717602759130}
+  - component: {fileID: 3992646100293613143}
   m_Layer: 1
   m_Name: Ability - Magic Triad
   m_TagString: Projectile
@@ -44303,42 +44303,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.7, y: 0.7, z: 0.7}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &8770927875995087500
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8367150505778905026}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 36c4d83f68dbeb742a83043ec012b711, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Speed: 10
-  lifetime: 3
-  impact: {fileID: 7220847891671401839, guid: 629d7271a492b334c92064a0b109e66e, type: 3}
-  detachFX: {fileID: 1854330902011809068}
-  spawnPoint: {fileID: 0}
-  playerYOffset: 3
-  isFromPlayer: 1
-  shouldHomeOnTarget: 0
-  shouldHomeOnPlayer: 0
-  isHoming: 0
-  homingTarget: {fileID: 0}
-  homingTargetOffset: {x: 0, y: 1, z: 0}
-  delayBeforeSettingHoming: 1
-  maxHomingTargetDistanceToTriggerIsHoming: 3
-  maxHomingTargetDistanceToDeactivate: 1
-  radius: 5
-  distance: 10
-  enemyLayer:
-    serializedVersion: 2
-    m_Bits: 0
-  lockOnToNearestEnemy: 1
-  onCollisionEvent:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!114 &5891049853424483102
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -44394,6 +44358,7 @@ MonoBehaviour:
   onMoment_End:
     m_PersistentCalls:
       m_Calls: []
+  skipTurnCapturableOnMomentEnd: 0
 --- !u!114 &1160231570725667361
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -44421,6 +44386,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   projectile: {fileID: 0}
   damage:
+    basePhysicalDamage: 0
     physical: 0
     fire: 0
     frost: 0
@@ -44444,7 +44410,7 @@ MonoBehaviour:
   onParticleDamage:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 8770927875995087500}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: PMFX_ProjectilesFX, MightyVFX
         m_MethodName: OnCollision
         m_Mode: 1
@@ -44631,3 +44597,29 @@ MonoBehaviour:
   initialForce: 0.15
   collisionForce: 0.3
   damageCollider: {fileID: 0}
+--- !u!114 &3992646100293613143
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8367150505778905026}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ee3f7eb176615742ae3b8a8f5a6b002, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Speed: 15
+  impact: {fileID: 7220847891671401839, guid: 629d7271a492b334c92064a0b109e66e, type: 3}
+  minimumDistanceToStartChasing: 50
+  radius: 25
+  distance: 999
+  enemyLayer:
+    serializedVersion: 2
+    m_Bits: 2304
+  upwardOffset: {x: 0, y: 1, z: 0}
+  onCollisionEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  caster: {fileID: 0}
+  followCasterAround: 0

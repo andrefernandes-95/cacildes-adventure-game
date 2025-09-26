@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Linq;
 using AF.Events;
 using AF.Flags;
@@ -40,6 +41,8 @@ namespace AF
         public AudioClip bossMusic;
 
         public UIDocument bossHud;
+        VisualElement root;
+
         public IMGUIContainer bossFillBar;
         Label bossHealthLabel;
 
@@ -72,6 +75,11 @@ namespace AF
             }
         }
 
+        private void OnEnable()
+        {
+            root = bossHud?.rootVisualElement;
+        }
+
         /// <summary>
         /// Unity Event
         /// </summary>
@@ -90,10 +98,10 @@ namespace AF
                     return;
                 }
 
-                bossFillBar ??= bossHud.rootVisualElement.Q<IMGUIContainer>("hp-bar");
+                bossFillBar ??= root.Q<IMGUIContainer>("hp-bar");
                 bossFillBar.style.width = new Length(characterManager.health.GetCurrentHealth() * 100 / characterManager.health.GetMaxHealth(), LengthUnit.Percent);
 
-                bossHealthLabel ??= bossHud.rootVisualElement.Q<Label>("boss-health");
+                bossHealthLabel ??= root.Q<Label>("boss-health");
                 bossHealthLabel.text = $"{Mathf.RoundToInt(characterManager.health.GetCurrentHealth())}/{Mathf.RoundToInt(characterManager.health.GetMaxHealth())}";
 
                 UIUtils.PlayPopAnimation(bossHealthLabel, new Vector3(1.1f, 1.1f, 1.1f));
@@ -108,10 +116,18 @@ namespace AF
             }
 
             bossHud.enabled = true;
-            bossHud.rootVisualElement.Q<Label>("boss-name").text = bossName;
-            bossHud.rootVisualElement.style.display = DisplayStyle.Flex;
-            bossHud.rootVisualElement.Q<VisualElement>("container").style.marginBottom = characterManager.partnerOrder == 0 ? 0 : 60 * characterManager.partnerOrder;
-            UIUtils.FadeIn(bossHud.rootVisualElement);
+            StartCoroutine(ShowBossHUDCoroutine());
+        }
+
+        IEnumerator ShowBossHUDCoroutine()
+        {
+            yield return new WaitForEndOfFrame();
+            root ??= bossHud.rootVisualElement;
+
+            root.Q<Label>("boss-name").text = bossName;
+            root.style.display = DisplayStyle.Flex;
+            root.Q<VisualElement>("container").style.marginBottom = characterManager.partnerOrder == 0 ? 0 : 60 * characterManager.partnerOrder;
+            UIUtils.FadeIn(root);
 
             UpdateUI();
         }

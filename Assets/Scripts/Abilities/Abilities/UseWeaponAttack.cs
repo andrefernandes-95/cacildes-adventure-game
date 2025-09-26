@@ -101,6 +101,11 @@ namespace AF
 
         void HandleAttackSpeed(CharacterManager characterManager)
         {
+            if (characterManager.ignoreWeaponAnimationSpeed)
+            {
+                return;
+            }
+
             Weapon currentWeapon;
 
             if (isRightHand)

@@ -63,6 +63,9 @@ namespace AF
         public bool canRevive = true;
         public bool shouldReturnToInitialPositionOnRevive = true;
 
+        [Tooltip("If true, will ignore weapon's attack speeds and stick to the Speed defined in CharacterAnimationEventListener()")]
+        public bool ignoreWeaponAnimationSpeed = false;
+
         [Header("Face Target Settings")]
         [SerializeField] float maximumAngleToAttackTarget = 30f;
         [SerializeField] bool faceTarget = false;

@@ -218,7 +218,7 @@ namespace AF.Combat
             Ability combatAbility = GetCombatAbility(allCombatAbilities);
             if (combatAbility != null)
             {
-                characterManager.characterAbilityManager.QueueAbility(Instantiate(combatAbility));
+                characterManager.characterAbilityManager.QueueAbility(combatAbility);
                 AddAbilityToUsedAbilities(combatAbility);
                 return true;
             }
@@ -241,7 +241,7 @@ namespace AF.Combat
 
                 if (reactionAbility != null && reactionAbility.CanUseAbility(characterManager))
                 {
-                    characterManager.characterAbilityManager.QueueAbility(Instantiate(reactionAbility));
+                    characterManager.characterAbilityManager.QueueAbility(reactionAbility);
                     AddAbilityToUsedAbilities(reactionAbility);
                     return;
                 }
@@ -273,7 +273,7 @@ namespace AF.Combat
             Ability combatAbility = GetCombatAbility(chaseCombatAbilities);
             if (combatAbility != null)
             {
-                characterManager.characterAbilityManager.QueueAbility(Instantiate(combatAbility));
+                characterManager.characterAbilityManager.QueueAbility(combatAbility);
                 return;
             }
 

@@ -553,6 +553,12 @@ namespace AF
             bool isSprinting = IsSprinting();
             float targetSpeed = isSprinting ? SprintSpeed : RunSpeed;
 
+            // if blocking without lock on, use walk speed
+            if (playerManager.playerBlockController.isBlocking && playerManager.playerWeaponsManager.IsTwoHanding() && lockOnManager.isLockedOn == false)
+            {
+                targetSpeed = WalkSpeed;
+            }
+
             if (lockOnManager.isLockedOn)
             {
                 targetSpeed = LockOnSpeed;

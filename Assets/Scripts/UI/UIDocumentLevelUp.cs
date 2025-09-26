@@ -190,13 +190,8 @@ namespace AF
                 levelUpAchievement.AwardAchievement();
 
                 var oldLevel = playerStatsDatabase.GetCurrentLevel();
-                playerStatsDatabase.vitality = desiredVitality;
-                playerStatsDatabase.endurance = desiredEndurance;
-                playerStatsDatabase.strength = desiredStrength;
-                playerStatsDatabase.dexterity = desiredDexterity;
-                playerStatsDatabase.intelligence = desiredIntelligence;
 
-                playerStatsDatabase.gold = virtualGold;
+                playerManager.playerLevelManager.LevelUp(desiredVitality, desiredEndurance, desiredStrength, desiredDexterity, desiredIntelligence, virtualGold);
 
                 var newLevel = playerStatsDatabase.GetCurrentLevel();
 

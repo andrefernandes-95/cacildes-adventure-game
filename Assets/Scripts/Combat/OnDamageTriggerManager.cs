@@ -3,12 +3,25 @@ using UnityEngine;
 
 namespace AF
 {
-    public class OnDamageTriggerManager : OnDamageCollisionAbstractManager
+    public class OnDamageTriggerManager : OnDamageCollisionAbstractManager, IAbilityInstance
     {
         public string[] tagsToDetect;
 
         public bool onTriggerEnter = true;
         public bool onTriggerStay = false;
+
+        public void CastAbility(CharacterBaseManager caster, CharacterBaseManager target)
+        {
+            damageOwner = caster;
+            if (caster is PlayerManager)
+            {
+                tagsToDetect = new string[] { "Enemy" };
+            }
+            else
+            {
+                tagsToDetect = new string[] { "Player", "Enemy" };
+            }
+        }
 
         void OnTriggerEnter(Collider other)
         {

@@ -24,6 +24,9 @@ public class PMFX_HomingProjectile : MonoBehaviour, IAbilityInstance
 
     bool isHoming = false;
 
+    [Header("Settings")]
+    public bool followCasterAround = true;
+
     public void CastAbility(CharacterBaseManager caster, CharacterBaseManager target)
     {
         this.caster = caster;
@@ -39,20 +42,28 @@ public class PMFX_HomingProjectile : MonoBehaviour, IAbilityInstance
         {
             RaycastHit[] hits = Physics.SphereCastAll(transform.position, radius, transform.forward, distance, enemyLayer);
 
+            float shortestDistance = Mathf.Infinity;
+
             foreach (RaycastHit hit in hits)
             {
                 // Check if the hit object is an enemy
                 if (hit.transform != null && hit.transform.root != caster.transform.root)
                 {
-                    if (hit.transform.gameObject.TryGetComponent<CharacterBaseManager>(out var enemy))
+                    if (hit.transform.gameObject.TryGetComponent<CharacterBaseManager>(out var enemy) && !caster.IsFromSameFaction(enemy))
                     {
-                        homingTarget = enemy;
+                        float currentDistance = Vector3.Distance(enemy.transform.position, transform.position);
+
+                        if (currentDistance < shortestDistance)
+                        {
+                            shortestDistance = currentDistance;
+                            homingTarget = enemy;
+                        }
                     }
                 }
             }
         }
 
-        if (!isHoming)
+        if (!isHoming && followCasterAround)
         {
             transform.SetPositionAndRotation(
                 caster.characterTransformHelper.torso.transform.position + upwardOffset, caster.transform.rotation);

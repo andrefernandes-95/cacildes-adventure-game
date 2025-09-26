@@ -1,11 +1,7 @@
 # IN PROGRESS
 
-CECILY TOWN
-
-- Finish library moment with Balbino
-- Fix teleport to the King Castle
-- After finishing library quest, Alcino is automatically talking about west bridge...
-
+- Blocking with weapon we are running on the speed
+- Rework lady that gives attributes in West Bridge, we need to use functions in playerLevel Up
 
 
 To Do:
