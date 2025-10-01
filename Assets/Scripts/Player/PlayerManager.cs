@@ -149,6 +149,8 @@ namespace AF
                 attackDamage.damageType = DamageType.COUNTER_ATTACK;
             }
 
+            onEnhanceAttackDamageWithEquipmentEffect?.Invoke(attackDamage, this);
+
             return attackDamage;
         }
 

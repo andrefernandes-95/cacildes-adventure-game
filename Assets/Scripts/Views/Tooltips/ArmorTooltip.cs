@@ -154,6 +154,18 @@ namespace AF
                     Color.white,
                     label);
             }
+
+            foreach (EquipmentEffect equipmentEffect in armor.equipmentEffects)
+            {
+                // Finally create the tooltip
+                if (equipmentEffect != null)
+                {
+                    itemTooltip.CreateTooltip(
+                        GUIIconsDatabase.bonusStats,
+                        Color.white,
+                        equipmentEffect.GetEquipmentEffectTooltip());
+                }
+            }
         }
 
         private void ShowStatTooltip(int bonusValue, string statNameEnglish, string statNamePortuguese, string description, Texture2D icon)

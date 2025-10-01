@@ -10,13 +10,13 @@ namespace AF
 
         public bool CanLockOn()
         {
-            if (!characterManager.isActiveAndEnabled)
-            {
-                return false;
-            }
-
             if (characterManager != null)
             {
+                if (!characterManager.isActiveAndEnabled)
+                {
+                    return false;
+                }
+
                 return characterManager.health.GetCurrentHealth() > 0;
             }
 

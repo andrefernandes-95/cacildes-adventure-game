@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using AF.Health;
+using EditorAttributes;
 using UnityEngine;
 using UnityEngine.Localization.Settings;
 using static AF.ArmorBase;
@@ -20,15 +21,16 @@ namespace AF
         [Header("Stamina Costs")]
         public float blockStaminaCost = 50;
 
+        [HelpBox("Formula for DMG Absorption: 1 - absorption = Result")]
         // Defense Absorption
-        [Range(0, 1f)] public float physicalAbsorption = 1f;
-        [Range(0, 1f)] public float fireAbsorption = 1f;
-        [Range(0, 1f)] public float frostAbsorption = 1f;
-        [Range(0, 1f)] public float lightiningAbsorption = 1f;
-        [Range(0, 1f)] public float magicAbsorption = 1f;
-        [Range(0, 1f)] public float darknessAbsorption = 1f;
-        [Range(0, 1f)] public float waterAbsorption = 1f;
-        [Range(0, 1f)] public float postureDamageAbsorption = 1f;
+        [Range(0, 1f)] public float physicalAbsorption = 0f;
+        [Range(0, 1f)] public float fireAbsorption = 0f;
+        [Range(0, 1f)] public float frostAbsorption = 0f;
+        [Range(0, 1f)] public float lightiningAbsorption = 0f;
+        [Range(0, 1f)] public float magicAbsorption = 0f;
+        [Range(0, 1f)] public float darknessAbsorption = 0f;
+        [Range(0, 1f)] public float waterAbsorption = 0f;
+        [Range(0, 1f)] public float postureDamageAbsorption = 0f;
 
 
         [Header("Damage Types")]
@@ -101,45 +103,14 @@ namespace AF
         {
             Damage incomingDamage = originalDamage.Clone();
 
-            if (physicalAbsorption != 1)
-            {
-                incomingDamage.physical = (int)(incomingDamage.physical * (1 - GetCurrentPhysicalAbsorption(incomingDamage, physicalAbsorption)));
-            }
-
-            if (fireAbsorption != 1)
-            {
-                incomingDamage.fire = (int)(incomingDamage.fire * (1 - GetCurrentAbsorption(fireAbsorption)));
-            }
-
-            if (frostAbsorption != 1)
-            {
-                incomingDamage.frost = (int)(incomingDamage.frost * (1 - GetCurrentAbsorption(frostAbsorption)));
-            }
-
-            if (lightiningAbsorption != 1)
-            {
-                incomingDamage.lightning = (int)(incomingDamage.lightning * (1 - GetCurrentAbsorption(lightiningAbsorption)));
-            }
-
-            if (darknessAbsorption != 1)
-            {
-                incomingDamage.darkness = (int)(incomingDamage.darkness * (1 - GetCurrentAbsorption(darknessAbsorption)));
-            }
-
-            if (waterAbsorption != 1)
-            {
-                incomingDamage.water = (int)(incomingDamage.water * (1 - GetCurrentAbsorption(waterAbsorption)));
-            }
-
-            if (magicAbsorption != 1)
-            {
-                incomingDamage.magic = (int)(incomingDamage.magic * (1 - GetCurrentAbsorption(magicAbsorption)));
-            }
-
-            if (postureDamageAbsorption != 1)
-            {
-                incomingDamage.postureDamage = (int)(incomingDamage.postureDamage * (1 - GetCurrentAbsorption(postureDamageAbsorption)));
-            }
+            incomingDamage.physical = (int)(incomingDamage.physical * (1 - GetCurrentPhysicalAbsorption(incomingDamage, physicalAbsorption)));
+            incomingDamage.fire = (int)(incomingDamage.fire * (1 - GetCurrentAbsorption(fireAbsorption)));
+            incomingDamage.frost = (int)(incomingDamage.frost * (1 - GetCurrentAbsorption(frostAbsorption)));
+            incomingDamage.lightning = (int)(incomingDamage.lightning * (1 - GetCurrentAbsorption(lightiningAbsorption)));
+            incomingDamage.darkness = (int)(incomingDamage.darkness * (1 - GetCurrentAbsorption(darknessAbsorption)));
+            incomingDamage.water = (int)(incomingDamage.water * (1 - GetCurrentAbsorption(waterAbsorption)));
+            incomingDamage.magic = (int)(incomingDamage.magic * (1 - GetCurrentAbsorption(magicAbsorption)));
+            incomingDamage.postureDamage = (int)(incomingDamage.postureDamage * (1 - GetCurrentAbsorption(postureDamageAbsorption)));
 
             return incomingDamage;
         }

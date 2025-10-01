@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 using AF.Shops;
 using AF.Detection;
+using NUnit.Framework;
 
 
 namespace AF
@@ -94,6 +95,8 @@ namespace AF
         [HideInInspector] GenericCreatureAnimationOverrideHelper genericCreatureAnimationOverrideHelper;
 
         public string speedParameter = "Speed";
+
+        [HideInInspector] public bool isRunningFromMoveTowardsEvent = false;
 
         private void Awake()
         {
@@ -403,14 +406,16 @@ namespace AF
         {
             if (characterAbilityManager.currentAbility != null)
             {
-                return characterAbilityManager.currentAbility.GetDamage(this);
+                Damage abilityDamage = characterAbilityManager.currentAbility.GetDamage(this);
+                onEnhanceAttackDamageWithEquipmentEffect?.Invoke(abilityDamage, this);
+                return abilityDamage;
             }
 
             // Fallback for animation-based attacks like ambushes,
             // Evaluate hitboxes
-            return characterBaseAttackManager.GetAttackDamage();
-
-            // return characterCombatController.GetCurrentDamage();
+            Damage characterAttackDamage = characterBaseAttackManager.GetAttackDamage();
+            onEnhanceAttackDamageWithEquipmentEffect?.Invoke(characterAttackDamage, this);
+            return characterAttackDamage;
         }
 
         /// <summary>
@@ -641,7 +646,7 @@ namespace AF
 
         public bool ShouldRun()
         {
-            return GetTarget() != null || IsCompanion();
+            return GetTarget() != null || IsCompanion() || isRunningFromMoveTowardsEvent;
         }
 
         public void HandleAgentRotation()

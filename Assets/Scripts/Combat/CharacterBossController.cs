@@ -126,7 +126,7 @@ namespace AF
 
             root.Q<Label>("boss-name").text = bossName;
             root.style.display = DisplayStyle.Flex;
-            root.Q<VisualElement>("container").style.marginBottom = characterManager.partnerOrder == 0 ? 0 : 60 * characterManager.partnerOrder;
+            root.Q<VisualElement>("container").style.marginBottom = characterManager.partnerOrder == 0 ? 0 : 90 * characterManager.partnerOrder;
             UIUtils.FadeIn(root);
 
             UpdateUI();

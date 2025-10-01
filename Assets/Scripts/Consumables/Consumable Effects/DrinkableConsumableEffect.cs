@@ -22,9 +22,11 @@ namespace AF
         {
             characterBaseManager.characterBaseWeaponsManager.HideEquipment();
 
-            potionPrefabInstance = Instantiate(consumableGraphic, characterBaseManager.characterTransformHelper.rightHand);
-            potionPrefabInstance.transform.localPosition = consumableLocalPosition;
-            potionPrefabInstance.transform.localRotation = Quaternion.Euler(consumableLocalRotation);
+            if (consumableGraphic != null)
+            {
+                potionPrefabInstance = Instantiate(consumableGraphic, characterBaseManager.characterTransformHelper.rightHand);
+                potionPrefabInstance.transform.SetLocalPositionAndRotation(consumableLocalPosition, Quaternion.Euler(consumableLocalRotation));
+            }
 
             characterBaseManager.PlayBusyAnimationWithRootMotion(startAnimation);
         }

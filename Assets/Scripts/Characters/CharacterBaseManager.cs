@@ -9,6 +9,7 @@ using AF.Stats;
 using AF.StatusEffects;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Events;
 
 namespace AF
 {
@@ -60,6 +61,8 @@ namespace AF
         public CharacterBaseBuffManager characterBaseBuffManager;
         public CharacterBaseWeaknessesManager characterBaseWeaknessesManager;
         public CharacterBaseWeaponBuffManager characterBaseWeaponBuffManager;
+
+        [HideInInspector] public UnityEvent<Damage, CharacterBaseManager> onEnhanceAttackDamageWithEquipmentEffect = new();
 
         public abstract void ResetStates();
 
@@ -198,8 +201,13 @@ namespace AF
                 && characterAbilityBaseManager.currentAbility == null)
             {
                 // Fixes issue where player and AI get underneath the ground because of animator override logic messing up the current animation playing
-                PlayBusyAnimationWithRootMotion("Switch Equipment");
+                PlaySwitchEquipmentAnimation();
             }
+        }
+
+        public void PlaySwitchEquipmentAnimation()
+        {
+            PlayBusyAnimationWithRootMotion("Switch Equipment");
         }
 
         public void FaceObject(Transform target)

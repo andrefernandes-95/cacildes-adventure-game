@@ -48,6 +48,8 @@ namespace AF
 
         public override void OnEquip(CharacterBaseManager character)
         {
+            base.OnEquip(character);
+
             if (!character.IsUsingSyntyModularFantasyHeroModel())
             {
                 return;
@@ -69,6 +71,8 @@ namespace AF
 
         public override void OnUnequip(CharacterBaseManager character)
         {
+            base.OnUnequip(character);
+
             if (!character.IsUsingSyntyModularFantasyHeroModel())
             {
                 return;

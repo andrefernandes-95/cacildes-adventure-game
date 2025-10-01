@@ -50,7 +50,8 @@ namespace AF
 
             HandleAttackWhileFlatulent();
 
-            Damage incomingDamage = attacker.GetAttackDamage();
+            Damage incomingDamage = attacker.GetAttackDamage()?.Clone();
+
             if (incomingDamage == null)
             {
                 LogIncomingDamageNullError(attacker);
@@ -76,6 +77,7 @@ namespace AF
                 HandleAngleHitFrom(attacker);
             }
 
+            onDamageModifierEvent?.Invoke(incomingDamage, attacker, GetCharacter());
             ApplyDamage(incomingDamage);
 
             onTakeDamage?.Invoke(incomingDamage);

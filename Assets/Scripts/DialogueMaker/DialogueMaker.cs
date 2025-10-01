@@ -64,38 +64,54 @@ namespace AF
                 string characterName = "";
 
                 // Detect speaker prefix (e.g. "LARA: Hello!")
-                if (text.Contains(":"))
+                if (text.Contains("@wait_"))
                 {
-                    var split = text.Split(new[] { ':' }, 2);
-                    characterName = split[0].Trim();
-                    text = split[1];
-                }
-
-                if (!string.IsNullOrEmpty(text))
-                {
-                    OnMessageStart();
-
-                    Character character = GetCharacter(characterName);
-                    dialogueWindow.DisplayMessageV2(character, text, GetChoices());
-
-                    PlayCharacterGreetingSfx(character);
-
-                    if (story.currentChoices.Count > 0)
+                    var split = text.Split(new[] { '_' }, 2); // split into ["@wait", "2.5"]
+                    if (float.TryParse(split[1].Trim(), out float timeToWait))
                     {
-                        OnChoicesStart();
-                        yield return new WaitUntil(() => hasChosenDialogueOption == true);
-                        OnChoicesEnd();
+                        yield return new WaitForSeconds(timeToWait);
                     }
                     else
                     {
-                        yield return new WaitUntil(() => playerManager.starterAssetsInputs.interact == false);
-                        yield return new WaitUntil(() => playerManager.starterAssetsInputs.interact);
+                        Debug.LogWarning("Failed to parse wait time: " + split[1]);
+                    }
+                }
+                else
+                {
+                    // Detect speaker prefix (e.g. "LARA: Hello!")
+                    if (text.Contains(":"))
+                    {
+                        var split = text.Split(new[] { ':' }, 2);
+                        characterName = split[0].Trim();
+                        text = split[1];
                     }
 
-                    OnMessageEnd();
+                    if (!string.IsNullOrEmpty(text))
+                    {
+                        OnMessageStart();
 
-                    // Wait until input has been fully processed so we dont accidentally trigger unwanted GenericTriggers
-                    yield return new WaitUntil(() => playerManager.starterAssetsInputs.interact == false);
+                        Character character = GetCharacter(characterName);
+                        dialogueWindow.DisplayMessageV2(character, text, GetChoices());
+
+                        PlayCharacterGreetingSfx(character);
+
+                        if (story.currentChoices.Count > 0)
+                        {
+                            OnChoicesStart();
+                            yield return new WaitUntil(() => hasChosenDialogueOption == true);
+                            OnChoicesEnd();
+                        }
+                        else
+                        {
+                            yield return new WaitUntil(() => playerManager.starterAssetsInputs.interact == false);
+                            yield return new WaitUntil(() => playerManager.starterAssetsInputs.interact);
+                        }
+
+                        OnMessageEnd();
+
+                        // Wait until input has been fully processed so we dont accidentally trigger unwanted GenericTriggers
+                        yield return new WaitUntil(() => playerManager.starterAssetsInputs.interact == false);
+                    }
                 }
             }
 

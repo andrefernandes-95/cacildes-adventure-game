@@ -180,6 +180,22 @@ namespace AF
                     equipmentDatabase.EquipConsumable(consumables[i], i);
                 }
             }
+            if (helmet != null)
+            {
+                equipmentDatabase.EquipHelmet(helmet);
+            }
+            if (armor != null)
+            {
+                equipmentDatabase.EquipArmor(armor);
+            }
+            if (gauntlet != null)
+            {
+                equipmentDatabase.EquipGauntlet(gauntlet);
+            }
+            if (legwear != null)
+            {
+                equipmentDatabase.EquipLegwear(legwear);
+            }
         }
 
         void LoadQuests()

@@ -78830,7 +78830,7 @@ MonoBehaviour:
   characterTwoHandRef: {fileID: 0}
   characterWeaponBuffs: {fileID: 0}
   shouldDisableHitboxOnStart: 1
-  hitboxType: 0
+  hitboxType: 2
   unarmedWeapon: {fileID: 11400000, guid: 2dc00ec92b5992442a05b8784922123c, type: 2}
 --- !u!114 &5319499538443614934
 MonoBehaviour:
@@ -87125,6 +87125,9 @@ MonoBehaviour:
   characterBaseBuffManager: {fileID: 8428338833627944103}
   characterBaseWeaknessesManager: {fileID: 4451367281870425769}
   characterBaseWeaponBuffManager: {fileID: 5579814422939317140}
+  onEnhanceAttackDamageWithEquipmentEffect:
+    m_PersistentCalls:
+      m_Calls: []
   thirdPersonController: {fileID: 5122672870407089929}
   playerWeaponsManager: {fileID: 16161443765438513}
   climbController: {fileID: 4336404304033871157}
@@ -87420,6 +87423,9 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   onWaterDamageUI:
+    m_PersistentCalls:
+      m_Calls: []
+  onDamageModifierEvent:
     m_PersistentCalls:
       m_Calls: []
   ignoreDamage: 0
@@ -88867,8 +88873,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8619754588792639567}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 8.307916, y: 2.1599998, z: 12.7043295}
+  m_LocalRotation: {x: 0.1327117, y: 0.7286091, z: -0.1503357, w: 0.65491647}
+  m_LocalPosition: {x: -97.26971, y: 5.4472237, z: 10.55215}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -88906,7 +88912,7 @@ Camera:
     width: 1
     height: 1
   near clip plane: 0.2
-  far clip plane: 500
+  far clip plane: 100
   field of view: 40
   orthographic: 0
   orthographic size: 10
@@ -92907,7 +92913,7 @@ MonoBehaviour:
   characterTwoHandRef: {fileID: 0}
   characterWeaponBuffs: {fileID: 0}
   shouldDisableHitboxOnStart: 1
-  hitboxType: 0
+  hitboxType: 1
   unarmedWeapon: {fileID: 11400000, guid: 2dc00ec92b5992442a05b8784922123c, type: 2}
 --- !u!114 &4195392078535947949
 MonoBehaviour:
@@ -103137,7 +103143,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2070925441746177912, guid: a1a802ecaf6775746bb2a929fb554ad8, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 8.307916
+      value: 8.589996
       objectReference: {fileID: 0}
     - target: {fileID: 2070925441746177912, guid: a1a802ecaf6775746bb2a929fb554ad8, type: 3}
       propertyPath: m_LocalPosition.y
@@ -103145,7 +103151,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2070925441746177912, guid: a1a802ecaf6775746bb2a929fb554ad8, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 12.7043295
+      value: 8.699997
       objectReference: {fileID: 0}
     - target: {fileID: 2070925441746177912, guid: a1a802ecaf6775746bb2a929fb554ad8, type: 3}
       propertyPath: m_LocalRotation.w
@@ -103186,6 +103192,14 @@ PrefabInstance:
     - target: {fileID: 2070925441746177913, guid: a1a802ecaf6775746bb2a929fb554ad8, type: 3}
       propertyPath: m_Transitions.m_InheritPosition
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2070925442191277752, guid: a1a802ecaf6775746bb2a929fb554ad8, type: 3}
+      propertyPath: Damping.x
+      value: 0.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 2070925442191277752, guid: a1a802ecaf6775746bb2a929fb554ad8, type: 3}
+      propertyPath: Damping.z
+      value: 0.4
       objectReference: {fileID: 0}
     - target: {fileID: 2070925442191277752, guid: a1a802ecaf6775746bb2a929fb554ad8, type: 3}
       propertyPath: DampingFromCollision

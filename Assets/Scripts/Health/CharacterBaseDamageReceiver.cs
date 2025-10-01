@@ -60,6 +60,11 @@ namespace AF
         [HideInInspector] public UnityEvent<int> onDarknessDamageUI;
         [HideInInspector] public UnityEvent<int> onWaterDamageUI;
 
+        /// <summary>
+        /// onDamageMofierEvent() receives 3 arguments - damage itself, the attacking character and the damage receiving character
+        /// </summary>
+        [HideInInspector] public UnityEvent<Damage, CharacterBaseManager, CharacterBaseManager> onDamageModifierEvent = new();
+
 
         [Header("Flags")]
         public bool ignoreDamage = false;

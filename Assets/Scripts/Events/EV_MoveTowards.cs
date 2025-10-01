@@ -18,6 +18,7 @@ namespace AF.Events
         {
             characterManager.agent.enabled = true;
             characterManager.SetAgentDestination(targetDestination.transform.position);
+            characterManager.isRunningFromMoveTowardsEvent = shouldRun;
 
             yield return new WaitUntil(() =>
             {
@@ -30,6 +31,8 @@ namespace AF.Events
             {
                 characterManager.agent.enabled = false;
             }
+
+            characterManager.isRunningFromMoveTowardsEvent = false;
         }
     }
 }

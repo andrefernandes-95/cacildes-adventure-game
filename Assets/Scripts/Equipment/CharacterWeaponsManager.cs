@@ -202,7 +202,7 @@ namespace AF.Equipment
             {
                 foreach (Hitbox weapon in weapons)
                 {
-                    if (weapon.gameObject.activeSelf)
+                    if (weapon != null && weapon.gameObject.activeSelf)
                     {
                         weapon.onWeaponSpecial?.Invoke();
                     }
@@ -210,23 +210,18 @@ namespace AF.Equipment
             }
         }
 
-        public void SwitchWeapon(int idx, CharacterWeaponHitbox newWeapon)
+        public void SwitchWeapon(int idx, bool isRightHand)
         {
-            if (newWeapon == null)
+            if (isRightHand)
             {
-                return;
+                currentRightWeaponIndex = idx;
+            }
+            else
+            {
+                currentLeftWeaponIndex = idx;
             }
 
-            if (weapons.Length > 0)
-            {
-                if (weapons[idx] != null)
-                {
-                    weapons[idx].gameObject.SetActive(false);
-                }
-
-                weapons[idx] = newWeapon;
-                weapons[idx].gameObject.SetActive(true);
-            }
+            UpdateEquipment();
         }
 
         public override Weapon GetCurrentRightWeapon()

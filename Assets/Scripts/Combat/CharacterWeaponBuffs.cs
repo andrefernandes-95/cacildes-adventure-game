@@ -73,9 +73,11 @@ namespace AF
 
             appliedBuff = weaponBuffName;
 
-            weaponBuffs[weaponBuffName].container.SetActive(true);
-
-            Invoke(nameof(DisableBuff), duration);
+            if (weaponBuffs.ContainsKey(weaponBuffName) && weaponBuffs[weaponBuffName].container != null)
+            {
+                weaponBuffs[weaponBuffName].container.SetActive(true);
+                Invoke(nameof(DisableBuff), duration);
+            }
         }
 
         void DisableBuff()

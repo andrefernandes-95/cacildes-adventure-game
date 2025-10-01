@@ -66,7 +66,9 @@ namespace AF
 
             if (characterManager.targetManager.currentTarget != null)
             {
-                characterManager.SetAgentDestination(characterManager.targetManager.currentTarget.transform.position);
+                NavMeshPath navMeshPath = new();
+                characterManager.agent.CalculatePath(characterManager.targetManager.currentTarget.transform.position, navMeshPath);
+                characterManager.agent.SetPath(navMeshPath);
 
                 PivotTowardsTarget();
 

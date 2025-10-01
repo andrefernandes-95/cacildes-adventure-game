@@ -42,6 +42,9 @@ namespace AF
         public int dexterityBonus = 0;
         public int intelligenceBonus = 0;
 
+        [Header("Equipment Effect")]
+        public EquipmentEffect[] equipmentEffects;
+
         [Header("Stamina")]
         public float staminaRegenBonus = 0f;
 
@@ -174,10 +177,32 @@ namespace AF
 
         public virtual void OnEquip(CharacterBaseManager character)
         {
+            foreach (EquipmentEffect equipmentEffect in equipmentEffects)
+            {
+                if (character is CharacterManager characterManager)
+                {
+                    equipmentEffect.OnEquip(characterManager);
+                }
+                else if (character is PlayerManager playerManager)
+                {
+                    equipmentEffect.OnEquip(playerManager);
+                }
+            }
         }
 
         public virtual void OnUnequip(CharacterBaseManager character)
         {
+            foreach (EquipmentEffect equipmentEffect in equipmentEffects)
+            {
+                if (character is CharacterManager characterManager)
+                {
+                    equipmentEffect.OnUnequip(characterManager);
+                }
+                else if (character is PlayerManager playerManager)
+                {
+                    equipmentEffect.OnUnequip(playerManager);
+                }
+            }
         }
 
         public int GetDiscountPercentageAtShops()
