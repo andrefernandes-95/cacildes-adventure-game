@@ -283,14 +283,16 @@ namespace AF.Equipment
 
         public void EquipWeapon(Weapon weapon, int slot, bool isRightHand)
         {
-            if (isRightHand)
+            Weapon[] hand = isRightHand ? rightHandWeapons : leftHandWeapons;
+
+            if (slot < 0 || slot >= hand.Length)
             {
-                rightHandWeapons[slot] = Instantiate(weapon);
+                Debug.LogWarning("Invalid weapon slot: " + slot);
+                return;
             }
-            else
-            {
-                leftHandWeapons[slot] = Instantiate(weapon);
-            }
+
+            hand[slot]?.OnUnequip(characterManager);
+            hand[slot] = weapon != null ? Instantiate(weapon) : null;
 
             UpdateEquipment();
         }

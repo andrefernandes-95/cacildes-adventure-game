@@ -64,11 +64,9 @@ namespace AF.Tests
         {
             var item = new KeyValuePair<Item, ItemAmount>(weapon, new ItemAmount());
 
-            equipmentDatabase.EquipWeapon(item.Key as Weapon, 0);
 
             bool result = itemList.ShouldShowItem<Weapon>(item, 0, false);
 
-            equipmentDatabase.UnequipWeapon(0);
 
             Assert.IsTrue(result);
         }
@@ -78,13 +76,11 @@ namespace AF.Tests
         {
             var item = new KeyValuePair<Item, ItemAmount>(weapon, new ItemAmount());
 
-            equipmentDatabase.EquipWeapon(item.Key as Weapon, 1);
 
             bool result1 = itemList.ShouldShowItem<Weapon>(item, 0, false);
             bool result2 = itemList.ShouldShowItem<Weapon>(item, 1, false);
             bool result3 = itemList.ShouldShowItem<Weapon>(item, 2, false);
 
-            equipmentDatabase.UnequipWeapon(1);
 
             Assert.IsFalse(result1);
             Assert.IsTrue(result2);

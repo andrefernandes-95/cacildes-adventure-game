@@ -68,7 +68,7 @@ namespace AF
 
             HandleAttackWhileFlatulent();
 
-            Damage incomingDamage = attacker.GetAttackDamage()?.Clone();
+            Damage incomingDamage = attacker.GetAttackDamage(playerManager)?.Clone();
 
             if (incomingDamage == null)
             {

@@ -234,6 +234,19 @@ namespace AF
 
                 itemTooltip.CreateTooltip(GUIIconsDatabase.vitality, Color.white, label);
             }
+
+
+            foreach (WeaponEffect weaponEffect in weapon.weaponEffects)
+            {
+                // Finally create the tooltip
+                if (weaponEffect != null)
+                {
+                    itemTooltip.CreateTooltip(
+                        GUIIconsDatabase.bonusStats,
+                        Color.white,
+                        weaponEffect.GetWeaponEffectTooltip());
+                }
+            }
         }
     }
 }

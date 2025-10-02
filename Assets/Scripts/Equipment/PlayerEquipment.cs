@@ -95,11 +95,11 @@ namespace AF
         {
             if (rightHand)
             {
-                playerManager.equipmentDatabase.EquipWeapon(weapon, slotIndex);
+                playerManager.equipmentDatabase.EquipWeapon(weapon, slotIndex, playerManager);
             }
             else
             {
-                playerManager.equipmentDatabase.EquipShield(weapon, slotIndex);
+                playerManager.equipmentDatabase.EquipShield(weapon, slotIndex, playerManager);
             }
         }
 
@@ -107,11 +107,11 @@ namespace AF
         {
             if (rightHand)
             {
-                playerManager.equipmentDatabase.UnequipWeapon(slotIndex);
+                playerManager.equipmentDatabase.UnequipWeapon(slotIndex, playerManager);
             }
             else
             {
-                playerManager.equipmentDatabase.UnequipShield(slotIndex);
+                playerManager.equipmentDatabase.UnequipShield(slotIndex, playerManager);
             }
         }
 

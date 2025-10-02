@@ -114,14 +114,16 @@ public class EquipmentDatabase : ScriptableObject
         EventManager.EmitEvent(EventMessages.ON_EQUIPMENT_CHANGED);
     }
 
-    public void EquipWeapon(Weapon weapon, int slotIndex)
+    public void EquipWeapon(Weapon weapon, int slotIndex, PlayerManager playerManager)
     {
         weapons[slotIndex] = Instantiate(weapon);
+        weapons[slotIndex]?.OnEquip(playerManager);
 
         EventManager.EmitEvent(EventMessages.ON_EQUIPMENT_CHANGED);
     }
-    public void UnequipWeapon(int slotIndex)
+    public void UnequipWeapon(int slotIndex, PlayerManager playerManager)
     {
+        weapons[slotIndex]?.OnUnequip(playerManager);
         weapons[slotIndex] = null;
 
         EventManager.EmitEvent(EventMessages.ON_EQUIPMENT_CHANGED);
@@ -140,9 +142,10 @@ public class EquipmentDatabase : ScriptableObject
         EventManager.EmitEvent(EventMessages.ON_SHIELD_EQUIPMENT_CHANGED);
     }
 
-    public void EquipShield(Weapon shield, int slotIndex)
+    public void EquipShield(Weapon shield, int slotIndex, PlayerManager playerManager)
     {
         shields[slotIndex] = Instantiate(shield);
+        shields[slotIndex]?.OnEquip(playerManager);
 
         CheckIfWeShouldAutoEquipAmmo(shield);
 
@@ -170,8 +173,9 @@ public class EquipmentDatabase : ScriptableObject
 
     }
 
-    public void UnequipShield(int slotIndex)
+    public void UnequipShield(int slotIndex, PlayerManager playerManager)
     {
+        shields[slotIndex]?.OnUnequip(playerManager);
         shields[slotIndex] = null;
         EventManager.EmitEvent(EventMessages.ON_EQUIPMENT_CHANGED);
         EventManager.EmitEvent(EventMessages.ON_SHIELD_EQUIPMENT_CHANGED);

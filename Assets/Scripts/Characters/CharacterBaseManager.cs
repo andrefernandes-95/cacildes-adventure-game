@@ -62,7 +62,10 @@ namespace AF
         public CharacterBaseWeaknessesManager characterBaseWeaknessesManager;
         public CharacterBaseWeaponBuffManager characterBaseWeaponBuffManager;
 
-        [HideInInspector] public UnityEvent<Damage, CharacterBaseManager> onEnhanceAttackDamageWithEquipmentEffect = new();
+        /// <summary>
+        /// Damage, Attacker, Damage Receiver
+        /// </summary>
+        [HideInInspector] public UnityEvent<Damage, CharacterBaseManager, CharacterBaseManager> onEnhanceAttackDamageWithEquipmentEffect = new();
 
         public abstract void ResetStates();
 
@@ -123,7 +126,7 @@ namespace AF
         }
         #endregion
 
-        public abstract Damage GetAttackDamage();
+        public abstract Damage GetAttackDamage(CharacterBaseManager damageReceiver);
 
         public bool IsFromSameFaction(CharacterBaseManager target)
         {

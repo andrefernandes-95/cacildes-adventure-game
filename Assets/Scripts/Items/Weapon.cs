@@ -121,6 +121,9 @@ namespace AF
         public int GetLightAttackStaminaCost() => staminaCostPerAttack;
         public int GetHeavyAttackStaminaCost() => staminaCostPerAttack * 2;
 
+        [Header("Weapon Effects")]
+        public WeaponEffect[] weaponEffects;
+
         [Header("Scaling")]
         public Scaling strengthScaling = Scaling.E;
         public Scaling dexterityScaling = Scaling.E;
@@ -513,6 +516,36 @@ namespace AF
             }
 
             return baseElementalDamage + GetBonusAttackPerLevel(level);
+        }
+
+        public virtual void OnEquip(CharacterBaseManager character)
+        {
+            foreach (WeaponEffect equipmentEffect in weaponEffects)
+            {
+                if (character is CharacterManager characterManager)
+                {
+                    equipmentEffect.OnEquip(characterManager);
+                }
+                else if (character is PlayerManager playerManager)
+                {
+                    equipmentEffect.OnEquip(playerManager);
+                }
+            }
+        }
+
+        public virtual void OnUnequip(CharacterBaseManager character)
+        {
+            foreach (WeaponEffect equipmentEffect in weaponEffects)
+            {
+                if (character is CharacterManager characterManager)
+                {
+                    equipmentEffect.OnUnequip(characterManager);
+                }
+                else if (character is PlayerManager playerManager)
+                {
+                    equipmentEffect.OnUnequip(playerManager);
+                }
+            }
         }
     }
 }

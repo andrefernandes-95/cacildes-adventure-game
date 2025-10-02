@@ -50,7 +50,7 @@ namespace AF
 
             HandleAttackWhileFlatulent();
 
-            Damage incomingDamage = attacker.GetAttackDamage()?.Clone();
+            Damage incomingDamage = attacker.GetAttackDamage(GetCharacter())?.Clone();
 
             if (incomingDamage == null)
             {

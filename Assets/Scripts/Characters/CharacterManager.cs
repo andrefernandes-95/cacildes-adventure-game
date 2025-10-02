@@ -402,19 +402,19 @@ namespace AF
             }
         }
 
-        public override Damage GetAttackDamage()
+        public override Damage GetAttackDamage(CharacterBaseManager damageReceiver)
         {
             if (characterAbilityManager.currentAbility != null)
             {
                 Damage abilityDamage = characterAbilityManager.currentAbility.GetDamage(this);
-                onEnhanceAttackDamageWithEquipmentEffect?.Invoke(abilityDamage, this);
+                onEnhanceAttackDamageWithEquipmentEffect?.Invoke(abilityDamage, this, damageReceiver);
                 return abilityDamage;
             }
 
             // Fallback for animation-based attacks like ambushes,
             // Evaluate hitboxes
             Damage characterAttackDamage = characterBaseAttackManager.GetAttackDamage();
-            onEnhanceAttackDamageWithEquipmentEffect?.Invoke(characterAttackDamage, this);
+            onEnhanceAttackDamageWithEquipmentEffect?.Invoke(characterAttackDamage, this, damageReceiver);
             return characterAttackDamage;
         }
 

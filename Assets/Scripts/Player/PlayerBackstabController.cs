@@ -31,7 +31,7 @@ namespace AF
         {
             CharacterManager enemy = GetPossibleTarget();
 
-            if (enemy != null && CanBackstab(enemy, playerManager.GetAttackDamage()))
+            if (enemy != null && CanBackstab(enemy, playerManager.GetAttackDamage(enemy)))
             {
                 if (enemy.characterCombatController.IsReactingAgainstBackstab())
                 {

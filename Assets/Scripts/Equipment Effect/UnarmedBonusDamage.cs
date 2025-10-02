@@ -35,7 +35,7 @@ namespace AF
 
         #region DAMAGE PROCESSING
 
-        void OnProcess(Damage damage, CharacterBaseManager attacker)
+        void OnProcess(Damage damage, CharacterBaseManager attacker, CharacterBaseManager damageReceiver)
         {
             if (bonusPhysicalDamageWhenUnarmed <= 0 || attacker == null)
                 return;

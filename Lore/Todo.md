@@ -1,8 +1,6 @@
 # IN PROGRESS
 
-- Blocking with weapon we are running on the speed
-- Rework lady that gives attributes in West Bridge, we need to use functions in playerLevel Up
-
+- Arun Temple -> Elven Ghosts that can only be damaged when they attack
 
 To Do:
 - Add category to received items popup
@@ -19,6 +17,7 @@ To Do:
 - Enemy Posture should increase every time its broke
 - I think save game is resetting favorite managers
 - UNtrack quest button not working 
+- Arena should give smithing shards as a reward
 
 Low:
 - Made wood sword upgradeable
@@ -69,3 +68,5 @@ BACKLOG:
 
 DONE:
 - Inventory weight, if too heavy, do heavy roll ( do not hinder jump )
+- Blocking with weapon we are running on the speed
+- Rework lady that gives attributes in West Bridge, we need to use functions in playerLevel Up

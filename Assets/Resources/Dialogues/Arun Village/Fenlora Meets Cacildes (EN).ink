@@ -7,7 +7,7 @@ Fenlora: Käyro lies fallen… yet not slain. A worthy fight, soldier of the kin
     * [I welcomed the fight. I only hope Käyro recovers.]
     Fenlora: His spirit endures. In time, strength shall return to him. 
     <> He was our bulwark against the orcs of Drogo… yet a shadow has already slipped past. 
-    <> The half-blood has defiled our temple halls.
+    <> The half-blood orc has breached our temple halls.
     -> The_Orcs_Are_Here
 
     * [I came to aid your people, yet you greeted me with steel?]
@@ -16,15 +16,15 @@ Fenlora: Käyro lies fallen… yet not slain. A worthy fight, soldier of the kin
 
     Fenlora: Forgive what seemed betrayal. In our need we awakened Käyro, for the tide of Drogo’s orcs surges toward us. 
     <> They covet the stone we guard. 
-    <> Even now, one of their kind profanes our sacred place.
+    <> Even now, one of their kind breaches our sacred place.
     -> The_Orcs_Are_Here
 
 
 == The_Orcs_Are_Here ==
 
-    ~ runEvent("Fenlora Talks")
-
     Cacildes: He is here… Balbino?
+
+    ~ runEvent("Fenlora Talks")
 
     Fenlora: Word of your struggle with him brought a hush to our fears… yet he hastens still, and the stone lies within his grasp.
 

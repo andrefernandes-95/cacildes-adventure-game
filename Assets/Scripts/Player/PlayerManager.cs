@@ -130,7 +130,7 @@ namespace AF
             playerConsumableManager.ResetStates();
         }
 
-        public override Damage GetAttackDamage()
+        public override Damage GetAttackDamage(CharacterBaseManager damageReceiver)
         {
             Damage attackDamage = characterBaseAttackManager.GetAttackDamage().Clone();
 
@@ -149,7 +149,7 @@ namespace AF
                 attackDamage.damageType = DamageType.COUNTER_ATTACK;
             }
 
-            onEnhanceAttackDamageWithEquipmentEffect?.Invoke(attackDamage, this);
+            onEnhanceAttackDamageWithEquipmentEffect?.Invoke(attackDamage, this, damageReceiver);
 
             return attackDamage;
         }

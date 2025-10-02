@@ -73,18 +73,24 @@ namespace AF
             }
             else if (damage != null && damageReceiver != null)
             {
+                Damage copiedDamage = damage.Clone();
+
                 if (doubleDamageOnNightTime && gameSession != null && gameSession.IsNightTime())
                 {
-                    damage.physical *= 2;
-                    damage.fire *= 2;
-                    damage.frost *= 2;
-                    damage.magic *= 2;
-                    damage.darkness *= 2;
-                    damage.lightning *= 2;
-                    damage.water *= 2;
+                    copiedDamage.physical *= 2;
+                    copiedDamage.fire *= 2;
+                    copiedDamage.frost *= 2;
+                    copiedDamage.magic *= 2;
+                    copiedDamage.darkness *= 2;
+                    copiedDamage.lightning *= 2;
+                    copiedDamage.water *= 2;
                 }
 
-                damageReceiver.TakeDamage(damage);
+                if (damageReceiver.GetCharacter() is PlayerManager playerManager)
+                {
+                    (playerManager.characterBaseDamageReceiver as PlayerDamageReceiver).TryBlockIncomingDamageForPlayer(playerManager, null, ref copiedDamage);
+                }
+                damageReceiver.TakeDamage(copiedDamage);
 
                 if (damageOwner != null && damageReceiver.GetCharacter() is CharacterManager aiCharacter && aiCharacter.targetManager != null)
                 {

@@ -603,22 +603,22 @@ namespace AF.UI.EquipmentMenu
             switch (focusedElement)
             {
                 case var _ when focusedElement == weaponButtonSlot1:
-                    equipmentDatabase.UnequipWeapon(0);
+                    equipmentDatabase.UnequipWeapon(0, playerManager);
                     break;
                 case var _ when focusedElement == weaponButtonSlot2:
-                    equipmentDatabase.UnequipWeapon(1);
+                    equipmentDatabase.UnequipWeapon(1, playerManager);
                     break;
                 case var _ when focusedElement == weaponButtonSlot3:
-                    equipmentDatabase.UnequipWeapon(2);
+                    equipmentDatabase.UnequipWeapon(2, playerManager);
                     break;
                 case var _ when focusedElement == secondaryWeaponButtonSlot1:
-                    equipmentDatabase.UnequipShield(0);
+                    equipmentDatabase.UnequipShield(0, playerManager);
                     break;
                 case var _ when focusedElement == secondaryWeaponButtonSlot2:
-                    equipmentDatabase.UnequipShield(1);
+                    equipmentDatabase.UnequipShield(1, playerManager);
                     break;
                 case var _ when focusedElement == secondaryWeaponButtonSlot3:
-                    equipmentDatabase.UnequipShield(2);
+                    equipmentDatabase.UnequipShield(2, playerManager);
                     break;
                 case var _ when focusedElement == arrowsButtonSlot1:
                     equipmentDatabase.UnequipArrow(0);

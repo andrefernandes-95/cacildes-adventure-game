@@ -142,14 +142,14 @@ namespace AF
             {
                 if (weapons[i] != null)
                 {
-                    equipmentDatabase.EquipWeapon(weapons[i], i);
+                    equipmentDatabase.EquipWeapon(weapons[i], i, FindAnyObjectByType<PlayerManager>(FindObjectsInactive.Include));
                 }
             }
             for (int i = 0; i < shields.Length; i++)
             {
                 if (shields[i] != null)
                 {
-                    equipmentDatabase.EquipShield(shields[i], i);
+                    equipmentDatabase.EquipShield(shields[i], i, FindAnyObjectByType<PlayerManager>(FindObjectsInactive.Include));
                 }
             }
             for (int i = 0; i < arrows.Length; i++)
