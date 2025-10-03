@@ -33,6 +33,7 @@ namespace AF
         public bool isBusy = false;
 
         public bool isConfused = false;
+        public bool isInGhostForm = false;
 
         [Header("Components")]
         public StatusController statusController;

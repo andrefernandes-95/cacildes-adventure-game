@@ -42,3 +42,5 @@ Aerandir: For me, it is enough to create with care, to leave something behind th
     
     - Aerandir: Some here in the village are obsessed with perfection in everything — even the carving of a simple bow. It’s exhausting to watch sometimes.  
 }
+
+* [Goodbye]

@@ -27,6 +27,15 @@ public class PMFX_HomingProjectile : MonoBehaviour, IAbilityInstance
     [Header("Settings")]
     public bool followCasterAround = true;
 
+    [Header("Collision Settings")]
+    int currentCollisionCount = 0;
+    public int maximumOnCollisionCalls = 999;
+
+    private void Awake()
+    {
+        currentCollisionCount = 0;
+    }
+
     public void CastAbility(CharacterBaseManager caster, CharacterBaseManager target)
     {
         this.caster = caster;
@@ -104,4 +113,15 @@ public class PMFX_HomingProjectile : MonoBehaviour, IAbilityInstance
         Destroy(this.gameObject);
     }
 
+    /// <summary>
+    /// Unity Event
+    /// </summary>
+    public void IncreaseOnCollisionCount()
+    {
+        currentCollisionCount++;
+        if (currentCollisionCount >= maximumOnCollisionCalls)
+        {
+            Destroy(this.gameObject);
+        }
+    }
 }

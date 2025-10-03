@@ -120,6 +120,11 @@ namespace AF
         {
             if (GetCharacter() != null)
             {
+                if (GetCharacter().isInGhostForm)
+                {
+                    return false;
+                }
+
                 if (!GetCharacter().isConfused)
                 {
                     // If attacking ourselves, do not allow damage to be taken

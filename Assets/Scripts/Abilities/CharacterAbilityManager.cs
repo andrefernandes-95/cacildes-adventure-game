@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace AF
 {
@@ -7,6 +8,7 @@ namespace AF
     public class CharacterAbilityManager : CharacterAbilityBaseManager
     {
         [SerializeField] CharacterManager characterManager;
+        [HideInInspector] public UnityEvent OnDequeueAbility;
 
         public override void ResetStates()
         {
@@ -58,6 +60,7 @@ namespace AF
             if (selectedAbility != null && selectedAbility.CanUseAbility(GetCharacter()))
             {
                 selectedAbility.OnPrepare(characterManager);
+                OnDequeueAbility?.Invoke();
             }
         }
 
