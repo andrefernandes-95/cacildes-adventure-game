@@ -47,7 +47,7 @@ namespace AF.Combat
         [Range(0, 100f)] public float chanceToReact = 90f;
 
         public List<CombatAction> usedCombatActions = new();
-        public Dictionary<Ability, float> usedAbilities = new();
+        public Dictionary<string, float> usedAbilities = new();
 
         [Header("Animation Settings")]
         public string ANIMATION_CLIP_TO_OVERRIDE_NAME = "Cacildes - Light Attack - 1";
@@ -172,7 +172,7 @@ namespace AF.Combat
 
                 foreach (Ability ability in shuffledAbilities)
                 {
-                    if (usedAbilities.ContainsKey(ability))
+                    if (HasUsedAbility(ability))
                     {
                         continue;
                     }
@@ -218,12 +218,17 @@ namespace AF.Combat
             Ability combatAbility = GetCombatAbility(allCombatAbilities);
             if (combatAbility != null)
             {
-                characterManager.characterAbilityManager.QueueAbility(combatAbility);
-                AddAbilityToUsedAbilities(combatAbility);
+                ChooseCombatAbility(combatAbility);
                 return true;
             }
 
             return false;
+        }
+
+        void ChooseCombatAbility(Ability ability)
+        {
+            characterManager.characterAbilityManager.QueueAbility(ability);
+            AddAbilityToUsedAbilities(ability);
         }
 
         public void UseCombatAction()
@@ -270,10 +275,12 @@ namespace AF.Combat
 
         public void UseChaseAction()
         {
+            CheckAbilityCooldowns();
+
             Ability combatAbility = GetCombatAbility(chaseCombatAbilities);
             if (combatAbility != null)
             {
-                characterManager.characterAbilityManager.QueueAbility(combatAbility);
+                ChooseCombatAbility(combatAbility);
                 return;
             }
 
@@ -485,17 +492,17 @@ namespace AF.Combat
 
         void AddAbilityToUsedAbilities(Ability combatAbility)
         {
-            if (usedAbilities.ContainsKey(combatAbility))
+            if (HasUsedAbility(combatAbility))
             {
                 return;
             }
 
-            usedAbilities.Add(combatAbility, Time.time + combatAbility.cooldown);
+            usedAbilities.Add(combatAbility.name.Replace("(Clone)", ""), Time.time + combatAbility.cooldown);
         }
 
         void CheckAbilityCooldowns()
         {
-            List<Ability> abilitiesToRemove = new();
+            List<string> abilitiesToRemove = new();
 
             foreach (var usedAbility in usedAbilities)
             {
@@ -505,13 +512,18 @@ namespace AF.Combat
                 }
             }
 
-            foreach (Ability abilityToRemove in abilitiesToRemove)
+            foreach (string abilityToRemove in abilitiesToRemove)
             {
                 if (usedAbilities.ContainsKey(abilityToRemove))
                 {
                     usedAbilities.Remove(abilityToRemove);
                 }
             }
+        }
+
+        bool HasUsedAbility(Ability ability)
+        {
+            return usedAbilities.ContainsKey(ability.name.Replace("(Clone)", ""));
         }
     }
 }

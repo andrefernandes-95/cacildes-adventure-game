@@ -1,44 +1,61 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 namespace AF
 {
     public class MovingPlatform : MonoBehaviour
     {
-        CharacterController characterController;
+        private Vector3 lastPosition;
+        private readonly List<CharacterBaseManager> riders = new List<CharacterBaseManager>();
 
-        Transform originalParent;
+        private void Start()
+        {
+            lastPosition = transform.position;
+        }
+
+        private void Update()
+        {
+            Vector3 delta = transform.position - lastPosition;
+
+            if (delta != Vector3.zero)
+            {
+                foreach (var rider in riders)
+                {
+                    if (rider != null && rider.enabled)
+                    {
+                        if (rider.health.GetCurrentHealth() > 0)
+                        {
+                            rider.characterController.Move(delta); // apply platform movement
+                        }
+                    }
+                }
+            }
+
+            lastPosition = transform.position;
+        }
 
         private void OnTriggerEnter(Collider other)
         {
-            if (other.CompareTag("Player"))
+            if (other.CompareTag("Player") || other.CompareTag("Enemy"))
             {
-                if (characterController == null)
+                CharacterBaseManager cc = other.GetComponent<CharacterBaseManager>();
+                if (cc != null && !riders.Contains(cc))
                 {
-                    characterController = other.GetComponent<CharacterController>();
+                    riders.Add(cc);
                 }
-
-                if (Physics.autoSyncTransforms == false)
-                {
-                    originalParent = characterController.transform.parent;
-                    characterController.transform.SetParent(this.transform);
-                    Physics.autoSyncTransforms = true;
-                }
-
             }
         }
+
         private void OnTriggerExit(Collider other)
         {
-            if (other.CompareTag("Player"))
+            if (other.CompareTag("Player") || other.CompareTag("Enemy"))
             {
-                if (characterController == null)
+                CharacterBaseManager cc = other.GetComponent<CharacterBaseManager>();
+                if (cc != null && riders.Contains(cc))
                 {
-                    characterController = other.GetComponent<CharacterController>();
+                    riders.Remove(cc);
                 }
-
-                characterController.transform.SetParent(originalParent);
-                Physics.autoSyncTransforms = false;
             }
         }
     }
-
 }
