@@ -1,14 +1,18 @@
 namespace AF
 {
+    using AF.Animations;
     using UnityEngine;
     using UnityEngine.Events;
 
     public class GhostCombatHelper : MonoBehaviour
     {
         [SerializeField] private CharacterManager characterManager;
+        [SerializeField] private CharacterAnimationEventListener characterAnimationEventListener;
+
         [SerializeField] private SkinnedMeshRenderer[] meshRenderers;
         [SerializeField] private Material activeMaterial;
         [SerializeField] private Material ghostMaterial;
+
 
         [Header("Events")]
         [SerializeField] private UnityEvent onExitingGhostForm;
@@ -24,16 +28,22 @@ namespace AF
             SetMaterial(ghostMaterial);
             characterManager.isInGhostForm = true;
 
-            characterManager.characterAbilityManager.OnDequeueAbility.AddListener(OnAttack);
-            characterManager.onResetStates.AddListener(OnResetStates);
+            characterAnimationEventListener.onLeftWeaponHitboxOpen.AddListener(OnAttack);
+            characterAnimationEventListener.onRightWeaponHitboxOpen.AddListener(OnAttack);
+
+            characterAnimationEventListener.onLeftWeaponHitboxClose.AddListener(OnResetStates);
+            characterAnimationEventListener.onRightWeaponHitboxClose.AddListener(OnResetStates);
         }
 
         private void OnDestroy()
         {
             if (characterManager == null) return;
 
-            characterManager.characterAbilityManager.OnDequeueAbility.RemoveListener(OnAttack);
-            characterManager.onResetStates.RemoveListener(OnResetStates);
+            characterAnimationEventListener.onLeftWeaponHitboxOpen.RemoveListener(OnAttack);
+            characterAnimationEventListener.onRightWeaponHitboxOpen.RemoveListener(OnAttack);
+
+            characterAnimationEventListener.onLeftWeaponHitboxClose.RemoveListener(OnResetStates);
+            characterAnimationEventListener.onRightWeaponHitboxClose.RemoveListener(OnResetStates);
         }
 
         private void OnAttack()

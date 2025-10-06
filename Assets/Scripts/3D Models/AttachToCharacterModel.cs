@@ -29,6 +29,13 @@ namespace AF
                 if (character != null)
                 {
                     Transform targetModel = FindChildByName(character.transform, nameOfParentGameObjectToAttachTo);
+
+                    if (targetModel == null)
+                    {
+                        Debug.LogWarning($"Target Model by name '{nameOfParentGameObjectToAttachTo}' not found");
+                        return;
+                    }
+
                     Transform foundBone = FindChildByName(targetModel.transform, boneName);
                     if (foundBone != null)
                     {

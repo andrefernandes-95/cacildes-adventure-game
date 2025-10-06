@@ -311,7 +311,7 @@ namespace AF
 
         private void OnAnimatorMove()
         {
-            Vector3 gravity = characterGravity.ignoreGravity ? new Vector3(0, characterGravity.initialY, 0) : Physics.gravity;
+            Vector3 gravity = characterGravity != null && characterGravity.ignoreGravity ? new Vector3(0, characterGravity.initialY, 0) : Physics.gravity;
 
             if (animator.applyRootMotion && characterController.enabled)
             {

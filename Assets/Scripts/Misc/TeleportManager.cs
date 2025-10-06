@@ -27,6 +27,9 @@ namespace AF
 
         [SerializeField] SpawnLocationData bonfireSpawnLocationData;
 
+        SceneLocation queuedSceneLocation;
+        SpawnLocationData queuedSpawnLocation;
+
         void Start()
         {
             SpawnPlayer();
@@ -104,6 +107,31 @@ namespace AF
                         playerManager.transform.rotation = Quaternion.LookRotation(targetRot);
                     }
                 }
+            }
+        }
+
+        /// <summary>
+        /// Unity Event
+        /// </summary>
+        public void QueueSpawnLocation(SpawnLocationData spawnLocationData) => queuedSpawnLocation = spawnLocationData;
+
+
+        /// <summary>
+        /// Unity Event
+        /// </summary>
+        public void QueueSceneLocation(SceneLocation sceneLocation) => queuedSceneLocation = sceneLocation;
+
+
+        /// <summary>
+        /// Unity Event
+        /// </summary>
+        public void LoadQueuedLocation()
+        {
+            if (queuedSceneLocation != null && queuedSpawnLocation != null)
+            {
+                Teleport(queuedSceneLocation, queuedSpawnLocation);
+                queuedSceneLocation = null;
+                queuedSpawnLocation = null;
             }
         }
     }

@@ -6,6 +6,7 @@ namespace AF
     using AF.Dialogue;
     using UnityEngine;
     using Ink.Runtime;
+    using System.Globalization;
 
     [RequireComponent(typeof(DialogueFunctions))]
     public class DialogueMaker : MonoBehaviour
@@ -67,7 +68,7 @@ namespace AF
                 if (text.Contains("@wait_"))
                 {
                     var split = text.Split(new[] { '_' }, 2); // split into ["@wait", "2.5"]
-                    if (float.TryParse(split[1].Trim(), out float timeToWait))
+                    if (float.TryParse(split[1].Trim(), NumberStyles.Float, CultureInfo.InvariantCulture, out float timeToWait))
                     {
                         yield return new WaitForSeconds(timeToWait);
                     }
