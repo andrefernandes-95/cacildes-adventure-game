@@ -157,7 +157,7 @@ namespace AF
 
             set
             {
-                playerManager.animator.SetBool("IsSliding", value);
+                // playerManager.animator.SetBool("IsSliding", value);
 
                 isSliding = value;
             }
@@ -191,11 +191,6 @@ namespace AF
             defaultFieldOfView = virtualCamera.m_Lens.FieldOfView;
             DefaultGravity = Gravity;
             DefaultJumpHeight = JumpHeight;
-
-            if (isSliding)
-            {
-                playerManager.animator.SetBool("IsSliding", true);
-            }
         }
 
         private void Start()
@@ -330,11 +325,6 @@ namespace AF
 
         bool ShouldTakeFallDamage()
         {
-            if (isSliding)
-            {
-                return false;
-            }
-
             return GetCurrentFallHeight() > minimumFallHeightToTakeDamage && trackFallDamage;
         }
 
@@ -526,11 +516,6 @@ namespace AF
                     float rotation = Mathf.SmoothDampAngle(transform.eulerAngles.y, _targetRotation, ref _rotationVelocity,
                         RotationSmoothTime);
 
-                    if (isSliding)
-                    {
-                        rotation = Mathf.Clamp(rotation, minSlidingRotation, maxSlidingRotation);
-                    }
-
                     // rotate to face input direction relative to camera position
                     playerManager.characterController.transform.rotation = Quaternion.Euler(0.0f, rotation, 0.0f);
                 }
@@ -645,18 +630,12 @@ namespace AF
             {
                 targetDirection = Vector3.zero;
             }
-
-            if (isSliding)
-            {
-                playerManager.characterController.Move(transform.forward * slidingSpeed * Time.deltaTime +
-                                 new Vector3(0.0f, _verticalVelocity + verticalVelocityBonus, 0.0f) * Time.deltaTime);
-            }
-            else if ((
-                // If is locked on
-                lockOnManager.nearestLockOnTarget != null && lockOnManager.isLockedOn
-                // Or aiming with camera for bow or spell casting
-                || rotateWithCamera
-                ) && playerManager.isBusy == false)
+            if ((
+                            // If is locked on
+                            lockOnManager.nearestLockOnTarget != null && lockOnManager.isLockedOn
+                            // Or aiming with camera for bow or spell casting
+                            || rotateWithCamera
+                            ) && playerManager.isBusy == false)
             {
                 float lockOnSpeed = _input.move.x != 0 && _input.move.y != 0 ? _speed : _speed * 1.5f;
 
@@ -738,12 +717,6 @@ namespace AF
 
                         // the square root of H * -2 * G = how much velocity needed to reach desired height
                         _verticalVelocity = Mathf.Sqrt(GetCurrentJumpHeight() * -2f * Gravity);
-
-                        if (isSliding)
-                        {
-
-                            playerManager.characterController.Move(transform.forward * (5f * Time.deltaTime));
-                        }
 
                         // update animator if using character
                         if (_hasAnimator)

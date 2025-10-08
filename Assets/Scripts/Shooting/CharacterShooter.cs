@@ -76,6 +76,8 @@ namespace AF.Shooting
             componentProjectile.Shoot(characterBaseManager, projectileInstance.transform.forward * componentProjectile.GetForwardVelocity(), componentProjectile.GetForceMode());
 
             onShoot?.Invoke();
+
+            DestroyArrowPlaceholder();
         }
 
         public override bool CanShoot()

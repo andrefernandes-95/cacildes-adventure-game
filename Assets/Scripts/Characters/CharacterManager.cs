@@ -491,7 +491,7 @@ namespace AF
             agent.enabled = false;
 
             targetManager.ClearTarget();
-            stateManager.ResetDefaultState();
+            stateManager?.ResetDefaultState();
 
             if (health is CharacterHealth characterHealth)
             {

@@ -14,6 +14,11 @@ namespace AF
 
         public override void OnPrepare(CharacterManager characterManager)
         {
+            if (characterManager.characterWeaponsManager.IsTwoHanding())
+            {
+                characterManager.characterWeaponsManager.SetIsTwoHanding(false);
+            }
+
             previouslyEquippedLeftHandWeapon = characterManager.characterWeaponsManager.GetCurrentLeftWeapon();
 
             characterManager.characterAbilityManager.SetCurrentAbility(this);

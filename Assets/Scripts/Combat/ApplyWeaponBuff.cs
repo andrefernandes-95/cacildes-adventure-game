@@ -5,7 +5,7 @@ namespace AF
 
     public class ApplyWeaponBuff : MonoBehaviour
     {
-        public CharacterWeaponBuffs.WeaponBuffName weaponBuffName;
+        public WeaponBuffAttribute weaponBuffAttribute;
         public float buffDuration = 180f;
 
         PlayerManager playerManager;
@@ -44,7 +44,7 @@ namespace AF
 
         public void Apply()
         {
-            GetPlayerManager().playerWeaponsManager.ApplyWeaponBuffToWeapon(weaponBuffName, buffDuration);
+            GetPlayerManager().playerWeaponBuffManager.AddBuff(weaponBuffAttribute);
         }
 
         PlayerManager GetPlayerManager()

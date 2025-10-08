@@ -26,6 +26,7 @@ namespace AF.Combat
         public List<Ability> reactionsToTargetAbilities = new();
         public List<Ability> chaseCombatAbilities = new();
         public List<Ability> combatAbilities = new();
+        public List<Ability> backCombatAbilities = new();
 
         [System.Serializable]
         public class HealthDependantAbility
@@ -490,6 +491,25 @@ namespace AF.Combat
             this.isPaused = value;
         }
 
+        public void CheckForBackActions()
+        {
+            if (InCooldown())
+            {
+                return;
+            }
+
+            CheckAbilityCooldowns();
+
+            Ability backAbility = GetCombatAbility(backCombatAbilities);
+
+            if (backAbility != null && backAbility.CanUseAbility(characterManager))
+            {
+                characterManager.characterAbilityManager.QueueAbility(backAbility);
+                AddAbilityToUsedAbilities(backAbility);
+                return;
+            }
+        }
+
         void AddAbilityToUsedAbilities(Ability combatAbility)
         {
             if (HasUsedAbility(combatAbility))
@@ -525,5 +545,7 @@ namespace AF.Combat
         {
             return usedAbilities.ContainsKey(ability.name.Replace("(Clone)", ""));
         }
+
+
     }
 }

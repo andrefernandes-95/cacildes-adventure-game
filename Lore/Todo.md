@@ -1,8 +1,7 @@
 # IN PROGRESS
 
-- Arun Temple -> Elven Ghosts that can only be damaged when they attack
-
 To Do:
+- Ring that makes orange juice drink faster
 - Add category to received items popup
 - BUG: Accessories can be equipped on other slots
 - expliccar q aguenar abilidades da mais dano

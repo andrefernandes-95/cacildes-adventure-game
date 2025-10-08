@@ -9,14 +9,12 @@ namespace AF
         [Header("Components")]
         public CharacterManager characterManager;
 
-
         [Header("States")]
         public State chaseState;
         public State patrolOrIdleState;
 
         [Header("Events")]
         public UnityEvent onAttack;
-
 
         [Header("Events")]
         public UnityEvent onStateEnter;
@@ -38,6 +36,7 @@ namespace AF
         {
             if (!characterManager.IsTargetInView())
             {
+                characterManager.characterCombatController.CheckForBackActions();
                 return this;
             }
 

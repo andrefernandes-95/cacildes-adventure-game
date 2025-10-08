@@ -63,10 +63,16 @@ namespace AF
         public CharacterBaseWeaknessesManager characterBaseWeaknessesManager;
         public CharacterBaseWeaponBuffManager characterBaseWeaponBuffManager;
 
+        #region Public Events
+
         /// <summary>
         /// Damage, Attacker, Damage Receiver
         /// </summary>
         [HideInInspector] public UnityEvent<Damage, CharacterBaseManager, CharacterBaseManager> onEnhanceAttackDamageWithEquipmentEffect = new();
+
+        [HideInInspector] public UnityEvent<CharacterBaseManager> onPreparingToDrinkConsumable;
+
+        #endregion
 
         public abstract void ResetStates();
 

@@ -48,6 +48,12 @@ namespace AF.Combat
             {
                 return false;
             }
+
+            if (characterManager.transform.root == target.transform.root)
+            {
+                return false;
+            }
+
             if (characterManager.IsFromSameFaction(target))
             {
                 return false;

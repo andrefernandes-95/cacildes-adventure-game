@@ -5073,6 +5073,7 @@ MonoBehaviour:
   onMoment_End:
     m_PersistentCalls:
       m_Calls: []
+  skipTurnCapturableOnMomentEnd: 0
 --- !u!1 &7727713067806633428
 GameObject:
   m_ObjectHideFlags: 0
@@ -5084,6 +5085,8 @@ GameObject:
   - component: {fileID: 3216580330073679708}
   - component: {fileID: 323124580674357710}
   - component: {fileID: 3021749965063179763}
+  - component: {fileID: 8250895240236818420}
+  - component: {fileID: 4951771787172001001}
   m_Layer: 31
   m_Name: '::'
   m_TagString: Untagged
@@ -5140,6 +5143,50 @@ MonoBehaviour:
   usePlayerAnimator: 1
   useBusyAnimation: 1
   teleportPlayerToThisTransform: {fileID: 0}
+--- !u!114 &8250895240236818420
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7727713067806633428}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c56bcfe0bb5e164a9ffeb8cbba305a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weaponBuffAttribute: {fileID: 11400000, guid: 5000495a2ae08d54cb4ae306b6799e94, type: 2}
+  buffDuration: 180
+  grindingWheel: {fileID: 0}
+--- !u!114 &4951771787172001001
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7727713067806633428}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c07ccdb5c7c59e0408167c1a7ce525d2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  eventToInvoke:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8250895240236818420}
+        m_TargetAssemblyTypeName: AF.ApplyWeaponBuff, AF
+        m_MethodName: Apply
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  waitBeforeInvoke: 1
+  comment: 
 --- !u!1 &8751360308522805904
 GameObject:
   m_ObjectHideFlags: 0
