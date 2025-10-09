@@ -14,6 +14,12 @@ namespace AF
         {
             characterManager.characterAbilityManager.SetCurrentAbility(this);
             characterManager.RotateTowardsTarget(characterManager.rotationSpeed * 10f);
+
+            if (!isRightHand)
+            {
+                characterManager.characterWeaponsManager.SetIsTwoHanding(false);
+            }
+
             characterManager.characterWeaponsManager.SwitchWeapon(weaponIndex, isRightHand);
             characterManager.PlaySwitchEquipmentAnimation();
         }

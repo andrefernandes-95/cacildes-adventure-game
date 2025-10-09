@@ -82,7 +82,7 @@ namespace AF.Combat
             {
                 foreach (var combatPartner in characterManager.partners)
                 {
-                    if (combatPartner != null && combatPartner.targetManager != null)
+                    if (combatPartner != null && combatPartner.targetManager != null && combatPartner.isActiveAndEnabled)
                     {
                         combatPartner.targetManager.SetTarget(target);
                     }

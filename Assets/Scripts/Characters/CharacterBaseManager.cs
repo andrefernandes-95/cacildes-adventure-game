@@ -96,13 +96,14 @@ namespace AF
             this.isBusy = isBusy;
             animator.applyRootMotion = applyRootMotion;
 
-            animator.CrossFade(animationName, 0.2f);
+            SafeCrossFade(animationName, 0.2f);
         }
 
         public void PlayBusyAnimation(string animationName)
         {
             isBusy = true;
-            animator.Play(animationName);
+
+            SafePlay(animationName);
         }
 
         public void PlayBusyAnimationWithRootMotion(string animationName)
@@ -116,7 +117,7 @@ namespace AF
         {
             animator.applyRootMotion = true;
             isBusy = true;
-            animator.CrossFade(animationName, crossFade);
+            SafeCrossFade(animationName, crossFade);
         }
 
         #region Hashed Animations
@@ -129,7 +130,7 @@ namespace AF
         public void PlayBusyHashedAnimation(int animationName)
         {
             isBusy = true;
-            animator.Play(animationName);
+            SafeHashedPlay(animationName);
         }
         #endregion
 
@@ -168,8 +169,6 @@ namespace AF
                 overrides[entry.animationName] = entry; // Replace or add
             }
         }
-
-
 
         public void UpdateAnimatorOverrideControllerClipsUsingDictionary(Dictionary<string, AnimationClip> clips)
         {
@@ -225,6 +224,36 @@ namespace AF
             Vector3 targetRotation = target.position - transform.position;
             targetRotation.y = 0;
             transform.rotation = Quaternion.LookRotation(targetRotation);
+        }
+
+        void SafeHashedPlay(int animationName)
+        {
+            if (!animator.HasState(0, animationName))
+            {
+                Debug.Log($"{gameObject.name} tried playing animation with hash {animationName} but it does not exist on layer 0");
+            }
+
+            animator.Play(animationName);
+        }
+
+        void SafePlay(string animationName)
+        {
+            if (!animator.HasState(0, Animator.StringToHash(animationName)))
+            {
+                Debug.Log($"{gameObject.name} tried playing animation {animationName} but it does not exist on layer 0");
+            }
+
+            animator.Play(animationName);
+        }
+
+        void SafeCrossFade(string animationName, float crossFade)
+        {
+            if (!animator.HasState(0, Animator.StringToHash(animationName)))
+            {
+                Debug.Log($"{gameObject.name} tried playing animation {animationName} but it does not exist on layer 0");
+            }
+
+            animator.CrossFade(animationName, crossFade);
         }
     }
 }

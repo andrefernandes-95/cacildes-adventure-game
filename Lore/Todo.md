@@ -1,6 +1,10 @@
 # IN PROGRESS
 
 To Do:
+- Use Weapon Type to determine the bonus of poise damage for colossal weapons (Colossal could ignoire poise all together)
+
+- Heavy Attack DAMAGE Bonus in effect?
+
 - Ring that makes orange juice drink faster
 - Add category to received items popup
 - BUG: Accessories can be equipped on other slots

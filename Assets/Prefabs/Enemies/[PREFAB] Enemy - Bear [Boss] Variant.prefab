@@ -1113,6 +1113,7 @@ MonoBehaviour:
   onMoment_End:
     m_PersistentCalls:
       m_Calls: []
+  skipTurnCapturableOnMomentEnd: 0
 --- !u!1 &1508155691796487672
 GameObject:
   m_ObjectHideFlags: 0
@@ -4225,12 +4226,16 @@ MonoBehaviour:
   onWaterDamageUI:
     m_PersistentCalls:
       m_Calls: []
+  onDamageModifierEvent:
+    m_PersistentCalls:
+      m_Calls: []
   ignoreDamage: 0
   canTakeDamage: 1
   damageOnDodge: 0
   waitingForBackstab: 0
   hasFlatulence: 0
   isTakingDamage: 0
+  isBackstabbed: 0
   character: {fileID: 5264576980608155725}
 --- !u!54 &5527995495000220292
 Rigidbody:
@@ -5801,6 +5806,14 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 7912443552478806346}
     - target: {fileID: 382358343563515988, guid: c67c9f9e69c46744a9a7a2e01e6990c3, type: 3}
+      propertyPath: m_Height
+      value: 2.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 382358343563515988, guid: c67c9f9e69c46744a9a7a2e01e6990c3, type: 3}
+      propertyPath: m_Radius
+      value: 0.78
+      objectReference: {fileID: 0}
+    - target: {fileID: 382358343563515988, guid: c67c9f9e69c46744a9a7a2e01e6990c3, type: 3}
       propertyPath: m_StoppingDistance
       value: 3
       objectReference: {fileID: 0}
@@ -7264,6 +7277,14 @@ PrefabInstance:
       propertyPath: onDamageReceived.m_PersistentCalls.m_Calls.Array.size
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6700594162982960142, guid: c67c9f9e69c46744a9a7a2e01e6990c3, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6700594162982960142, guid: c67c9f9e69c46744a9a7a2e01e6990c3, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 2.319
+      objectReference: {fileID: 0}
     - target: {fileID: 6703436520522309244, guid: c67c9f9e69c46744a9a7a2e01e6990c3, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -7728,6 +7749,7 @@ MonoBehaviour:
   onMoment_End:
     m_PersistentCalls:
       m_Calls: []
+  skipTurnCapturableOnMomentEnd: 0
 --- !u!114 &2834020604089629767 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6275248072461679835, guid: c67c9f9e69c46744a9a7a2e01e6990c3, type: 3}

@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 569cda70b383baf498a0be3205d889f4, type: 3}
   m_Name: Barbarian Armor
   m_EditorClassIdentifier: 
+  itemID: 
   nameLocalized:
     m_TableReference:
       m_TableCollectionName: GUID:bfeeac13f16b59940b4195364a8d9ed7
@@ -39,52 +40,29 @@ MonoBehaviour:
     m_FallbackState: 0
     m_WaitForCompletion: 0
     m_LocalVariables: []
-  sprite: {fileID: 21300000, guid: 980fcf558ae879446a0f7dbeb438d370, type: 3}
-  itemDescription: Crafted from the fur of a savage bear, this durable attire reflects
-    the untamed and raw power inherent within the warrior's barbarian spirit.
-  shortDescription: 
+  sprite: {fileID: 21300000, guid: c073339229759d44f92d5171dd9f0f77, type: 3}
+  itemValue: {fileID: 11400000, guid: f4f9ad43c266d3749b5745c9b4ebfdee, type: 2}
   value: 75
+  itemWeight: {fileID: 11400000, guid: dddda131f0bc9944d89c4f56cc46509f, type: 2}
   isRenewable: 0
   tradingItemRequirements:
     _serializedList: []
+  dropRateOnEnemies: 0.2
   notes: 
   location: 
-  physicalDefense: 6
-  fireDefense: 0
-  frostDefense: 0
-  lightningDefense: 0
-  magicDefense: 0
-  darkDefense: 0
-  statusEffectResistances:
-  - statusEffect: {fileID: 11400000, guid: f7dd06633468f614eb39e316fece5345, type: 2}
-    resistanceBonus: 15
-  graphicNameToShow: Barbarian Armor
-  graphicNamesToHide:
-  - TorsoContainer
-  vitalityBonus: 0
-  enduranceBonus: 0
-  strengthBonus: 0
-  dexterityBonus: 0
-  intelligenceBonus: 0
-  poiseBonus: 1
-  postureBonus: 0
-  staminaRegenBonus: 0
-  speedPenalty: 0.02
-  movementSpeedBonus: 0
-  additionalCoinPercentage: 0
-  reputationBonus: 0
-  discountPercentage: 0
-  pierceDamageAbsorption: 1
-  bluntDamageAbsorption: 1
-  slashDamageAbsorption: 1
-  canDamageEnemiesUponAttack: 0
-  damageDealtToEnemiesUponAttacked:
+  canBeUpgraded: 1
+  level: 1
+  upgradeMaterialData: {fileID: 11400000, guid: 097203f885e23ea45aec34bbe2cd054d, type: 2}
+  damageTemplate: {fileID: 11400000, guid: 6280806aa71e7ee49a4437450da4d526, type: 2}
+  damageAbsorbed:
+    basePhysicalDamage: 0
     physical: 0
     fire: 0
     frost: 0
     magic: 0
     lightning: 0
     darkness: 0
+    water: 0
     postureDamage: 0
     poiseDamage: 0
     pushForce: 0
@@ -93,8 +71,50 @@ MonoBehaviour:
     ignoreBlocking: 0
     canNotBeParried: 0
     damageType: 0
+    strengthScaling: 5
+    dexterityScaling: 5
+    intelligenceScaling: 5
+  statusEffectDelayRates: []
+  vitalityBonus: 0
+  enduranceBonus: 0
+  strengthBonus: 0
+  dexterityBonus: 0
+  intelligenceBonus: 0
+  equipmentEffects: []
+  staminaRegenBonus: 0
+  movementSpeedBonus: 0
+  additionalCoinMultiplier: 0
+  reputationBonus: 0
+  discountPercentage: 0
+  canDamageEnemiesUponAttack: 0
+  damageDealtToEnemiesUponAttacked:
+    basePhysicalDamage: 0
+    physical: 0
+    fire: 0
+    frost: 0
+    magic: 0
+    lightning: 0
+    darkness: 0
+    water: 0
+    postureDamage: 0
+    poiseDamage: 0
+    pushForce: 0
+    weaponAttackType: 0
+    statusEffects: []
+    ignoreBlocking: 0
+    canNotBeParried: 0
+    damageType: 0
+    strengthScaling: 5
+    dexterityScaling: 5
+    intelligenceScaling: 5
   projectileMultiplierBonus: 0
   canRage: 0
+  graphicsToShow:
+  - Chr_ArmUpperLeft_Male_03
+  - Chr_ArmUpperRight_Male_03
+  male_GraphicsToShow: Chr_Torso_Male_01
+  female_GraphicsToShow: Chr_Torso_Female_01
+  armorMaterial: {fileID: 2100000, guid: 45300956d3a552f4aad3d535288af23c, type: 2}
   references:
     version: 2
     RefIds: []
