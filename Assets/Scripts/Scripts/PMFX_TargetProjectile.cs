@@ -53,7 +53,7 @@ public class PMFX_TargetProjectile : MonoBehaviour, IAbilityInstance
     IEnumerator DisableAfter()
     {
         yield return new WaitForSeconds(lifetime);
-        this.gameObject.SetActive(false);
+        Destroy(this.gameObject);
     }
 
 }

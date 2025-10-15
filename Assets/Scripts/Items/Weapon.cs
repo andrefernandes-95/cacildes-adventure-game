@@ -216,6 +216,10 @@ namespace AF
         public Vector3 aimingPosition;
         public Vector3 aimingRotation;
 
+        [Header("Abilities")]
+        public Ability[] oh_heavyAttackAbilities;
+        public float castAbilitySpeed = 1f;
+
 #if UNITY_EDITOR
         private void OnEnable()
         {

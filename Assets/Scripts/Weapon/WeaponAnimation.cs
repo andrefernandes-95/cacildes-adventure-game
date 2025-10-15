@@ -70,6 +70,8 @@ namespace AF
         [SerializeField] AnimationClip th_lockOnRunLeft;
         [SerializeField] AnimationClip th_lockOnRunRight;
 
+        [Header("Spells")]
+        [SerializeField] AnimationClip simpleCast;
 
         public List<AnimationOverride> GetOneHandAnimations()
         {
@@ -167,6 +169,11 @@ namespace AF
                 animationOverrides.Add(new() { animationName = "core_oh_run_R_01", animationClip = oh_lockOnRunRight });
             }
 
+            if (simpleCast != null)
+            {
+                animationOverrides.Add(new() { animationName = "Cacildes - Spell - Cast", animationClip = simpleCast });
+            }
+
             return animationOverrides;
         }
 
@@ -260,7 +267,6 @@ namespace AF
                 animationOverrides.Add(new() { animationName = "Cacildes - Run Attack", animationClip = th_RunAttack });
             }
 
-
             if (th_lockOnRunBack != null)
             {
                 animationOverrides.Add(new() { animationName = "core_oh_run_B_01", animationClip = th_lockOnRunBack });
@@ -292,6 +298,11 @@ namespace AF
             if (th_lockOnRunRight != null)
             {
                 animationOverrides.Add(new() { animationName = "core_oh_run_R_01", animationClip = th_lockOnRunRight });
+            }
+
+            if (simpleCast != null)
+            {
+                animationOverrides.Add(new() { animationName = "Cacildes - Spell - Cast", animationClip = simpleCast });
             }
 
             animationOverrides.AddRange(weaponBlockAnimation.GetTwoHandBlockingAnimations());

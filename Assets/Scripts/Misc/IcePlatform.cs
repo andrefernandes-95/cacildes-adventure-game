@@ -22,6 +22,8 @@ namespace AF
         public MeshRenderer[] renderersToDisable;
         public MeshCollider[] collidersToDisable;
 
+        public bool canBreak = true;
+
         private bool isBroken = false;
         private Coroutine breakRoutine;
 
@@ -84,6 +86,7 @@ namespace AF
 
         void BreakPlatform()
         {
+            if (!canBreak) return;
             if (isBroken) return;
             isBroken = true;
 

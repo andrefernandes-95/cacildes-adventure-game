@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using AF.Health;
 using UnityEngine;
 using UnityEngine.Events;
@@ -25,11 +26,15 @@ namespace AF
         public CharacterBaseHealth health;
         public Slider postureBarSlider;
 
+        [Header("Bonus Posture")]
+        [SerializeField] List<IncreasePosture> increasePostureEffects = new();
+
         [Header("Optional AI Components")]
         public CharacterBaseManager characterBaseManager;
         public bool isStunned = false;
 
         private Coroutine postureDecayRoutine;
+
 
         public void ResetStates()
         {
@@ -38,7 +43,17 @@ namespace AF
 
         public virtual int GetMaxPostureDamage()
         {
-            return characterBaseManager.combatant.maximumPosture;
+            int basePosture = characterBaseManager.combatant.maximumPosture;
+
+            if (increasePostureEffects != null && increasePostureEffects.Count > 0)
+            {
+                foreach (IncreasePosture increasePosture in increasePostureEffects)
+                {
+                    basePosture += increasePosture.bonusPosture;
+                }
+            }
+
+            return basePosture;
         }
 
         public virtual bool TakePostureDamage(int extraPostureDamage)
@@ -120,6 +135,26 @@ namespace AF
         public int GetPostureDamageBonus()
         {
             return (int)(health.GetMaxHealth() * 12.5f) / 100;
+        }
+
+        public void AddPostureEffect(IncreasePosture increasePosture)
+        {
+            if (increasePostureEffects.Contains(increasePosture))
+            {
+                return;
+            }
+
+            increasePostureEffects.Add(increasePosture);
+        }
+
+        public void RemovePostureEffect(IncreasePosture increasePosture)
+        {
+            if (!increasePostureEffects.Contains(increasePosture))
+            {
+                return;
+            }
+
+            increasePostureEffects.Remove(increasePosture);
         }
     }
 }

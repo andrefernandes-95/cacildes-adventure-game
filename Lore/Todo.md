@@ -1,10 +1,11 @@
 # IN PROGRESS
 
 To Do:
+- During Molok fight he stopped taking damage
+- Add mana to spells, check intelligence requirements
 - Use Weapon Type to determine the bonus of poise damage for colossal weapons (Colossal could ignoire poise all together)
-
 - Heavy Attack DAMAGE Bonus in effect?
-
+- We should reset ai humanoid cuting distance to target on state exits on attack animatins (If we parry an enemy, he may continue to use cutting distance logic while stunned, happened with bird but I fixed it for generic creatures)
 - Ring that makes orange juice drink faster
 - Add category to received items popup
 - BUG: Accessories can be equipped on other slots

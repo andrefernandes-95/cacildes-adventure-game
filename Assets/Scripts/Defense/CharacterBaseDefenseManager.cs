@@ -62,7 +62,7 @@ namespace AF
                 water = character.statsBonusController.equipmentWaterDefenseBonus,
                 darkness = character.statsBonusController.equipmentDarkDefenseBonus,
                 poiseDamage = character.statsBonusController.equipmentPoise,
-                postureDamage = character.statsBonusController.postureBonus
+                postureDamage = character.characterPosture.GetMaxPostureDamage()
             };
 
             _damageAbsorbed = new Damage();

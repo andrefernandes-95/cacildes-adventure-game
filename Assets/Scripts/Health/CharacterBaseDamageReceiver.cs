@@ -320,7 +320,10 @@ namespace AF
             waitingForBackstab = false;
             isBackstabbed = true;
 
-            GetCharacter().PlayBusyHashedAnimationWithRootMotion(hashBackstabExecuted);
+            if (GetCharacter().combatant != null && GetCharacter().combatant.isHumanoid)
+            {
+                GetCharacter().PlayBusyHashedAnimationWithRootMotion(hashBackstabExecuted);
+            }
 
             // Apply Damage
             incomingDamage.physical += GetCharacter().characterPosture.GetPostureDamageBonus();

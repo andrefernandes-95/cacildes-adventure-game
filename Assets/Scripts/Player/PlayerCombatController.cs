@@ -215,7 +215,7 @@ namespace AF
                     playerManager.PlayCrossFadeBusyAnimationWithRootMotion(hashAttack, crossFade);
                 }
 
-                HandleAttackSpeed();
+                HandleAttackSpeed(null);
             }
             else
             {
@@ -257,20 +257,28 @@ namespace AF
             isComboing = false;
         }
 
-        void HandleAttackSpeed()
+        void HandleAttackSpeed(Ability combatAbility)
         {
             currentAttackSpeed = 1f;
 
             Weapon currentWeapon = equipmentDatabase.GetCurrentWeapon();
+
             if (currentWeapon != null)
             {
-                if (equipmentDatabase.isTwoHanding)
+                if (combatAbility != null)
                 {
-                    currentAttackSpeed = isHeavyAttacking ? currentWeapon.th_HeavyAttackSpeedPenalty : currentWeapon.twoHandAttackSpeedPenalty;
+                    if (equipmentDatabase.isTwoHanding)
+                    {
+                        currentAttackSpeed = isHeavyAttacking ? currentWeapon.th_HeavyAttackSpeedPenalty : currentWeapon.twoHandAttackSpeedPenalty;
+                    }
+                    else
+                    {
+                        currentAttackSpeed = isHeavyAttacking ? currentWeapon.oh_HeavyAttackSpeedPenalty : currentWeapon.oneHandAttackSpeedPenalty;
+                    }
                 }
                 else
                 {
-                    currentAttackSpeed = isHeavyAttacking ? currentWeapon.oh_HeavyAttackSpeedPenalty : currentWeapon.oneHandAttackSpeedPenalty;
+                    currentAttackSpeed = currentWeapon.castAbilitySpeed;
                 }
             }
 
@@ -280,13 +288,13 @@ namespace AF
         void HandleAttackWhileBlocking()
         {
             playerManager.PlayBusyAnimationWithRootMotion(hashAttackWhileBlocking);
-            HandleAttackSpeed();
+            HandleAttackSpeed(null);
         }
 
         void HandleRunAttack()
         {
             playerManager.PlayBusyAnimationWithRootMotion(hashRunAttack);
-            HandleAttackSpeed();
+            HandleAttackSpeed(null);
         }
 
         void HandleJumpAttack()
@@ -323,9 +331,9 @@ namespace AF
                 heavyAttackComboIndex = 0;
             }
 
-            if (isCardAttack)
+            if (TryUseHeavyAttackAbility(out var combatAbility))
             {
-                playerManager.PlayBusyHashedAnimationWithRootMotion(hashSpecialAttack);
+                playerManager.playerAbilityManager.QueueAbility(combatAbility);
             }
             else
             {
@@ -344,7 +352,7 @@ namespace AF
             // Stamina
             playerManager.staminaStatManager.DecreaseHeavyAttackStamina();
 
-            HandleAttackSpeed();
+            HandleAttackSpeed(combatAbility);
 
             heavyAttackComboIndex++;
         }
@@ -505,6 +513,33 @@ namespace AF
 
             isAttackingWithLeftHand = true;
             OnLightAttack();
+        }
+
+        bool TryUseHeavyAttackAbility(out Ability ability)
+        {
+            ability = null;
+
+            Weapon currentRightWeapon = playerManager.playerWeaponsManager.GetCurrentRightWeapon();
+            if (currentRightWeapon == null)
+            {
+                return false;
+            }
+
+            if (playerManager.playerWeaponsManager.IsTwoHanding() == false
+                && currentRightWeapon.oh_heavyAttackAbilities.Length > 0
+                && heavyAttackComboIndex < currentRightWeapon.oh_heavyAttackAbilities.Length)
+            {
+                ability = currentRightWeapon.oh_heavyAttackAbilities[heavyAttackComboIndex];
+
+                if (ability == null)
+                {
+                    return false;
+                }
+
+                return ability.CanUseAbility(playerManager);
+            }
+
+            return false;
         }
     }
 }
