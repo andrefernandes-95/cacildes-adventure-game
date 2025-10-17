@@ -1,6 +1,8 @@
 # IN PROGRESS
 
 To Do:
+- Rename every chest in the game so we know where each item is. 
+- Remove Elven Ear from Arun Village
 - During Molok fight he stopped taking damage
 - Add mana to spells, check intelligence requirements
 - Use Weapon Type to determine the bonus of poise damage for colossal weapons (Colossal could ignoire poise all together)

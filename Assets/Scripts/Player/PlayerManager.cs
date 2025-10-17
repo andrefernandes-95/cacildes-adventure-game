@@ -319,5 +319,6 @@ namespace AF
         }
 
         public Sprite GetPlayerPortrait() => uIDocumentCharacterCustomization.portraits[gameSettings.playerPortrait];
+        public string GetPlayerName() => gameSettings.playerName;
     }
 }

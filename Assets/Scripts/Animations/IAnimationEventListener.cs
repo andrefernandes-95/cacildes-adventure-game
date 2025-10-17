@@ -11,6 +11,8 @@ namespace AF.Animations
         public void OnSwim();
 
         public void ShowShield();
+        public void ShowEquipment();
+        public void HideEquipment();
 
         // Combat
         public void OpenLeftWeaponHitbox();

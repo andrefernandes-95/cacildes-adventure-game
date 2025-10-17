@@ -15,18 +15,18 @@ RenderSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 10
   m_Fog: 1
-  m_FogColor: {r: 0.65406847, g: 0.7842571, b: 0.8126167, a: 1}
+  m_FogColor: {r: 0.42791823, g: 0.32461637, b: 0.5164175, a: 1}
   m_FogMode: 3
   m_FogDensity: 0.05
   m_LinearFogStart: 0
   m_LinearFogEnd: 300
-  m_AmbientSkyColor: {r: 0.9586104, g: 0.9538153, b: 0.9576009, a: 1}
+  m_AmbientSkyColor: {r: 0.6013812, g: 0.57701623, b: 0.69175106, a: 1}
   m_AmbientEquatorColor: {r: 0.22098611, g: 0.23556425, b: 0.24528301, a: 1}
   m_AmbientGroundColor: {r: 0.8301887, g: 0.8301887, b: 0.8301887, a: 1}
   m_AmbientIntensity: 0.79
   m_AmbientMode: 3
   m_SubtractiveShadowColor: {r: 1, g: 1, b: 1, a: 1}
-  m_SkyboxMaterial: {fileID: 2100000, guid: 2bd8959f5fbd3644aa33af1a155fc147, type: 2}
+  m_SkyboxMaterial: {fileID: 2100000, guid: de5f2b03ab4ccfb47b64e3e6f53854c7, type: 2}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -1087,6 +1087,126 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4034676436734888731, guid: 91f7280ce4074b7408a194ed006873db, type: 3}
   m_PrefabInstance: {fileID: 2106826819}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &21825974
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 21825975}
+  - component: {fileID: 21825978}
+  - component: {fileID: 21825977}
+  - component: {fileID: 21825976}
+  m_Layer: 1
+  m_Name: Kneel Towards King
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &21825975
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 21825974}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2129230599}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &21825976
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 21825974}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c07ccdb5c7c59e0408167c1a7ce525d2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  eventToInvoke:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 922670671}
+        m_TargetAssemblyTypeName: AF.CharacterBaseManager, AF
+        m_MethodName: PlayBusyAnimationWithRootMotion
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: Kneeling
+          m_BoolArgument: 0
+        m_CallState: 2
+  waitBeforeInvoke: 0
+  comment: 
+--- !u!114 &21825977
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 21825974}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 478434bc1e18d3040ba3766f1c6a3912, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  character: {fileID: 922670674}
+  lookTarget: {fileID: 824371913}
+  facePlayer: 0
+  faceTheOtherWayAround: 0
+--- !u!114 &21825978
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 21825974}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ebeddfa90020d34d83963c20ff50ddf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  eventId: Kneel Towards King
+  eventToInvoke:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 21825977}
+        m_TargetAssemblyTypeName: AF.EventBase, AF
+        m_MethodName: Execute
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 21825976}
+        m_TargetAssemblyTypeName: AF.EventBase, AF
+        m_MethodName: Execute
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  comment: 
 --- !u!1 &23252902 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1080389100355332040, guid: 4db97c3c2127d1849a628e1599fadd76, type: 3}
@@ -2320,11 +2440,11 @@ Transform:
   m_GameObject: {fileID: 37150921}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1045986488}
+  m_Father: {fileID: 1192464602}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &37150923
 MonoBehaviour:
@@ -6143,11 +6263,11 @@ Transform:
   m_GameObject: {fileID: 72184462}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1045986488}
+  m_Father: {fileID: 1192464602}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &72184464
 MonoBehaviour:
@@ -9872,12 +9992,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 122952560}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1045986488}
+  m_Father: {fileID: 1192464602}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &122952562
 MonoBehaviour:
@@ -13985,6 +14105,258 @@ MonoBehaviour:
     _prefab: Assets/Prefabs/Interactables/[PREFAB] Squared Fog Wall.prefab
   - _gameObject: {fileID: 603699104}
     _prefab: Assets/Prefabs/Interactables/FogWall.prefab
+  - _gameObject: {fileID: 1614340883}
+    _prefab: Assets/Prefabs/Characters/[PREFAB] Character - King Merlot.prefab
+  - _gameObject: {fileID: 1102635215}
+    _prefab: Assets/_Asset Store/PolygonParticleFX/Prefabs/FX_Impact_Wood_01.prefab
+  - _gameObject: {fileID: 1587099882}
+    _prefab: Assets/_Asset Store/PolygonParticleFX/Prefabs/[PREFAB] FX Parry.prefab
+  - _gameObject: {fileID: 1453711128}
+    _prefab: Assets/Prefabs/FX/Footsteps/[PREFAB] Sand Footstep.prefab
+  - _gameObject: {fileID: 1997060580}
+    _prefab: Assets/Prefabs/FX/Footsteps/[PREFAB] Stone.prefab
+  - _gameObject: {fileID: 890772428}
+    _prefab: Assets/Prefabs/FX/Footsteps/[PREFAB] Wood Variant.prefab
+  - _gameObject: {fileID: 1288218560}
+    _prefab: Assets/Prefabs/FX/Footsteps/[PREFAB] Water Footstep.prefab
+  - _gameObject: {fileID: 395166873}
+    _prefab: Assets/Prefabs/FX/Footsteps/[PREFAB] Grass Footstep.prefab
+  - _gameObject: {fileID: 1542051155}
+    _prefab: Assets/Prefabs/FX/Footsteps/[PREFAB] Sand Footstep.prefab
+  - _gameObject: {fileID: 1867458102}
+    _prefab: Assets/Prefabs/FX/Footsteps/[PREFAB] Stone.prefab
+  - _gameObject: {fileID: 1026268624}
+    _prefab: Assets/Prefabs/FX/Footsteps/[PREFAB] Wood Variant.prefab
+  - _gameObject: {fileID: 347022497}
+    _prefab: Assets/Prefabs/FX/Footsteps/[PREFAB] Water Footstep.prefab
+  - _gameObject: {fileID: 1570674274}
+    _prefab: Assets/Prefabs/FX/Footsteps/[PREFAB] Grass Footstep.prefab
+  - _gameObject: {fileID: 1329037051}
+    _prefab: Assets/Prefabs/System/Exported Synty Character (AI) Variant.prefab
+  - _gameObject: {fileID: 1329037050}
+    _prefab: Assets/_Asset Store/_ Exported synty character/Synty Modular Characters
+      Project v2.fbx
+  - _gameObject: {fileID: 1329037048}
+    _prefab: Assets/Synty/PolygonGeneric/Prefabs/Props/SM_Gen_Prop_Skull_01.prefab
+  - _gameObject: {fileID: 1329037049}
+    _prefab: Assets/Synty/PolygonAncientEgypt/Prefabs/Characters/Attach/SM_Chr_Attach_Flower_01.prefab
+  - _gameObject: {fileID: 1329037051}
+    _prefab: Assets/Prefabs/System/Exported Synty Character (AI) Variant.prefab
+  - _gameObject: {fileID: 1329037061}
+    _prefab: Assets/Prefabs/FX/Footsteps/[PREFAB] Sand Footstep.prefab
+  - _gameObject: {fileID: 1329037060}
+    _prefab: Assets/Prefabs/FX/Footsteps/[PREFAB] Stone.prefab
+  - _gameObject: {fileID: 1329037059}
+    _prefab: Assets/Prefabs/FX/Footsteps/[PREFAB] Wood Variant.prefab
+  - _gameObject: {fileID: 1329037058}
+    _prefab: Assets/Prefabs/FX/Footsteps/[PREFAB] Water Footstep.prefab
+  - _gameObject: {fileID: 1329037057}
+    _prefab: Assets/Prefabs/FX/Footsteps/[PREFAB] Grass Footstep.prefab
+  - _gameObject: {fileID: 1329037056}
+    _prefab: Assets/Prefabs/FX/Footsteps/[PREFAB] Sand Footstep.prefab
+  - _gameObject: {fileID: 1329037055}
+    _prefab: Assets/Prefabs/FX/Footsteps/[PREFAB] Stone.prefab
+  - _gameObject: {fileID: 1329037054}
+    _prefab: Assets/Prefabs/FX/Footsteps/[PREFAB] Wood Variant.prefab
+  - _gameObject: {fileID: 1329037053}
+    _prefab: Assets/Prefabs/FX/Footsteps/[PREFAB] Water Footstep.prefab
+  - _gameObject: {fileID: 1329037052}
+    _prefab: Assets/Prefabs/FX/Footsteps/[PREFAB] Grass Footstep.prefab
+  - _gameObject: {fileID: 945056066}
+    _prefab: Assets/_Asset Store/VFX -  Magic by POLYMORPHFX/MiGHTYFX/MagicSpellsFXPack/Prefabs/FX/FXSpells/FX_Shadow_Impact.prefab
+  - _gameObject: {fileID: 945056065}
+    _prefab: Assets/_Asset Store/VFX -  Magic by POLYMORPHFX/MiGHTYFX/MagicSpellsFXPack/Prefabs/FX/FXSpells/FX_Shadow_Impact.prefab
+  - _gameObject: {fileID: 1720281136}
+    _prefab: Assets/_Asset Store/PolygonParticleFX/Prefabs/FX_ Poison.prefab
+  - _gameObject: {fileID: 984561507}
+    _prefab: Assets/_Asset Store/PolygonParticleFX/Prefabs/FX_BloodSplat_01.prefab
+  - _gameObject: {fileID: 610826666}
+    _prefab: Assets/_Asset Store/PolygonFantasyRivals/Prefabs/FX/Fire_02_FX.prefab
+  - _gameObject: {fileID: 1228625946}
+    _prefab: Assets/_Asset Store/PolygonFantasyRivals/Prefabs/FX/Fire_02_FX.prefab
+  - _gameObject: {fileID: 691376352}
+    _prefab: Assets/_Asset Store/PolygonParticleFX/Prefabs/FX_Explosion_Body_Bloody_01.prefab
+  - _gameObject: {fileID: 945056063}
+    _prefab: Assets/_Asset Store/PolygonParticleFX/Prefabs/FX_LightningStrike_01.prefab
+  - _gameObject: {fileID: 945056064}
+    _prefab: Assets/_Asset Store/VFX -  Magic by POLYMORPHFX/MiGHTYFX/MagicSpellsFXPack/Prefabs/FX/FXSpells/FX_Heal_Light.prefab
+  - _gameObject: {fileID: 945056067}
+    _prefab: Assets/_Asset Store/VFX - Magic Effects by Hovl Studio/Magic effects
+      pack/Prefabs/Character auras/Debuff.prefab
+  - _gameObject: {fileID: 1329037047}
+    _prefab: Assets/Prefabs/HUD/Enemy HUD Canvas.prefab
+  - _gameObject: {fileID: 824371912}
+    _prefab: Assets/Prefabs/Characters/[PREFAB] Character - King Merlot.prefab
+  - _gameObject: {fileID: 2139493436}
+    _prefab: Assets/_Asset Store/PolygonParticleFX/Prefabs/FX_Impact_Wood_01.prefab
+  - _gameObject: {fileID: 581519544}
+    _prefab: Assets/_Asset Store/PolygonParticleFX/Prefabs/[PREFAB] FX Parry.prefab
+  - _gameObject: {fileID: 790657300}
+    _prefab: Assets/Prefabs/FX/Footsteps/[PREFAB] Sand Footstep.prefab
+  - _gameObject: {fileID: 1579390882}
+    _prefab: Assets/Prefabs/FX/Footsteps/[PREFAB] Stone.prefab
+  - _gameObject: {fileID: 2084940682}
+    _prefab: Assets/Prefabs/FX/Footsteps/[PREFAB] Wood Variant.prefab
+  - _gameObject: {fileID: 694615085}
+    _prefab: Assets/Prefabs/FX/Footsteps/[PREFAB] Water Footstep.prefab
+  - _gameObject: {fileID: 1259588799}
+    _prefab: Assets/Prefabs/FX/Footsteps/[PREFAB] Grass Footstep.prefab
+  - _gameObject: {fileID: 2000105513}
+    _prefab: Assets/Prefabs/FX/Footsteps/[PREFAB] Sand Footstep.prefab
+  - _gameObject: {fileID: 9945720}
+    _prefab: Assets/Prefabs/FX/Footsteps/[PREFAB] Stone.prefab
+  - _gameObject: {fileID: 1852750604}
+    _prefab: Assets/Prefabs/FX/Footsteps/[PREFAB] Wood Variant.prefab
+  - _gameObject: {fileID: 530980324}
+    _prefab: Assets/Prefabs/FX/Footsteps/[PREFAB] Water Footstep.prefab
+  - _gameObject: {fileID: 962141184}
+    _prefab: Assets/Prefabs/FX/Footsteps/[PREFAB] Grass Footstep.prefab
+  - _gameObject: {fileID: 994960370}
+    _prefab: Assets/Prefabs/System/Exported Synty Character (AI) Variant.prefab
+  - _gameObject: {fileID: 994960369}
+    _prefab: Assets/_Asset Store/_ Exported synty character/Synty Modular Characters
+      Project v2.fbx
+  - _gameObject: {fileID: 994960367}
+    _prefab: Assets/Synty/PolygonGeneric/Prefabs/Props/SM_Gen_Prop_Skull_01.prefab
+  - _gameObject: {fileID: 994960368}
+    _prefab: Assets/Synty/PolygonAncientEgypt/Prefabs/Characters/Attach/SM_Chr_Attach_Flower_01.prefab
+  - _gameObject: {fileID: 994960370}
+    _prefab: Assets/Prefabs/System/Exported Synty Character (AI) Variant.prefab
+  - _gameObject: {fileID: 994960380}
+    _prefab: Assets/Prefabs/FX/Footsteps/[PREFAB] Sand Footstep.prefab
+  - _gameObject: {fileID: 994960379}
+    _prefab: Assets/Prefabs/FX/Footsteps/[PREFAB] Stone.prefab
+  - _gameObject: {fileID: 994960378}
+    _prefab: Assets/Prefabs/FX/Footsteps/[PREFAB] Wood Variant.prefab
+  - _gameObject: {fileID: 994960377}
+    _prefab: Assets/Prefabs/FX/Footsteps/[PREFAB] Water Footstep.prefab
+  - _gameObject: {fileID: 994960376}
+    _prefab: Assets/Prefabs/FX/Footsteps/[PREFAB] Grass Footstep.prefab
+  - _gameObject: {fileID: 994960375}
+    _prefab: Assets/Prefabs/FX/Footsteps/[PREFAB] Sand Footstep.prefab
+  - _gameObject: {fileID: 994960374}
+    _prefab: Assets/Prefabs/FX/Footsteps/[PREFAB] Stone.prefab
+  - _gameObject: {fileID: 994960373}
+    _prefab: Assets/Prefabs/FX/Footsteps/[PREFAB] Wood Variant.prefab
+  - _gameObject: {fileID: 994960372}
+    _prefab: Assets/Prefabs/FX/Footsteps/[PREFAB] Water Footstep.prefab
+  - _gameObject: {fileID: 994960371}
+    _prefab: Assets/Prefabs/FX/Footsteps/[PREFAB] Grass Footstep.prefab
+  - _gameObject: {fileID: 1753080803}
+    _prefab: Assets/_Asset Store/VFX -  Magic by POLYMORPHFX/MiGHTYFX/MagicSpellsFXPack/Prefabs/FX/FXSpells/FX_Shadow_Impact.prefab
+  - _gameObject: {fileID: 1753080802}
+    _prefab: Assets/_Asset Store/VFX -  Magic by POLYMORPHFX/MiGHTYFX/MagicSpellsFXPack/Prefabs/FX/FXSpells/FX_Shadow_Impact.prefab
+  - _gameObject: {fileID: 2130229121}
+    _prefab: Assets/_Asset Store/PolygonParticleFX/Prefabs/FX_ Poison.prefab
+  - _gameObject: {fileID: 1039981202}
+    _prefab: Assets/_Asset Store/PolygonParticleFX/Prefabs/FX_BloodSplat_01.prefab
+  - _gameObject: {fileID: 330752458}
+    _prefab: Assets/_Asset Store/PolygonFantasyRivals/Prefabs/FX/Fire_02_FX.prefab
+  - _gameObject: {fileID: 1208250768}
+    _prefab: Assets/_Asset Store/PolygonFantasyRivals/Prefabs/FX/Fire_02_FX.prefab
+  - _gameObject: {fileID: 1428539458}
+    _prefab: Assets/_Asset Store/PolygonParticleFX/Prefabs/FX_Explosion_Body_Bloody_01.prefab
+  - _gameObject: {fileID: 1753080800}
+    _prefab: Assets/_Asset Store/PolygonParticleFX/Prefabs/FX_LightningStrike_01.prefab
+  - _gameObject: {fileID: 1753080801}
+    _prefab: Assets/_Asset Store/VFX -  Magic by POLYMORPHFX/MiGHTYFX/MagicSpellsFXPack/Prefabs/FX/FXSpells/FX_Heal_Light.prefab
+  - _gameObject: {fileID: 1753080804}
+    _prefab: Assets/_Asset Store/VFX - Magic Effects by Hovl Studio/Magic effects
+      pack/Prefabs/Character auras/Debuff.prefab
+  - _gameObject: {fileID: 994960366}
+    _prefab: Assets/Prefabs/HUD/Enemy HUD Canvas.prefab
+  - _gameObject: {fileID: 1471273753}
+    _prefab: Assets/Prefabs/Characters/[PREFAB] Character - General Alcino Variant.prefab
+  - _gameObject: {fileID: 1845935737}
+    _prefab: Assets/_Asset Store/PolygonSamurai/Prefabs/Weapons/SM_Wep_Odachi_01.prefab
+  - _gameObject: {fileID: 1471273753}
+    _prefab: Assets/Prefabs/Characters/[PREFAB] Character - General Alcino Variant.prefab
+  - _gameObject: {fileID: 831853195}
+    _prefab: Assets/_Asset Store/PolygonParticleFX/Prefabs/FX_Impact_Wood_01.prefab
+  - _gameObject: {fileID: 26073085}
+    _prefab: Assets/_Asset Store/PolygonParticleFX/Prefabs/[PREFAB] FX Parry.prefab
+  - _gameObject: {fileID: 324703312}
+    _prefab: Assets/Prefabs/FX/Footsteps/[PREFAB] Sand Footstep.prefab
+  - _gameObject: {fileID: 157896829}
+    _prefab: Assets/Prefabs/FX/Footsteps/[PREFAB] Stone.prefab
+  - _gameObject: {fileID: 1171028507}
+    _prefab: Assets/Prefabs/FX/Footsteps/[PREFAB] Wood Variant.prefab
+  - _gameObject: {fileID: 833106985}
+    _prefab: Assets/Prefabs/FX/Footsteps/[PREFAB] Water Footstep.prefab
+  - _gameObject: {fileID: 1092006095}
+    _prefab: Assets/Prefabs/FX/Footsteps/[PREFAB] Grass Footstep.prefab
+  - _gameObject: {fileID: 197609712}
+    _prefab: Assets/Prefabs/FX/Footsteps/[PREFAB] Sand Footstep.prefab
+  - _gameObject: {fileID: 1186365656}
+    _prefab: Assets/Prefabs/FX/Footsteps/[PREFAB] Stone.prefab
+  - _gameObject: {fileID: 1023743627}
+    _prefab: Assets/Prefabs/FX/Footsteps/[PREFAB] Wood Variant.prefab
+  - _gameObject: {fileID: 1179075366}
+    _prefab: Assets/Prefabs/FX/Footsteps/[PREFAB] Water Footstep.prefab
+  - _gameObject: {fileID: 350088321}
+    _prefab: Assets/Prefabs/FX/Footsteps/[PREFAB] Grass Footstep.prefab
+  - _gameObject: {fileID: 1419946935}
+    _prefab: Assets/Prefabs/System/Exported Synty Character (AI) Variant.prefab
+  - _gameObject: {fileID: 1419946934}
+    _prefab: Assets/_Asset Store/_ Exported synty character/Synty Modular Characters
+      Project v2.fbx
+  - _gameObject: {fileID: 1419946932}
+    _prefab: Assets/Synty/PolygonGeneric/Prefabs/Props/SM_Gen_Prop_Skull_01.prefab
+  - _gameObject: {fileID: 1419946933}
+    _prefab: Assets/Synty/PolygonAncientEgypt/Prefabs/Characters/Attach/SM_Chr_Attach_Flower_01.prefab
+  - _gameObject: {fileID: 1419946935}
+    _prefab: Assets/Prefabs/System/Exported Synty Character (AI) Variant.prefab
+  - _gameObject: {fileID: 1419946945}
+    _prefab: Assets/Prefabs/FX/Footsteps/[PREFAB] Sand Footstep.prefab
+  - _gameObject: {fileID: 1419946944}
+    _prefab: Assets/Prefabs/FX/Footsteps/[PREFAB] Stone.prefab
+  - _gameObject: {fileID: 1419946943}
+    _prefab: Assets/Prefabs/FX/Footsteps/[PREFAB] Wood Variant.prefab
+  - _gameObject: {fileID: 1419946942}
+    _prefab: Assets/Prefabs/FX/Footsteps/[PREFAB] Water Footstep.prefab
+  - _gameObject: {fileID: 1419946941}
+    _prefab: Assets/Prefabs/FX/Footsteps/[PREFAB] Grass Footstep.prefab
+  - _gameObject: {fileID: 1419946940}
+    _prefab: Assets/Prefabs/FX/Footsteps/[PREFAB] Sand Footstep.prefab
+  - _gameObject: {fileID: 1419946939}
+    _prefab: Assets/Prefabs/FX/Footsteps/[PREFAB] Stone.prefab
+  - _gameObject: {fileID: 1419946938}
+    _prefab: Assets/Prefabs/FX/Footsteps/[PREFAB] Wood Variant.prefab
+  - _gameObject: {fileID: 1419946937}
+    _prefab: Assets/Prefabs/FX/Footsteps/[PREFAB] Water Footstep.prefab
+  - _gameObject: {fileID: 1419946936}
+    _prefab: Assets/Prefabs/FX/Footsteps/[PREFAB] Grass Footstep.prefab
+  - _gameObject: {fileID: 972369874}
+    _prefab: Assets/_Asset Store/VFX -  Magic by POLYMORPHFX/MiGHTYFX/MagicSpellsFXPack/Prefabs/FX/FXSpells/FX_Shadow_Impact.prefab
+  - _gameObject: {fileID: 972369873}
+    _prefab: Assets/_Asset Store/VFX -  Magic by POLYMORPHFX/MiGHTYFX/MagicSpellsFXPack/Prefabs/FX/FXSpells/FX_Shadow_Impact.prefab
+  - _gameObject: {fileID: 241139451}
+    _prefab: Assets/_Asset Store/PolygonParticleFX/Prefabs/FX_ Poison.prefab
+  - _gameObject: {fileID: 635468282}
+    _prefab: Assets/_Asset Store/PolygonParticleFX/Prefabs/FX_BloodSplat_01.prefab
+  - _gameObject: {fileID: 109464002}
+    _prefab: Assets/_Asset Store/PolygonFantasyRivals/Prefabs/FX/Fire_02_FX.prefab
+  - _gameObject: {fileID: 499792455}
+    _prefab: Assets/_Asset Store/PolygonFantasyRivals/Prefabs/FX/Fire_02_FX.prefab
+  - _gameObject: {fileID: 1494789252}
+    _prefab: Assets/_Asset Store/PolygonParticleFX/Prefabs/FX_Explosion_Body_Bloody_01.prefab
+  - _gameObject: {fileID: 972369871}
+    _prefab: Assets/_Asset Store/PolygonParticleFX/Prefabs/FX_LightningStrike_01.prefab
+  - _gameObject: {fileID: 972369872}
+    _prefab: Assets/_Asset Store/VFX -  Magic by POLYMORPHFX/MiGHTYFX/MagicSpellsFXPack/Prefabs/FX/FXSpells/FX_Heal_Light.prefab
+  - _gameObject: {fileID: 972369875}
+    _prefab: Assets/_Asset Store/VFX - Magic Effects by Hovl Studio/Magic effects
+      pack/Prefabs/Character auras/Debuff.prefab
+  - _gameObject: {fileID: 1419946931}
+    _prefab: Assets/Prefabs/HUD/Enemy HUD Canvas.prefab
+  - _gameObject: {fileID: 1157013487}
+    _prefab: Assets/Prefabs/Interactables/[PREFAB] Hint.prefab
+  - _gameObject: {fileID: 1045986487}
+    _prefab: Assets/_Asset Store/PolygonParticleFX/Prefabs/Exclamation Mark.prefab
+  - _gameObject: {fileID: 498270080}
+    _prefab: Assets/Prefabs/Interactables/[PREFAB] Hint.prefab
+  - _gameObject: {fileID: 498270079}
+    _prefab: Assets/_Asset Store/PolygonParticleFX/Prefabs/Exclamation Mark.prefab
   - _gameObject: {fileID: 795068269}
     _prefab: Assets/Prefabs/Interactables/(Event) Teleport.prefab
   - _gameObject: {fileID: 100802090}
@@ -17779,258 +18151,6 @@ MonoBehaviour:
       pack/Prefabs/Character auras/Debuff.prefab
   - _gameObject: {fileID: 1537792128}
     _prefab: Assets/Prefabs/HUD/Enemy HUD Canvas.prefab
-  - _gameObject: {fileID: 1614340883}
-    _prefab: Assets/Prefabs/Characters/[PREFAB] Character - King Merlot.prefab
-  - _gameObject: {fileID: 1102635215}
-    _prefab: Assets/_Asset Store/PolygonParticleFX/Prefabs/FX_Impact_Wood_01.prefab
-  - _gameObject: {fileID: 1587099882}
-    _prefab: Assets/_Asset Store/PolygonParticleFX/Prefabs/[PREFAB] FX Parry.prefab
-  - _gameObject: {fileID: 1453711128}
-    _prefab: Assets/Prefabs/FX/Footsteps/[PREFAB] Sand Footstep.prefab
-  - _gameObject: {fileID: 1997060580}
-    _prefab: Assets/Prefabs/FX/Footsteps/[PREFAB] Stone.prefab
-  - _gameObject: {fileID: 890772428}
-    _prefab: Assets/Prefabs/FX/Footsteps/[PREFAB] Wood Variant.prefab
-  - _gameObject: {fileID: 1288218560}
-    _prefab: Assets/Prefabs/FX/Footsteps/[PREFAB] Water Footstep.prefab
-  - _gameObject: {fileID: 395166873}
-    _prefab: Assets/Prefabs/FX/Footsteps/[PREFAB] Grass Footstep.prefab
-  - _gameObject: {fileID: 1542051155}
-    _prefab: Assets/Prefabs/FX/Footsteps/[PREFAB] Sand Footstep.prefab
-  - _gameObject: {fileID: 1867458102}
-    _prefab: Assets/Prefabs/FX/Footsteps/[PREFAB] Stone.prefab
-  - _gameObject: {fileID: 1026268624}
-    _prefab: Assets/Prefabs/FX/Footsteps/[PREFAB] Wood Variant.prefab
-  - _gameObject: {fileID: 347022497}
-    _prefab: Assets/Prefabs/FX/Footsteps/[PREFAB] Water Footstep.prefab
-  - _gameObject: {fileID: 1570674274}
-    _prefab: Assets/Prefabs/FX/Footsteps/[PREFAB] Grass Footstep.prefab
-  - _gameObject: {fileID: 1329037051}
-    _prefab: Assets/Prefabs/System/Exported Synty Character (AI) Variant.prefab
-  - _gameObject: {fileID: 1329037050}
-    _prefab: Assets/_Asset Store/_ Exported synty character/Synty Modular Characters
-      Project v2.fbx
-  - _gameObject: {fileID: 1329037048}
-    _prefab: Assets/Synty/PolygonGeneric/Prefabs/Props/SM_Gen_Prop_Skull_01.prefab
-  - _gameObject: {fileID: 1329037049}
-    _prefab: Assets/Synty/PolygonAncientEgypt/Prefabs/Characters/Attach/SM_Chr_Attach_Flower_01.prefab
-  - _gameObject: {fileID: 1329037051}
-    _prefab: Assets/Prefabs/System/Exported Synty Character (AI) Variant.prefab
-  - _gameObject: {fileID: 1329037061}
-    _prefab: Assets/Prefabs/FX/Footsteps/[PREFAB] Sand Footstep.prefab
-  - _gameObject: {fileID: 1329037060}
-    _prefab: Assets/Prefabs/FX/Footsteps/[PREFAB] Stone.prefab
-  - _gameObject: {fileID: 1329037059}
-    _prefab: Assets/Prefabs/FX/Footsteps/[PREFAB] Wood Variant.prefab
-  - _gameObject: {fileID: 1329037058}
-    _prefab: Assets/Prefabs/FX/Footsteps/[PREFAB] Water Footstep.prefab
-  - _gameObject: {fileID: 1329037057}
-    _prefab: Assets/Prefabs/FX/Footsteps/[PREFAB] Grass Footstep.prefab
-  - _gameObject: {fileID: 1329037056}
-    _prefab: Assets/Prefabs/FX/Footsteps/[PREFAB] Sand Footstep.prefab
-  - _gameObject: {fileID: 1329037055}
-    _prefab: Assets/Prefabs/FX/Footsteps/[PREFAB] Stone.prefab
-  - _gameObject: {fileID: 1329037054}
-    _prefab: Assets/Prefabs/FX/Footsteps/[PREFAB] Wood Variant.prefab
-  - _gameObject: {fileID: 1329037053}
-    _prefab: Assets/Prefabs/FX/Footsteps/[PREFAB] Water Footstep.prefab
-  - _gameObject: {fileID: 1329037052}
-    _prefab: Assets/Prefabs/FX/Footsteps/[PREFAB] Grass Footstep.prefab
-  - _gameObject: {fileID: 945056066}
-    _prefab: Assets/_Asset Store/VFX -  Magic by POLYMORPHFX/MiGHTYFX/MagicSpellsFXPack/Prefabs/FX/FXSpells/FX_Shadow_Impact.prefab
-  - _gameObject: {fileID: 945056065}
-    _prefab: Assets/_Asset Store/VFX -  Magic by POLYMORPHFX/MiGHTYFX/MagicSpellsFXPack/Prefabs/FX/FXSpells/FX_Shadow_Impact.prefab
-  - _gameObject: {fileID: 1720281136}
-    _prefab: Assets/_Asset Store/PolygonParticleFX/Prefabs/FX_ Poison.prefab
-  - _gameObject: {fileID: 984561507}
-    _prefab: Assets/_Asset Store/PolygonParticleFX/Prefabs/FX_BloodSplat_01.prefab
-  - _gameObject: {fileID: 610826666}
-    _prefab: Assets/_Asset Store/PolygonFantasyRivals/Prefabs/FX/Fire_02_FX.prefab
-  - _gameObject: {fileID: 1228625946}
-    _prefab: Assets/_Asset Store/PolygonFantasyRivals/Prefabs/FX/Fire_02_FX.prefab
-  - _gameObject: {fileID: 691376352}
-    _prefab: Assets/_Asset Store/PolygonParticleFX/Prefabs/FX_Explosion_Body_Bloody_01.prefab
-  - _gameObject: {fileID: 945056063}
-    _prefab: Assets/_Asset Store/PolygonParticleFX/Prefabs/FX_LightningStrike_01.prefab
-  - _gameObject: {fileID: 945056064}
-    _prefab: Assets/_Asset Store/VFX -  Magic by POLYMORPHFX/MiGHTYFX/MagicSpellsFXPack/Prefabs/FX/FXSpells/FX_Heal_Light.prefab
-  - _gameObject: {fileID: 945056067}
-    _prefab: Assets/_Asset Store/VFX - Magic Effects by Hovl Studio/Magic effects
-      pack/Prefabs/Character auras/Debuff.prefab
-  - _gameObject: {fileID: 1329037047}
-    _prefab: Assets/Prefabs/HUD/Enemy HUD Canvas.prefab
-  - _gameObject: {fileID: 824371912}
-    _prefab: Assets/Prefabs/Characters/[PREFAB] Character - King Merlot.prefab
-  - _gameObject: {fileID: 2139493436}
-    _prefab: Assets/_Asset Store/PolygonParticleFX/Prefabs/FX_Impact_Wood_01.prefab
-  - _gameObject: {fileID: 581519544}
-    _prefab: Assets/_Asset Store/PolygonParticleFX/Prefabs/[PREFAB] FX Parry.prefab
-  - _gameObject: {fileID: 790657300}
-    _prefab: Assets/Prefabs/FX/Footsteps/[PREFAB] Sand Footstep.prefab
-  - _gameObject: {fileID: 1579390882}
-    _prefab: Assets/Prefabs/FX/Footsteps/[PREFAB] Stone.prefab
-  - _gameObject: {fileID: 2084940682}
-    _prefab: Assets/Prefabs/FX/Footsteps/[PREFAB] Wood Variant.prefab
-  - _gameObject: {fileID: 694615085}
-    _prefab: Assets/Prefabs/FX/Footsteps/[PREFAB] Water Footstep.prefab
-  - _gameObject: {fileID: 1259588799}
-    _prefab: Assets/Prefabs/FX/Footsteps/[PREFAB] Grass Footstep.prefab
-  - _gameObject: {fileID: 2000105513}
-    _prefab: Assets/Prefabs/FX/Footsteps/[PREFAB] Sand Footstep.prefab
-  - _gameObject: {fileID: 9945720}
-    _prefab: Assets/Prefabs/FX/Footsteps/[PREFAB] Stone.prefab
-  - _gameObject: {fileID: 1852750604}
-    _prefab: Assets/Prefabs/FX/Footsteps/[PREFAB] Wood Variant.prefab
-  - _gameObject: {fileID: 530980324}
-    _prefab: Assets/Prefabs/FX/Footsteps/[PREFAB] Water Footstep.prefab
-  - _gameObject: {fileID: 962141184}
-    _prefab: Assets/Prefabs/FX/Footsteps/[PREFAB] Grass Footstep.prefab
-  - _gameObject: {fileID: 994960370}
-    _prefab: Assets/Prefabs/System/Exported Synty Character (AI) Variant.prefab
-  - _gameObject: {fileID: 994960369}
-    _prefab: Assets/_Asset Store/_ Exported synty character/Synty Modular Characters
-      Project v2.fbx
-  - _gameObject: {fileID: 994960367}
-    _prefab: Assets/Synty/PolygonGeneric/Prefabs/Props/SM_Gen_Prop_Skull_01.prefab
-  - _gameObject: {fileID: 994960368}
-    _prefab: Assets/Synty/PolygonAncientEgypt/Prefabs/Characters/Attach/SM_Chr_Attach_Flower_01.prefab
-  - _gameObject: {fileID: 994960370}
-    _prefab: Assets/Prefabs/System/Exported Synty Character (AI) Variant.prefab
-  - _gameObject: {fileID: 994960380}
-    _prefab: Assets/Prefabs/FX/Footsteps/[PREFAB] Sand Footstep.prefab
-  - _gameObject: {fileID: 994960379}
-    _prefab: Assets/Prefabs/FX/Footsteps/[PREFAB] Stone.prefab
-  - _gameObject: {fileID: 994960378}
-    _prefab: Assets/Prefabs/FX/Footsteps/[PREFAB] Wood Variant.prefab
-  - _gameObject: {fileID: 994960377}
-    _prefab: Assets/Prefabs/FX/Footsteps/[PREFAB] Water Footstep.prefab
-  - _gameObject: {fileID: 994960376}
-    _prefab: Assets/Prefabs/FX/Footsteps/[PREFAB] Grass Footstep.prefab
-  - _gameObject: {fileID: 994960375}
-    _prefab: Assets/Prefabs/FX/Footsteps/[PREFAB] Sand Footstep.prefab
-  - _gameObject: {fileID: 994960374}
-    _prefab: Assets/Prefabs/FX/Footsteps/[PREFAB] Stone.prefab
-  - _gameObject: {fileID: 994960373}
-    _prefab: Assets/Prefabs/FX/Footsteps/[PREFAB] Wood Variant.prefab
-  - _gameObject: {fileID: 994960372}
-    _prefab: Assets/Prefabs/FX/Footsteps/[PREFAB] Water Footstep.prefab
-  - _gameObject: {fileID: 994960371}
-    _prefab: Assets/Prefabs/FX/Footsteps/[PREFAB] Grass Footstep.prefab
-  - _gameObject: {fileID: 1753080803}
-    _prefab: Assets/_Asset Store/VFX -  Magic by POLYMORPHFX/MiGHTYFX/MagicSpellsFXPack/Prefabs/FX/FXSpells/FX_Shadow_Impact.prefab
-  - _gameObject: {fileID: 1753080802}
-    _prefab: Assets/_Asset Store/VFX -  Magic by POLYMORPHFX/MiGHTYFX/MagicSpellsFXPack/Prefabs/FX/FXSpells/FX_Shadow_Impact.prefab
-  - _gameObject: {fileID: 2130229121}
-    _prefab: Assets/_Asset Store/PolygonParticleFX/Prefabs/FX_ Poison.prefab
-  - _gameObject: {fileID: 1039981202}
-    _prefab: Assets/_Asset Store/PolygonParticleFX/Prefabs/FX_BloodSplat_01.prefab
-  - _gameObject: {fileID: 330752458}
-    _prefab: Assets/_Asset Store/PolygonFantasyRivals/Prefabs/FX/Fire_02_FX.prefab
-  - _gameObject: {fileID: 1208250768}
-    _prefab: Assets/_Asset Store/PolygonFantasyRivals/Prefabs/FX/Fire_02_FX.prefab
-  - _gameObject: {fileID: 1428539458}
-    _prefab: Assets/_Asset Store/PolygonParticleFX/Prefabs/FX_Explosion_Body_Bloody_01.prefab
-  - _gameObject: {fileID: 1753080800}
-    _prefab: Assets/_Asset Store/PolygonParticleFX/Prefabs/FX_LightningStrike_01.prefab
-  - _gameObject: {fileID: 1753080801}
-    _prefab: Assets/_Asset Store/VFX -  Magic by POLYMORPHFX/MiGHTYFX/MagicSpellsFXPack/Prefabs/FX/FXSpells/FX_Heal_Light.prefab
-  - _gameObject: {fileID: 1753080804}
-    _prefab: Assets/_Asset Store/VFX - Magic Effects by Hovl Studio/Magic effects
-      pack/Prefabs/Character auras/Debuff.prefab
-  - _gameObject: {fileID: 994960366}
-    _prefab: Assets/Prefabs/HUD/Enemy HUD Canvas.prefab
-  - _gameObject: {fileID: 1471273753}
-    _prefab: Assets/Prefabs/Characters/[PREFAB] Character - General Alcino Variant.prefab
-  - _gameObject: {fileID: 1845935737}
-    _prefab: Assets/_Asset Store/PolygonSamurai/Prefabs/Weapons/SM_Wep_Odachi_01.prefab
-  - _gameObject: {fileID: 1471273753}
-    _prefab: Assets/Prefabs/Characters/[PREFAB] Character - General Alcino Variant.prefab
-  - _gameObject: {fileID: 831853195}
-    _prefab: Assets/_Asset Store/PolygonParticleFX/Prefabs/FX_Impact_Wood_01.prefab
-  - _gameObject: {fileID: 26073085}
-    _prefab: Assets/_Asset Store/PolygonParticleFX/Prefabs/[PREFAB] FX Parry.prefab
-  - _gameObject: {fileID: 324703312}
-    _prefab: Assets/Prefabs/FX/Footsteps/[PREFAB] Sand Footstep.prefab
-  - _gameObject: {fileID: 157896829}
-    _prefab: Assets/Prefabs/FX/Footsteps/[PREFAB] Stone.prefab
-  - _gameObject: {fileID: 1171028507}
-    _prefab: Assets/Prefabs/FX/Footsteps/[PREFAB] Wood Variant.prefab
-  - _gameObject: {fileID: 833106985}
-    _prefab: Assets/Prefabs/FX/Footsteps/[PREFAB] Water Footstep.prefab
-  - _gameObject: {fileID: 1092006095}
-    _prefab: Assets/Prefabs/FX/Footsteps/[PREFAB] Grass Footstep.prefab
-  - _gameObject: {fileID: 197609712}
-    _prefab: Assets/Prefabs/FX/Footsteps/[PREFAB] Sand Footstep.prefab
-  - _gameObject: {fileID: 1186365656}
-    _prefab: Assets/Prefabs/FX/Footsteps/[PREFAB] Stone.prefab
-  - _gameObject: {fileID: 1023743627}
-    _prefab: Assets/Prefabs/FX/Footsteps/[PREFAB] Wood Variant.prefab
-  - _gameObject: {fileID: 1179075366}
-    _prefab: Assets/Prefabs/FX/Footsteps/[PREFAB] Water Footstep.prefab
-  - _gameObject: {fileID: 350088321}
-    _prefab: Assets/Prefabs/FX/Footsteps/[PREFAB] Grass Footstep.prefab
-  - _gameObject: {fileID: 1419946935}
-    _prefab: Assets/Prefabs/System/Exported Synty Character (AI) Variant.prefab
-  - _gameObject: {fileID: 1419946934}
-    _prefab: Assets/_Asset Store/_ Exported synty character/Synty Modular Characters
-      Project v2.fbx
-  - _gameObject: {fileID: 1419946932}
-    _prefab: Assets/Synty/PolygonGeneric/Prefabs/Props/SM_Gen_Prop_Skull_01.prefab
-  - _gameObject: {fileID: 1419946933}
-    _prefab: Assets/Synty/PolygonAncientEgypt/Prefabs/Characters/Attach/SM_Chr_Attach_Flower_01.prefab
-  - _gameObject: {fileID: 1419946935}
-    _prefab: Assets/Prefabs/System/Exported Synty Character (AI) Variant.prefab
-  - _gameObject: {fileID: 1419946945}
-    _prefab: Assets/Prefabs/FX/Footsteps/[PREFAB] Sand Footstep.prefab
-  - _gameObject: {fileID: 1419946944}
-    _prefab: Assets/Prefabs/FX/Footsteps/[PREFAB] Stone.prefab
-  - _gameObject: {fileID: 1419946943}
-    _prefab: Assets/Prefabs/FX/Footsteps/[PREFAB] Wood Variant.prefab
-  - _gameObject: {fileID: 1419946942}
-    _prefab: Assets/Prefabs/FX/Footsteps/[PREFAB] Water Footstep.prefab
-  - _gameObject: {fileID: 1419946941}
-    _prefab: Assets/Prefabs/FX/Footsteps/[PREFAB] Grass Footstep.prefab
-  - _gameObject: {fileID: 1419946940}
-    _prefab: Assets/Prefabs/FX/Footsteps/[PREFAB] Sand Footstep.prefab
-  - _gameObject: {fileID: 1419946939}
-    _prefab: Assets/Prefabs/FX/Footsteps/[PREFAB] Stone.prefab
-  - _gameObject: {fileID: 1419946938}
-    _prefab: Assets/Prefabs/FX/Footsteps/[PREFAB] Wood Variant.prefab
-  - _gameObject: {fileID: 1419946937}
-    _prefab: Assets/Prefabs/FX/Footsteps/[PREFAB] Water Footstep.prefab
-  - _gameObject: {fileID: 1419946936}
-    _prefab: Assets/Prefabs/FX/Footsteps/[PREFAB] Grass Footstep.prefab
-  - _gameObject: {fileID: 972369874}
-    _prefab: Assets/_Asset Store/VFX -  Magic by POLYMORPHFX/MiGHTYFX/MagicSpellsFXPack/Prefabs/FX/FXSpells/FX_Shadow_Impact.prefab
-  - _gameObject: {fileID: 972369873}
-    _prefab: Assets/_Asset Store/VFX -  Magic by POLYMORPHFX/MiGHTYFX/MagicSpellsFXPack/Prefabs/FX/FXSpells/FX_Shadow_Impact.prefab
-  - _gameObject: {fileID: 241139451}
-    _prefab: Assets/_Asset Store/PolygonParticleFX/Prefabs/FX_ Poison.prefab
-  - _gameObject: {fileID: 635468282}
-    _prefab: Assets/_Asset Store/PolygonParticleFX/Prefabs/FX_BloodSplat_01.prefab
-  - _gameObject: {fileID: 109464002}
-    _prefab: Assets/_Asset Store/PolygonFantasyRivals/Prefabs/FX/Fire_02_FX.prefab
-  - _gameObject: {fileID: 499792455}
-    _prefab: Assets/_Asset Store/PolygonFantasyRivals/Prefabs/FX/Fire_02_FX.prefab
-  - _gameObject: {fileID: 1494789252}
-    _prefab: Assets/_Asset Store/PolygonParticleFX/Prefabs/FX_Explosion_Body_Bloody_01.prefab
-  - _gameObject: {fileID: 972369871}
-    _prefab: Assets/_Asset Store/PolygonParticleFX/Prefabs/FX_LightningStrike_01.prefab
-  - _gameObject: {fileID: 972369872}
-    _prefab: Assets/_Asset Store/VFX -  Magic by POLYMORPHFX/MiGHTYFX/MagicSpellsFXPack/Prefabs/FX/FXSpells/FX_Heal_Light.prefab
-  - _gameObject: {fileID: 972369875}
-    _prefab: Assets/_Asset Store/VFX - Magic Effects by Hovl Studio/Magic effects
-      pack/Prefabs/Character auras/Debuff.prefab
-  - _gameObject: {fileID: 1419946931}
-    _prefab: Assets/Prefabs/HUD/Enemy HUD Canvas.prefab
-  - _gameObject: {fileID: 1157013487}
-    _prefab: Assets/Prefabs/Interactables/[PREFAB] Hint.prefab
-  - _gameObject: {fileID: 1045986487}
-    _prefab: Assets/_Asset Store/PolygonParticleFX/Prefabs/Exclamation Mark.prefab
-  - _gameObject: {fileID: 498270080}
-    _prefab: Assets/Prefabs/Interactables/[PREFAB] Hint.prefab
-  - _gameObject: {fileID: 498270079}
-    _prefab: Assets/_Asset Store/PolygonParticleFX/Prefabs/Exclamation Mark.prefab
   - _gameObject: {fileID: 725916366}
     _prefab: Assets/Prefabs/Outside Environment/ElvenTable.prefab
   - _gameObject: {fileID: 725916369}
@@ -20031,12 +20151,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 204708638}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1045986488}
+  m_Father: {fileID: 1192464602}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &204708640
 MonoBehaviour:
@@ -21184,11 +21304,11 @@ Transform:
   m_GameObject: {fileID: 223630543}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1045986488}
+  m_Father: {fileID: 1192464602}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &223630545
 MonoBehaviour:
@@ -29756,7 +29876,7 @@ Transform:
   - {fileID: 824371913}
   - {fileID: 1471273754}
   - {fileID: 1818732935}
-  - {fileID: 1309807949}
+  - {fileID: 1186315170}
   m_Father: {fileID: 1699423534}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &320417511
@@ -57212,6 +57332,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: '[PREFAB] Chest Pickup Variant'
       objectReference: {fileID: 0}
+    - target: {fileID: 2225595334581042413, guid: ca6d6d0130556554a986715162689bba, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5375183569621546774, guid: ca6d6d0130556554a986715162689bba, type: 3}
       propertyPath: _id.Value
       value: 4310aab9-2fed-4db0-9071-706b93e199cc
@@ -63530,7 +63654,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1045986488}
+  m_Father: {fileID: 1192464602}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &632436799
 MonoBehaviour:
@@ -63994,12 +64118,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 646117397}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1045986488}
+  m_Father: {fileID: 1192464602}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &646117399
 MonoBehaviour:
@@ -91332,16 +91456,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 972589794}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e9221b9cbf6915f40900275df3d68d41, type: 3}
+  m_Script: {fileID: 11500000, guid: 2dd14d3edcd8b814cb1aa02d48070d9a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   questParent: {fileID: 11400000, guid: 8cd8aa047a4c20945ba09d140896d24c, type: 2}
-  questMustNotHaveStarted: 0
-  questMustHaveStarted: 0
-  requiredObjectives: []
-  questMustBeCompleted: 0
-  whileQuestIsNotCompleted: 0
-  listenForQuestChanges: 1
+  currentObjetive: {fileID: 11400000, guid: f357b9e54e91b0443b44e4b23db42e1e, type: 2}
+  listenForQuestChanges: 0
 --- !u!1001 &972628689
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -91575,12 +91695,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 975858519}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1045986488}
+  m_Father: {fileID: 1192464602}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &975858521
 MonoBehaviour:
@@ -97527,15 +97647,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1766681394354770373, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
       propertyPath: m_Color.b
-      value: 0.7952778
+      value: 0.071595006
       objectReference: {fileID: 0}
     - target: {fileID: 1766681394354770373, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
       propertyPath: m_Color.g
-      value: 0.7952778
+      value: 0.071595006
       objectReference: {fileID: 0}
     - target: {fileID: 1766681394354770373, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
       propertyPath: m_Color.r
-      value: 0.7952778
+      value: 0.071595006
       objectReference: {fileID: 0}
     - target: {fileID: 1766681394354770373, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
       propertyPath: m_Intensity
@@ -97639,19 +97759,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2324549934646057964, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.067966335
+      value: -0.04384975
       objectReference: {fileID: 0}
     - target: {fileID: 2324549934646057964, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.054559246
+      value: 0.07532153
       objectReference: {fileID: 0}
     - target: {fileID: 2324549934646057964, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.7768582
+      value: 0.5012046
       objectReference: {fileID: 0}
     - target: {fileID: 2324549934646057964, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.6236146
+      value: 0.8609285
       objectReference: {fileID: 0}
     - target: {fileID: 2496147688403883988, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
       propertyPath: m_LocalPosition.x
@@ -106223,7 +106343,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 732ded5e3e6fcda45bb8caa565ed45dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  duration: 2
+  duration: 3.5
   duringFadeTransitionsEventCallback:
     m_PersistentCalls:
       m_Calls:
@@ -106265,11 +106385,11 @@ MonoBehaviour:
         m_CallState: 2
       - m_Target: {fileID: 11400000, guid: 8cd8aa047a4c20945ba09d140896d24c, type: 2}
         m_TargetAssemblyTypeName: AF.QuestParent, AF
-        m_MethodName: SetProgress
-        m_Mode: 3
+        m_MethodName: CompleteObjective
+        m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_ObjectArgument: {fileID: 11400000, guid: f357b9e54e91b0443b44e4b23db42e1e, type: 2}
+          m_ObjectArgumentAssemblyTypeName: AF.QuestObjective, AF
           m_IntArgument: 1
           m_FloatArgument: 0
           m_StringArgument: 
@@ -110994,6 +111114,38 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 1793271080632250150, guid: adf31cb385612f7419915ee5752292af, type: 3}
   m_PrefabInstance: {fileID: 1949837362}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1186315169
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1186315170}
+  m_Layer: 0
+  m_Name: OLD
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &1186315170
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1186315169}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1309807949}
+  m_Father: {fileID: 320297463}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1186325913 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7294328506341720446, guid: 8447953b849410d449ada9c15bce8a82, type: 3}
@@ -111296,6 +111448,52 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 1731950609}
   m_SourcePrefab: {fileID: 100100000, guid: b3d4aa8ab86beb545a6231528dce67c9, type: 3}
+--- !u!1 &1192464601
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1192464602}
+  m_Layer: 1
+  m_Name: OLD STUFF
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &1192464602
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1192464601}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 632436798}
+  - {fileID: 1251862109}
+  - {fileID: 223630544}
+  - {fileID: 204708639}
+  - {fileID: 1999456333}
+  - {fileID: 72184463}
+  - {fileID: 1803870609}
+  - {fileID: 646117398}
+  - {fileID: 1488635331}
+  - {fileID: 1461951625}
+  - {fileID: 37150922}
+  - {fileID: 2135374755}
+  - {fileID: 122952561}
+  - {fileID: 2095724211}
+  - {fileID: 975858520}
+  m_Father: {fileID: 1045986488}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1194300887
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -114943,12 +115141,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1251862108}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1045986488}
+  m_Father: {fileID: 1192464602}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1251862112
 MonoBehaviour:
@@ -122423,6 +122621,86 @@ MonoBehaviour:
   m_IgnoreFromBuild: 0
   m_ApplyToChildren: 1
   m_AffectedAgents: ffffffff
+--- !u!1 &1291907537
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1291907538}
+  - component: {fileID: 1291907540}
+  - component: {fileID: 1291907539}
+  m_Layer: 1
+  m_Name: Fenlora Talks
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1291907538
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1291907537}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2129230599}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1291907539
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1291907537}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7fe4f719e162a4943bacaa44a1618058, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator: {fileID: 1614340890}
+  animationName: Talking Longer
+  crossFadeTime: 0.1
+  usePlayerAnimator: 0
+  useBusyAnimation: 0
+  teleportPlayerToThisTransform: {fileID: 0}
+--- !u!114 &1291907540
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1291907537}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ebeddfa90020d34d83963c20ff50ddf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  eventId: Fenlora Talks
+  eventToInvoke:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1291907539}
+        m_TargetAssemblyTypeName: AF.EventBase, AF
+        m_MethodName: Execute
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  comment: 
 --- !u!1 &1293308174 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4374645034596209057, guid: 91f7280ce4074b7408a194ed006873db, type: 3}
@@ -123376,49 +123654,10 @@ PrefabInstance:
       addedObject: {fileID: 1231077650}
     - targetCorrespondingSourceObject: {fileID: 6985777863879470414, guid: b53aee66a29004845b766b9be2199771, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 632436798}
+      addedObject: {fileID: 1192464602}
     - targetCorrespondingSourceObject: {fileID: 6985777863879470414, guid: b53aee66a29004845b766b9be2199771, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1251862109}
-    - targetCorrespondingSourceObject: {fileID: 6985777863879470414, guid: b53aee66a29004845b766b9be2199771, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 223630544}
-    - targetCorrespondingSourceObject: {fileID: 6985777863879470414, guid: b53aee66a29004845b766b9be2199771, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 204708639}
-    - targetCorrespondingSourceObject: {fileID: 6985777863879470414, guid: b53aee66a29004845b766b9be2199771, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1999456333}
-    - targetCorrespondingSourceObject: {fileID: 6985777863879470414, guid: b53aee66a29004845b766b9be2199771, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 72184463}
-    - targetCorrespondingSourceObject: {fileID: 6985777863879470414, guid: b53aee66a29004845b766b9be2199771, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1803870609}
-    - targetCorrespondingSourceObject: {fileID: 6985777863879470414, guid: b53aee66a29004845b766b9be2199771, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 646117398}
-    - targetCorrespondingSourceObject: {fileID: 6985777863879470414, guid: b53aee66a29004845b766b9be2199771, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1488635331}
-    - targetCorrespondingSourceObject: {fileID: 6985777863879470414, guid: b53aee66a29004845b766b9be2199771, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1461951625}
-    - targetCorrespondingSourceObject: {fileID: 6985777863879470414, guid: b53aee66a29004845b766b9be2199771, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 37150922}
-    - targetCorrespondingSourceObject: {fileID: 6985777863879470414, guid: b53aee66a29004845b766b9be2199771, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 2135374755}
-    - targetCorrespondingSourceObject: {fileID: 6985777863879470414, guid: b53aee66a29004845b766b9be2199771, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 122952561}
-    - targetCorrespondingSourceObject: {fileID: 6985777863879470414, guid: b53aee66a29004845b766b9be2199771, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 2095724211}
-    - targetCorrespondingSourceObject: {fileID: 6985777863879470414, guid: b53aee66a29004845b766b9be2199771, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 975858520}
+      addedObject: {fileID: 2129230599}
     - targetCorrespondingSourceObject: {fileID: 6985777863879470414, guid: b53aee66a29004845b766b9be2199771, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1115173087}
@@ -124256,13 +124495,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1309807948}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 498270077}
-  m_Father: {fileID: 320297463}
+  m_Father: {fileID: 1186315170}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1309807950
 MonoBehaviour:
@@ -137580,6 +137819,82 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 1302828724154025780, guid: 8447953b849410d449ada9c15bce8a82, type: 3}
   m_PrefabInstance: {fileID: 1745336427}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1457005858
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1457005859}
+  - component: {fileID: 1457005861}
+  - component: {fileID: 1457005860}
+  m_Layer: 1
+  m_Name: Hide Celebration Camera
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1457005859
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1457005858}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2129230599}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1457005860
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1457005858}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8d7c75a1c7e4ac47b0c1bb3a9df615d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  desiredCamera: {fileID: 866604783}
+  priority: 0
+--- !u!114 &1457005861
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1457005858}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ebeddfa90020d34d83963c20ff50ddf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  eventId: Hide Celebration Camera
+  eventToInvoke:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1457005860}
+        m_TargetAssemblyTypeName: AF.EventBase, AF
+        m_MethodName: Execute
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  comment: 
 --- !u!4 &1457844694 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4894298118570074, guid: a25d5e7dfabe0044a98711d685b141f9, type: 3}
@@ -138068,12 +138383,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1461951624}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1045986488}
+  m_Father: {fileID: 1192464602}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1461951626
 MonoBehaviour:
@@ -138140,6 +138455,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1462129723}
+  - component: {fileID: 1462129724}
   m_Layer: 0
   m_Name: Cacildes Wake up SpawnPoint (1)
   m_TagString: Untagged
@@ -138162,6 +138478,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 2010311545}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1462129724
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1462129722}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 173e647fc43f2c0478dba17ac4fbcae8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spawnLocationData: {fileID: 11400000, guid: eaa0f5ccf0413ae40a474b88e732eaf5, type: 2}
 --- !u!114 &1464128870
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -142463,12 +142792,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1488635330}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1045986488}
+  m_Father: {fileID: 1192464602}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1488635333
 MonoBehaviour:
@@ -145090,6 +145419,86 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4034676436734888731, guid: 91f7280ce4074b7408a194ed006873db, type: 3}
   m_PrefabInstance: {fileID: 1818416116}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1516650122
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1516650123}
+  - component: {fileID: 1516650125}
+  - component: {fileID: 1516650124}
+  m_Layer: 1
+  m_Name: King Merlot Talks
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1516650123
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1516650122}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2129230599}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1516650124
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1516650122}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7fe4f719e162a4943bacaa44a1618058, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator: {fileID: 824371919}
+  animationName: Talking Longer
+  crossFadeTime: 0.1
+  usePlayerAnimator: 0
+  useBusyAnimation: 0
+  teleportPlayerToThisTransform: {fileID: 0}
+--- !u!114 &1516650125
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1516650122}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ebeddfa90020d34d83963c20ff50ddf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  eventId: King Merlot Talks
+  eventToInvoke:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1516650124}
+        m_TargetAssemblyTypeName: AF.EventBase, AF
+        m_MethodName: Execute
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  comment: 
 --- !u!1 &1516669415 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8684247620917845959, guid: 496b1246a8656c84f8e2685b10fd21c9, type: 3}
@@ -154544,6 +154953,331 @@ MonoBehaviour:
   m_IgnoreFromBuild: 0
   m_ApplyToChildren: 1
   m_AffectedAgents: ffffffff
+--- !u!1 &1675523606
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1675523610}
+  - component: {fileID: 1675523609}
+  - component: {fileID: 1675523608}
+  - component: {fileID: 1675523607}
+  m_Layer: 0
+  m_Name: Laughter
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!82 &1675523607
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1675523606}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: 6c4a5f155cbf1074e95cd9def3328efe, type: 3}
+  m_Resource: {fileID: 8300000, guid: 6c4a5f155cbf1074e95cd9def3328efe, type: 3}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+--- !u!82 &1675523608
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1675523606}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: fdc22818d92779744ab5092c10a8fd18, type: 3}
+  m_Resource: {fileID: 8300000, guid: fdc22818d92779744ab5092c10a8fd18, type: 3}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+--- !u!82 &1675523609
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1675523606}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: f8408edcef37c7642b8da5d0d5e69bfd, type: 3}
+  m_Resource: {fileID: 8300000, guid: f8408edcef37c7642b8da5d0d5e69bfd, type: 3}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+--- !u!4 &1675523610
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1675523606}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.04862232, y: 0.93036485, z: -0.14540957, w: -0.33303648}
+  m_LocalPosition: {x: -91.910034, y: 4.565585, z: 31.52717}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1677072791
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -165329,6 +166063,82 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 5353127048337845625, guid: 8fc116f98a9a2ba4ea4e9ee213b6127c, type: 3}
   m_PrefabInstance: {fileID: 1773600204}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1773801253
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1773801254}
+  - component: {fileID: 1773801256}
+  - component: {fileID: 1773801255}
+  m_Layer: 1
+  m_Name: Show Celebration Camera
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1773801254
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1773801253}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2129230599}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1773801255
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1773801253}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8d7c75a1c7e4ac47b0c1bb3a9df615d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  desiredCamera: {fileID: 866604783}
+  priority: 999
+--- !u!114 &1773801256
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1773801253}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ebeddfa90020d34d83963c20ff50ddf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  eventId: Show Celebration Camera
+  eventToInvoke:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1773801255}
+        m_TargetAssemblyTypeName: AF.EventBase, AF
+        m_MethodName: Execute
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  comment: 
 --- !u!1 &1774054897 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5759353574039155249, guid: 444719d241a145d409b8f57fe4918b6c, type: 3}
@@ -166580,6 +167390,91 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 4649464649906281992, guid: 5b9f9dd254525ad419c511fd9fef68fa, type: 3}
   m_PrefabInstance: {fileID: 1794983643}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1796220719
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1796220720}
+  - component: {fileID: 1796220721}
+  m_Layer: 1
+  m_Name: Play Laughter
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1796220720
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1796220719}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2129230599}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1796220721
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1796220719}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ebeddfa90020d34d83963c20ff50ddf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  eventId: Play Laughter
+  eventToInvoke:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1675523609}
+        m_TargetAssemblyTypeName: UnityEngine.AudioSource, UnityEngine
+        m_MethodName: Play
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1675523608}
+        m_TargetAssemblyTypeName: UnityEngine.AudioSource, UnityEngine
+        m_MethodName: Play
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1675523607}
+        m_TargetAssemblyTypeName: UnityEngine.AudioSource, UnityEngine
+        m_MethodName: Play
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  comment: 
 --- !u!1001 &1797006409
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -167185,12 +168080,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1803870608}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1045986488}
+  m_Father: {fileID: 1192464602}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1803870610
 MonoBehaviour:
@@ -168876,7 +169771,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1818732935}
-  - component: {fileID: 1818732936}
   m_Layer: 0
   m_Name: Stone Preserved
   m_TagString: Untagged
@@ -168900,23 +169794,6 @@ Transform:
   - {fileID: 1157013488}
   m_Father: {fileID: 320297463}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1818732936
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1818732934}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 91e800e33e64dc54c92b6f671a44c971, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  flagsDatabase: {fileID: 11400000, guid: 676ba9bd89bc57e47b44e9f5b1b78458, type: 2}
-  monoBehaviourID: {fileID: 0}
-  flag: {fileID: 11400000, guid: 3e7d8c1c8ab84af449e87c7719ee0db1, type: 2}
-  requireToBeRegistered: 1
-  listenForFlagsChanged: 1
 --- !u!1001 &1818831835
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -183175,12 +184052,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1999456332}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1045986488}
+  m_Father: {fileID: 1192464602}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1999456334
 MonoBehaviour:
@@ -187262,6 +188139,139 @@ MonoBehaviour:
   m_IgnoreFromBuild: 0
   m_ApplyToChildren: 1
   m_AffectedAgents: ffffffff
+--- !u!1 &2060693571
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2060693572}
+  - component: {fileID: 2060693575}
+  - component: {fileID: 2060693574}
+  - component: {fileID: 2060693573}
+  m_Layer: 1
+  m_Name: Stand Up
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2060693572
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2060693571}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2129230599}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2060693573
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2060693571}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c07ccdb5c7c59e0408167c1a7ce525d2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  eventToInvoke:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 11400000, guid: 5d00ddd939508cc438940c16aa00126b, type: 2}
+        m_TargetAssemblyTypeName: AF.Achievement, AF
+        m_MethodName: AwardAchievement
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  waitBeforeInvoke: 0
+  comment: 
+--- !u!114 &2060693574
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2060693571}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c07ccdb5c7c59e0408167c1a7ce525d2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  eventToInvoke:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 922670671}
+        m_TargetAssemblyTypeName: AF.CharacterBaseManager, AF
+        m_MethodName: PlayBusyAnimationWithRootMotion
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: Stand Up From Kneeling
+          m_BoolArgument: 0
+        m_CallState: 2
+  waitBeforeInvoke: 0
+  comment: 
+--- !u!114 &2060693575
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2060693571}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ebeddfa90020d34d83963c20ff50ddf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  eventId: Stand Up
+  eventToInvoke:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2060693574}
+        m_TargetAssemblyTypeName: AF.EventBase, AF
+        m_MethodName: Execute
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 2060693573}
+        m_TargetAssemblyTypeName: AF.EventBase, AF
+        m_MethodName: Execute
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  comment: 
 --- !u!1 &2061121286 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 430216375024755948, guid: 496b1246a8656c84f8e2685b10fd21c9, type: 3}
@@ -188928,15 +189938,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 2082598451}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e9221b9cbf6915f40900275df3d68d41, type: 3}
+  m_Script: {fileID: 11500000, guid: 2dd14d3edcd8b814cb1aa02d48070d9a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   questParent: {fileID: 11400000, guid: 8cd8aa047a4c20945ba09d140896d24c, type: 2}
-  questMustNotHaveStarted: 0
-  questMustHaveStarted: 0
-  requiredObjectives: []
-  questMustBeCompleted: 0
-  whileQuestIsNotCompleted: 0
+  currentObjetive: {fileID: 11400000, guid: f357b9e54e91b0443b44e4b23db42e1e, type: 2}
   listenForQuestChanges: 1
 --- !u!1001 &2082940478
 PrefabInstance:
@@ -190078,12 +191084,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2095724210}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1045986488}
+  m_Father: {fileID: 1192464602}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2095724212
 MonoBehaviour:
@@ -192353,6 +193359,61 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 339658385871683738, guid: 818d2ccb889bc474f9f7b01573f0db81, type: 3}
   m_PrefabInstance: {fileID: 2129058405}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &2129230598
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2129230599}
+  - component: {fileID: 2129230600}
+  m_Layer: 1
+  m_Name: ':: Story ::'
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2129230599
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2129230598}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1291907538}
+  - {fileID: 1516650123}
+  - {fileID: 1773801254}
+  - {fileID: 1457005859}
+  - {fileID: 21825975}
+  - {fileID: 2060693572}
+  - {fileID: 1796220720}
+  m_Father: {fileID: 1045986488}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2129230600
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2129230598}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cffb2e8654de98942ae332ba7decad9e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  englishStory: {fileID: 4900000, guid: be9bb0623b56c564dbae07c8f2b4b6ce, type: 3}
+  portugueseStory: {fileID: 4900000, guid: 2d29d92180a5f5747842d1e7ada52477, type: 3}
+  shouldStopCharacter: 1
+  shouldFacePlayer: 1
 --- !u!1 &2129499372 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1242152146496044, guid: 9e9196d13af6b84428886f55783351bd, type: 3}
@@ -193186,12 +194247,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2135374754}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1045986488}
+  m_Father: {fileID: 1192464602}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2135374757
 MonoBehaviour:
@@ -290748,6 +291809,7 @@ SceneRoots:
   - {fileID: 51735403}
   - {fileID: 1604565505}
   - {fileID: 205549376}
+  - {fileID: 1243459879}
   - {fileID: 508078927}
   - {fileID: 623898849}
   - {fileID: 1595077163}
@@ -290758,7 +291820,6 @@ SceneRoots:
   - {fileID: 1520945078}
   - {fileID: 1359822603}
   - {fileID: 1341900988}
-  - {fileID: 1243459879}
   - {fileID: 1758323675}
   - {fileID: 1309551632}
   - {fileID: 770417208}
@@ -290766,3 +291827,4 @@ SceneRoots:
   - {fileID: 737137043}
   - {fileID: 966605770}
   - {fileID: 456235508}
+  - {fileID: 1675523610}

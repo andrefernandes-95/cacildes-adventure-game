@@ -223,7 +223,6 @@ namespace AF.Animations
 
         public void OnBlood()
         {
-            throw new System.NotImplementedException();
         }
 
         public void RestoreDefaultAnimatorSpeed()
@@ -361,6 +360,14 @@ namespace AF.Animations
         public void OnUseConsumable()
         {
             playerManager.playerConsumableManager.OnConsumableUse();
+        }
+
+        public void ShowEquipment()
+        {
+        }
+
+        public void HideEquipment()
+        {
         }
     }
 }

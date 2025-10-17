@@ -400,5 +400,15 @@ namespace AF.Animations
         {
             characterManager.characterConsumableManager.OnConsumableUse();
         }
+
+        public void ShowEquipment()
+        {
+            characterManager.characterWeaponsManager.ShowEquipment();
+        }
+
+        public void HideEquipment()
+        {
+            characterManager.characterWeaponsManager.HideEquipment();
+        }
     }
 }

@@ -15,6 +15,7 @@ namespace AF
         [SerializeField] PlayerManager playerManager;
         [SerializeField] FlagsDatabase flagsDatabase;
 
+        [SerializeField] Flag hasPreservedTheColdFireStone;
         Dictionary<string, DialogueEvent> dialogueEvents = new();
         bool hasInitializedDialogueEvents = false;
 
@@ -99,6 +100,16 @@ namespace AF
             story.BindExternalFunction("hasStartedSewersQuest", () =>
             {
                 return sewersQuest.hasStarted;
+            });
+
+            story.BindExternalFunction("hasPreservedStone", () =>
+            {
+                return flagsDatabase.ContainsFlag(hasPreservedTheColdFireStone.name);
+            });
+
+            story.BindExternalFunction("getPlayerName", () =>
+            {
+                return playerManager.GetPlayerName();
             });
         }
 
