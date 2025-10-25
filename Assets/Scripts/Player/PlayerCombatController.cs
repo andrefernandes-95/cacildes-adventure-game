@@ -265,7 +265,7 @@ namespace AF
 
             if (currentWeapon != null)
             {
-                if (combatAbility != null)
+                if (combatAbility == null)
                 {
                     if (equipmentDatabase.isTwoHanding)
                     {
@@ -273,7 +273,14 @@ namespace AF
                     }
                     else
                     {
-                        currentAttackSpeed = isHeavyAttacking ? currentWeapon.oh_HeavyAttackSpeedPenalty : currentWeapon.oneHandAttackSpeedPenalty;
+                        if (playerManager.playerWeaponsManager.CanPowerStance())
+                        {
+                            currentAttackSpeed = isHeavyAttacking ? currentWeapon.powerStance_HeavyAttackSpeedPenalty : currentWeapon.powerStance_AttackSpeedPenalty;
+                        }
+                        else
+                        {
+                            currentAttackSpeed = isHeavyAttacking ? currentWeapon.oh_HeavyAttackSpeedPenalty : currentWeapon.oneHandAttackSpeedPenalty;
+                        }
                     }
                 }
                 else
@@ -523,6 +530,20 @@ namespace AF
             if (currentRightWeapon == null)
             {
                 return false;
+            }
+
+            if (playerManager.playerWeaponsManager.IsTwoHanding()
+                && currentRightWeapon.th_heavyAttackAbilities.Length > 0
+                && heavyAttackComboIndex < currentRightWeapon.th_heavyAttackAbilities.Length)
+            {
+                ability = currentRightWeapon.th_heavyAttackAbilities[heavyAttackComboIndex];
+
+                if (ability == null)
+                {
+                    return false;
+                }
+
+                return ability.CanUseAbility(playerManager);
             }
 
             if (playerManager.playerWeaponsManager.IsTwoHanding() == false

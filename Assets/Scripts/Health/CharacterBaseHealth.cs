@@ -109,10 +109,23 @@ namespace AF.Health
             }
         }
 
-        public virtual void SetHasHealthCutInHealth(bool value)
+        public virtual void SetHasHealthCutInHealth(bool shouldCutHealthInHalf)
         {
-            hasHealthCutInHalf = value;
+            int currentHealth = (int)GetCurrentHealth();
+            int effectiveMaxHealth = shouldCutHealthInHalf
+                ? (int)(GetMaxHealth() / 2)
+                : (int)GetMaxHealth();
+
+            // Order of operations matter, we should only set the flag after evaluating max health on previous line
+            hasHealthCutInHalf = shouldCutHealthInHalf;
+
+            // Clamp current HP to the new effective max
+            if (currentHealth > effectiveMaxHealth)
+                currentHealth = effectiveMaxHealth;
+
+            SetCurrentHealth(currentHealth);
         }
+
 
         public void ShowHealthRestoredText(int healthRestored)
         {

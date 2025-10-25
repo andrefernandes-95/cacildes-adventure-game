@@ -166,6 +166,9 @@ namespace AF
         public float maxSlidingRotation = 160f;
         public float slidingSpeed = 10f;
 
+        [Header("Speed Options")]
+        public float targetSpeedModifier = 1f;
+
         [Header("Swimming Options")]
         public bool isSwimming = false;
         public Transform water;
@@ -529,7 +532,7 @@ namespace AF
 
         private void Move()
         {
-            if (!playerManager.characterController.enabled)
+            if (!playerManager.characterController.enabled || !canMove)
             {
                 return;
             }
@@ -559,6 +562,8 @@ namespace AF
                     targetSpeed *= 1.25f;
                 }
             }
+
+            targetSpeed *= targetSpeedModifier;
 
             if (_input.sprint)
             {

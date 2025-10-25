@@ -45,21 +45,6 @@ namespace AF.Health
 
         void UpdateHealthSettings()
         {
-            if (GetCurrentHealth() <= 0)
-            {
-                return;
-            }
-
-            bool wasFullHealthBeforeUpdate = GetCurrentHealth() >= GetMaxHealth();
-
-            this.bonusHealthFromCompanions = (
-                !characterManager.IsCompanion() && companionsDatabase.TryGetCompanionCount(out int count) && count > 0) ? HealthUtils.GetExtraHealthBasedOnCompanionsInParty(count) : 0;
-
-            if (wasFullHealthBeforeUpdate)
-            {
-                SetCurrentHealth(GetMaxHealth());
-            }
-
             onHealthSettingsChanged?.Invoke();
         }
 

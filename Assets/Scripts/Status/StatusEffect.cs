@@ -28,7 +28,7 @@ namespace AF
         public float fallbackResistance = 25f;
 
         [Header("Behaviour")]
-        public StatusEffectBehaviour statusEffectBehaviour;
+        public StatusEffectBehaviour[] statusEffectBehaviours;
 
         public string GetName()
         {

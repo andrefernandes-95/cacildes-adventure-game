@@ -10,6 +10,8 @@ namespace AF
 
         public float rotationDuration = 0.5f;
 
+        [HideInInspector] public bool shouldRotateOnUpdate = true;
+
         [Header("Settings")]
         float launchForce = 15f;
         float upwardArcForce = 3f;
@@ -41,6 +43,17 @@ namespace AF
 
             Launch(); // launch with arc
 
+            if (!shouldRotateOnUpdate)
+            {
+                Vector3 forwardDir = attacker.transform.forward;
+                forwardDir.y = 0; // Optional: remove tilt if you want a flat forward direction
+                Quaternion lookRot = Quaternion.LookRotation(forwardDir);
+
+                // Rotate spear 90 degrees so it points like an arrow
+                lookRot *= Quaternion.Euler(90f, 0f, 0f);
+
+                transform.rotation = lookRot;
+            }
         }
 
         void Launch()
@@ -62,6 +75,7 @@ namespace AF
                 Vector3 velocity = direction * launchForce + Vector3.up * upwardArcForce;
                 rb.linearVelocity = velocity;
             }
+
         }
 
         void DisableWeaponEffects()
@@ -80,7 +94,10 @@ namespace AF
 
         void Update()
         {
-            transform.Rotate(Vector3.right, 1000 * Time.deltaTime, Space.Self);
+            if (shouldRotateOnUpdate)
+            {
+                transform.Rotate(Vector3.right, 1000 * Time.deltaTime, Space.Self);
+            }
         }
     }
 }

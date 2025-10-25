@@ -320,5 +320,24 @@ namespace AF
 
         public Sprite GetPlayerPortrait() => uIDocumentCharacterCustomization.portraits[gameSettings.playerPortrait];
         public string GetPlayerName() => gameSettings.playerName;
+
+
+        public override void OnParalyzedStart()
+        {
+            playerComponentManager.DisablePlayerControl();
+            playerComponentManager.EnableCharacterController();
+            animator.speed = 0f;
+        }
+
+        public override void OnParalyzedEnd()
+        {
+            playerComponentManager.EnablePlayerControl();
+            animator.speed = GetDefaultAnimatorSpeed();
+        }
+
+        public override float GetDefaultAnimatorSpeed()
+        {
+            return 1f;
+        }
     }
 }

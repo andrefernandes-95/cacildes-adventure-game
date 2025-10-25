@@ -11,3 +11,6 @@ Disable Baking Rotations - they can not be applied or else the turning animation
 
 ### Slime and enemies floating in air by climbing on each other
 set step offset to 0.1
+
+### bad performance only on editor while playing
+Check if its not Version Control window opened, it seems to lag the editor

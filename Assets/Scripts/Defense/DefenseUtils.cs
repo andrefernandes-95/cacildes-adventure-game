@@ -13,7 +13,7 @@ namespace AF
         {
             int defense = 0;
 
-            defense += (int)Mathf.Floor(endurance / 2);
+            defense += (int)Mathf.Floor(endurance / 4);
 
             return defense;
         }
@@ -41,7 +41,7 @@ namespace AF
         {
             int defense = 0;
 
-            defense += (int)Mathf.Floor(strength);
+            defense += (int)Mathf.Floor(strength / 8);
 
             return defense;
         }
@@ -55,7 +55,7 @@ namespace AF
         {
             int defense = 0;
 
-            defense += (int)Mathf.Floor(intelligence);
+            defense += (int)Mathf.Floor(intelligence / 2);
 
             return defense;
         }

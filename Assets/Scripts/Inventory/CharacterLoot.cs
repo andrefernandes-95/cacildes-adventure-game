@@ -373,7 +373,7 @@ namespace AF
                 {
                     float calc_dropChance = UnityEngine.Random.Range(0, 100f);
 
-                    if (calc_dropChance <= lootableItem.chanceToGet)
+                    if (calc_dropChance <= lootableItem.chanceToGet && !itemsToReceive.ContainsKey(lootableItem.item))
                     {
                         itemsToReceive.Add(lootableItem.item, lootableItem.amount);
                     }

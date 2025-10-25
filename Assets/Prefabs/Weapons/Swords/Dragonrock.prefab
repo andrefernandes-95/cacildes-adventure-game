@@ -39,7 +39,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5846805104924988417}
-  - {fileID: 8125744449064575464}
+  - {fileID: 8946697309620961042}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &3403484292339612501
@@ -125,6 +125,7 @@ MonoBehaviour:
   characterTwoHandRef: {fileID: 0}
   characterWeaponBuffs: {fileID: 0}
   shouldDisableHitboxOnStart: 1
+  hitboxType: 0
   weapon: {fileID: 11400000, guid: 5a4f27b0ddff979448055bf04554d9be, type: 2}
 --- !u!65 &4020126913910140426
 BoxCollider:
@@ -145,8 +146,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.45, y: 2.06, z: 0.28}
-  m_Center: {x: 0.00001742125, y: 1.15, z: -0.00004063527}
+  m_Size: {x: 0.87, y: 3.23, z: 0.72}
+  m_Center: {x: 0.00001742125, y: 0.54, z: -0.00004063527}
 --- !u!114 &3838340840615721569
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -430,7 +431,7 @@ TrailRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Time: 0.2
+  m_Time: 0.5
   m_PreviewTimeScale: 1
   m_Parameters:
     serializedVersion: 3
@@ -440,7 +441,7 @@ TrailRenderer:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 0.19801903
+        value: 0.47926903
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -501,55 +502,73 @@ TrailRenderer:
   m_Autodestruct: 0
   m_Emitting: 1
   m_ApplyActiveColorSpace: 0
---- !u!1 &6052677719390751110
-GameObject:
+--- !u!1001 &5389262788317225453
+PrefabInstance:
   m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 8125744449064575464}
-  - component: {fileID: 6507250690508096197}
-  m_Layer: 0
-  m_Name: Left Hand IK
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &8125744449064575464
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6052677719390751110}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.66878116, y: 0.16817948, z: 0.3755695, w: 0.619189}
-  m_LocalPosition: {x: 0.0239, y: 0.007, z: -0.0537}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 3413167925723065393}
-  m_LocalEulerAnglesHint: {x: -432.656, y: 279.44, z: 126.337}
---- !u!114 &6507250690508096197
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 3413167925723065393}
+    m_Modifications:
+    - target: {fileID: 1245216184531560037, guid: 0bd705db2a8aac247b586baa02546f63, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3955159099939184383, guid: 0bd705db2a8aac247b586baa02546f63, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1.2612
+      objectReference: {fileID: 0}
+    - target: {fileID: 3955159099939184383, guid: 0bd705db2a8aac247b586baa02546f63, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.023
+      objectReference: {fileID: 0}
+    - target: {fileID: 3955159099939184383, guid: 0bd705db2a8aac247b586baa02546f63, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.064402
+      objectReference: {fileID: 0}
+    - target: {fileID: 3955159099939184383, guid: 0bd705db2a8aac247b586baa02546f63, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3955159099939184383, guid: 0bd705db2a8aac247b586baa02546f63, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 3955159099939184383, guid: 0bd705db2a8aac247b586baa02546f63, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3955159099939184383, guid: 0bd705db2a8aac247b586baa02546f63, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 3955159099939184383, guid: 0bd705db2a8aac247b586baa02546f63, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3955159099939184383, guid: 0bd705db2a8aac247b586baa02546f63, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3955159099939184383, guid: 0bd705db2a8aac247b586baa02546f63, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: 3955159099939184383, guid: 0bd705db2a8aac247b586baa02546f63, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6953412371218671586, guid: 0bd705db2a8aac247b586baa02546f63, type: 3}
+      propertyPath: m_Name
+      value: Weapon Buff Root
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 0bd705db2a8aac247b586baa02546f63, type: 3}
+--- !u!4 &8946697309620961042 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3955159099939184383, guid: 0bd705db2a8aac247b586baa02546f63, type: 3}
+  m_PrefabInstance: {fileID: 5389262788317225453}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6052677719390751110}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f9bf8f63da04d954aa5c61a092de2688, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerManager: {fileID: 0}
-  equipmentDatabase: {fileID: 11400000, guid: a2bf3141e1e696a48952a3479a4a9742, type: 2}
-  playerHand: {fileID: 0}
-  weight: 0.438
-  resetDuration: 0.1
-  dontAllowIKWhenRunning: 0
-  dontAllowIKWhenJumpAttacking: 0
-  onlyAllowOnAttacks: 0

@@ -101,12 +101,12 @@ namespace AF.Inventory
                 if (defaultItem.Key is Armor armor)
                 {
                     Armor addedArmor = playerManager.playerInventory.AddArmor(armor);
-                    playerManager.characterBaseEquipment.EquipArmor(addedArmor);
+                    playerManager.equipmentDatabase.EquipArmor(addedArmor, false);
                 }
                 else if (defaultItem.Key is Legwear legwear)
                 {
                     Legwear addedLegwear = playerManager.playerInventory.AddLegwear(legwear);
-                    playerManager.characterBaseEquipment.EquipLegwear(addedLegwear);
+                    playerManager.equipmentDatabase.EquipLegwear(addedLegwear, false);
                 }
                 else if (defaultItem.Key is Spell spell)
                 {

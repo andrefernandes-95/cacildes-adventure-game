@@ -98,15 +98,22 @@ namespace AF.StatusEffects
 
         private void ApplyEffect(StatusEffect effect, StatusEffectState state)
         {
+            if (effect == null)
+            {
+                return;
+            }
+
             if (uIDocumentStatusEffectApplied != null)
             {
                 uIDocumentStatusEffectApplied.Display(effect);
             }
 
-            StatusEffectBehaviour statusEffectBehaviour = effect.statusEffectBehaviour;
-            if (statusEffectBehaviour != null)
+            foreach (StatusEffectBehaviour statusEffectBehaviour in effect.statusEffectBehaviours)
             {
-                statusEffectBehaviour.OnApplied(characterBaseManager, effect);
+                if (statusEffectBehaviour != null)
+                {
+                    statusEffectBehaviour.OnApplied(characterBaseManager, effect);
+                }
             }
         }
 
@@ -146,7 +153,10 @@ namespace AF.StatusEffects
 
                 if (state.hasReachedTotalAmount)
                 {
-                    effect.statusEffectBehaviour?.OnUpdate(characterBaseManager, effect);
+                    foreach (StatusEffectBehaviour effectBehaviour in effect.statusEffectBehaviours)
+                    {
+                        effectBehaviour?.OnUpdate(characterBaseManager, effect);
+                    }
                 }
             }
 
@@ -178,10 +188,12 @@ namespace AF.StatusEffects
                 return;
             }
 
-            StatusEffectBehaviour statusEffectBehaviour = effect.statusEffectBehaviour;
-            if (statusEffectBehaviour != null)
+            foreach (StatusEffectBehaviour statusEffectBehaviour in effect.statusEffectBehaviours)
             {
-                statusEffectBehaviour.OnRemoved(characterBaseManager, effect);
+                if (statusEffectBehaviour != null)
+                {
+                    statusEffectBehaviour.OnRemoved(characterBaseManager, effect);
+                }
             }
 
             characterBaseManager.characterHUD.RemoveStatusEffectBar(effect);
@@ -221,6 +233,11 @@ namespace AF.StatusEffects
 
         public int GetCurrentResistanceForStatusEffect(StatusEffect statusEffect)
         {
+            if (statusEffect == null)
+            {
+                return 0;
+            }
+
             if (calculatedResistances.ContainsKey(statusEffect))
             {
                 return (int)calculatedResistances[statusEffect];

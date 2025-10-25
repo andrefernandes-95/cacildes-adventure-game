@@ -247,11 +247,16 @@ namespace AF
             return true;
         }
 
+        public void SetHasLoadedAllPossibleTargets(bool value)
+        {
+            this.hasLoadedAllPossibleTargets = value;
+        }
+
         List<LockOnRef> GetAllValidTargets()
         {
             if (!hasLoadedAllPossibleTargets)
             {
-                hasLoadedAllPossibleTargets = true;
+                SetHasLoadedAllPossibleTargets(true);
                 _allPossibleTargets = FindObjectsByType<LockOnRef>(FindObjectsInactive.Include, FindObjectsSortMode.None).ToList();
             }
 
@@ -265,6 +270,11 @@ namespace AF
 
             foreach (var target in allTargets)
             {
+                if (target == null)
+                {
+                    continue;
+                }
+
                 if (target.transform.root == playerManager.transform.root)
                 {
                     continue;

@@ -14,6 +14,11 @@ namespace AF
         [Header("Settings")]
         [Tooltip("Because the player modal has wrong scaling, when we parent the spell, we need to rescale it appropriately")]
         [SerializeField] float chargingAbilityLocalScale = 100f;
+        [SerializeField] bool shouldHideEquipment = true;
+        [SerializeField] bool isChargeable = true;
+        [Header("Animations")]
+        [SerializeField] string chargedSpellAnimationHash = "Cast Spell";
+        [SerializeField] string simpleCastAnimationHash = "Simple Cast";
 
         // Private
         CharacterBaseManager caster;
@@ -22,20 +27,28 @@ namespace AF
         public override void OnPrepare(CharacterManager characterManager)
         {
             characterManager.characterAbilityManager.SetCurrentAbility(this);
-            characterManager.characterAbilityManager.SetIsCharging(true);
-            characterManager.characterWeaponsManager.HideEquipment();
 
-            if (chargingSpellFX != null)
+            if (shouldHideEquipment)
             {
-                GameObject chargingAbilityFXInstance = Instantiate(
-                    chargingSpellFX, characterManager.characterTransformHelper.rightHand ?? characterManager.transform);
-
-                chargingAbilityFXInstance.transform.localScale *= chargingAbilityLocalScale;
-
-                characterManager.characterAbilityManager.chargingAbilityFX = chargingAbilityFXInstance;
+                characterManager.characterWeaponsManager.HideEquipment();
             }
 
-            characterManager.PlayCrossFadeBusyAnimationWithRootMotion("Cast Spell", 0.1f);
+            if (isChargeable)
+            {
+                characterManager.characterAbilityManager.SetIsCharging(true);
+
+                if (chargingSpellFX != null)
+                {
+                    GameObject chargingAbilityFXInstance = Instantiate(
+                        chargingSpellFX, characterManager.characterTransformHelper.rightHand ?? characterManager.transform);
+
+                    chargingAbilityFXInstance.transform.localScale *= chargingAbilityLocalScale;
+
+                    characterManager.characterAbilityManager.chargingAbilityFX = chargingAbilityFXInstance;
+                }
+            }
+
+            characterManager.PlayCrossFadeBusyAnimationWithRootMotion(isChargeable ? chargedSpellAnimationHash : simpleCastAnimationHash, 0.1f);
         }
 
         public override void OnPrepare(PlayerManager playerManager)
@@ -46,20 +59,28 @@ namespace AF
             }
 
             playerManager.playerAbilityManager.SetCurrentAbility(this);
-            playerManager.playerAbilityManager.SetIsCharging(true);
-            playerManager.playerWeaponsManager.HideEquipment();
 
-            if (chargingSpellFX != null)
+            if (shouldHideEquipment)
             {
-                GameObject chargingAbilityFXInstance = Instantiate(
-                    chargingSpellFX, playerManager.characterTransformHelper.rightHand);
-
-                chargingAbilityFXInstance.transform.localScale *= chargingAbilityLocalScale;
-
-                playerManager.playerAbilityManager.chargingAbilityFX = chargingAbilityFXInstance;
+                playerManager.playerWeaponsManager.HideEquipment();
             }
 
-            playerManager.PlayCrossFadeBusyAnimationWithRootMotion("Cast Spell", 0.1f);
+            if (isChargeable)
+            {
+                playerManager.playerAbilityManager.SetIsCharging(true);
+
+                if (chargingSpellFX != null)
+                {
+                    GameObject chargingAbilityFXInstance = Instantiate(
+                        chargingSpellFX, playerManager.characterTransformHelper.rightHand);
+
+                    chargingAbilityFXInstance.transform.localScale *= chargingAbilityLocalScale;
+
+                    playerManager.playerAbilityManager.chargingAbilityFX = chargingAbilityFXInstance;
+                }
+            }
+
+            playerManager.PlayCrossFadeBusyAnimationWithRootMotion(isChargeable ? chargedSpellAnimationHash : simpleCastAnimationHash, 0.1f);
         }
 
         public override void OnUse(PlayerManager playerManager)
@@ -69,7 +90,10 @@ namespace AF
                 playerManager,
                 playerManager.characterBaseEquipment.GetCurrentEquippedSpell());
 
-            clonedDamage.Multiply(playerManager.playerAbilityManager.GetChargingAmountMultiplier());
+            if (isChargeable)
+            {
+                clonedDamage.Multiply(playerManager.playerAbilityManager.GetChargingAmountMultiplier());
+            }
 
             this.damage = clonedDamage;
 
@@ -82,7 +106,11 @@ namespace AF
 
         public override void OnUse(CharacterManager characterManager)
         {
-            damage.Multiply(characterManager.characterAbilityManager.GetChargingAmountMultiplier());
+            if (isChargeable)
+            {
+                damage.Multiply(characterManager.characterAbilityManager.GetChargingAmountMultiplier());
+            }
+
             ApplyDamageScaling(characterManager);
 
             caster = characterManager;
@@ -130,12 +158,18 @@ namespace AF
 
         public override void OnFinished(CharacterManager characterManager)
         {
-            characterManager.characterAbilityManager.ClearChargingEffects();
+            if (isChargeable)
+            {
+                characterManager.characterAbilityManager.ClearChargingEffects();
+            }
         }
 
         public override void OnFinished(PlayerManager playerManager)
         {
-            playerManager.playerAbilityManager.ClearChargingEffects();
+            if (isChargeable)
+            {
+                playerManager.playerAbilityManager.ClearChargingEffects();
+            }
         }
     }
 }

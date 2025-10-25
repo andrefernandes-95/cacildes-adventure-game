@@ -190,13 +190,14 @@ MonoBehaviour:
     numberOfEnemiesToSpawnOverride: -1
   arenaManagerUI: {fileID: 2456296946784147465}
   elapsedTime: 0
-  intervalBetweenRounds: 5
+  intervalBetweenRounds: 7
   arenaPowerupPrefab: {fileID: 4326814990913413147, guid: 99ddcb89b6b8a2f439b20d74b2fa3326, type: 3}
   bgmManager: {fileID: 0}
   soundbank: {fileID: 0}
   playerManager: {fileID: 0}
   notificationManager: {fileID: 0}
   uIDocumentPlayerGold: {fileID: 0}
+  sceneSettings: {fileID: 0}
   gameSession: {fileID: 11400000, guid: 806862db69fa7244189bed36885b18a4, type: 2}
   playerStatsDatabase: {fileID: 11400000, guid: 5700f759ff00d104a97ef4af25190ddd, type: 2}
   arenaAchievement: {fileID: 11400000, guid: 6bc6494e3a384e04f97abc02fabd1afe, type: 2}
@@ -296,6 +297,7 @@ MonoBehaviour:
     m_FallbackState: 0
     m_WaitForCompletion: 0
     m_LocalVariables: []
+  arenaRewards: {fileID: 0}
   references:
     version: 2
     RefIds: []
@@ -374,6 +376,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8717002025458788450}
+  - component: {fileID: 7445556485116152302}
   m_Layer: 0
   m_Name: '[PREFAB] The Arena'
   m_TagString: Untagged
@@ -402,6 +405,103 @@ Transform:
   - {fileID: 1015204930368605095}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!82 &7445556485116152302
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2731384624925045172}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: 2c9178d6a0415e0458ef7d60e5a42e74, type: 3}
+  m_Resource: {fileID: 8300000, guid: 2c9178d6a0415e0458ef7d60e5a42e74, type: 3}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &5049833426440347858
 GameObject:
   m_ObjectHideFlags: 0
@@ -1363,6 +1463,7 @@ MonoBehaviour:
   onMoment_End:
     m_PersistentCalls:
       m_Calls: []
+  skipTurnCapturableOnMomentEnd: 0
 --- !u!1001 &1010790397947347423
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1446,16 +1547,44 @@ PrefabInstance:
       value: Participate In Arena
       objectReference: {fileID: 0}
     - target: {fileID: 212844359404311544, guid: 6df7549b89b7f2c47872c55f984a8bba, type: 3}
+      propertyPath: onActivate.m_PersistentCalls.m_Calls.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 212844359404311544, guid: 6df7549b89b7f2c47872c55f984a8bba, type: 3}
+      propertyPath: onActivate.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 212844359404311544, guid: 6df7549b89b7f2c47872c55f984a8bba, type: 3}
       propertyPath: onActivate.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 2480910966218378936}
+    - target: {fileID: 212844359404311544, guid: 6df7549b89b7f2c47872c55f984a8bba, type: 3}
+      propertyPath: onActivate.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 7445556485116152302}
+    - target: {fileID: 212844359404311544, guid: 6df7549b89b7f2c47872c55f984a8bba, type: 3}
+      propertyPath: onActivate.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 212844359404311544, guid: 6df7549b89b7f2c47872c55f984a8bba, type: 3}
       propertyPath: onActivate.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: OnArenaStarts
       objectReference: {fileID: 0}
     - target: {fileID: 212844359404311544, guid: 6df7549b89b7f2c47872c55f984a8bba, type: 3}
+      propertyPath: onActivate.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: Play
+      objectReference: {fileID: 0}
+    - target: {fileID: 212844359404311544, guid: 6df7549b89b7f2c47872c55f984a8bba, type: 3}
       propertyPath: onActivate.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
       value: AF.Arena.ArenaManager, AF
+      objectReference: {fileID: 0}
+    - target: {fileID: 212844359404311544, guid: 6df7549b89b7f2c47872c55f984a8bba, type: 3}
+      propertyPath: onActivate.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: UnityEngine.AudioSource, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 212844359404311544, guid: 6df7549b89b7f2c47872c55f984a8bba, type: 3}
+      propertyPath: onActivate.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 212844359404311550, guid: 6df7549b89b7f2c47872c55f984a8bba, type: 3}
       propertyPath: m_Name

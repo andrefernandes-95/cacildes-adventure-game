@@ -41,7 +41,9 @@ MonoBehaviour:
     m_WaitForCompletion: 0
     m_LocalVariables: []
   sprite: {fileID: 21300000, guid: 4e669da4d93d7124bb593eab36aa0019, type: 3}
+  itemValue: {fileID: 11400000, guid: 418d40b3db6b9fc409da0d48baa55275, type: 2}
   value: 5000
+  itemWeight: {fileID: 11400000, guid: fb7e8a640b763db4ea15381bac572c11, type: 2}
   isRenewable: 0
   tradingItemRequirements:
     _serializedList: []
@@ -50,7 +52,10 @@ MonoBehaviour:
   location: 
   canBeUpgraded: 1
   level: 1
+  upgradeMaterialData: {fileID: 0}
+  damageTemplate: {fileID: 0}
   damageAbsorbed:
+    basePhysicalDamage: 0
     physical: 0
     fire: 0
     frost: 20
@@ -71,37 +76,21 @@ MonoBehaviour:
     strengthScaling: 5
     dexterityScaling: 5
     intelligenceScaling: 5
-  physicalDefense: 0
-  fireDefense: 0
-  frostDefense: 0
-  lightningDefense: 0
-  magicDefense: 0
-  darkDefense: 0
-  waterDefense: 0
-  statusEffectResistances:
-  - statusEffect: {fileID: 11400000, guid: f7dd06633468f614eb39e316fece5345, type: 2}
-    resistanceBonus: 50
-  statusEffectCancellationRates: []
-  graphicNameToShow: 
-  graphicNamesToHide: []
+  statusEffectDelayRates: []
   vitalityBonus: 0
   enduranceBonus: 0
   strengthBonus: 0
   dexterityBonus: 0
   intelligenceBonus: 0
-  poiseBonus: 0
-  postureBonus: 0
+  equipmentEffects: []
   staminaRegenBonus: 0
-  speedPenalty: 0
   movementSpeedBonus: 0
-  additionalCoinPercentage: 0
+  additionalCoinMultiplier: 0
   reputationBonus: 0
   discountPercentage: 0
-  pierceDamageAbsorption: 1
-  bluntDamageAbsorption: 1
-  slashDamageAbsorption: 1
   canDamageEnemiesUponAttack: 0
   damageDealtToEnemiesUponAttacked:
+    basePhysicalDamage: 0
     physical: 0
     fire: 0
     frost: 0
@@ -123,10 +112,13 @@ MonoBehaviour:
   projectileMultiplierBonus: 0
   canRage: 0
   graphicsToShow:
-  - Chr_BackAttachment_05
+  - Chr_BackAttachment_14
   male_GraphicsToShow: 
   female_GraphicsToShow: 
-  armorMaterial: {fileID: 2100000, guid: 3d8cf3a3ee92c054586ba27a00a8f0b2, type: 2}
+  armorMaterial: {fileID: 2100000, guid: e565be416b667ea4ea54308207789116, type: 2}
+  healthBonusMultiplier: 0
+  manaBonusMultiplier: 0
+  staminaBonusMultiplier: 0
   healthBonus: 0
   magicBonus: 0
   staminaBonus: 0
@@ -148,6 +140,7 @@ MonoBehaviour:
   chanceToDoubleCoinsFromFallenEnemies: 0
   chanceToRestoreHealthUponDeath: 0
   chanceToNotLoseItemUponConsumption: 0
+  bonusWeightLoad: 0
   references:
     version: 2
     RefIds: []

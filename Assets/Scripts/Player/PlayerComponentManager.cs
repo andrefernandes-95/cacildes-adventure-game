@@ -165,20 +165,6 @@ namespace AF
             UpdatePosition(target.TransformPoint(Vector3.zero), target.rotation);
         }
 
-        public void SetIsParalysed(bool value)
-        {
-            isParalysed = value;
-
-            if (!value)
-            {
-                EnablePlayerControl();
-            }
-            else
-            {
-                LockPlayerControl();
-            }
-        }
-
         public void LockPlayerControl()
         {
             DisableComponents();

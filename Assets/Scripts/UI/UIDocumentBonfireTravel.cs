@@ -94,7 +94,14 @@ namespace AF
 
                     UIUtils.SetupButton(clonedBonfireOption.Q<Button>(), () =>
                     {
-                        teleportManager.Teleport(location.sceneLocation.id);
+                        if (location.sceneLocation != null)
+                        {
+                            teleportManager.Teleport(location.sceneLocation.id, location.spawnLocationData);
+                        }
+                        else
+                        {
+                            Debug.LogWarning($"Could not find scene location associated with bonfire {location.name}");
+                        }
                     },
                     () =>
                     {

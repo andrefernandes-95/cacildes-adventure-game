@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3fd79005ae1cc4f4c8dcb804b07b6bbc, type: 3}
   m_Name: Flameborne Ring
   m_EditorClassIdentifier: 
+  itemID: 
   nameLocalized:
     m_TableReference:
       m_TableCollectionName: GUID:bfeeac13f16b59940b4195364a8d9ed7
@@ -39,52 +40,31 @@ MonoBehaviour:
     m_FallbackState: 0
     m_WaitForCompletion: 0
     m_LocalVariables: []
-  sprite: {fileID: 21300000, guid: 6d56a5175b81c7f4e9fccbbba0723aaf, type: 3}
-  itemDescription: A ring that protects against fire damage and burns.
-  shortDescription: 
+  sprite: {fileID: 21300000, guid: a97ba4f1a7346c842a62ba74b0cf0522, type: 3}
+  itemValue: {fileID: 11400000, guid: 4a2f694b56ffe8445bf92f74937aecdf, type: 2}
   value: 5000
+  itemWeight: {fileID: 0}
   isRenewable: 0
   tradingItemRequirements:
     _serializedList: []
+  dropRateOnEnemies: 0.2
   notes: 
   location: 'Found in Hell on lava near slimes
 
 '
-  physicalDefense: 0
-  fireDefense: 20
-  frostDefense: 0
-  lightningDefense: 0
-  magicDefense: 0
-  darkDefense: 0
-  statusEffectResistances:
-  - statusEffect: {fileID: 11400000, guid: a557eb86264eeb44085a58001fccdb60, type: 2}
-    resistanceBonus: 40
-  graphicNameToShow: 
-  graphicNamesToHide: []
-  vitalityBonus: 0
-  enduranceBonus: 0
-  strengthBonus: 0
-  dexterityBonus: 0
-  intelligenceBonus: 0
-  poiseBonus: 0
-  postureBonus: 0
-  staminaRegenBonus: 0
-  speedPenalty: 0
-  movementSpeedBonus: 0
-  additionalCoinPercentage: 0
-  reputationBonus: 0
-  discountPercentage: 0
-  pierceDamageAbsorption: 1
-  bluntDamageAbsorption: 1
-  slashDamageAbsorption: 1
-  canDamageEnemiesUponAttack: 0
-  damageDealtToEnemiesUponAttacked:
+  canBeUpgraded: 0
+  level: 1
+  upgradeMaterialData: {fileID: 0}
+  damageTemplate: {fileID: 0}
+  damageAbsorbed:
+    basePhysicalDamage: 0
     physical: 0
     fire: 0
     frost: 0
     magic: 0
     lightning: 0
     darkness: 0
+    water: 0
     postureDamage: 0
     poiseDamage: 0
     pushForce: 0
@@ -93,15 +73,66 @@ MonoBehaviour:
     ignoreBlocking: 0
     canNotBeParried: 0
     damageType: 0
+    strengthScaling: 5
+    dexterityScaling: 5
+    intelligenceScaling: 5
+  statusEffectDelayRates: []
+  vitalityBonus: 0
+  enduranceBonus: 0
+  strengthBonus: 0
+  dexterityBonus: 0
+  intelligenceBonus: 0
+  equipmentEffects:
+  - {fileID: 11400000, guid: 0e5a1c92fefc2f44d9261d4ebe384a77, type: 2}
+  staminaRegenBonus: 0
+  movementSpeedBonus: 0
+  additionalCoinMultiplier: 0
+  reputationBonus: 0
+  discountPercentage: 0
+  canDamageEnemiesUponAttack: 0
+  damageDealtToEnemiesUponAttacked:
+    basePhysicalDamage: 0
+    physical: 0
+    fire: 0
+    frost: 0
+    magic: 0
+    lightning: 0
+    darkness: 0
+    water: 0
+    postureDamage: 0
+    poiseDamage: 0
+    pushForce: 0
+    weaponAttackType: 0
+    statusEffects: []
+    ignoreBlocking: 0
+    canNotBeParried: 0
+    damageType: 0
+    strengthScaling: 5
+    dexterityScaling: 5
+    intelligenceScaling: 5
   projectileMultiplierBonus: 0
   canRage: 0
+  graphicsToShow: []
+  male_GraphicsToShow: 
+  female_GraphicsToShow: 
+  armorMaterial: {fileID: 0}
+  healthBonusMultiplier: 0
+  manaBonusMultiplier: 0
+  staminaBonusMultiplier: 0
   healthBonus: 0
   magicBonus: 0
   staminaBonus: 0
   physicalAttackBonus: 0
   jumpAttackBonus: 0
+  twoHandAttackBonusMultiplier: 0
+  heavyAttackBonusMultiplier: 0
+  slashDamageMultiplier: 0
+  pierceDamageMultiplier: 0
+  bluntDamageMultiplier: 0
+  footDamageMultiplier: 0
   increaseAttackPowerTheLowerTheReputation: 0
   increaseAttackPowerWithLowerHealth: 0
+  increaseAttackPowerWhenUnarmed: 0
   postureDamagePerParry: 0
   postureDecreaseRateBonus: 0
   backStabAngleBonus: 0
@@ -109,6 +140,7 @@ MonoBehaviour:
   chanceToDoubleCoinsFromFallenEnemies: 0
   chanceToRestoreHealthUponDeath: 0
   chanceToNotLoseItemUponConsumption: 0
+  bonusWeightLoad: 0
   references:
     version: 2
     RefIds: []

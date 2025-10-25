@@ -1,6 +1,10 @@
 # IN PROGRESS
 
+Known Bugs:
+- Wait 1 Hour is causing the clock to speed up even when changing scenes
+
 To Do:
+- Status Effect - cant cast spells or abilities
 - Rename every chest in the game so we know where each item is. 
 - Remove Elven Ear from Arun Village
 - During Molok fight he stopped taking damage

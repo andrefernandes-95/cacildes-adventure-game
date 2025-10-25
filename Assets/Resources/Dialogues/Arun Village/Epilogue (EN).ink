@@ -61,3 +61,5 @@ General Alcino: Can we grab a slice of meatroll at last? I'm starving...
 ~ runEvent("Play Laughter")
 
 ~ runEvent("Hide Celebration Camera")
+
+@wait_1

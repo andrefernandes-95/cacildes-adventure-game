@@ -43,7 +43,7 @@ MonoBehaviour:
   sprite: {fileID: 21300000, guid: 55fbafc6ea7e9624eb04fb6896d8fc54, type: 3}
   itemValue: {fileID: 11400000, guid: 9910475b5956dbf4b883cc7765f6c52f, type: 2}
   value: 120
-  itemWeight: {fileID: 0}
+  itemWeight: {fileID: 11400000, guid: 2c4096eff975b5b4182302acfe8ab425, type: 2}
   isRenewable: 0
   tradingItemRequirements:
     _serializedList: []
@@ -71,7 +71,7 @@ MonoBehaviour:
     canNotBeParried: 0
     damageType: 0
     strengthScaling: 5
-    dexterityScaling: 5
+    dexterityScaling: 2
     intelligenceScaling: 5
   weaponSound: {fileID: 11400000, guid: 30f1fce38ecd2644e9950396c63354cc, type: 2}
   weaponSize: 0
@@ -83,6 +83,7 @@ MonoBehaviour:
   negativeReputationRequired: 0
   weaponType: {fileID: 11400000, guid: eb2ed9d52f43be8459ff078bbede65da, type: 2}
   staminaCostPerAttack: 30
+  weaponEffects: []
   strengthScaling: 3
   dexterityScaling: 2
   intelligenceScaling: 5
@@ -150,7 +151,11 @@ MonoBehaviour:
   oh_weaponAnimationOverrides:
   - animationName: Cacildes - Heavy Attack - 1
     animationClip: {fileID: 5801895114361561812, guid: 47f28392564f3b0449b5add934052ad2, type: 3}
-  th_weaponAnimationOverrides: []
+  - animationName: Cacildes - Spell - Cast
+    animationClip: {fileID: -7013330779734089095, guid: faa97cc705199cb42843cd38b9abad2e, type: 3}
+  th_weaponAnimationOverrides:
+  - animationName: Cacildes - Spell - Cast
+    animationClip: {fileID: -7013330779734089095, guid: faa97cc705199cb42843cd38b9abad2e, type: 3}
   lightAttackCombos: 2
   heavyAttackCombos: 1
   th_lightAttackCombos: 2
@@ -160,6 +165,8 @@ MonoBehaviour:
   oh_HeavyAttackSpeedPenalty: 1
   twoHandAttackSpeedPenalty: 1
   th_HeavyAttackSpeedPenalty: 1
+  powerStance_AttackSpeedPenalty: 1
+  powerStance_HeavyAttackSpeedPenalty: 1
   amountOfGoldReceivedPerHit: 0
   doubleCoinsUponKillingEnemies: 0
   doubleDamageDuringNightTime: 0
@@ -184,6 +191,9 @@ MonoBehaviour:
   th_BlockRotation: {x: 47.62211, y: 113.32966, z: 313.5655}
   aimingPosition: {x: 0, y: 0, z: 0}
   aimingRotation: {x: 0, y: 0, z: 0}
+  oh_heavyAttackAbilities: []
+  th_heavyAttackAbilities: []
+  castAbilitySpeed: 1
   references:
     version: 2
     RefIds: []

@@ -188,7 +188,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4549797625781784792}
-  - {fileID: 1783513538245749403}
+  - {fileID: 7417424462181553956}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &8795318710664530627
@@ -274,6 +274,7 @@ MonoBehaviour:
   characterTwoHandRef: {fileID: 0}
   characterWeaponBuffs: {fileID: 0}
   shouldDisableHitboxOnStart: 1
+  hitboxType: 0
   weapon: {fileID: 11400000, guid: f59203a288f25a24ab1b146ed99eb76f, type: 2}
 --- !u!65 &1656630451330587798
 BoxCollider:
@@ -294,7 +295,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.17, y: 1.38, z: 0.42}
+  m_Size: {x: 0.17, y: 1.63, z: 0.42}
   m_Center: {x: 0.00001742125, y: 0.49, z: -0.00004063527}
 --- !u!114 &6240129921374341932
 MonoBehaviour:
@@ -572,55 +573,69 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!1 &9132703280260351727
-GameObject:
+--- !u!1001 &5768108373268007387
+PrefabInstance:
   m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1783513538245749403}
-  - component: {fileID: 3007170917475465645}
-  m_Layer: 0
-  m_Name: Left Hand IK
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1783513538245749403
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9132703280260351727}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.66878116, y: 0.16817948, z: 0.3755695, w: 0.619189}
-  m_LocalPosition: {x: 0.019, y: -0.075, z: -0.006}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 8821046507109965223}
-  m_LocalEulerAnglesHint: {x: -432.656, y: 279.44, z: 126.337}
---- !u!114 &3007170917475465645
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 8821046507109965223}
+    m_Modifications:
+    - target: {fileID: 1245216184531560037, guid: 0bd705db2a8aac247b586baa02546f63, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3955159099939184383, guid: 0bd705db2a8aac247b586baa02546f63, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3955159099939184383, guid: 0bd705db2a8aac247b586baa02546f63, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.00000007867638
+      objectReference: {fileID: 0}
+    - target: {fileID: 3955159099939184383, guid: 0bd705db2a8aac247b586baa02546f63, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3955159099939184383, guid: 0bd705db2a8aac247b586baa02546f63, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3955159099939184383, guid: 0bd705db2a8aac247b586baa02546f63, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3955159099939184383, guid: 0bd705db2a8aac247b586baa02546f63, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3955159099939184383, guid: 0bd705db2a8aac247b586baa02546f63, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3955159099939184383, guid: 0bd705db2a8aac247b586baa02546f63, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3955159099939184383, guid: 0bd705db2a8aac247b586baa02546f63, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3955159099939184383, guid: 0bd705db2a8aac247b586baa02546f63, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6953412371218671586, guid: 0bd705db2a8aac247b586baa02546f63, type: 3}
+      propertyPath: m_Name
+      value: Weapon Buff Root
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 0bd705db2a8aac247b586baa02546f63, type: 3}
+--- !u!4 &7417424462181553956 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3955159099939184383, guid: 0bd705db2a8aac247b586baa02546f63, type: 3}
+  m_PrefabInstance: {fileID: 5768108373268007387}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9132703280260351727}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f9bf8f63da04d954aa5c61a092de2688, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerManager: {fileID: 0}
-  equipmentDatabase: {fileID: 11400000, guid: a2bf3141e1e696a48952a3479a4a9742, type: 2}
-  playerHand: {fileID: 0}
-  weight: 0.5
-  resetDuration: 0.1
-  dontAllowIKWhenRunning: 0
-  dontAllowIKWhenJumpAttacking: 0
-  onlyAllowOnAttacks: 1

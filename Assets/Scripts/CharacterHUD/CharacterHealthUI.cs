@@ -13,6 +13,12 @@ namespace AF.Health
         Slider slider => GetComponent<Slider>();
         CanvasGroup canvasGroup => GetComponent<CanvasGroup>();
 
+        [Header("Slider Background")]
+        [SerializeField] Image sliderImage;
+        [SerializeField] Color normalSliderImage;
+        [SerializeField] Color cursedSliderImage;
+
+
         [Header("UI Options")]
         [SerializeField] TextMeshProUGUI currentAndMaxHealthValue;
 
@@ -68,6 +74,8 @@ namespace AF.Health
             int maxHealth = characterBaseManager.health.GetMaxHealth();
             slider.value = currentHealth / maxHealth;
             slider.maxValue = 1f;
+
+            sliderImage.color = characterBaseManager.health.hasHealthCutInHalf ? cursedSliderImage : normalSliderImage;
 
             currentAndMaxHealthValue.text = $"{(int)currentHealth}/{maxHealth}";
 

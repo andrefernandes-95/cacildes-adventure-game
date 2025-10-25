@@ -85,7 +85,7 @@ namespace AF
             return hashAttack;
         }
 
-        public static void ThrowWeapon(CharacterWeaponHitbox currentWeapon, GameObject weaponThrowProjectilePrefab, CharacterBaseManager attacker, CharacterBaseManager target)
+        public static void ThrowWeapon(CharacterWeaponHitbox currentWeapon, GameObject weaponThrowProjectilePrefab, CharacterBaseManager attacker, CharacterBaseManager target, bool shouldRotateOnUpdate)
         {
             if (currentWeapon == null)
             {
@@ -104,7 +104,9 @@ namespace AF
             clonedWeapon.GetComponent<Hitbox>().character = attacker;
             clonedWeapon.AddComponent<AttachCameraShakeToSpell>();
             clonedWeapon.AddComponent<Rigidbody>();
-            clonedWeapon.AddComponent<ThrowWeaponHelper>().Initialize(attacker);
+            ThrowWeaponHelper throwWeaponHelper = clonedWeapon.AddComponent<ThrowWeaponHelper>();
+            throwWeaponHelper.shouldRotateOnUpdate = shouldRotateOnUpdate;
+            throwWeaponHelper.Initialize(attacker);
         }
 
         public static Projectile ThrowProjectile(GameObject projectile, CharacterBaseManager attacker, CharacterBaseManager target)

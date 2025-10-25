@@ -47,6 +47,7 @@ namespace AF.Animations
             defaultAnimatorSpeed = animatorSpeed;
         }
 
+
         private void Start()
         {
             OverrideAnimatorClips();
@@ -55,6 +56,13 @@ namespace AF.Animations
             {
                 characterManager.animator.SetFloat(speedParameter, 0f);
             }
+
+            characterManager.onResetStates.AddListener(ResetAnimationSpeed);
+        }
+
+        void ResetAnimationSpeed()
+        {
+            characterManager.animator.speed = defaultAnimatorSpeed;
         }
 
         void OverrideAnimatorClips()

@@ -21,6 +21,9 @@ namespace AF
 
         VisualElement healthContainer;
         VisualElement healthFill;
+        [SerializeField] Color healthFillNormalColor;
+        [SerializeField] Color healthFillCursedColor;
+
         Label healthCurrentValue;
         VisualElement staminaContainer;
         VisualElement staminaFill;
@@ -77,8 +80,6 @@ namespace AF
         public LocalizedString oneHandIndicator_LocalizedString;
         public LocalizedString twoHandIndicator_LocalizedString;
 
-        PlayerHealth playerHealth;
-
         public Color staminaOriginalColor;
         public Color manaOriginalColor;
 
@@ -112,7 +113,10 @@ namespace AF
 
             EventManager.StartListening(EventMessages.ON_TWO_HANDING_CHANGED, UpdateCombatStanceIndicator);
 
+            playerManager.health.onHealthChange.AddListener(OnHealthChanged);
+            // Todo check if we need this event at all
             EventManager.StartListening(EventMessages.ON_PLAYER_HEALTH_CHANGED, OnHealthChanged);
+
             EventManager.StartListening(EventMessages.ON_PLAYER_MANA_CHANGED, OnManaChanged);
             EventManager.StartListening(EventMessages.ON_PLAYER_STAMINA_CHANGED, OnStaminaChanged);
         }
@@ -121,9 +125,8 @@ namespace AF
         {
         }
 
-        private void OnEnable()
+        void SetupRefs()
         {
-            playerHealth = playerManager.health as PlayerHealth;
             this.root = this.uIDocument.rootVisualElement;
 
             root.Q("InGameControls").style.display =
@@ -157,6 +160,11 @@ namespace AF
             combatStanceSprite = root.Q<VisualElement>("CombatStanceSprite");
 
             root.Q<VisualElement>("SwimmingIndicator").style.display = playerManager.thirdPersonController.water != null ? DisplayStyle.Flex : DisplayStyle.None;
+        }
+
+        private void OnEnable()
+        {
+            SetupRefs();
 
             InputSystem.onDeviceChange += HandleDeviceChangeCallback;
 
@@ -243,17 +251,30 @@ namespace AF
 
         void OnHealthChanged()
         {
-            int width = (int)healthContainerBaseWidth;
+            if (!this.isActiveAndEnabled)
+            {
+                return;
+            }
+
+            int width = (int)(healthContainerBaseWidth / (playerManager.health.hasHealthCutInHalf ? 2f : 1f));
 
             width += playerManager.playerStats.GetVitality() * 10;
+
             healthContainer.style.width = width;
 
             healthFill.style.width = new Length(playerManager.health.GetCurrentHealthPercentage(), LengthUnit.Percent);
             healthCurrentValue.text = $"{Mathf.RoundToInt(playerManager.health.GetCurrentHealth())}/{playerManager.health.GetMaxHealth()}";
+
+            healthFill.style.unityBackgroundImageTintColor = playerManager.health.hasHealthCutInHalf ? healthFillCursedColor : healthFillNormalColor;
         }
 
         void OnManaChanged()
         {
+            if (!this.isActiveAndEnabled)
+            {
+                return;
+            }
+
             int width = (int)manaContainerBaseWidth;
 
             width += playerManager.playerStats.GetIntelligence() * 10;
@@ -265,6 +286,11 @@ namespace AF
 
         void OnStaminaChanged()
         {
+            if (!this.isActiveAndEnabled)
+            {
+                return;
+            }
+
             int width = (int)staminaContainerBaseWidth;
 
             width += playerManager.playerStats.GetEndurance() * 10;

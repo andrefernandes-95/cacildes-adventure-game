@@ -44,6 +44,8 @@ namespace AF
         public CharacterWeaponBuffManager characterWeaponBuffManager;
         public Sight sight;
 
+        CharacterAnimationEventListener characterAnimationEventListener => GetComponent<CharacterAnimationEventListener>();
+
         // Animator Overrides
         [HideInInspector] public AnimatorOverrideController animatorOverrideController;
 
@@ -663,6 +665,23 @@ namespace AF
                     rotationSpeed * Time.deltaTime
                 );
             }
+        }
+
+        public override void OnParalyzedStart()
+        {
+            stateManager.enabled = false;
+            animator.speed = 0f;
+        }
+
+        public override void OnParalyzedEnd()
+        {
+            stateManager.enabled = true;
+            animator.speed = GetDefaultAnimatorSpeed();
+        }
+
+        public override float GetDefaultAnimatorSpeed()
+        {
+            return characterAnimationEventListener != null ? characterAnimationEventListener.animatorSpeed : 1f;
         }
     }
 }

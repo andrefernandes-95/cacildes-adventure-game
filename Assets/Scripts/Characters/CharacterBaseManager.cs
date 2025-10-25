@@ -255,5 +255,10 @@ namespace AF
 
             animator.CrossFade(animationName, crossFade);
         }
+
+        public abstract void OnParalyzedStart();
+        public abstract void OnParalyzedEnd();
+
+        public abstract float GetDefaultAnimatorSpeed();
     }
 }

@@ -11,7 +11,7 @@ namespace AF
         public float STAMINA_REGENERATION_RATE = 20f;
         public float STAMINA_REGENERATION_RATE_BONUS = 0f;
         public float negativeStaminaRegenerationBonus = 0f;
-        public const float EMPTY_STAMINA_REGENERATION_DELAY = .5f;
+        public const float EMPTY_STAMINA_REGENERATION_DELAY = .85f;
         public bool shouldRegenerateStamina = false;
 
         [Header("Combat Stamina")]

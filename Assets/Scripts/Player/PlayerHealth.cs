@@ -163,5 +163,12 @@ namespace AF
         {
             onHealthChange?.Invoke();
         }
+
+        public override void SetHasHealthCutInHealth(bool value)
+        {
+            base.SetHasHealthCutInHealth(value);
+
+            onUpdateHealthbar?.Invoke();
+        }
     }
 }

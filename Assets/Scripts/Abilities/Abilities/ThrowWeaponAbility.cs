@@ -17,47 +17,64 @@ namespace AF
         [SerializeField] AnimationClip spellHold;
         [SerializeField] AnimationClip spellRelease;
 
+        [Header("Settings")]
+        [SerializeField] bool isChargeable = true;
+        [SerializeField] bool shouldRotateOnUpdate = true;
+
+        [Header("Animations")]
+        [SerializeField] string chargedSpellAnimationHash = "Cast Spell";
+        [SerializeField] string simpleCastAnimationHash = "Simple Cast";
+
         public override void OnPrepare(CharacterManager characterManager)
         {
             characterManager.characterAbilityManager.SetAnimations(characterManager, spellStart, spellHold, spellRelease);
             characterManager.characterAbilityManager.hasOverridenAnimations = true;
-            characterManager.characterAbilityManager.SetIsCharging(true);
 
             characterManager.characterAbilityManager.SetCurrentAbility(this);
 
-            if (chargingFX != null)
+            if (isChargeable)
             {
-                GameObject chargingAbilityFXInstance = Instantiate(
-                    chargingFX, characterManager.characterTransformHelper.rightHand);
+                characterManager.characterAbilityManager.SetIsCharging(true);
 
-                characterManager.characterAbilityManager.chargingAbilityFX = chargingAbilityFXInstance;
+                if (chargingFX != null)
+                {
+                    GameObject chargingAbilityFXInstance = Instantiate(
+                        chargingFX, characterManager.characterTransformHelper.rightHand);
+
+                    characterManager.characterAbilityManager.chargingAbilityFX = chargingAbilityFXInstance;
+                }
             }
 
-            characterManager.PlayBusyAnimationWithRootMotion("Cast Spell");
+
+            characterManager.PlayBusyAnimationWithRootMotion(isChargeable ? chargedSpellAnimationHash : simpleCastAnimationHash);
         }
 
         public override void OnPrepare(PlayerManager playerManager)
         {
             playerManager.playerAbilityManager.SetAnimations(playerManager, spellStart, spellHold, spellRelease);
             playerManager.playerAbilityManager.hasOverridenAnimations = true;
-            playerManager.playerAbilityManager.SetIsCharging(true);
 
             playerManager.playerAbilityManager.SetCurrentAbility(this);
 
-            if (chargingFX != null)
+            if (isChargeable)
             {
-                GameObject chargingAbilityFXInstance = Instantiate(
-                    chargingFX, playerManager.characterTransformHelper.rightHand);
+                playerManager.playerAbilityManager.SetIsCharging(true);
 
-                playerManager.playerAbilityManager.chargingAbilityFX = chargingAbilityFXInstance;
+                if (chargingFX != null)
+                {
+                    GameObject chargingAbilityFXInstance = Instantiate(
+                        chargingFX, playerManager.characterTransformHelper.rightHand);
+
+                    playerManager.playerAbilityManager.chargingAbilityFX = chargingAbilityFXInstance;
+                }
             }
 
-            playerManager.PlayBusyAnimationWithRootMotion("Cast Spell");
+            playerManager.PlayBusyAnimationWithRootMotion(isChargeable ? chargedSpellAnimationHash : simpleCastAnimationHash);
         }
 
         public override void OnUse(PlayerManager playerManager)
         {
-            damage.Multiply(playerManager.playerAbilityManager.GetChargingAmountMultiplier());
+            if (isChargeable) damage.Multiply(playerManager.playerAbilityManager.GetChargingAmountMultiplier());
             ApplyDamageScaling(playerManager);
             playerManager.characterBaseAttackManager.damageBonus = damage;
 
@@ -65,12 +82,13 @@ namespace AF
                 playerManager.playerWeaponsManager.currentWeaponInstance,
                 throwWeaponProjectilePrefab,
                 playerManager,
-                playerManager.GetTarget());
+                playerManager.GetTarget(),
+                shouldRotateOnUpdate);
         }
 
         public override void OnUse(CharacterManager characterManager)
         {
-            damage.Multiply(characterManager.characterAbilityManager.GetChargingAmountMultiplier());
+            if (isChargeable) damage.Multiply(characterManager.characterAbilityManager.GetChargingAmountMultiplier());
             ApplyDamageScaling(characterManager);
 
             characterManager.FaceTarget();
@@ -78,7 +96,8 @@ namespace AF
                 characterManager.characterWeaponsManager.currentWeaponInstance,
                 throwWeaponProjectilePrefab,
                 characterManager,
-                characterManager.targetManager.currentTarget != null ? characterManager.targetManager.currentTarget : null);
+                characterManager.targetManager.currentTarget != null ? characterManager.targetManager.currentTarget : null,
+                shouldRotateOnUpdate);
         }
 
         public override bool CanUseAbility(CharacterBaseManager character)
@@ -101,12 +120,12 @@ namespace AF
 
         public override void OnFinished(CharacterManager characterManager)
         {
-            characterManager.characterAbilityManager.ClearChargingEffects();
+            if (isChargeable) characterManager.characterAbilityManager.ClearChargingEffects();
         }
 
         public override void OnFinished(PlayerManager playerManager)
         {
-            playerManager.playerAbilityManager.ClearChargingEffects();
+            if (isChargeable) playerManager.playerAbilityManager.ClearChargingEffects();
         }
     }
 }

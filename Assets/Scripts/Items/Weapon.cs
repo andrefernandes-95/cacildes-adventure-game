@@ -118,8 +118,8 @@ namespace AF
         public WeaponType weaponType;
         [Header("Stamina")]
         public int staminaCostPerAttack = 30;
-        public int GetLightAttackStaminaCost() => staminaCostPerAttack;
-        public int GetHeavyAttackStaminaCost() => staminaCostPerAttack * 2;
+        public int GetLightAttackStaminaCost() => weaponType != null ? weaponType.GetLightAttackStaminaCost() : staminaCostPerAttack;
+        public int GetHeavyAttackStaminaCost() => weaponType != null ? weaponType.GetHeavyAttackStaminaCost() : staminaCostPerAttack * 2;
 
         [Header("Weapon Effects")]
         public WeaponEffect[] weaponEffects;
@@ -164,6 +164,8 @@ namespace AF
         [Range(0.1f, 2f)] public float oh_HeavyAttackSpeedPenalty = 1f;
         [Range(0.1f, 2f)] public float twoHandAttackSpeedPenalty = 1f;
         [Range(0.1f, 2f)] public float th_HeavyAttackSpeedPenalty = 1f;
+        [Range(0.1f, 2f)] public float powerStance_AttackSpeedPenalty = 1f;
+        [Range(0.1f, 2f)] public float powerStance_HeavyAttackSpeedPenalty = 1f;
 
         [Header("Weapon Bonus")]
         public int amountOfGoldReceivedPerHit = 0;
@@ -218,6 +220,7 @@ namespace AF
 
         [Header("Abilities")]
         public Ability[] oh_heavyAttackAbilities;
+        public Ability[] th_heavyAttackAbilities;
         public float castAbilitySpeed = 1f;
 
 #if UNITY_EDITOR

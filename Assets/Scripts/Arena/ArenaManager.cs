@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using AF.Events;
+using AF.Inventory;
 using AF.Music;
 using AYellowpaper.SerializedCollections;
 using GameAnalyticsSDK;
@@ -11,6 +12,7 @@ using UnityEngine.AI;
 using UnityEngine.Events;
 using UnityEngine.Localization;
 using UnityEngine.SceneManagement;
+using static AF.LootTable;
 using Random = UnityEngine.Random;
 
 namespace AF.Arena
@@ -82,6 +84,9 @@ namespace AF.Arena
         // "The crowd voted, your health was restored. They wish to see you fight!"
         public LocalizedString yourHealthWasRestored;
 
+        [Header("Rewards")]
+        public LootTable arenaRewards;
+
         private void Awake()
         {
             arenaManagerUI.onMinuteChanged += SpawnPowerup;
@@ -149,6 +154,8 @@ namespace AF.Arena
                 arenaAchievement?.AwardAchievement();
                 arenaWonMoment?.Trigger();
 
+                AwardLoot();
+
                 LogAnalytic(AnalyticsUtils.OnArenaWon(SceneManager.GetActiveScene().name));
             }
             else
@@ -191,6 +198,8 @@ namespace AF.Arena
                     HandleInstatiatedEnemy(choosenEnemyRound);
                 }
             }
+
+            playerManager.lockOnManager.SetHasLoadedAllPossibleTargets(false);
         }
 
         public void EndRound()
@@ -348,6 +357,22 @@ namespace AF.Arena
             }
 
             return enemyRound;
+        }
+
+        public void AwardLoot()
+        {
+            if (arenaRewards == null || arenaRewards.loot.Count <= 0)
+            {
+                return;
+            }
+
+            LootItem lootItem = arenaRewards.loot[Random.Range(0, arenaRewards.loot.Count)];
+
+            if (lootItem != null)
+            {
+                playerManager.playerInventory.AddItem(lootItem.item, lootItem.amount);
+                notificationManager.ShowNotification((Utils.IsPortuguese() ? "Recebeste: " : "You receive: ") + " " + lootItem.item.GetName(), lootItem.item.sprite);
+            }
         }
 
     }

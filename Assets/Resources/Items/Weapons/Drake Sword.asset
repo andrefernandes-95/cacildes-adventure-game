@@ -41,9 +41,9 @@ MonoBehaviour:
     m_WaitForCompletion: 0
     m_LocalVariables: []
   sprite: {fileID: 21300000, guid: 5810b98b2fc788f469704d85fef97ee1, type: 3}
-  itemValue: {fileID: 0}
+  itemValue: {fileID: 11400000, guid: 123fcba3497dbb64ba1f08bad8dd32d3, type: 2}
   value: 1000
-  itemWeight: {fileID: 0}
+  itemWeight: {fileID: 11400000, guid: d31ef2c947c01924e96265aeb3515dac, type: 2}
   isRenewable: 0
   tradingItemRequirements:
     _serializedList:
@@ -52,15 +52,17 @@ MonoBehaviour:
   dropRateOnEnemies: 0.2
   notes: 
   location: 
-  canBeUpgraded: 0
+  canBeUpgraded: 1
   level: 1
+  upgradeMaterialData: {fileID: 11400000, guid: 99d82098b8d36614f930b2cabac10c00, type: 2}
   damage:
+    basePhysicalDamage: 0
     physical: 0
-    fire: 90
+    fire: 80
     frost: 0
     magic: 0
     lightning: 0
-    darkness: 30
+    darkness: 0
     water: 0
     postureDamage: 10
     poiseDamage: 2
@@ -68,30 +70,26 @@ MonoBehaviour:
     weaponAttackType: 0
     statusEffects:
     - statusEffect: {fileID: 11400000, guid: a557eb86264eeb44085a58001fccdb60, type: 2}
-      amountPerHit: 5
-    - statusEffect: {fileID: 11400000, guid: f7dd06633468f614eb39e316fece5345, type: 2}
-      amountPerHit: 7
-    - statusEffect: {fileID: 11400000, guid: 6d8ea05d1bece904b9299e0f0221bb6e, type: 2}
-      amountPerHit: 5
+      amountPerHit: 10
     ignoreBlocking: 0
     canNotBeParried: 0
     damageType: 0
-    strengthScaling: 5
+    strengthScaling: 1
     dexterityScaling: 5
     intelligenceScaling: 5
-  weaponUpgrades: []
-  weaponSound: {fileID: 0}
-  weaponSize: 0
+  weaponSound: {fileID: 11400000, guid: 1b3129fb973783b4a8883eb489d4651f, type: 2}
+  weaponSize: 1
   weaponPrefab: {fileID: 8826870853677818865, guid: 874200fd4d22516448dbfb0bcdfc9d48, type: 3}
-  strengthRequired: 16
-  dexterityRequired: 6
-  intelligenceRequired: 6
+  strengthRequired: 12
+  dexterityRequired: 0
+  intelligenceRequired: 0
   positiveReputationRequired: 0
   negativeReputationRequired: 0
   weaponType: {fileID: 11400000, guid: 464aa2e9d1e43614da59b378db0bbbb2, type: 2}
   staminaCostPerAttack: 30
+  weaponEffects: []
   strengthScaling: 1
-  dexterityScaling: 3
+  dexterityScaling: 5
   intelligenceScaling: 3
   manaCostToUseWeaponSpecialAttack: 25
   animationOverrides:
@@ -151,24 +149,32 @@ MonoBehaviour:
     animationClip: {fileID: -5963623502854497957, guid: 819b611452413ac4cbe14d8781ac0168, type: 3}
   - animationName: Cacildes - Parrying
     animationClip: {fileID: 7400000, guid: 118861ff34cce98438a904a278539d65, type: 2}
-  weaponAnimationData: {fileID: 11400000, guid: b7ff96c0ffb92424794c02b98238d856, type: 2}
+  weaponAnimationData: {fileID: 11400000, guid: dbb60c2ceb98b90489c05aeaa4c18196, type: 2}
+  aIWeaponAnimationData: {fileID: 0}
   weaponRangeAnimation: {fileID: 0}
   oh_weaponAnimationOverrides:
+  - animationName: Cacildes - Light Attack - 1
+    animationClip: {fileID: 190895620666878887, guid: a6a137b516378974d96a008de580e562, type: 3}
+  - animationName: Cacildes - Light Attack - 2
+    animationClip: {fileID: -5205430609500426890, guid: 53ff0a76e1374904cb91fa4a1bc66a36, type: 3}
   - animationName: Cacildes - Heavy Attack - 1
-    animationClip: {fileID: 7400000, guid: 78b261b45bae9214199a34127b1a84a5, type: 2}
+    animationClip: {fileID: -4371692875086178420, guid: d82b9fdc9878d3f4a956396f68433971, type: 3}
+  - animationName: Cacildes - Spell - Cast
+    animationClip: {fileID: -6587563727689481051, guid: 45dd449657f728642b02801d8c81235e, type: 3}
   th_weaponAnimationOverrides:
-  - animationName: Cacildes - Heavy Attack - 1
-    animationClip: {fileID: 2820805099142574241, guid: 580436901498ca748afff5490a9b5046, type: 3}
+  - animationName: Cacildes - Spell - Cast
+    animationClip: {fileID: -1657436693989015302, guid: e658df3da877b994ca2117356b5e28a5, type: 3}
   lightAttackCombos: 2
   heavyAttackCombos: 1
   th_lightAttackCombos: 2
   th_heavyAttackCombos: 1
   halveDamage: 0
-  speedPenalty: 0.035
-  oneHandAttackSpeedPenalty: 0.89
+  oneHandAttackSpeedPenalty: 1
   oh_HeavyAttackSpeedPenalty: 1
-  twoHandAttackSpeedPenalty: 0.9
+  twoHandAttackSpeedPenalty: 1
   th_HeavyAttackSpeedPenalty: 1
+  powerStance_AttackSpeedPenalty: 1
+  powerStance_HeavyAttackSpeedPenalty: 1
   amountOfGoldReceivedPerHit: 0
   doubleCoinsUponKillingEnemies: 0
   doubleDamageDuringNightTime: 0
@@ -178,21 +184,26 @@ MonoBehaviour:
   isHolyWeapon: 0
   isHexWeapon: 1
   projectileType: {fileID: 0}
-  blockAbsorption: 0.7
+  weaponBlockAbsorption: 0.8
   shouldRegenerateMana: 0
   ignoreSpellsAnimationClips: 0
-  rightHandPosition: {x: 9.1, y: 3, z: 3}
-  rightHandRotation: {x: 172.352, y: -102.082, z: 95.348}
-  leftHandPosition: {x: 8.5, y: -2.5, z: 3.5}
-  leftHandRotation: {x: 355.468, y: -101.151, z: 83.4}
+  rightHandPosition: {x: -0.005, y: 0.123, z: -0.04}
+  rightHandRotation: {x: 302.47137, y: 7.195395, z: 329.14606}
+  leftHandPosition: {x: 0.05, y: 0.078, z: 0.041}
+  leftHandRotation: {x: 68.72816, y: 233.61833, z: 29.368687}
   useTwoHandingTransform: 1
-  twoHandingPosition: {x: 9.1, y: 3, z: 3}
-  twoHandingRotation: {x: 172.823, y: -114.141, z: 93.846}
+  twoHandingPosition: {x: -0.042, y: 0.058, z: 0.077}
+  twoHandingRotation: {x: 47.333298, y: 163.10619, z: 358.535}
   useCustomTwoHandingBlockTransforms: 1
-  th_BlockPosition: {x: 9.7, y: 4.5, z: 2.1}
-  th_BlockRotation: {x: 301.167, y: 146.761, z: -166.135}
+  th_BlockPosition: {x: -0.019, y: 0.16, z: -0.091}
+  th_BlockRotation: {x: 342.8479, y: 269, z: 53.6}
   aimingPosition: {x: 0, y: 0, z: 0}
   aimingRotation: {x: 0, y: 0, z: 0}
+  oh_heavyAttackAbilities:
+  - {fileID: 11400000, guid: 483e2d5bd2c206b4a9d05dea1beab9f1, type: 2}
+  th_heavyAttackAbilities:
+  - {fileID: 11400000, guid: 483e2d5bd2c206b4a9d05dea1beab9f1, type: 2}
+  castAbilitySpeed: 1
   references:
     version: 2
     RefIds: []

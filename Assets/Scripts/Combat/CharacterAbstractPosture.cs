@@ -43,6 +43,12 @@ namespace AF
 
         public virtual int GetMaxPostureDamage()
         {
+            if (characterBaseManager.combatant == null)
+            {
+                Debug.LogWarning($"Combatant is null for character {characterBaseManager.gameObject.name}");
+                return 1;
+            }
+
             int basePosture = characterBaseManager.combatant.maximumPosture;
 
             if (increasePostureEffects != null && increasePostureEffects.Count > 0)
