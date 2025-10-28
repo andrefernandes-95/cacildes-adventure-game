@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 477634}
   - component: {fileID: 19884626}
   - component: {fileID: 19947474}
-  - component: {fileID: 5526786874662297541}
   - component: {fileID: 1953407169839518535}
   - component: {fileID: 6537586153224965385}
   - component: {fileID: 6433734480346729420}
@@ -3687,7 +3686,7 @@ ParticleSystem:
         m_NumAlphaKeys: 2
     range: {x: 0, y: 1}
   CollisionModule:
-    enabled: 1
+    enabled: 0
     serializedVersion: 4
     type: 1
     collisionMode: 0
@@ -4923,66 +4922,6 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
---- !u!114 &5526786874662297541
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 112892}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3ec899dd3fa9a114590d29d6f874a136, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  projectile: {fileID: 0}
-  damage:
-    physical: 120
-    fire: 0
-    frost: 0
-    magic: 0
-    lightning: 0
-    darkness: 0
-    water: 0
-    postureDamage: 30
-    poiseDamage: 5
-    pushForce: 4
-    weaponAttackType: 0
-    statusEffects: []
-    ignoreBlocking: 0
-    canNotBeParried: 0
-    damageType: 0
-    strengthScaling: 5
-    dexterityScaling: 5
-    intelligenceScaling: 5
-  damageOwner: {fileID: 0}
-  damageCooldown: 1
-  onParticleDamage:
-    m_PersistentCalls:
-      m_Calls: []
-  onColliding:
-    m_PersistentCalls:
-      m_Calls: []
-  doubleDamageOnNightTime: 0
-  gameSession: {fileID: 0}
-  healingAmount: -1
-  onAnyCollisionEvent:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 6537586153224965385}
-        m_TargetAssemblyTypeName: Cinemachine.CinemachineImpulseSource, Cinemachine
-        m_MethodName: GenerateImpulse
-        m_Mode: 4
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0.5
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  collisionSound: {fileID: 0}
-  collisionSoundCooldown: 0.1
 --- !u!114 &1953407169839518535
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10116,6 +10055,7 @@ GameObject:
   - component: {fileID: 446180}
   - component: {fileID: 19894490}
   - component: {fileID: 19915050}
+  - component: {fileID: 7457898899743607874}
   m_Layer: 0
   m_Name: RockLinger
   m_TagString: Untagged
@@ -13765,14 +13705,14 @@ ParticleSystem:
         m_RotationOrder: 4
     minKillSpeed: 0
     maxKillSpeed: 10000
-    radiusScale: 0.01
+    radiusScale: 3
     collidesWith:
       serializedVersion: 2
-      m_Bits: 4294967295
+      m_Bits: 4196608
     maxCollisionShapes: 256
     quality: 0
     voxelSize: 0.5
-    collisionMessages: 0
+    collisionMessages: 1
     collidesWithDynamic: 1
     interiorCollisions: 1
   TriggerModule:
@@ -14815,6 +14755,67 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
+--- !u!114 &7457898899743607874
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 157998}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ec899dd3fa9a114590d29d6f874a136, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  projectile: {fileID: 0}
+  damage:
+    basePhysicalDamage: 0
+    physical: 120
+    fire: 0
+    frost: 0
+    magic: 0
+    lightning: 0
+    darkness: 0
+    water: 0
+    postureDamage: 30
+    poiseDamage: 5
+    pushForce: 4
+    weaponAttackType: 0
+    statusEffects: []
+    ignoreBlocking: 0
+    canNotBeParried: 0
+    damageType: 0
+    strengthScaling: 5
+    dexterityScaling: 5
+    intelligenceScaling: 5
+  damageOwner: {fileID: 0}
+  damageCooldown: 1
+  onParticleDamage:
+    m_PersistentCalls:
+      m_Calls: []
+  onColliding:
+    m_PersistentCalls:
+      m_Calls: []
+  doubleDamageOnNightTime: 0
+  gameSession: {fileID: 0}
+  healingAmount: -1
+  onAnyCollisionEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 6537586153224965385}
+        m_TargetAssemblyTypeName: Cinemachine.CinemachineImpulseSource, Cinemachine
+        m_MethodName: GenerateImpulse
+        m_Mode: 4
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0.5
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  collisionSound: {fileID: 0}
+  collisionSoundCooldown: 0.1
 --- !u!1 &175236
 GameObject:
   m_ObjectHideFlags: 0
