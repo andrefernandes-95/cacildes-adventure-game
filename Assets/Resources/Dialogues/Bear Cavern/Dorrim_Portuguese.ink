@@ -11,7 +11,7 @@ EXTERNAL runEvent(eventId)
         Dorrim: Pois claro. O aço é necessário. Agora e sempre. O rei duplicou os pedidos.
         <>E eu — Dorrim, filho de Dorran — tenho de entregar.
         <>Tu, soldado... sem dúvida precisarás de aço para defender a cidadela.
-        <>Leva uma das prateleiras. Estende a mão poderosa de Thorgeir. Abate quem ousar atravessar os nossos portões.
+        <>Leva uma das prateleiras. Estende a mão poderosa de Thrommond. Abate quem ousar atravessar os nossos portões.
 
     ** [Que cidadela...? Estamos debaixo do mar, numa caverna.]
         Dorrim: Hah! E ainda dizem que eu é que sou esquecido, hein?
@@ -24,7 +24,7 @@ EXTERNAL runEvent(eventId)
 * [Que lugar é este?]
     Dorrim: Eh? O que raio queres dizer com isso?
 
-    <>Isto — isto é a forja do Rei Thorgeir, construída nas entranhas da cidadela.
+    <>Isto — isto é a forja do Rei Thrommond, construída nas entranhas da cidadela.
     <>Eu sei... fui eu que ajudei a moldá-la.
 
     ** [Parece-me mais uma caverna marítima.]

@@ -42,9 +42,17 @@ namespace AF
         {
             EventManager.StartListening(EventMessages.ON_LEAVING_BONFIRE, () =>
             {
-                ambushHasBegun = false;
-                shouldAwake = false;
+                ResetAmbushFlags();
             });
+        }
+
+        /// <summary>
+        /// Unity Event
+        /// </summary>
+        public void ResetAmbushFlags()
+        {
+            ambushHasBegun = false;
+            shouldAwake = false;
         }
 
         void OnTakeDamage()

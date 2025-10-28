@@ -17,7 +17,7 @@ EXTERNAL runEvent(eventId)
 * [Ouviste algum rumor?]
     {shuffle:
         - Pooja: Tem cuidado na Estrada de Snailcliff, amigo(a) — há sempre lobos à espreita! Dizem que um mago dorme debaixo das rochas rodopiantes, preso por uma magia antiga.
-        - Pooja: Depois da guerra com os partidos, muitos anões deixaram a fortaleza do Rei Thorgeir. Agora há um ferreiro na Praia de Slepbone, a fazer coisas misteriosas em silêncio.
+        - Pooja: Depois da guerra com os partidos, muitos anões deixaram a fortaleza do Rei Thrommond. Agora há um ferreiro na Praia de Slepbone, a fazer coisas misteriosas em silêncio.
         - Pooja: Os andarilhos da floresta dizem que protegem os bosques. Eu sei porquê: algumas árvores têm uma resina especial que torna as armas super resistentes! Infelizmente, as pessoas cortam-nas por isso.
     }
 

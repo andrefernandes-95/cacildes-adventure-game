@@ -11,7 +11,7 @@ EXTERNAL runEvent(eventId)
         Dorrim: Aye. Steel is needed. Now and always. The king has doubled his orders.
         <>And I—Dorrim, son of Dorran—must deliver.
         <>You, soldier... no doubt you’ll need steel to defend the keep.
-        <>Take one from the racks. Extend the mighty hand of Thorgeir. Strike down any who dare breach our gates.
+        <>Take one from the racks. Extend the mighty hand of Thrommond. Strike down any who dare breach our gates.
 
     ** [What keep...? We're beneath the sea, in a cave.]
         Dorrim: Hah! A jester, are ye? No time for games, lad.
@@ -24,7 +24,7 @@ EXTERNAL runEvent(eventId)
 * [What is this place?]
     Dorrim: Eh? What in stone’s name do you mean?
 
-    <>This—this is King Thorgeir’s forge, built stone-deep in the belly of the keep.
+    <>This—this is King Thrommond forge, built stone-deep in the belly of the keep.
     <>I know it... I helped shape it.
 
     ** [Feels more like a sea-cave to me.]

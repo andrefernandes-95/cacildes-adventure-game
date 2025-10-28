@@ -101,7 +101,7 @@ namespace AF
 
         void SaveRecipes(QuickSaveWriter quickSaveWriter)
         {
-            quickSaveWriter.Write("craftingRecipes", recipesDatabase.craftingRecipes.Select(craftingRecipe => craftingRecipe.name));
+            //quickSaveWriter.Write("craftingRecipes", recipesDatabase.craftingRecipes.Select(craftingRecipe => craftingRecipe.name));
         }
         void SavePlayerStats(QuickSaveWriter quickSaveWriter)
         {
@@ -247,7 +247,7 @@ namespace AF
 
         void LoadRecipes(QuickSaveReader quickSaveReader)
         {
-            quickSaveReader.TryRead("craftingRecipes", out string[] craftingRecipes);
+            /*quickSaveReader.TryRead("craftingRecipes", out string[] craftingRecipes);
 
             if (craftingRecipes != null && craftingRecipes.Count() > 0)
             {
@@ -259,7 +259,7 @@ namespace AF
                         recipesDatabase.AddCraftingRecipe(craftingRecipe);
                     }
                 }
-            }
+            }*/
         }
 
         void LoadPlayerStats(QuickSaveReader quickSaveReader, bool isFromGameOver)

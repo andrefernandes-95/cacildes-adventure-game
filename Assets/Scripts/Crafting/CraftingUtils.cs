@@ -77,14 +77,17 @@ namespace AF
 
         public static bool IsItemAnIngredientOfCurrentLearnedRecipes(RecipesDatabase recipesDatabase, Item item)
         {
-            if (recipesDatabase.craftingRecipes.Count == 0)
+            if (recipesDatabase.availableRecipes.Count == 0)
             {
                 return false;
             }
 
-            foreach (var recipe in recipesDatabase.craftingRecipes)
+            foreach (var recipe in recipesDatabase.availableRecipes)
             {
-                if (recipe.ingredients.Exists(ingredient => ingredient.ingredient == item))
+                if (recipe.ingredients.Exists(craftingIngredientEntry =>
+                    craftingIngredientEntry != null
+                    && craftingIngredientEntry.ingredient != null
+                    && craftingIngredientEntry.ingredient.EqualsTo(item)))
                 {
                     return true;
                 }
@@ -97,9 +100,12 @@ namespace AF
         {
             List<CraftingRecipe> recipesUsingItem = new List<CraftingRecipe>();
 
-            foreach (var recipe in recipesDatabase.craftingRecipes)
+            foreach (var recipe in recipesDatabase.availableRecipes)
             {
-                if (recipe.ingredients.Exists(ingredient => ingredient.ingredient == item))
+                if (recipe.ingredients.Exists(craftingIngredientEntry =>
+                    craftingIngredientEntry != null
+                    && craftingIngredientEntry.ingredient != null
+                    && craftingIngredientEntry.ingredient.EqualsTo(item)))
                 {
                     recipesUsingItem.Add(recipe);
                 }

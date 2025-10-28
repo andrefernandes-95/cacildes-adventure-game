@@ -13,6 +13,7 @@ namespace AF
             ATTACK_B,
             ATTACK_C,
             ATTACK_D,
+            ATTACK_A_TO_B
         }
 
         [SerializeField] GenericCreatureAttackType attack = GenericCreatureAttackType.ATTACK_A;
@@ -28,6 +29,7 @@ namespace AF
             if (attack == GenericCreatureAttackType.ATTACK_B) hash = "Attack B";
             if (attack == GenericCreatureAttackType.ATTACK_C) hash = "Attack C";
             if (attack == GenericCreatureAttackType.ATTACK_D) hash = "Attack D";
+            if (attack == GenericCreatureAttackType.ATTACK_A_TO_B) hash = "Attack A - B";
 
             characterManager.PlayCrossFadeBusyAnimationWithRootMotion(hash, crossFade);
         }

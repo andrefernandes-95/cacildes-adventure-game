@@ -55,6 +55,7 @@ namespace AF
         public RecipesDatabase recipesDatabase;
         public InventoryDatabase inventoryDatabase;
         public PlayerStatsDatabase playerStatsDatabase;
+        public List<CraftingRecipe> availableRecipes = new();
 
         // Last scroll position
         int lastScrollElementIndex = -1;
@@ -166,6 +167,7 @@ namespace AF
 
             root.Q<Label>("WeaponLevelPreview").text = "";
             root.Q<Label>("WeaponLevelPreview").style.display = DisplayStyle.None;
+            root.Q<VisualElement>("ResultingItemInfo").style.display = DisplayStyle.None;
             root.Q<Label>("PhysicalAttack").style.display = DisplayStyle.None;
             root.Q<Label>("FireAttack").style.display = DisplayStyle.None;
             root.Q<Label>("FrostAttack").style.display = DisplayStyle.None;
@@ -200,7 +202,7 @@ namespace AF
 
             SetupActivity();
 
-            PopulateScrollView(recipesDatabase.craftingRecipes.ToArray());
+            PopulateScrollView(recipesDatabase.availableRecipes.ToArray());
         }
 
         void PopulateScrollView(CraftingRecipe[] ownedCraftingRecipes)
@@ -323,6 +325,7 @@ namespace AF
                 },
                 () =>
                 {
+                    ClearPreviews();
                 },
                 true,
                 soundbank);
@@ -512,6 +515,8 @@ namespace AF
         {
             root.Q<VisualElement>("ItemInfo").Clear();
 
+            PopulateResultingItemInfo(recipe);
+
             foreach (var ingredient in recipe.ingredients)
             {
                 var ingredientItemEntry = ingredientItem.CloneTree();
@@ -529,6 +534,15 @@ namespace AF
 
             root.Q<VisualElement>("IngredientsListPreview").style.opacity = 1;
         }
+
+        void PopulateResultingItemInfo(CraftingRecipe craftingRecipe)
+        {
+            root.Q<Label>("ResultingItemName").text = $"{craftingRecipe.resultingItem.GetName()} ({craftingRecipe.resultingAmount})";
+            root.Q<Label>("ResultingItemDescription").text = craftingRecipe.resultingItem.GetDescription();
+            root.Q<IMGUIContainer>("ResultingItemIcon").style.backgroundImage = new StyleBackground(craftingRecipe.resultingItem.sprite);
+            root.Q<VisualElement>("ResultingItemInfo").style.display = DisplayStyle.Flex;
+        }
+
         void ShowRequirements(Weapon weapon)
         {
 

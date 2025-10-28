@@ -17,7 +17,7 @@ EXTERNAL runEvent(eventId)
 * [Heard any rumours?]
     {shuffle:
         - Pooja: Careful on Snailcliff Road, yaar — wolves are always lurking! People say a mage is sleeping under the swirling rocks, trapped by some old magic.
-        - Pooja: After the war with the sundered, many dwarves left King Thorgeir's keep. There's a blacksmith on Slepbone Beach now, quietly making mysterious things.
+        - Pooja: After the war with the sundered, many dwarves left King Thrommond's keep. There's a blacksmith on Slepbone Beach now, quietly making mysterious things.
         - Pooja: The forest wanderers say they protect the woods. I know why: some trees have a special resin that makes weapons super strong! People cut them down for it, sadly.
     }
 

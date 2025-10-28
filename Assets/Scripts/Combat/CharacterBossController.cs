@@ -139,7 +139,7 @@ namespace AF
 
         public bool IsBossHUDEnabled()
         {
-            return bossHud != null && bossHud.enabled;
+            return bossHud != null && bossHud.enabled && root != null;
         }
 
         public void BeginBossBattle()
