@@ -2,6 +2,9 @@
 
 Known Bugs:
 - Wait 1 Hour is causing the clock to speed up even when changing scenes
+- Check all bonfires to see if they are correctly setup and have locations assigned
+- Check each quest location
+- Add oakshield back as ability
 
 To Do:
 - Status Effect - cant cast spells or abilities

@@ -252,6 +252,14 @@ namespace AF.Inventory
                 ownedConsumables.RemoveAt(idx);
             }
         }
+        public void RemoveKeyItem(KeyItem keyItem)
+        {
+            int idx = ownedKeyItems.FindIndex(x => x.EqualsTo(keyItem));
+            if (idx != -1)
+            {
+                ownedKeyItems.RemoveAt(idx);
+            }
+        }
 
         public void RemoveCraftingMaterial(CraftingMaterial craftingMaterial)
         {

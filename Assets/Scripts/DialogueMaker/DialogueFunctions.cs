@@ -16,6 +16,7 @@ namespace AF
         [SerializeField] FlagsDatabase flagsDatabase;
 
         [SerializeField] Flag hasPreservedTheColdFireStone;
+        [SerializeField] Flag hasDefeatedHawkBand;
         Dictionary<string, DialogueEvent> dialogueEvents = new();
         bool hasInitializedDialogueEvents = false;
 
@@ -105,6 +106,11 @@ namespace AF
             story.BindExternalFunction("hasPreservedStone", () =>
             {
                 return flagsDatabase.ContainsFlag(hasPreservedTheColdFireStone.name);
+            });
+
+            story.BindExternalFunction("hasDefeatedHawkBand", () =>
+            {
+                return flagsDatabase.ContainsFlag(hasDefeatedHawkBand.name);
             });
 
             story.BindExternalFunction("getPlayerName", () =>

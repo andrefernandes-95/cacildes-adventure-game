@@ -1,5 +1,6 @@
 namespace AF
 {
+    using System;
     using System.Collections.Generic;
     using AF.Health;
     using AF.UI.EquipmentMenu;
@@ -197,31 +198,7 @@ namespace AF
                 itemTooltip.CreateTooltip(GUIIconsDatabase.physicalAbsorption, Color.white, label);
             }
 
-            float physicalBlockAbsorption = 0f;
-
-            if (weapon is Shield shield)
-            {
-                if (shield.GetCurrentAbsorption(shield.physicalAbsorption) != -1f)
-                {
-                    physicalBlockAbsorption = shield.GetCurrentAbsorption(shield.physicalAbsorption);
-                }
-            }
-            else if (weapon.weaponBlockAbsorption != 1f)
-            {
-                physicalBlockAbsorption = weapon.weaponBlockAbsorption;
-            }
-
-            if (physicalBlockAbsorption != 0f)
-            {
-                float absorptionPercentage = physicalBlockAbsorption * 100f;
-                float damageStillTaken = 100f - absorptionPercentage;
-
-                string label = Utils.IsPortuguese()
-                    ? $"{absorptionPercentage:0}% Absorção ao bloquear com a arma\n<i><size=80%>(Ao bloquear com esta arma, {damageStillTaken:0}% do dano ainda será sofrido)</i>"
-                    : $"{absorptionPercentage:0}% Absorption when blocking with this weapon\n<i><size=80%>({damageStillTaken:0}% of the damage will still go through when blocking with this weapon)</i>";
-
-                itemTooltip.CreateTooltip(GUIIconsDatabase.physicalAbsorption, Color.white, label);
-            }
+            DrawAbsorptions(weapon);
 
             // === Life Steal ===
             if (weapon.healthRestoredWithEachHit > 0)
@@ -247,6 +224,85 @@ namespace AF
                         weaponEffect.GetWeaponEffectTooltip());
                 }
             }
+        }
+
+        void DrawAbsorptions(Weapon weapon)
+        {
+
+            float physicalBlockAbsorption = 0f;
+            float fireBlockAbsorption = 0f;
+            float frostBlockAbsorption = 0f;
+            float lightningBlockAbsorption = 0f;
+            float magicBlockAbsorption = 0f;
+            float darknessBlockAbsorption = 0f;
+            float waterBlockAbsorption = 0f;
+
+            if (weapon is Shield shield)
+            {
+                if (shield.GetCurrentAbsorption(shield.physicalAbsorption) != -1f)
+                {
+                    physicalBlockAbsorption = shield.GetCurrentAbsorption(shield.physicalAbsorption);
+                }
+
+                if (shield.GetCurrentAbsorption(shield.fireAbsorption) != -1f)
+                {
+                    fireBlockAbsorption = shield.GetCurrentAbsorption(shield.fireAbsorption);
+                }
+
+                if (shield.GetCurrentAbsorption(shield.frostAbsorption) != -1f)
+                {
+                    frostBlockAbsorption = shield.GetCurrentAbsorption(shield.frostAbsorption);
+                }
+
+                if (shield.GetCurrentAbsorption(shield.lightiningAbsorption) != -1f)
+                {
+                    lightningBlockAbsorption = shield.GetCurrentAbsorption(shield.lightiningAbsorption);
+                }
+
+                if (shield.GetCurrentAbsorption(shield.magicAbsorption) != -1f)
+                {
+                    magicBlockAbsorption = shield.GetCurrentAbsorption(shield.magicAbsorption);
+                }
+
+                if (shield.GetCurrentAbsorption(shield.darknessAbsorption) != -1f)
+                {
+                    darknessBlockAbsorption = shield.GetCurrentAbsorption(shield.darknessAbsorption);
+                }
+
+                if (shield.GetCurrentAbsorption(shield.waterAbsorption) != -1f)
+                {
+                    waterBlockAbsorption = shield.GetCurrentAbsorption(shield.waterAbsorption);
+                }
+            }
+            else if (weapon.weaponBlockAbsorption != 1f)
+            {
+                physicalBlockAbsorption = weapon.weaponBlockAbsorption;
+            }
+
+            DrawAbsorptionTooltip(GUIIconsDatabase.physicalAbsorption, Color.white, Utils.IsPortuguese() ? "Físico" : "Physical", physicalBlockAbsorption);
+            DrawAbsorptionTooltip(GUIIconsDatabase.fireAbsorption, GUIIconsDatabase.fireColor, Utils.IsPortuguese() ? "de Fogo" : "Fire", fireBlockAbsorption);
+            DrawAbsorptionTooltip(GUIIconsDatabase.frostAbsorption, GUIIconsDatabase.frostColor, Utils.IsPortuguese() ? "de Gelo" : "Frost", frostBlockAbsorption);
+            DrawAbsorptionTooltip(GUIIconsDatabase.lightningAbsorption, GUIIconsDatabase.lightningColor, Utils.IsPortuguese() ? "Elétrico" : "Lightning", lightningBlockAbsorption);
+            DrawAbsorptionTooltip(GUIIconsDatabase.magicAbsorption, GUIIconsDatabase.magicColor, Utils.IsPortuguese() ? "Mágico" : "Magic", magicBlockAbsorption);
+            DrawAbsorptionTooltip(GUIIconsDatabase.darknessAbsorption, GUIIconsDatabase.darknessColor, Utils.IsPortuguese() ? "das Trevas" : "Dark", darknessBlockAbsorption);
+            DrawAbsorptionTooltip(GUIIconsDatabase.waterAbsorption, GUIIconsDatabase.waterColor, Utils.IsPortuguese() ? "Aquático" : "Water", waterBlockAbsorption);
+        }
+
+        void DrawAbsorptionTooltip(Texture2D sprite, Color color, string damageType, float absorption)
+        {
+            if (absorption == 0)
+            {
+                return;
+            }
+
+            float absorptionPercentage = absorption * 100f;
+            float damageStillTaken = 100f - absorptionPercentage;
+
+            string label = Utils.IsPortuguese()
+                ? $"{absorptionPercentage:0}% Dano {damageType} Absorvido\n<i><size=80%>({damageStillTaken:0}% do dano ainda será sofrido)</i>"
+                : $"{absorptionPercentage:0}% {damageType} Damage Reduction\n<i><size=80%>({damageStillTaken:0}% of the damage will still go through)</i>";
+
+            itemTooltip.CreateTooltip(sprite, color, label);
         }
     }
 }

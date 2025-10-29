@@ -191,6 +191,7 @@ namespace AF
         {
             canInteract = false;
             //this.gameObject.layer = 0;
+            DisableKeyPrompt();
         }
 
         public void HandleActivation()
