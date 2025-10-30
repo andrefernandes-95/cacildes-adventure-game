@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8af1bb3685f741547a2a5257eba1cce0, type: 3}
   m_Name: Elite Knight Gauntlets
   m_EditorClassIdentifier: 
+  itemID: 
   nameLocalized:
     m_TableReference:
       m_TableCollectionName: GUID:bfeeac13f16b59940b4195364a8d9ed7
@@ -39,46 +40,22 @@ MonoBehaviour:
     m_FallbackState: 0
     m_WaitForCompletion: 0
     m_LocalVariables: []
-  sprite: {fileID: 21300000, guid: b7a440dd6ea79de4e9af609b62bb71d7, type: 3}
+  sprite: {fileID: 21300000, guid: de412e1ece56b11419cc26ca7d315ed9, type: 3}
+  itemValue: {fileID: 11400000, guid: 855cee227977ce547a4f2035b1c08a3f, type: 2}
   value: 150
+  itemWeight: {fileID: 11400000, guid: fb7e8a640b763db4ea15381bac572c11, type: 2}
   isRenewable: 0
   tradingItemRequirements:
     _serializedList: []
+  dropRateOnEnemies: 0.2
   notes: 
   location: 
-  physicalDefense: 3
-  fireDefense: 0
-  frostDefense: 0
-  lightningDefense: 0
-  magicDefense: 0
-  darkDefense: 0
-  waterDefense: 0
-  statusEffectResistances: []
-  statusEffectCancellationRates: []
-  graphicNameToShow: Elite Knight Gauntlets
-  graphicNamesToHide:
-  - RightLowerArmContainer
-  - LeftLowerArmContainer
-  - LeftHandContainer
-  - RightHandContainer
-  vitalityBonus: 0
-  enduranceBonus: 0
-  strengthBonus: 3
-  dexterityBonus: 3
-  intelligenceBonus: 0
-  poiseBonus: 0
-  postureBonus: 0
-  staminaRegenBonus: 0
-  speedPenalty: 0.01
-  movementSpeedBonus: 0
-  additionalCoinPercentage: 0
-  reputationBonus: 0
-  discountPercentage: 0
-  pierceDamageAbsorption: 1
-  bluntDamageAbsorption: 1
-  slashDamageAbsorption: 1
-  canDamageEnemiesUponAttack: 0
-  damageDealtToEnemiesUponAttacked:
+  canBeUpgraded: 1
+  level: 1
+  upgradeMaterialData: {fileID: 11400000, guid: 097203f885e23ea45aec34bbe2cd054d, type: 2}
+  damageTemplate: {fileID: 11400000, guid: bd4d630f88e0907428ecc6f4154d055d, type: 2}
+  damageAbsorbed:
+    basePhysicalDamage: 0
     physical: 0
     fire: 0
     frost: 0
@@ -94,8 +71,52 @@ MonoBehaviour:
     ignoreBlocking: 0
     canNotBeParried: 0
     damageType: 0
+    strengthScaling: 5
+    dexterityScaling: 5
+    intelligenceScaling: 5
+  statusEffectDelayRates: []
+  vitalityBonus: 0
+  enduranceBonus: 0
+  strengthBonus: 1
+  dexterityBonus: 1
+  intelligenceBonus: 0
+  equipmentEffects: []
+  staminaRegenBonus: 0
+  movementSpeedBonus: 0
+  additionalCoinMultiplier: 0
+  reputationBonus: 0
+  discountPercentage: 0
+  canDamageEnemiesUponAttack: 0
+  damageDealtToEnemiesUponAttacked:
+    basePhysicalDamage: 0
+    physical: 0
+    fire: 0
+    frost: 0
+    magic: 0
+    lightning: 0
+    darkness: 0
+    water: 0
+    postureDamage: 0
+    poiseDamage: 0
+    pushForce: 0
+    weaponAttackType: 0
+    statusEffects: []
+    ignoreBlocking: 0
+    canNotBeParried: 0
+    damageType: 0
+    strengthScaling: 5
+    dexterityScaling: 5
+    intelligenceScaling: 5
   projectileMultiplierBonus: 0
   canRage: 0
+  graphicsToShow:
+  - Chr_ArmLowerRight_Male_11
+  - Chr_ArmLowerLeft_Male_11
+  - Chr_HandRight_Male_13
+  - Chr_HandLeft_Male_16
+  male_GraphicsToShow: 
+  female_GraphicsToShow: 
+  armorMaterial: {fileID: 2100000, guid: b6ff2e86d181c6a49889fc876340bac4, type: 2}
   references:
     version: 2
     RefIds: []

@@ -200,6 +200,15 @@ namespace AF
 
         void LoadQuests()
         {
+            foreach (QuestParent quest in completedQuests)
+            {
+                quest.hasStarted = true;
+                foreach (QuestObjective questObjective in quest.objectives)
+                {
+                    quest.CompleteObjective(questObjective);
+                }
+            }
+
             if (currentQuest != null)
             {
                 currentQuest.StartQuest();

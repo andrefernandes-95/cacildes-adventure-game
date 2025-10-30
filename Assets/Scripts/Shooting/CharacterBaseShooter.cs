@@ -67,5 +67,8 @@ namespace AF.Shooting
                 arrowPlaceholder = null;
             }
         }
+
+        public abstract void OnAimStart();
+        public abstract void OnAimEnd();
     }
 }

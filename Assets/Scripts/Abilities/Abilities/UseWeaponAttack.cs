@@ -80,7 +80,21 @@ namespace AF
             // If attempting a left hand attack, check if we are not two handing
             if (!isRightHand)
             {
-                return character.characterBaseWeaponsManager.IsTwoHanding() == false;
+                // If two handing, do not allow attack
+                if (character.characterBaseWeaponsManager.IsTwoHanding())
+                {
+                    return false;
+                }
+
+                Weapon leftWeapon = character.characterBaseWeaponsManager.GetCurrentLeftWeapon();
+
+                // If left weapon is range weapon, do not attack
+                if (leftWeapon != null && leftWeapon.damage.weaponAttackType == WeaponAttackType.Range)
+                {
+                    return false;
+                }
+
+                return true;
             }
 
             return true;

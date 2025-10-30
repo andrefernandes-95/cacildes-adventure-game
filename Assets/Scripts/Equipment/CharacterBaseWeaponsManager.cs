@@ -646,8 +646,22 @@ namespace AF
 
             if (currentShieldInstance != null)
             {
-                currentShieldInstance.transform.localPosition = leftWeapon.aimingPosition;
-                currentShieldInstance.transform.localEulerAngles = leftWeapon.aimingRotation;
+                Vector3 aimingPosition = leftWeapon.aimingPosition;
+                Vector3 aimingRotation = leftWeapon.aimingRotation;
+
+                if (GetCharacter() is CharacterManager)
+                {
+                    if (!leftWeapon.useCustomAimingPositionForAi)
+                    {
+                        return;
+                    }
+
+                    aimingPosition = leftWeapon.customAimingPositionForAi;
+                    aimingRotation = leftWeapon.customAimingRotationForAi;
+                }
+
+                currentShieldInstance.transform.localPosition = aimingPosition;
+                currentShieldInstance.transform.localEulerAngles = aimingRotation;
             }
         }
 
@@ -678,5 +692,8 @@ namespace AF
 
         public abstract Weapon[] GetRightWeapons();
         public abstract Weapon[] GetLeftWeapons();
+
+        public abstract int GetCurrentRightWeaponIndex();
+        public abstract int GetCurrentLeftWeaponIndex();
     }
 }

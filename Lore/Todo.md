@@ -5,6 +5,7 @@ Known Bugs:
 - Check all bonfires to see if they are correctly setup and have locations assigned
 - Check each quest location
 - Add oakshield back as ability
+- Two Handing does not produce bonus damage to elemental damage
 
 To Do:
 - Status Effect - cant cast spells or abilities

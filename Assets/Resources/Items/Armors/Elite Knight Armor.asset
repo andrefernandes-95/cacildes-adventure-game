@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 569cda70b383baf498a0be3205d889f4, type: 3}
   m_Name: Elite Knight Armor
   m_EditorClassIdentifier: 
+  itemID: 
   nameLocalized:
     m_TableReference:
       m_TableCollectionName: GUID:bfeeac13f16b59940b4195364a8d9ed7
@@ -39,47 +40,22 @@ MonoBehaviour:
     m_FallbackState: 0
     m_WaitForCompletion: 0
     m_LocalVariables: []
-  sprite: {fileID: 21300000, guid: 54c41deeb39baca419ab1215a83d904e, type: 3}
+  sprite: {fileID: 21300000, guid: ac914b0dc3b4e094e9c78154253f4ed3, type: 3}
+  itemValue: {fileID: 11400000, guid: d8fa8b302e445d74fb9159f451074417, type: 2}
   value: 300
+  itemWeight: {fileID: 11400000, guid: dddda131f0bc9944d89c4f56cc46509f, type: 2}
   isRenewable: 0
   tradingItemRequirements:
     _serializedList: []
+  dropRateOnEnemies: 0.2
   notes: 
   location: 
-  physicalDefense: 14
-  fireDefense: 0
-  frostDefense: 0
-  lightningDefense: 0
-  magicDefense: 0
-  darkDefense: 0
-  waterDefense: 0
-  statusEffectResistances:
-  - statusEffect: {fileID: 11400000, guid: 223fff3a7b278884fa6f766ec3e22a1f, type: 2}
-    resistanceBonus: 30
-  statusEffectCancellationRates: []
-  graphicNameToShow: Elite Knight Armor
-  graphicNamesToHide:
-  - TorsoContainer
-  - UpperLeftArmContainer
-  - UpperRightArmContainer
-  vitalityBonus: 5
-  enduranceBonus: 0
-  strengthBonus: 0
-  dexterityBonus: 0
-  intelligenceBonus: 0
-  poiseBonus: 4
-  postureBonus: 20
-  staminaRegenBonus: 1
-  speedPenalty: 0.01
-  movementSpeedBonus: 0
-  additionalCoinPercentage: 0
-  reputationBonus: 5
-  discountPercentage: 0.3
-  pierceDamageAbsorption: 1
-  bluntDamageAbsorption: 1
-  slashDamageAbsorption: 1
-  canDamageEnemiesUponAttack: 0
-  damageDealtToEnemiesUponAttacked:
+  canBeUpgraded: 1
+  level: 1
+  upgradeMaterialData: {fileID: 11400000, guid: 097203f885e23ea45aec34bbe2cd054d, type: 2}
+  damageTemplate: {fileID: 11400000, guid: bd4d630f88e0907428ecc6f4154d055d, type: 2}
+  damageAbsorbed:
+    basePhysicalDamage: 0
     physical: 0
     fire: 0
     frost: 0
@@ -95,8 +71,53 @@ MonoBehaviour:
     ignoreBlocking: 0
     canNotBeParried: 0
     damageType: 0
+    strengthScaling: 5
+    dexterityScaling: 5
+    intelligenceScaling: 5
+  statusEffectDelayRates: []
+  vitalityBonus: 1
+  enduranceBonus: 0
+  strengthBonus: 0
+  dexterityBonus: 0
+  intelligenceBonus: 0
+  equipmentEffects: []
+  staminaRegenBonus: 1
+  movementSpeedBonus: 0
+  additionalCoinMultiplier: 0
+  reputationBonus: 5
+  discountPercentage: 0.3
+  canDamageEnemiesUponAttack: 0
+  damageDealtToEnemiesUponAttacked:
+    basePhysicalDamage: 0
+    physical: 0
+    fire: 0
+    frost: 0
+    magic: 0
+    lightning: 0
+    darkness: 0
+    water: 0
+    postureDamage: 0
+    poiseDamage: 0
+    pushForce: 0
+    weaponAttackType: 0
+    statusEffects: []
+    ignoreBlocking: 0
+    canNotBeParried: 0
+    damageType: 0
+    strengthScaling: 5
+    dexterityScaling: 5
+    intelligenceScaling: 5
   projectileMultiplierBonus: 0
   canRage: 0
+  graphicsToShow:
+  - Chr_ElbowAttachLeft_05
+  - Chr_ElbowAttachRight_05
+  - Chr_ArmUpperRight_Male_20
+  - Chr_ArmUpperLeft_Male_20
+  - SM_Chr_Attach_Dwarf_Bandana_01
+  male_GraphicsToShow: Chr_Torso_Male_07
+  female_GraphicsToShow: Chr_Torso_Female_07
+  armorMaterial: {fileID: 2100000, guid: b6ff2e86d181c6a49889fc876340bac4, type: 2}
   references:
     version: 2
     RefIds: []

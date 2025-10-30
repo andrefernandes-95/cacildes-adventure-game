@@ -217,6 +217,9 @@ namespace AF
         [Header("Aiming Settings")]
         public Vector3 aimingPosition;
         public Vector3 aimingRotation;
+        public bool useCustomAimingPositionForAi = false;
+        public Vector3 customAimingPositionForAi;
+        public Vector3 customAimingRotationForAi;
 
         [Header("Abilities")]
         public Ability[] oh_heavyAttackAbilities;
@@ -529,13 +532,17 @@ namespace AF
         {
             foreach (WeaponEffect equipmentEffect in weaponEffects)
             {
-                if (character is CharacterManager characterManager)
+                if (equipmentEffect != null)
                 {
-                    equipmentEffect.OnEquip(characterManager);
-                }
-                else if (character is PlayerManager playerManager)
-                {
-                    equipmentEffect.OnEquip(playerManager);
+
+                    if (character is CharacterManager characterManager)
+                    {
+                        equipmentEffect.OnEquip(characterManager);
+                    }
+                    else if (character is PlayerManager playerManager)
+                    {
+                        equipmentEffect.OnEquip(playerManager);
+                    }
                 }
             }
         }
@@ -544,13 +551,16 @@ namespace AF
         {
             foreach (WeaponEffect equipmentEffect in weaponEffects)
             {
-                if (character is CharacterManager characterManager)
+                if (equipmentEffect != null)
                 {
-                    equipmentEffect.OnUnequip(characterManager);
-                }
-                else if (character is PlayerManager playerManager)
-                {
-                    equipmentEffect.OnUnequip(playerManager);
+                    if (character is CharacterManager characterManager)
+                    {
+                        equipmentEffect.OnUnequip(characterManager);
+                    }
+                    else if (character is PlayerManager playerManager)
+                    {
+                        equipmentEffect.OnUnequip(playerManager);
+                    }
                 }
             }
         }

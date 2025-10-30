@@ -94,6 +94,16 @@ namespace AF.Shooting
 
             return arrows[0];
         }
+
+        public override void OnAimStart()
+        {
+            characterBaseManager.characterBaseWeaponsManager.UpdateRangeWeaponTransformToAim();
+        }
+
+        public override void OnAimEnd()
+        {
+            characterBaseManager.characterBaseWeaponsManager.UpdateRangeWeaponTransformToIdle();
+        }
     }
 
 }

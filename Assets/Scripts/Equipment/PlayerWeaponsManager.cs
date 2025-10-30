@@ -129,5 +129,15 @@ namespace AF.Equipment
         {
             return equipmentDatabase.shields;
         }
+
+        public override int GetCurrentRightWeaponIndex()
+        {
+            return equipmentDatabase.currentWeaponIndex;
+        }
+
+        public override int GetCurrentLeftWeaponIndex()
+        {
+            return equipmentDatabase.currentShieldIndex;
+        }
     }
 }

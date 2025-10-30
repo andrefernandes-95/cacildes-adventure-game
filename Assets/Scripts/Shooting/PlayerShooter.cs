@@ -652,5 +652,13 @@ namespace AF.Shooting
         {
             return equipmentDatabase.GetCurrentArrow();
         }
+
+        public override void OnAimStart()
+        {
+        }
+
+        public override void OnAimEnd()
+        {
+        }
     }
 }

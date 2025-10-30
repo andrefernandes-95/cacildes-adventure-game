@@ -306,5 +306,15 @@ namespace AF.Equipment
         {
             return LeftHandWeapons;
         }
+
+        public override int GetCurrentRightWeaponIndex()
+        {
+            return currentRightWeaponIndex;
+        }
+
+        public override int GetCurrentLeftWeaponIndex()
+        {
+            return currentLeftWeaponIndex;
+        }
     }
 }

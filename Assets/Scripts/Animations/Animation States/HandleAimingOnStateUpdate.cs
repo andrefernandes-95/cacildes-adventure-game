@@ -17,6 +17,8 @@ namespace AF
                 animator.TryGetComponent(out characterManager);
             }
 
+            characterManager.characterBaseShooter.OnAimStart();
+
             exitTime = Random.Range(0.25f, 1f);
         }
 

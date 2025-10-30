@@ -6,8 +6,13 @@ namespace AF
     [CreateAssetMenu(fileName = "Use Range Weapon Attack", menuName = "Abilities / Weapons / New Use Range Weapon Attack", order = 0)]
     public class UseRangeWeaponAttack : Ability
     {
+        int previouslyEquippedLeftWeaponIndex = 0;
         Weapon previouslyEquippedLeftHandWeapon;
+
         bool hasSuccessfullyEquippedRangeWeapon = false;
+
+        [Header("Optional - Temporary Range Weapon")]
+        [SerializeField] Weapon rangeWeaponToInstantiateTemporarily;
 
         [Header("Animations")]
         [SerializeField] string rangeAnimation = "Aim Idle";
@@ -19,16 +24,23 @@ namespace AF
                 characterManager.characterWeaponsManager.SetIsTwoHanding(false);
             }
 
-            previouslyEquippedLeftHandWeapon = characterManager.characterWeaponsManager.GetCurrentLeftWeapon();
-
             characterManager.characterAbilityManager.SetCurrentAbility(this);
             characterManager.RotateTowardsTarget(characterManager.rotationSpeed * 10f);
 
+            // Cache the previous left weapon equipment information
+            previouslyEquippedLeftHandWeapon = characterManager.characterWeaponsManager.GetCurrentLeftWeapon();
+            previouslyEquippedLeftWeaponIndex = characterManager.characterWeaponsManager.GetCurrentLeftWeaponIndex();
+
             // Search ranged weapon
-            Weapon potentialWeapon = characterManager.characterWeaponsManager.GetRangeWeapon();
+            Weapon potentialWeapon = rangeWeaponToInstantiateTemporarily != null
+                ? Instantiate(rangeWeaponToInstantiateTemporarily)
+                : characterManager.characterWeaponsManager.GetRangeWeapon();
 
             if (potentialWeapon != null)
             {
+                // Always switch to the first index
+                characterManager.characterWeaponsManager.SwitchWeapon(0, false);
+
                 characterManager.characterWeaponsManager.EquipWeapon(potentialWeapon, 0, false);
                 hasSuccessfullyEquippedRangeWeapon = true;
 
@@ -80,7 +92,7 @@ namespace AF
         {
             if (hasSuccessfullyEquippedRangeWeapon)
             {
-                characterManager.characterWeaponsManager.EquipWeapon(previouslyEquippedLeftHandWeapon, 0, false);
+                characterManager.characterWeaponsManager.EquipWeapon(previouslyEquippedLeftHandWeapon, previouslyEquippedLeftWeaponIndex, false);
             }
 
             characterManager.characterWeaponsManager.ShowRightWeapon();
