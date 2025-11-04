@@ -1,6 +1,7 @@
 namespace AF
 {
     using System.Collections.Generic;
+    using AF.Companions;
     using AF.Flags;
     using Ink.Runtime;
     using UnityEngine;
@@ -14,6 +15,9 @@ namespace AF
         [SerializeField] QuestObjective grischaKilledObjective;
         [SerializeField] PlayerManager playerManager;
         [SerializeField] FlagsDatabase flagsDatabase;
+        [SerializeField] CompanionsDatabase companionsDatabase;
+        [SerializeField] CompanionID alcinoCompanionID;
+        [SerializeField] CompanionID bellaCompanionID;
 
         [SerializeField] Flag hasPreservedTheColdFireStone;
         [SerializeField] Flag hasDefeatedHawkBand;
@@ -116,6 +120,15 @@ namespace AF
             story.BindExternalFunction("getPlayerName", () =>
             {
                 return playerManager.GetPlayerName();
+            });
+
+            story.BindExternalFunction("isBellaInParty", () =>
+            {
+                return companionsDatabase.IsInParty(bellaCompanionID.GetCompanionID());
+            });
+            story.BindExternalFunction("isAlcinoInParty", () =>
+            {
+                return companionsDatabase.IsInParty(alcinoCompanionID.GetCompanionID());
             });
         }
 

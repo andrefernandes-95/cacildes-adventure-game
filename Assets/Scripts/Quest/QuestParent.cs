@@ -135,5 +135,10 @@ namespace AF
 
             return objectives[completedObjectives.Count];
         }
+
+        public void ResetQuest()
+        {
+            Clear();
+        }
     }
 }

@@ -111,8 +111,14 @@ namespace AF
 
             yield return new WaitUntil(() => inputs.interact == false);
 
+            HideDialogueWindow();
+        }
+
+        public void HideDialogueWindow()
+        {
             gameObject.SetActive(false);
             playerManager.uIDocumentPlayerHUDV2.FadeIn();
+            playerManager.thirdPersonController.LockCameraPosition = false;
         }
 
         private void ShowMessage(Character character, string message)

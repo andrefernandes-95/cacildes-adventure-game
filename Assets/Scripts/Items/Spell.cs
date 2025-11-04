@@ -155,5 +155,11 @@ namespace AF
 
             return baseElementalDamage + GetBonusAttackPerLevel(level);
         }
+
+        public int GetManaCost()
+        {
+            if (spellType != null) return spellType.manaCostPerCast;
+            return (int)manaCostPerCast;
+        }
     }
 }

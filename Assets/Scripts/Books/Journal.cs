@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using AF.Journals;
 using UnityEngine;
@@ -25,6 +26,8 @@ namespace AF
         // Scene Refs
         UIDocumentBook uIDocumentBook;
         PlayerManager playerManager;
+
+        Coroutine CheckIfNeedsToReenableGenericTriggerCoroutine;
 
         UIDocumentBook GetUIDocumentBook()
         {
@@ -62,6 +65,11 @@ namespace AF
             GetPlayerManager().uIDocumentPlayerHUDV2.FadeOut();
 
             GetUIDocumentBook().BeginRead(this);
+
+            if (TryGetComponent(out GenericTrigger genericTrigger))
+            {
+                genericTrigger.DisableCapturable();
+            }
         }
 
         public void CloseBook()
@@ -73,6 +81,22 @@ namespace AF
             GetPlayerManager().playerComponentManager.EnableCharacterController();
             GetPlayerManager().playerComponentManager.EnableComponents();
             GetPlayerManager().uIDocumentPlayerHUDV2.FadeIn();
+
+            if (CheckIfNeedsToReenableGenericTriggerCoroutine != null)
+            {
+                StopCoroutine(CheckIfNeedsToReenableGenericTriggerCoroutine);
+            }
+
+            CheckIfNeedsToReenableGenericTriggerCoroutine = StartCoroutine(CheckIfNeedsToReenableGenericTrigger());
+        }
+
+        IEnumerator CheckIfNeedsToReenableGenericTrigger()
+        {
+            yield return new WaitForSeconds(0.5f);
+            if (TryGetComponent(out GenericTrigger genericTrigger))
+            {
+                genericTrigger.TurnCapturable();
+            }
         }
     }
 }

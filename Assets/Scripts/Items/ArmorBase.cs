@@ -89,15 +89,19 @@ namespace AF
                 {
                     if (this is Legwear)
                     {
-                        clonedDamage.Multiply(0.65f);
+                        clonedDamage.Multiply(0.45f);
                     }
                     else if (this is Helmet)
                     {
-                        clonedDamage.Multiply(0.45f);
+                        clonedDamage.Multiply(0.35f);
                     }
-                    else if (this is Gauntlet || this is Accessory)
+                    else if (this is Gauntlet)
                     {
-                        clonedDamage.Multiply(0.25f);
+                        clonedDamage.Multiply(0.2f);
+                    }
+                    else if (this is Accessory)
+                    {
+                        clonedDamage.Multiply(0.125f);
                     }
                 }
 

@@ -163,7 +163,7 @@ namespace AF
             {
                 DisableSubMenus();
 
-                saveManager.SaveGameData(menuManager.screenshotBeforeOpeningMenu);
+                saveManager.TrySaveGameData(menuManager.screenshotBeforeOpeningMenu);
             }, soundbank);
         }
 

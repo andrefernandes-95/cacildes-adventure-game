@@ -310,14 +310,23 @@ namespace AF
             return animationOverrides;
         }
 
-        public List<AnimationOverride> GetRightHandAnimationsForAI()
+        public List<AnimationOverride> GetRightHandAnimationsForAI(CharacterManager characterManager)
         {
             List<AnimationOverride> animationOverrides = new();
 
             // Locomotion
             if (oh_Idle != null) animationOverrides.Add(new() { animationName = "AI Humanoid - Idle", animationClip = oh_Idle });
             if (oh_Walk != null) animationOverrides.Add(new() { animationName = "AI Humanoid - Patrolling", animationClip = oh_Walk });
-            if (oh_Run != null) animationOverrides.Add(new() { animationName = "AI Humanoid - Chasing", animationClip = oh_Run });
+
+            // Only accept run overrides if the character is meant to run
+            if (characterManager.chaseSpeed != characterManager.patrolSpeed)
+            {
+                if (oh_Run != null) animationOverrides.Add(new() { animationName = "AI Humanoid - Chasing", animationClip = oh_Run });
+            }
+            else
+            {
+                if (oh_Walk != null) animationOverrides.Add(new() { animationName = "AI Humanoid - Chasing", animationClip = oh_Walk });
+            }
 
             // Combat
             if (oh_Idle != null) animationOverrides.Add(new() { animationName = "AI Humanoid - Combat Idle", animationClip = oh_Idle }); // Could be replaced with separate combat idle
@@ -366,14 +375,23 @@ namespace AF
             return animationOverrides;
         }
 
-        public List<AnimationOverride> GetTwoHandAnimationsForAI()
+        public List<AnimationOverride> GetTwoHandAnimationsForAI(CharacterManager characterManager)
         {
             List<AnimationOverride> animationOverrides = new();
 
             // Locomotion
             if (th_Idle != null) animationOverrides.Add(new() { animationName = "AI Humanoid - Idle", animationClip = th_Idle });
             if (th_Walk != null) animationOverrides.Add(new() { animationName = "AI Humanoid - Patrolling", animationClip = th_Walk });
-            if (th_Run != null) animationOverrides.Add(new() { animationName = "AI Humanoid - Chasing", animationClip = th_Run });
+
+            // Only accept run overrides if the character is meant to run
+            if (characterManager.chaseSpeed != characterManager.patrolSpeed)
+            {
+                if (th_Run != null) animationOverrides.Add(new() { animationName = "AI Humanoid - Chasing", animationClip = th_Run });
+            }
+            else
+            {
+                if (th_Walk != null) animationOverrides.Add(new() { animationName = "AI Humanoid - Chasing", animationClip = th_Walk });
+            }
 
             // Combat
             if (th_Idle != null) animationOverrides.Add(new() { animationName = "AI Humanoid - Combat Idle", animationClip = th_Idle }); // You can change this if you have a separate clip

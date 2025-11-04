@@ -101,7 +101,7 @@ namespace AF.Health
         }
 
 
-        public int GetStrengthBonus(CharacterBaseManager characterBaseManager)
+        public int GetStrengthBonus(int strength)
         {
             if (this.physical <= 0)
             {
@@ -109,12 +109,12 @@ namespace AF.Health
             }
 
             // Apply bonus damage based on scaling and stats
-            int bonusFromSTR = ScalingUtils.GetBonusAttackPerLevel(characterBaseManager.characterBaseStats.GetStrength(), ScalingUtils.StatType.STRENGTH, this.strengthScaling);
+            int bonusFromSTR = ScalingUtils.GetBonusAttackPerLevel(strength, ScalingUtils.StatType.STRENGTH, this.strengthScaling);
 
             return bonusFromSTR;
         }
 
-        public int GetDexterityBonus(CharacterBaseManager characterBaseManager)
+        public int GetDexterityBonus(int dexterity)
         {
             if (this.physical <= 0)
             {
@@ -122,12 +122,12 @@ namespace AF.Health
             }
 
             // Apply bonus damage based on scaling and stats
-            int bonusFromDEX = ScalingUtils.GetBonusAttackPerLevel(characterBaseManager.characterBaseStats.GetDexterity(), ScalingUtils.StatType.DEXTERITY, this.dexterityScaling);
+            int bonusFromDEX = ScalingUtils.GetBonusAttackPerLevel(dexterity, ScalingUtils.StatType.DEXTERITY, this.dexterityScaling);
 
             return bonusFromDEX;
         }
 
-        public int GetIntelligenceBonus(CharacterBaseManager characterBaseManager)
+        public int GetIntelligenceBonus(int intelligence)
         {
             if (this.fire <= 0 && this.frost <= 0 && this.lightning <= 0 && this.magic <= 0 && this.darkness <= 0 && this.water <= 0)
             {
@@ -135,7 +135,7 @@ namespace AF.Health
             }
 
             // Apply bonus damage based on scaling and stats
-            int bonusFromINT = ScalingUtils.GetBonusAttackPerLevel(characterBaseManager.characterBaseStats.GetIntelligence(), ScalingUtils.StatType.INTELLIGENCE, this.intelligenceScaling);
+            int bonusFromINT = ScalingUtils.GetBonusAttackPerLevel(intelligence, ScalingUtils.StatType.INTELLIGENCE, this.intelligenceScaling);
 
             return bonusFromINT;
         }

@@ -41,9 +41,9 @@ MonoBehaviour:
     m_WaitForCompletion: 0
     m_LocalVariables: []
   sprite: {fileID: 21300000, guid: 99ceefa6c1ff895469c71cb1727642af, type: 3}
-  itemValue: {fileID: 0}
+  itemValue: {fileID: 11400000, guid: 9910475b5956dbf4b883cc7765f6c52f, type: 2}
   value: 300
-  itemWeight: {fileID: 0}
+  itemWeight: {fileID: 11400000, guid: d31ef2c947c01924e96265aeb3515dac, type: 2}
   isRenewable: 0
   tradingItemRequirements:
     _serializedList:
@@ -52,7 +52,7 @@ MonoBehaviour:
   dropRateOnEnemies: 0.2
   notes: 
   location: 
-  canBeUpgraded: 0
+  canBeUpgraded: 1
   level: 1
   upgradeMaterialData: {fileID: 11400000, guid: 99d82098b8d36614f930b2cabac10c00, type: 2}
   damage:
@@ -85,6 +85,7 @@ MonoBehaviour:
   negativeReputationRequired: 0
   weaponType: {fileID: 11400000, guid: 282113821e9fca743a9d8edf59e8a1ea, type: 2}
   staminaCostPerAttack: 30
+  weaponEffects: []
   strengthScaling: 2
   dexterityScaling: 2
   intelligenceScaling: 5
@@ -107,6 +108,7 @@ MonoBehaviour:
   twoHandOverrides: []
   blockOverrides: []
   weaponAnimationData: {fileID: 0}
+  aIWeaponAnimationData: {fileID: 0}
   weaponRangeAnimation: {fileID: 11400000, guid: f13b2f27084f0354aa7ac54d5553b497, type: 2}
   oh_weaponAnimationOverrides: []
   th_weaponAnimationOverrides: []
@@ -115,11 +117,12 @@ MonoBehaviour:
   th_lightAttackCombos: 2
   th_heavyAttackCombos: 1
   halveDamage: 0
-  speedPenalty: 0.015
   oneHandAttackSpeedPenalty: 1
   oh_HeavyAttackSpeedPenalty: 1
   twoHandAttackSpeedPenalty: 1
   th_HeavyAttackSpeedPenalty: 1
+  powerStance_AttackSpeedPenalty: 1
+  powerStance_HeavyAttackSpeedPenalty: 1
   amountOfGoldReceivedPerHit: 0
   doubleCoinsUponKillingEnemies: 0
   doubleDamageDuringNightTime: 0
@@ -144,6 +147,12 @@ MonoBehaviour:
   th_BlockRotation: {x: 0, y: 0, z: 0}
   aimingPosition: {x: 0.017, y: 0.089, z: -0.019}
   aimingRotation: {x: 277.76898, y: 251.26126, z: 132.19713}
+  useCustomAimingPositionForAi: 0
+  customAimingPositionForAi: {x: 0, y: 0, z: 0}
+  customAimingRotationForAi: {x: 0, y: 0, z: 0}
+  oh_heavyAttackAbilities: []
+  th_heavyAttackAbilities: []
+  castAbilitySpeed: 1
   references:
     version: 2
     RefIds: []

@@ -573,7 +573,6 @@ namespace AF.Stats
             (Weapon rightWeapon, Weapon leftWeapon) = GetCurrentWeapons();
             List<Accessory> accessories = GetCurrentAccessories();
 
-            bool hasDoublingCoinAccessoryEquipped = accessories.Any(acc => acc != null && acc.chanceToDoubleCoinsFromFallenEnemies);
 
             if (rightWeapon != null && rightWeapon.doubleCoinsUponKillingEnemies)
             {
@@ -585,6 +584,7 @@ namespace AF.Stats
                 return true;
             }
 
+            bool hasDoublingCoinAccessoryEquipped = accessories.Any(acc => acc != null && acc.chanceToDoubleCoinsFromFallenEnemies);
             if (!hasDoublingCoinAccessoryEquipped)
             {
                 return false;

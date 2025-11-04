@@ -630,11 +630,13 @@ namespace AF.Shooting
                 return;
             }
 
-            if (equipmentDatabase.GetCurrentSpell() is Spell spell)
+            if (equipmentDatabase.GetCurrentSpell() is Spell spell && GetPlayerManager().manaManager.HasEnoughManaForSpell(spell))
             {
                 if (spell.HasAbility())
                 {
                     Ability ability = Instantiate(spell.ability);
+
+                    GetPlayerManager().manaManager.DecreaseMana(spell.GetManaCost());
 
                     if (ability is CastFromSpell castFromSpell)
                     {

@@ -40,7 +40,7 @@ King Merlot: Truth be spoken. No one dared to go as far as you did, {PLAYER_NAME
 King Merlot: You bear the scars of battle and the heart of the brave. Rise, {PLAYER_NAME}.
 <> Rise not merely as a soldier of the king... but as a Knight of Cecily Town.
 
-* [I will]
+** [Rise]
 
 @wait_1
 

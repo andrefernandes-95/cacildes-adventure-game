@@ -90,7 +90,7 @@ namespace AF
             CharacterBaseAttackManager attackStatManager = playerManager.characterBaseAttackManager;
             int totalMagicDamage = weapon.GetWeaponMagicAttack(attackStatManager);
             int baseMagicDamage = weapon.GetWeaponBaseMagicAttack();
-            int damageFromIntelligenceScaling = (int)weapon.damage.GetIntelligenceBonus(playerManager);
+            int damageFromIntelligenceScaling = (int)weapon.damage.GetIntelligenceBonus(playerManager.playerStats.GetIntelligence());
             string damageExplanation = "";
 
             if (LocalizationSettings.SelectedLocale.Identifier.Code == "en")

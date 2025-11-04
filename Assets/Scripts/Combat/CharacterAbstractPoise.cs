@@ -75,7 +75,14 @@ namespace AF
 
         public int GetMaxPoiseHits()
         {
-            return characterManager.combatant.maximumPoise;
+            int equipmentPoise = characterManager.statsBonusController.equipmentPoise;
+
+            if (characterManager.combatant == null)
+            {
+                return equipmentPoise;
+            }
+
+            return characterManager.combatant.maximumPoise + equipmentPoise;
         }
 
         public abstract bool CanCallPoiseDamagedEvent();

@@ -161,7 +161,14 @@ namespace AF.Health
             RestoreFullHealth();
             onRevive?.Invoke();
 
-            characterManager.stateManager.gameObject.SetActive(true);
+            if (characterManager.stateManager != null)
+            {
+                characterManager.stateManager.gameObject.SetActive(true);
+            }
+            else
+            {
+                Debug.Log($"{characterManager.name} has not state manager assigned");
+            }
 
             HandleCollisions(true);
 

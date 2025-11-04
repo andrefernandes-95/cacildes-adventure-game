@@ -152,7 +152,7 @@ namespace AF
             var rightDamage = playerManager.characterBaseAttackManager.rightWeaponCurrentDamage;
             var leftDamage = playerManager.characterBaseAttackManager.leftWeaponCurrentDamage;
 
-            var statNames = new[] { "PhysicalAttack", "FireAttack", "FrostAttack", "LightningAttack" };
+            var statNames = new[] { "PhysicalAttack", "FireAttack", "FrostAttack", "LightningAttack", "MagicAttack", "DarknessAttack", "WaterAttack" };
 
             foreach (var stat in statNames)
             {

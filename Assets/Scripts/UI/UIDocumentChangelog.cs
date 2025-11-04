@@ -208,12 +208,52 @@ namespace AF
                 }
             }
 
+            DrawChangelog(currentChangelog);
+
             if (scrollPanel.childCount > 0)
             {
                 scrollPanel.Children().ElementAt(0).Focus();
             }
         }
 
+        void DrawChangelog(Changelog changelog)
+        {
+            string currentLang = Utils.IsPortuguese() ? "pt" : "en";
+
+            if (changelog == null || changelog.data == null)
+                return;
+
+            // Check if language exists
+            if (!changelog.GetData().ContainsKey(currentLang))
+                return;
+
+            // Get language-specific sections (Additions, Improvements, Fixes, etc.)
+            var langSections = changelog.GetData()[currentLang];
+
+            foreach (var section in langSections)
+            {
+                string sectionTitle = section.Key;
+                var entries = section.Value;
+
+                if (entries == null || entries.Count == 0)
+                    continue;
+
+                // Section title
+                var sectionTitleLabel = new Label
+                {
+                    text = sectionTitle
+                };
+                sectionTitleLabel.AddToClassList("label-text");
+                sectionTitleLabel.style.marginTop = 10;
+                scrollPanel.Add(sectionTitleLabel);
+
+                // Entries
+                foreach (var entry in entries)
+                {
+                    CreateSection(entry);
+                }
+            }
+        }
         void CreateSection(string value)
         {
             var additionLabel = new Label

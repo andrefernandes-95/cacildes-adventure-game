@@ -21,6 +21,8 @@ EXTERNAL hasStartedSewersQuest()
 
     Pedro: Faz isto por mim e garanto que serás bem recompensado. Nunca deixo dívidas por saldar.  
 
+    ~ runEventOnce("Begin Sewers Quest")
+
 * {finishedSewersAndIsReadyForReward} [Tratei da Grischa.] 
     Pedro: Ha! Então a história acaba contigo de pé e ela a apodrecer na lama. Isso sim é um feito digno de vinho.  
 
@@ -28,9 +30,13 @@ EXTERNAL hasStartedSewersQuest()
 
     Pedro: Prestaste um grande serviço ao rei, à cidade e a mim. Aqui está a tua recompensa, como prometido.  
 
-    ~ runEvent("Reward player for Sewers Quest")
+    ~ runEventOnce("Reward player for Sewers Quest")
+
+    @wait_0.5
 
     Pedro: Não te afastes demasiado. Homens como eu arranjam sempre mais trabalho… e quem sabe se até não lhe tomas o gosto.  
+
+    ~ runEvent("Finish Sewers Quest")
 
 * [Quem és tu?]
     Pedro: Hah! Pergunta justa. Em tempos, servi como general. Combati sob o comando do General Alcino, ao serviço do pai do Rei Merlot.  

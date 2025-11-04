@@ -168,7 +168,7 @@ namespace AF
                 // Notify other boss companions that battle has begun
                 foreach (CharacterManager partner in characterManager.partners)
                 {
-                    if (partner.gameObject.activeInHierarchy)
+                    if (partner != null && partner.gameObject.activeInHierarchy)
                     {
                         partner.characterBossController.BeginBossBattle();
                     }

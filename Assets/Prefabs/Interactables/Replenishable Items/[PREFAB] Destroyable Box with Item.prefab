@@ -17,6 +17,7 @@ GameObject:
   - component: {fileID: 2089526969402555286}
   - component: {fileID: 6296907649840168817}
   - component: {fileID: 2446457482666885661}
+  - component: {fileID: 6380782343907748909}
   m_Layer: 30
   m_Name: '[PREFAB] Destroyable Box with Item'
   m_TagString: Wood
@@ -155,8 +156,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pushForceAbsorption: 1
   canBeBackstabbed: 1
-  combatNotificationsController: {fileID: 0}
   characterVfxRoot: {fileID: 0}
+  bloodVfxPrefab: {fileID: 0}
   bluntVfxPrefab: {fileID: 0}
   slashVfxPrefab: {fileID: 0}
   pierceVfxPrefab: {fileID: 0}
@@ -256,15 +257,38 @@ MonoBehaviour:
   onAttackedWhileWithFlatulence:
     m_PersistentCalls:
       m_Calls: []
+  onPhysicalDamageUI:
+    m_PersistentCalls:
+      m_Calls: []
+  onFireDamageUI:
+    m_PersistentCalls:
+      m_Calls: []
+  onFrostDamageUI:
+    m_PersistentCalls:
+      m_Calls: []
+  onLightningDamageUI:
+    m_PersistentCalls:
+      m_Calls: []
+  onMagicDamageUI:
+    m_PersistentCalls:
+      m_Calls: []
+  onDarknessDamageUI:
+    m_PersistentCalls:
+      m_Calls: []
+  onWaterDamageUI:
+    m_PersistentCalls:
+      m_Calls: []
+  onDamageModifierEvent:
+    m_PersistentCalls:
+      m_Calls: []
   ignoreDamage: 0
   canTakeDamage: 1
   damageOnDodge: 1
   waitingForBackstab: 0
   hasFlatulence: 0
   isTakingDamage: 0
+  isBackstabbed: 0
   character: {fileID: 0}
-  damageResistances: {fileID: 0}
-  health: {fileID: 0}
 --- !u!114 &2089526969402555286
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -321,6 +345,26 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.89
   m_Center: {x: 0.00000023841858, y: 0.53549165, z: 0.0000019073486}
+--- !u!114 &6380782343907748909
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 789094380900446736}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e3fdca004f2d45fe8abbed571a8abd5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SerializedVersion: 0
+  m_OverrideArea: 0
+  m_Area: 0
+  m_OverrideGenerateLinks: 0
+  m_GenerateLinks: 0
+  m_IgnoreFromBuild: 1
+  m_ApplyToChildren: 1
+  m_AffectedAgents: ffffffff
 --- !u!1 &1195710021308165434
 GameObject:
   m_ObjectHideFlags: 0

@@ -58,7 +58,7 @@ namespace AF
                 return "";
             }
 
-            var lastFile = fileList.OrderByDescending(f => f.CreationTime)?.First();
+            var lastFile = fileList.OrderByDescending(f => f.CreationTime)?.FirstOrDefault();
 
             if (lastFile == null)
             {
@@ -120,247 +120,6 @@ namespace AF
             var targetTexture = new Texture2D(2, 2);
             targetTexture.LoadImage(File.ReadAllBytes(targetFilePath));
             return targetTexture;
-        }
-
-        public static void CheckAndMigrateOldSaveFiles(string saveFilesLocation)
-        {
-            if (!QuickSaveReader.RootExists("Scene"))
-            {
-                return;
-            }
-
-            string saveFileName = $"Save_{DateTime.Now:yyyyMMdd_HHmmss}_Migrated";
-
-            QuickSaveWriter quickSaveWriter = QuickSaveWriter.Create(saveFileName);
-            MigrateBonfires(quickSaveWriter);
-            MigrateCompanions(quickSaveWriter);
-            MigrateStats(quickSaveWriter);
-            MigratePlayerEquipment(quickSaveWriter);
-            MigratePlayerInventory(quickSaveWriter);
-            MigratePickups(quickSaveWriter);
-            MigrateFlags(quickSaveWriter);
-            MigrateQuests(quickSaveWriter);
-            MigrateRecipes(quickSaveWriter);
-            MigrateSceneSettings(quickSaveWriter);
-            MigrateGameSettings(quickSaveWriter);
-
-            quickSaveWriter.TryCommit();
-
-            string saveFolderPath = Path.Combine(Application.persistentDataPath, saveFilesLocation);
-
-            string backupFolderPath = Path.Combine(Application.persistentDataPath, "Migrated_Saves_Backup");
-
-            // Create the backup folder if it doesn't exist
-            if (!Directory.Exists(backupFolderPath))
-            {
-                Directory.CreateDirectory(backupFolderPath);
-            }
-
-            // Define an array of file names to loop through
-            string[] fileNames = { "Bonfires.json", "Companions.json", "Equipment.json", "Flags.json", "GameSession.json", "Inventory.json", "Pickups.json", "PlayerStats.json", "Quests.json", "Recipes.json", "Scene.json" };
-
-            foreach (string fileName in fileNames)
-            {
-                // Check if the file exists before proceeding
-                string filePath = Path.Combine(saveFolderPath, fileName);
-                if (File.Exists(filePath))
-                {
-                    // Define the backup file path
-                    string backupFilePath = Path.Combine(backupFolderPath, $"{fileName}");
-
-                    // Create a backup of the file
-                    File.Copy(filePath, backupFilePath, true);
-
-                    // Delete the original file
-                    File.Delete(filePath);
-                }
-            }
-        }
-
-        static void MigrateStats(QuickSaveWriter quickSaveWriter)
-        {
-            var playerStats = QuickSaveReader.Create("PlayerStats");
-
-            // Try to read currentHealth using TryRead
-            playerStats.TryRead("currentHealth", out float currentHealth);
-            quickSaveWriter.Write("currentHealth", currentHealth);
-
-            // Try to read other stats
-            playerStats.TryRead<float>("currentStamina", out float currentStamina);
-            quickSaveWriter.Write("currentStamina", currentStamina);
-
-            playerStats.TryRead<float>("currentMana", out float currentMana);
-            quickSaveWriter.Write("currentMana", currentMana);
-
-            playerStats.TryRead<int>("reputation", out int reputation);
-            quickSaveWriter.Write("reputation", reputation);
-
-            playerStats.TryRead<int>("vitality", out int vitality);
-            quickSaveWriter.Write("vitality", vitality);
-
-            playerStats.TryRead<int>("endurance", out int endurance);
-            quickSaveWriter.Write("endurance", endurance);
-
-            playerStats.TryRead<int>("intelligence", out int intelligence);
-            quickSaveWriter.Write("intelligence", intelligence);
-
-            playerStats.TryRead<int>("strength", out int strength);
-            quickSaveWriter.Write("strength", strength);
-
-            playerStats.TryRead<int>("dexterity", out int dexterity);
-            quickSaveWriter.Write("dexterity", dexterity);
-
-            playerStats.TryRead<int>("gold", out int gold);
-            quickSaveWriter.Write("gold", gold);
-
-            playerStats.TryRead<int>("lostGold", out int lostGold);
-            quickSaveWriter.Write("lostGold", lostGold);
-
-            playerStats.TryRead<string>("sceneWhereGoldWasLost", out string sceneWhereGoldWasLost);
-            quickSaveWriter.Write("sceneWhereGoldWasLost", sceneWhereGoldWasLost);
-
-            playerStats.TryRead<Vector3>("positionWhereGoldWasLost", out Vector3 positionWhereGoldWasLost);
-            quickSaveWriter.Write("positionWhereGoldWasLost", positionWhereGoldWasLost);
-        }
-
-        static void MigratePlayerEquipment(QuickSaveWriter quickSaveWriter)
-        {
-            var playerEquipment = QuickSaveReader.Create("Equipment");
-
-            playerEquipment.TryRead<int>("currentWeaponIndex", out int currentWeaponIndex);
-            quickSaveWriter.Write("currentWeaponIndex", currentWeaponIndex);
-
-            playerEquipment.TryRead<int>("currentShieldIndex", out int currentShieldIndex);
-            quickSaveWriter.Write("currentShieldIndex", currentShieldIndex);
-
-            playerEquipment.TryRead<int>("currentArrowIndex", out int currentArrowIndex);
-            quickSaveWriter.Write("currentArrowIndex", currentArrowIndex);
-
-            playerEquipment.TryRead<int>("currentSpellIndex", out int currentSpellIndex);
-            quickSaveWriter.Write("currentSpellIndex", currentSpellIndex);
-
-            playerEquipment.TryRead<int>("currentConsumableIndex", out int currentConsumableIndex);
-            quickSaveWriter.Write("currentConsumableIndex", currentConsumableIndex);
-
-            playerEquipment.TryRead<string[]>("weapons", out string[] weapons);
-            quickSaveWriter.Write("weapons", weapons);
-
-            // Try to read shields
-            playerEquipment.TryRead<string[]>("shields", out string[] shields);
-            quickSaveWriter.Write("shields", shields);
-
-            // Try to read arrows
-            playerEquipment.TryRead<string[]>("arrows", out string[] arrows);
-            quickSaveWriter.Write("arrows", arrows);
-
-            // Try to read spells
-            playerEquipment.TryRead<string[]>("spells", out string[] spells);
-            quickSaveWriter.Write("spells", spells);
-
-            // Try to read accessories
-            playerEquipment.TryRead<string[]>("accessories", out string[] accessories);
-            quickSaveWriter.Write("accessories", accessories);
-
-            // Try to read consumables
-            playerEquipment.TryRead<string[]>("consumables", out string[] consumables);
-            quickSaveWriter.Write("consumables", consumables);
-
-            // Try to read helmet
-            playerEquipment.TryRead<string>("helmet", out string helmetName);
-            quickSaveWriter.Write("helmet", helmetName);
-
-            // Try to read armor
-            playerEquipment.TryRead<string>("armor", out string armorName);
-            quickSaveWriter.Write("armor", armorName);
-
-            // Try to read gauntlet
-            playerEquipment.TryRead<string>("gauntlet", out string gauntletName);
-            quickSaveWriter.Write("gauntlet", gauntletName);
-
-            // Try to read legwear
-            playerEquipment.TryRead<string>("legwear", out string legwearName);
-            quickSaveWriter.Write("legwear", legwearName);
-
-            playerEquipment.TryRead<bool>("isTwoHanding", out bool isTwoHanding);
-            quickSaveWriter.Write("isTwoHanding", isTwoHanding);
-        }
-
-        static void MigratePlayerInventory(QuickSaveWriter quickSaveWriter)
-        {
-            var inventory = QuickSaveReader.Create("Inventory");
-
-            inventory.TryRead("ownedItems", out SerializedDictionary<string, ItemAmount> ownedItems);
-            quickSaveWriter.Write("ownedItems", ownedItems);
-        }
-
-        static void MigratePickups(QuickSaveWriter quickSaveWriter)
-        {
-            var pickups = QuickSaveReader.Create("Pickups");
-            pickups.TryRead("pickups", out SerializedDictionary<string, string> savedPickups);
-            quickSaveWriter.Write("pickups", savedPickups ?? new SerializedDictionary<string, string>());
-            pickups.TryRead("replenishables", out SerializedDictionary<string, ReplenishableTime> savedReplenishables);
-            quickSaveWriter.Write("replenishables", savedReplenishables ?? new SerializedDictionary<string, ReplenishableTime>());
-        }
-
-        static void MigrateQuests(QuickSaveWriter quickSaveWriter)
-        {
-            var questsReceived = QuickSaveReader.Create("Quests");
-            questsReceived.TryRead("questsReceived", out SerializedDictionary<string, int> savedQuestsReceived);
-            quickSaveWriter.Write("questsReceived", savedQuestsReceived);
-
-            questsReceived.TryRead("currentTrackedQuestIndex", out int currentTrackedQuestIndex);
-            quickSaveWriter.Write("currentTrackedQuestIndex", currentTrackedQuestIndex);
-        }
-
-        static void MigrateFlags(QuickSaveWriter quickSaveWriter)
-        {
-            var flags = QuickSaveReader.Create("Flags");
-            flags.TryRead("flags", out SerializedDictionary<string, string> savedFlags);
-            quickSaveWriter.Write("flags", savedFlags);
-        }
-
-        static void MigrateSceneSettings(QuickSaveWriter quickSaveWriter)
-        {
-            var data = QuickSaveReader.Create("Scene");
-            data.TryRead<int>("sceneIndex", out int sceneIndex);
-            quickSaveWriter.Write("sceneIndex", sceneIndex);
-
-            data.TryRead("playerPosition", out Vector3 playerPosition);
-            quickSaveWriter.Write("playerPosition", playerPosition);
-
-            data.TryRead("playerRotation", out Quaternion playerRotation);
-            quickSaveWriter.Write("playerRotation", playerRotation);
-        }
-
-        static void MigrateGameSettings(QuickSaveWriter quickSaveWriter)
-        {
-            var data = QuickSaveReader.Create("GameSession");
-
-            data.TryRead<float>("timeOfDay", out var timeOfDay);
-            quickSaveWriter.Write("timeOfDay", timeOfDay);
-        }
-
-        static void MigrateCompanions(QuickSaveWriter quickSaveWriter)
-        {
-            var companions = QuickSaveReader.Create("Companions");
-            companions.TryRead("companionsInParty", out SerializedDictionary<string, CompanionState> savedCompanionsInParty);
-            quickSaveWriter.Write("companionsInParty", savedCompanionsInParty);
-        }
-
-        static void MigrateBonfires(QuickSaveWriter quickSaveWriter)
-        {
-            var bonfires = QuickSaveReader.Create("Bonfires");
-
-            bonfires.TryRead("unlockedBonfires", out string[] unlockedBonfires);
-            quickSaveWriter.Write("unlockedBonfires", unlockedBonfires);
-        }
-
-        static void MigrateRecipes(QuickSaveWriter quickSaveWriter)
-        {
-            var recipes = QuickSaveReader.Create("Recipes");
-
-            recipes.TryRead("craftingRecipes", out string[] craftingRecipes);
-            quickSaveWriter.Write("craftingRecipes", craftingRecipes);
         }
 
         public static void SaveItems(QuickSaveWriter quickSaveWriter, InventoryDatabase inventoryDatabase)
@@ -551,7 +310,7 @@ namespace AF
 
         public static void LoadEquipment(QuickSaveReader quickSaveReader, CharacterBaseInventory characterBaseInventory, EquipmentDatabase equipmentDatabase)
         {
-            quickSaveReader.TryRead("weapons", out SerializedUpgradeableItem[] serializedWeapons);
+            quickSaveReader.TryRead("weapons", out string[] serializedWeapons);
             if (serializedWeapons != null && serializedWeapons.Length > 0)
             {
                 for (int idx = 0; idx < serializedWeapons.Length; idx++)
@@ -559,7 +318,7 @@ namespace AF
                     LoadSerializedWeapon(serializedWeapons[idx], idx, true, characterBaseInventory, equipmentDatabase);
                 }
             }
-            quickSaveReader.TryRead("shields", out SerializedUpgradeableItem[] serializedLeftWeapons);
+            quickSaveReader.TryRead("shields", out string[] serializedLeftWeapons);
             if (serializedLeftWeapons != null && serializedLeftWeapons.Length > 0)
             {
                 for (int idx = 0; idx < serializedLeftWeapons.Length; idx++)
@@ -569,20 +328,21 @@ namespace AF
             }
 
             // Try to read arrows
-            quickSaveReader.TryRead<string[]>("arrows", out string[] arrows);
+            quickSaveReader.TryRead("arrows", out string[] arrows);
             if (arrows != null && arrows.Length > 0)
             {
                 for (int idx = 0; idx < arrows.Length; idx++)
                 {
-                    string arrowName = arrows[idx];
+                    string arrowId = arrows[idx];
 
-                    if (!string.IsNullOrEmpty(arrowName))
+                    if (!string.IsNullOrEmpty(arrowId))
                     {
-                        Arrow arrowInstance = Resources.Load<Arrow>("Items/Arrows/" + arrowName);
+                        Arrow match = characterBaseInventory.GetArrows().FirstOrDefault(
+                            ownedArrow => ownedArrow != null && ownedArrow.itemID == arrowId);
 
-                        if (arrowInstance != null)
+                        if (match != null)
                         {
-                            equipmentDatabase.arrows[idx] = arrowInstance;
+                            equipmentDatabase.arrows[idx] = ScriptableObject.Instantiate(match);
                         }
                     }
                 }
@@ -598,12 +358,12 @@ namespace AF
 
                     if (!string.IsNullOrEmpty(spellId))
                     {
-                        Spell match = characterBaseInventory.GetSpells().First(
-                            item => item.itemID == spellId);
+                        Spell match = characterBaseInventory.GetSpells().FirstOrDefault(
+                            item => item?.itemID == spellId);
 
                         if (match != null)
                         {
-                            equipmentDatabase.spells[idx] = match;
+                            equipmentDatabase.spells[idx] = ScriptableObject.Instantiate(match);
                         }
                     }
                 }
@@ -619,12 +379,12 @@ namespace AF
 
                     if (!string.IsNullOrEmpty(accessoryId))
                     {
-                        Accessory match = characterBaseInventory.GetAccessories().First(
-                            item => item.itemID == accessoryId);
+                        Accessory match = characterBaseInventory.GetAccessories().FirstOrDefault(
+                            item => item?.itemID == accessoryId);
 
                         if (match != null)
                         {
-                            equipmentDatabase.accessories[idx] = match;
+                            equipmentDatabase.accessories[idx] = ScriptableObject.Instantiate(match);
                         }
                     }
                 }
@@ -641,11 +401,11 @@ namespace AF
                     if (!string.IsNullOrEmpty(consumableId))
                     {
                         Consumable match = characterBaseInventory.GetConsumables().FirstOrDefault(
-                            item => item.itemID == consumableId);
+                            item => item?.itemID == consumableId);
 
                         if (match != null)
                         {
-                            equipmentDatabase.consumables[idx] = match;
+                            equipmentDatabase.consumables[idx] = ScriptableObject.Instantiate(match);
                         }
                     }
                 }
@@ -656,11 +416,11 @@ namespace AF
             if (!string.IsNullOrEmpty(helmetId))
             {
                 Helmet match = characterBaseInventory.GetHelmets().FirstOrDefault(
-                    item => item.itemID == helmetId);
+                    item => item?.itemID == helmetId);
 
                 if (match != null)
                 {
-                    equipmentDatabase.helmet = match;
+                    equipmentDatabase.helmet = ScriptableObject.Instantiate(match);
                 }
             }
             else
@@ -673,11 +433,11 @@ namespace AF
             if (!string.IsNullOrEmpty(armorId))
             {
                 Armor match = characterBaseInventory.GetArmors().FirstOrDefault(
-                    item => item.itemID == armorId);
+                    item => item?.itemID == armorId);
 
                 if (match != null)
                 {
-                    equipmentDatabase.armor = match;
+                    equipmentDatabase.armor = ScriptableObject.Instantiate(match);
                 }
             }
             else
@@ -690,11 +450,11 @@ namespace AF
             if (!string.IsNullOrEmpty(gauntletId))
             {
                 Gauntlet match = characterBaseInventory.GetGauntlets().FirstOrDefault(
-                    item => item.itemID == gauntletId);
+                    item => item?.itemID == gauntletId);
 
                 if (match != null)
                 {
-                    equipmentDatabase.gauntlet = match;
+                    equipmentDatabase.gauntlet = ScriptableObject.Instantiate(match);
                 }
             }
             else
@@ -707,11 +467,11 @@ namespace AF
             if (!string.IsNullOrEmpty(legwearId))
             {
                 Legwear match = characterBaseInventory.GetLegwears().FirstOrDefault(
-                    item => item.itemID == legwearId);
+                    item => item?.itemID == legwearId);
 
                 if (match != null)
                 {
-                    equipmentDatabase.legwear = match;
+                    equipmentDatabase.legwear = ScriptableObject.Instantiate(match);
                 }
             }
             else
@@ -720,22 +480,22 @@ namespace AF
             }
         }
 
-        static void LoadSerializedWeapon(SerializedUpgradeableItem serializedWeapon, int slotIndex, bool isRightHandWeapon, CharacterBaseInventory characterBaseInventory, EquipmentDatabase equipmentDatabase)
+        static void LoadSerializedWeapon(string serializedWeaponId, int slotIndex, bool isRightHandWeapon, CharacterBaseInventory characterBaseInventory, EquipmentDatabase equipmentDatabase)
         {
-            if (serializedWeapon != null)
+            if (!string.IsNullOrEmpty(serializedWeaponId))
             {
                 Weapon match = characterBaseInventory.GetWeapons().FirstOrDefault(
-                    ownedWeapon => ownedWeapon != null && ownedWeapon.itemID == serializedWeapon.itemID);
+                    ownedWeapon => ownedWeapon != null && ownedWeapon.itemID == serializedWeaponId);
 
                 if (match != null)
                 {
                     if (isRightHandWeapon)
                     {
-                        equipmentDatabase.weapons[slotIndex] = match;
+                        equipmentDatabase.weapons[slotIndex] = ScriptableObject.Instantiate(match);
                     }
                     else
                     {
-                        equipmentDatabase.shields[slotIndex] = match;
+                        equipmentDatabase.shields[slotIndex] = ScriptableObject.Instantiate(match);
                     }
                 }
             }

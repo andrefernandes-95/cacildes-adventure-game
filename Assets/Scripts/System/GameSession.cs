@@ -69,6 +69,7 @@ public class GameSession : ScriptableObject
         loadSavedPlayerPositionAndRotation = false;
         nextMap_SpawnLocationData = null;
         currentGameIteration = 0;
+        daySpeed = 0.005f;
     }
 
     /// <summary>

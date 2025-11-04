@@ -88,31 +88,25 @@ namespace AF
 
         public static void ScrollToLastPosition(int currentIndex, ScrollView scrollView, UnityAction onFinish)
         {
-            VisualElement lastElement = null;
-
-            int lastScrollElementIndex = currentIndex;
-
-            if (lastScrollElementIndex != -1 && scrollView?.childCount > 0)
+            if (scrollView == null || scrollView.childCount == 0)
             {
-                while (lastScrollElementIndex >= 0 && lastScrollElementIndex + 1 < scrollView.childCount && lastElement == null)
-                {
-                    lastElement = scrollView?.ElementAt(lastScrollElementIndex + 1);
-
-                    if (lastElement != null)
-                    {
-                        lastElement.Focus();
-                        scrollView.ScrollTo(lastElement);
-                        break;
-                    }
-                    else
-                    {
-                        lastScrollElementIndex--;
-                    }
-                }
-
+                onFinish?.Invoke();
+                return;
             }
 
-            onFinish();
+            // Clamp index so we never go out of bounds
+            int index = Mathf.Clamp(currentIndex, 0, scrollView.childCount - 1);
+
+            // Try to get the element
+            VisualElement element = scrollView.ElementAt(index);
+
+            if (element != null)
+            {
+                element.Focus();
+                scrollView.ScrollTo(element);
+            }
+
+            onFinish?.Invoke();
         }
 
         public static void FadeIn(VisualElement element, float duration = 0.5f, UnityAction onComplete = null)

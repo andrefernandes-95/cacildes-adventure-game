@@ -48,19 +48,6 @@ namespace AF
             SetCurrentMana(Mathf.Clamp(playerStatsDatabase.currentMana + finalRegenerationRate * Time.deltaTime, 0f, GetMaxMana()));
         }
 
-        public int GetMaxMana()
-        {
-            int baseValue = Formulas.CalculateStatForLevel(
-                playerStatsDatabase.maxMana + playerManager.statsBonusController.magicBonus,
-                playerManager.playerStats.GetIntelligence(),
-                playerStatsDatabase.levelMultiplierForMana);
-
-            int extraBasedOnManaMultiplier = (int)(baseValue * playerManager.statsBonusController.manaBonusMultiplier);
-            baseValue += extraBasedOnManaMultiplier;
-
-            return baseValue;
-        }
-
         public float GetCurrentMana()
         {
             return playerStatsDatabase.currentMana;
@@ -78,7 +65,7 @@ namespace AF
                 return false;
             }
 
-            return HasEnoughManaForAction((int)spell.manaCostPerCast);
+            return HasEnoughManaForAction((int)spell.GetManaCost());
         }
 
         public bool HasEnoughManaForAction(int actionCost)
@@ -112,9 +99,22 @@ namespace AF
             SetCurrentMana(nextValue);
         }
 
-        public float GetManaPointsForGivenIntelligence(int intelligence)
+        public int GetManaPointsForGivenIntelligence(int intelligence)
         {
-            return playerStatsDatabase.maxMana + (int)Mathf.Ceil(intelligence * playerStatsDatabase.levelMultiplierForMana);
+            int baseValue = Formulas.CalculateStatForLevel(
+                playerStatsDatabase.maxMana + playerManager.statsBonusController.magicBonus,
+                intelligence,
+                playerStatsDatabase.levelMultiplierForMana);
+
+            int extraBasedOnManaMultiplier = (int)(baseValue * playerManager.statsBonusController.manaBonusMultiplier);
+            baseValue += extraBasedOnManaMultiplier;
+
+            return baseValue;
+        }
+
+        public int GetMaxMana()
+        {
+            return GetManaPointsForGivenIntelligence(playerManager.playerStats.GetIntelligence());
         }
 
 

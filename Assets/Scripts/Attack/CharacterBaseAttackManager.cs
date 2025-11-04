@@ -10,26 +10,10 @@
     {
         private Dictionary<string, float> scalingDictionary = new();
 
-        [Header("Status attack bonus")]
-        [Tooltip("Increased by buffs like potions, or equipment like accessories")]
-        [SerializeField] int heavyAttackBonusDamage = 50;
-
-        [Header("Unarmed Attack Options")]
-        public int unarmedLightAttackPostureDamage = 18;
-        public int unarmedPostureDamageBonus = 10;
-
         [Header("Physical Attack")]
-        public int basePhysicalAttack = 100;
-
-        public float jumpAttackMultiplier = 1.25f;
-        public float twoHandAttackBonusMultiplier = 1.25f;
-        public float heavyAttackBonusMultiplier = 1.35f;
-        public float footDamageMultiplier = 1.2f;
-
-        [Header("Buff Bonuses")]
-        public ParticleSystem increaseNextAttackDamageFX;
-        bool increaseNextAttackDamage = false;
-        readonly float nextAttackMultiplierFactor = 1.3f;
+        [HideInInspector] public float jumpAttackMultiplier = 1.2f;
+        [HideInInspector] public float twoHandAttackBonusMultiplier = 1.2f;
+        [HideInInspector] public float heavyAttackBonusMultiplier = 1.3f;
 
         [Header("Current Damage")]
         public Damage rightWeaponCurrentDamage;
@@ -127,15 +111,11 @@
         public (Damage weaponDamage, int STRBonus, int DEXBonus, int INTBonus,
         int TwoHandAttackBonus) CalculateWeaponDamageForWeapon(Weapon weapon)
         {
-            Damage weaponDamage = GetScaledDamageForStats(
-                weapon.damage.Clone(),
-                GetCharacter().characterBaseStats.GetStrength(),
-                GetCharacter().characterBaseStats.GetDexterity()
-                );
+            Damage weaponDamage = weapon.damage.Clone();
 
-            int STRBonus = weaponDamage.GetStrengthBonus(GetCharacter());
-            int DEXBonus = weaponDamage.GetDexterityBonus(GetCharacter());
-            int INTBonus = weaponDamage.GetIntelligenceBonus(GetCharacter());
+            int STRBonus = weaponDamage.GetStrengthBonus(GetCharacter().characterBaseStats.GetStrength());
+            int DEXBonus = weaponDamage.GetDexterityBonus(GetCharacter().characterBaseStats.GetDexterity());
+            int INTBonus = weaponDamage.GetIntelligenceBonus(GetCharacter().characterBaseStats.GetIntelligence());
 
             // Override with appropriate values for current weapon level
             weaponDamage.physical =
@@ -209,6 +189,14 @@
                 float twoHandMultiplier = twoHandAttackBonusMultiplier + GetCharacter().statsBonusController.twoHandAttackBonusMultiplier;
 
                 weaponDamage.physical = (int)(weaponDamage.physical * twoHandMultiplier);
+                weaponDamage.fire = (int)(weaponDamage.fire * twoHandMultiplier);
+                weaponDamage.frost = (int)(weaponDamage.frost * twoHandMultiplier);
+                weaponDamage.lightning = (int)(weaponDamage.lightning * twoHandMultiplier);
+                weaponDamage.magic = (int)(weaponDamage.magic * twoHandMultiplier);
+                weaponDamage.darkness = (int)(weaponDamage.darkness * twoHandMultiplier);
+                weaponDamage.water = (int)(weaponDamage.water * twoHandMultiplier);
+                weaponDamage.postureDamage = (int)(weaponDamage.postureDamage * twoHandMultiplier);
+                weaponDamage.poiseDamage = (int)(weaponDamage.poiseDamage * twoHandMultiplier);
             }
 
             // + Attack the lower the rep
@@ -265,15 +253,11 @@
 
         public (Damage weaponDamage, int STRBonus, int DEXBonus, int INTBonus, int TwoHandAttackBonus) CalculateUnarmedDamage(Damage unarmedDamage)
         {
-            Damage weaponDamage = GetScaledDamageForStats(
-                unarmedDamage.Clone(),
-                GetCharacter().characterBaseStats.GetStrength(),
-                GetCharacter().characterBaseStats.GetDexterity()
-            );
+            Damage weaponDamage = unarmedDamage.Clone();
 
-            int STRBonus = weaponDamage.GetStrengthBonus(GetCharacter());
-            int DEXBonus = weaponDamage.GetDexterityBonus(GetCharacter());
-            int INTBonus = weaponDamage.GetIntelligenceBonus(GetCharacter());
+            int STRBonus = weaponDamage.GetStrengthBonus(GetCharacter().characterBaseStats.GetStrength());
+            int DEXBonus = weaponDamage.GetDexterityBonus(GetCharacter().characterBaseStats.GetDexterity());
+            int INTBonus = weaponDamage.GetIntelligenceBonus(GetCharacter().characterBaseStats.GetIntelligence());
 
             // Store the weapon's current base physical damage for UI purposes
             weaponDamage.basePhysicalDamage = weaponDamage.physical;
@@ -332,38 +316,9 @@
             return 0;
         }
 
-        /// <summary>
-        /// Unity Event
-        /// </summary>
-        /// <param name="value"></param>
-        public void SetIncreaseNextAttackDamage(bool value)
-        {
-            increaseNextAttackDamage = value;
-            SetBuffDamageFXLoop(value);
-        }
-
-        void SetBuffDamageFXLoop(bool isLooping)
-        {
-            var main = increaseNextAttackDamageFX.main;
-            main.loop = isLooping;
-        }
-
         public abstract CharacterBaseManager GetCharacter();
 
         public abstract bool DoesCharacterMeetWeaponRequirements(Weapon weapon);
-
-        /// <summary>
-        /// Scales the given raw damage with the bonus from the character's strength and dexterity levels
-        /// </summary>
-        public Damage GetScaledDamageForStats(Damage unarmedDamageWeapon, int currentStrength, int currentDexterity)
-        {
-            int bonusFromStrength = GetBonusAttackPerLevel(currentStrength);
-            int bonusFromDexterity = GetBonusAttackPerLevel(currentDexterity) / 2;
-
-            unarmedDamageWeapon.physical += bonusFromStrength + bonusFromDexterity;
-
-            return unarmedDamageWeapon;
-        }
 
         float GetBonusStep(int level)
         {

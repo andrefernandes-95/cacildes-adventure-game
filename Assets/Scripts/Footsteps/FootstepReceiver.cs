@@ -27,6 +27,11 @@ namespace AF.Footsteps
                 return;
             }
 
+            if (transformRef == null)
+            {
+                return;
+            }
+
             if (Physics.Raycast(transformRef.position, Vector3.down, out RaycastHit hit, rayDistanceDownwards, detectionLayer))
             {
                 if (hit.transform != null && footstepEffectsDictionary.ContainsKey(hit.transform.gameObject.tag))

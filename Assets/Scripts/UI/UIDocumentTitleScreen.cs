@@ -121,6 +121,8 @@ namespace AF
                 });
             }, soundbank);
 
+            playTutorialButton.style.display = DisplayStyle.None;
+
             UIUtils.SetupButton(creditsButton, () =>
             {
                 uIDocumentTitleScreenCredits.gameObject.SetActive(true);
@@ -160,7 +162,7 @@ namespace AF
             UIUtils.SetupButton(websiteButton, () =>
             {
                 LogAnalytic(AnalyticsUtils.OnUIButtonClick("Visit Website"));
-                Application.OpenURL("https://www.cacildesadventure.com/");
+                Application.OpenURL("https://store.steampowered.com/app/2617740/Cacildes_Adventure/");
 
                 websiteButton.Focus();
             }, soundbank);
@@ -205,6 +207,7 @@ namespace AF
                 Application.OpenURL("https://www.instagram.com/cacildes_adventure/");
             }, soundbank);
 
+            websiteButton.style.display = DisplayStyle.None;
 
             cursorManager.ShowCursor();
 

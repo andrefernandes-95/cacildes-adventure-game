@@ -45,17 +45,21 @@ namespace AF
             playerStatsDatabase.SetCurrentStamina(currentStamina);
         }
 
-        public int GetMaxStamina()
+        public int GetStaminaPointsForGivenEndurance(int endurance)
         {
             int baseValue = Formulas.CalculateStatForLevel(
                 playerStatsDatabase.maxStamina + playerManager.statsBonusController.staminaBonus,
-                playerManager.playerStats.GetEndurance(),
+                endurance,
                 playerStatsDatabase.levelMultiplierForStamina);
-
 
             int extraBasedOnStaminaMultiplier = (int)(baseValue * playerManager.statsBonusController.staminaBonusMultiplier);
             baseValue += extraBasedOnStaminaMultiplier;
             return baseValue;
+        }
+
+        public int GetMaxStamina()
+        {
+            return GetStaminaPointsForGivenEndurance(playerManager.playerStats.GetEndurance());
         }
 
         public float GetCurrentStaminaPercentage()
@@ -166,11 +170,6 @@ namespace AF
             SetCurrentStamina(nextValue);
         }
 
-
-        public float GetStaminaPointsForGivenEndurance(int endurance)
-        {
-            return playerStatsDatabase.maxStamina + (int)Mathf.Ceil(endurance * playerStatsDatabase.levelMultiplierForStamina);
-        }
 
         void DecreaseAttackStamina(bool isHeavyAttack, bool isAttackingWithLeftHand)
         {

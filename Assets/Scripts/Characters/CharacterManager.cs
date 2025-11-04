@@ -13,7 +13,6 @@ using System.Collections.Generic;
 using System.Linq;
 using AF.Shops;
 using AF.Detection;
-using NUnit.Framework;
 
 
 namespace AF
@@ -250,11 +249,11 @@ namespace AF
 
                     if (currentWeaponAnimationData != null)
                     {
-                        AddOrReplaceOverride(currentWeaponAnimationData.GetRightHandAnimationsForAI(), overrides);
+                        AddOrReplaceOverride(currentWeaponAnimationData.GetRightHandAnimationsForAI(this), overrides);
 
                         if (characterWeaponsManager.IsTwoHanding())
                         {
-                            AddOrReplaceOverride(currentWeaponAnimationData.GetTwoHandAnimationsForAI(), overrides);
+                            AddOrReplaceOverride(currentWeaponAnimationData.GetTwoHandAnimationsForAI(this), overrides);
                         }
                     }
                 }

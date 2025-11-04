@@ -6,11 +6,11 @@ Brumild: Limpaste as botas no tapete, foi? Boa! Nada de pegadas de lama na minha
     Brumild: A nossa casa é pequena, mas está cheia de risos, música e cheiro a pão fresco. Não ligamos ao ouro e ao brilho—dá-me uma lareira quente e uma boa história, qualquer dia.
 
 * [O que se passa pela vila?]
-    Brumild: {shuffle:
-        - Aquele esqueleto na igreja canta melhor do que eu.
-        - Por um momento pensei que eras o bibliotecário—tenho uma pilha de livros atrasados. O quê? As histórias são importantes, sabes.
-        - A filha do alfaiate está a aprender o ofício do pai. Aquela consegue vender neve a um boneco de neve. Armaduras ao dobro do preço, e o pessoal compra!
-        - Vem aí o festival, marca o que digo. Estou a fazer o dobro dos picles—nunca se sabe quem aparece com fome.
+    {shuffle:
+        - Brumild: Aquele esqueleto na igreja canta melhor do que eu.
+        - Brumild: Por um momento pensei que eras o bibliotecário—tenho uma pilha de livros atrasados. O quê? As histórias são importantes, sabes.
+        - Brumild: A filha do alfaiate está a aprender o ofício do pai. Aquela consegue vender neve a um boneco de neve. Armaduras ao dobro do preço, e o pessoal compra!
+        - Brumild: Vem aí o festival, marca o que digo. Estou a fazer o dobro dos picles—nunca se sabe quem aparece com fome.
     }
 
 * [Fala-me dos teus picles.]

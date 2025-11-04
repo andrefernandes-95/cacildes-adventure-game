@@ -107,12 +107,8 @@ namespace AF
 
         bool CanBlock()
         {
-            if (equipmentDatabase.IsRangeWeaponEquipped())
-            {
-                return false;
-            }
-
-            if (equipmentDatabase.IsStaffEquipped())
+            // If range weapon is on left hand and we are not two handing, do not allow blocking
+            if (equipmentDatabase.IsRangeWeaponEquipped() && equipmentDatabase.isTwoHanding == false)
             {
                 return false;
             }

@@ -43,6 +43,13 @@ namespace AF
         public SceneSettings sceneSettings;
         public bool canUpdateLighting = true;
 
+        [Header("Cavern Light Settings")]
+        public bool isInCavern = false;
+        public Gradient CavernAmbientColor;
+        public Gradient CavernDirectionalColor;
+        public Gradient CavernFogColor;
+        public float CavernFogDensity = 0.03f;
+
         [Header("Systems")]
         public GameSession gameSession;
 
@@ -68,6 +75,11 @@ namespace AF
 
         float GetFogDensity()
         {
+            if (isInCavern)
+            {
+                return CavernFogDensity;
+            }
+
             if (sceneSettings.sceneLocation != null && sceneSettings.sceneLocation.useSceneLightSettings)
             {
                 return sceneSettings.sceneLocation.fogDensity;
@@ -78,6 +90,11 @@ namespace AF
 
         Gradient GetAmbientColor()
         {
+            if (isInCavern)
+            {
+                return CavernAmbientColor;
+            }
+
             if (sceneSettings.sceneLocation != null && sceneSettings.sceneLocation.useSceneLightSettings)
             {
                 return sceneSettings.sceneLocation.AmbientColor;
@@ -88,6 +105,11 @@ namespace AF
 
         Gradient GetDirectionalColor()
         {
+            if (isInCavern)
+            {
+                return CavernDirectionalColor;
+            }
+
             if (sceneSettings.sceneLocation != null && sceneSettings.sceneLocation.useSceneLightSettings)
             {
                 return sceneSettings.sceneLocation.DirectionalColor;
@@ -98,6 +120,11 @@ namespace AF
 
         Gradient GetFogColor()
         {
+            if (isInCavern)
+            {
+                return CavernFogColor;
+            }
+
             if (sceneSettings.sceneLocation != null && sceneSettings.sceneLocation.useSceneLightSettings)
             {
                 return sceneSettings.sceneLocation.FogColor;
@@ -303,7 +330,17 @@ namespace AF
 
         public bool TimePassageAllowed()
         {
-            return sceneSettings != null && sceneSettings.isInterior == false && sceneSettings.sceneLocation?.isInterior == false;
+            if (sceneSettings != null)
+            {
+                if (sceneSettings.sceneLocation != null)
+                {
+                    return !sceneSettings.sceneLocation.isInterior;
+                }
+
+                return !sceneSettings.isInterior;
+            }
+
+            return false;
         }
 
         private void OnValidate()

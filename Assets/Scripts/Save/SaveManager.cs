@@ -50,6 +50,9 @@ namespace AF
 
         public string SAVE_FILES_FOLDER = "QuickSave";
 
+        // USED FOR MIGRATIONS
+        public int SAVE_VERSION = 1;
+
         [Header("Bow Debug Tools")]
         public bool useBowDebugTools = false; // For position the bow and arrows during editor, it shouldnt be in this script but just reusing Update methods
 
@@ -57,8 +60,6 @@ namespace AF
         {
             EventManager.StartListening(EventMessages.ON_BOSS_BATTLE_BEGINS, () => { hasBossFightOnGoing = true; });
             EventManager.StartListening(EventMessages.ON_BOSS_BATTLE_ENDS, () => { hasBossFightOnGoing = false; });
-
-            SaveUtils.CheckAndMigrateOldSaveFiles(SAVE_FILES_FOLDER);
         }
 
         public bool CanSave()
@@ -127,63 +128,16 @@ namespace AF
             quickSaveWriter.Write("currentArrowIndex", equipmentDatabase.currentArrowIndex);
             quickSaveWriter.Write("currentSpellIndex", equipmentDatabase.currentSpellIndex);
             quickSaveWriter.Write("currentConsumableIndex", equipmentDatabase.currentConsumableIndex);
-            quickSaveWriter.Write("weapons", equipmentDatabase.weapons.Select(weapon =>
-            {
-                SerializedUpgradeableItem serializedWeapon = null;
-                if (weapon != null)
-                {
-                    serializedWeapon = new();
-                    serializedWeapon.itemID = weapon.itemID;
-                }
-                return serializedWeapon;
-            }));
-            quickSaveWriter.Write("shields", equipmentDatabase.shields.Select(shield =>
-            {
-                SerializedUpgradeableItem serializedWeapon = null;
-                if (shield != null)
-                {
-                    serializedWeapon = new()
-                    {
-                        itemID = shield.itemID
-                    };
-                }
-                return serializedWeapon;
-            }));
-            quickSaveWriter.Write("arrows", equipmentDatabase.arrows.Select(arrow => arrow != null ? arrow.name : ""));
-
-            quickSaveWriter.Write("spells", equipmentDatabase.spells.Select(spell =>
-            {
-                SerializedUpgradeableItem serializedSpell = null;
-                if (spell != null)
-                {
-                    serializedSpell = new()
-                    {
-                        itemID = spell.itemID
-                    };
-                }
-                return serializedSpell;
-            }));
-
-            quickSaveWriter.Write("accessories", equipmentDatabase.accessories.Select(accessory =>
-            {
-                SerializedUpgradeableItem serializedAccessory = null;
-                if (serializedAccessory != null)
-                {
-                    serializedAccessory = new()
-                    {
-                        itemID = accessory.itemID
-                    };
-                }
-                return serializedAccessory;
-            }));
-
-            quickSaveWriter.Write("consumables", equipmentDatabase.consumables.Select(consumable => consumable != null ? consumable.name : ""));
-
+            quickSaveWriter.Write("weapons", equipmentDatabase.weapons.Select(weapon => weapon != null ? weapon.itemID : "").ToArray());
+            quickSaveWriter.Write("shields", equipmentDatabase.shields.Select(shield => shield != null ? shield.itemID : "").ToArray());
+            quickSaveWriter.Write("arrows", equipmentDatabase.arrows.Select(arrow => arrow != null ? arrow.itemID : "").ToArray());
+            quickSaveWriter.Write("spells", equipmentDatabase.spells.Select(spell => spell != null ? spell.itemID : "").ToArray());
+            quickSaveWriter.Write("accessories", equipmentDatabase.accessories.Select(acc => acc != null ? acc.itemID : "").ToArray());
+            quickSaveWriter.Write("consumables", equipmentDatabase.consumables.Select(consumable => consumable != null ? consumable.itemID : "").ToArray());
             quickSaveWriter.Write("helmet", equipmentDatabase.helmet != null ? equipmentDatabase.helmet.itemID : "");
             quickSaveWriter.Write("armor", equipmentDatabase.armor != null ? equipmentDatabase.armor.itemID : "");
             quickSaveWriter.Write("gauntlet", equipmentDatabase.gauntlet != null ? equipmentDatabase.gauntlet.itemID : "");
             quickSaveWriter.Write("legwear", equipmentDatabase.legwear != null ? equipmentDatabase.legwear.itemID : "");
-
             quickSaveWriter.Write("isTwoHanding", equipmentDatabase.isTwoHanding);
         }
 
@@ -478,7 +432,7 @@ namespace AF
             return SaveUtils.HasSaveFiles(SAVE_FILES_FOLDER);
         }
 
-        public void SaveGameData(Texture2D screenshot)
+        public void TrySaveGameData(Texture2D screenshot)
         {
             if (!CanSave())
             {
@@ -486,6 +440,11 @@ namespace AF
                 return;
             }
 
+            SaveGameData(screenshot);
+        }
+
+        public void SaveGameData(Texture2D screenshot)
+        {
             string saveFileName = $"Save_{DateTime.Now:yyyyMMdd_HHmmss}";
 
             QuickSaveWriter quickSaveWriter = QuickSaveWriter.Create(saveFileName);
@@ -502,6 +461,7 @@ namespace AF
             SaveGameSessionSettings(quickSaveWriter);
 
             quickSaveWriter.Write("gameVersion", Application.version);
+            quickSaveWriter.Write("saveVersion", SAVE_VERSION);
             quickSaveWriter.TryCommit();
 
             Texture2D finalScreenshot = screenshot;
@@ -523,7 +483,7 @@ namespace AF
                 File.WriteAllBytes(Path.Combine(Application.persistentDataPath + "/" + SAVE_FILES_FOLDER, saveFileName + ".jpg"), finalScreenshot.EncodeToJPG());
             }
 
-            notificationManager.ShowNotification(LocalizationSettings.StringDatabase.GetLocalizedString("UIDocuments", "Game saved"), notificationManager.systemSuccess);
+            notificationManager.ShowNotification(LocalizationSettings.StringDatabase.GetLocalizedString("UIDocuments", "Game saved"), notificationManager.gameSaved);
         }
 
         public void LoadLastSavedGame(bool isFromGameOver)
@@ -552,6 +512,18 @@ namespace AF
 
             QuickSaveReader quickSaveReader = QuickSaveReader.Create(saveFileName);
 
+            if (!CompatabileWithCurrentGameVersion(quickSaveReader))
+            {
+                string incompatibleVersion = "Save file is incompatible with current game version";
+                if (Utils.IsPortuguese())
+                {
+                    incompatibleVersion = "Jogo guardado incompatível com a versão atual do jogo";
+                }
+
+                notificationManager.ShowNotification(incompatibleVersion, null);
+                return;
+            }
+
             gameSession.gameState = GameSession.GameState.INITIALIZED_AND_SHOWN_TITLE_SCREEN;
             fadeManager.FadeIn(1f, () =>
             {
@@ -569,16 +541,36 @@ namespace AF
             });
         }
 
-        public void LoadGameFromGameOver()
+        bool CompatabileWithCurrentGameVersion(QuickSaveReader quickSaveReader)
+        {
+            if (quickSaveReader.TryRead("gameVersion", out string version))
+            {
+                if (string.IsNullOrEmpty(version))
+                {
+                    return false;
+                }
+
+                if (version.StartsWith("1."))
+                {
+                    return false;
+                }
+
+                return true;
+            }
+
+            return false;
+        }
+
+        public void LoadGameFromGameOver(PlayerManager playerManager)
         {
             string lastSave = SaveUtils.GetLastSaveFile(SAVE_FILES_FOLDER);
 
             if (!string.IsNullOrEmpty(lastSave) && QuickSaveBase.RootExists(lastSave))
             {
                 // Restore player attributes
-                playerStatsDatabase.SetCurrentHealth(playerStatsDatabase.maxHealth);
-                playerStatsDatabase.SetCurrentStamina(playerStatsDatabase.maxStamina);
-                playerStatsDatabase.SetCurrentMana(playerStatsDatabase.maxMana);
+                playerManager.health.RestoreFullHealth();
+                playerManager.staminaStatManager.RestoreStaminaPoints(playerManager.staminaStatManager.GetMaxStamina());
+                playerManager.manaManager.RestoreFullMana();
 
                 QuickSaveReader quickSaveReader = QuickSaveReader.Create(lastSave);
                 LoadSceneSettings(quickSaveReader);
@@ -602,6 +594,7 @@ namespace AF
             playerStatsDatabase.ClearForNewGamePlus();
             pickupDatabase.Clear();
             questsDatabase.Clear();
+            questManager.ClearQuestsForNewGamePlus();
             companionsDatabase.Clear();
             bonfiresDatabase.Clear();
             flagsDatabase.Clear();
@@ -615,7 +608,7 @@ namespace AF
         {
             if (Input.GetKeyDown(KeyCode.F5))
             {
-                SaveGameData(null);
+                TrySaveGameData(null);
             }
 
             if (Input.GetKeyDown(KeyCode.F9))

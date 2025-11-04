@@ -1,3 +1,4 @@
+using AF.Health;
 using AF.Music;
 using AF.Stats;
 using UnityEngine;
@@ -245,24 +246,7 @@ namespace AF
             string maxEndurance = playerManager.staminaStatManager.GetStaminaPointsForGivenEndurance(desiredEndurance).ToString();
             string maxMana = playerManager.manaManager.GetManaPointsForGivenIntelligence(desiredIntelligence).ToString();
 
-            string currentAttackForRightHand = "";
-
-            if (playerManager.playerWeaponsManager.currentWeaponInstance != null)
-            {
-                currentAttackForRightHand = playerManager.characterBaseAttackManager.GetScaledDamageForStats(
-                    playerManager.playerWeaponsManager.currentWeaponInstance.weapon.damage,
-                    desiredStrength,
-                    desiredDexterity
-                ).physical.ToString();
-            }
-            else if (playerManager.playerWeaponsManager.rightHandHitbox is UnarmedHitbox rightUnarmedHitbox)
-            {
-                currentAttackForRightHand = playerManager.characterBaseAttackManager.GetScaledDamageForStats(
-                    rightUnarmedHitbox.unarmedWeapon.damage,
-                    desiredStrength,
-                    desiredDexterity
-                ).physical.ToString();
-            }
+            string currentAttackForRightHand = GetCurrentAttackDamage();
 
             string currentDefenseAbsorption = playerManager.characterBaseDefenseManager.GetPhysicalDamageAbsorption(desiredVitality, desiredEndurance, desiredStrength).ToString();
 
@@ -304,6 +288,37 @@ namespace AF
             }
 
             SetupDescriptions();
+        }
+
+        string GetCurrentAttackDamage()
+        {
+            Damage referenceWeaponDamage = null;
+
+            if (playerManager.playerWeaponsManager.currentWeaponInstance != null)
+            {
+                referenceWeaponDamage = playerManager.playerWeaponsManager.currentWeaponInstance.weapon.damage;
+            }
+            else if (playerManager.playerWeaponsManager.rightHandHitbox is UnarmedHitbox rightUnarmedHitbox)
+            {
+                referenceWeaponDamage = rightUnarmedHitbox.unarmedWeapon.damage;
+            }
+
+            if (referenceWeaponDamage == null)
+            {
+                return "";
+            }
+
+            Damage wpDamage = referenceWeaponDamage.Clone();
+
+            int STRBonus = wpDamage.GetStrengthBonus(desiredStrength);
+            int DEXBonus = wpDamage.GetDexterityBonus(desiredDexterity);
+
+            if (wpDamage.physical > 0)
+            {
+                wpDamage.physical += STRBonus + DEXBonus;
+            }
+
+            return wpDamage.physical.ToString();
         }
 
         public bool HasEnoughExperienceForLevelling(float experience, int levelDesired)

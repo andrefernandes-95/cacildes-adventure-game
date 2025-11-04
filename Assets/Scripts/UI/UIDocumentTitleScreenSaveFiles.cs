@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Diagnostics;
 using UnityEngine;
 using UnityEngine.Localization;
@@ -8,9 +9,9 @@ namespace AF
     public class UIDocumentTitleScreenSaveFiles : MonoBehaviour
     {
         VisualElement root;
+        ScrollView scrollPanel;
 
         public VisualTreeAsset saveFileButtonPrefab;
-        ScrollView scrollPanel;
 
         [Header("Components")]
         public UIManager uiManager;
@@ -24,19 +25,19 @@ namespace AF
         [Header("UI Components")]
         public UIDocumentTitleScreen uIDocumentTitleScreen;
 
+        // Pagination
+        public int FILES_PER_PAGE = 25;
+        int currentPage = 0;
+        List<string> allSaveFiles = new();
+
         // Last scroll position
         int lastScrollElementIndex = -1;
-
 
         private void Awake()
         {
             gameObject.SetActive(false);
         }
 
-
-        /// <summary>
-        /// Unity Event
-        /// </summary>
         public void OnClose()
         {
             if (this.isActiveAndEnabled)
@@ -48,8 +49,11 @@ namespace AF
         private void OnEnable()
         {
             root = GetComponent<UIDocument>().rootVisualElement;
-
             scrollPanel = root.Q<ScrollView>("SaveFilesContainer");
+
+            // Load all file names once
+            allSaveFiles = new List<string>(SaveUtils.GetSaveFileNames(saveManager.SAVE_FILES_FOLDER));
+            currentPage = 0;
 
             DrawUI();
         }
@@ -58,6 +62,7 @@ namespace AF
         {
             scrollPanel.Clear();
 
+            // Title screen return button
             Button exitButton = new()
             {
                 text = ReturnToTitleScreen_LocalizedString.GetLocalizedString()
@@ -65,25 +70,17 @@ namespace AF
             exitButton.AddToClassList("primary-button");
             scrollPanel.Add(exitButton);
 
-            UIUtils.SetupButton(exitButton, () =>
-            {
-                Close();
-            }, soundbank);
+            UIUtils.SetupButton(exitButton,
+                () => Close(),
+                () =>
+                {
+                    scrollPanel.ScrollTo(exitButton);
+                },
+                () => { },
+                false,
+                soundbank);
 
-            UIUtils.SetupButton(root.Q<Button>("CloseBtn"), () =>
-            {
-                Close();
-            }, soundbank);
-
-            exitButton.RegisterCallback<FocusInEvent>((ev) =>
-            {
-                scrollPanel.ScrollTo(exitButton);
-            });
-
-            exitButton.Focus();
-
-
-
+            // Open saves folder button
             Button openSavesFolder = new()
             {
                 text = OpenSavesFolder_LocalizedString.GetLocalizedString()
@@ -92,38 +89,20 @@ namespace AF
 
             UIUtils.SetupButton(openSavesFolder, () =>
             {
-                // Open the folder using the default file explorer
                 Process.Start(Application.persistentDataPath + "/" + saveManager.SAVE_FILES_FOLDER);
-            }, soundbank);
+            },
+            () =>
+            {
+                scrollPanel.ScrollTo(exitButton);
+            },
+            () => { },
+            false,
+            soundbank);
 
             scrollPanel.Add(openSavesFolder);
 
-            foreach (var saveFileName in SaveUtils.GetSaveFileNames(saveManager.SAVE_FILES_FOLDER))
-            {
-                var saveFileInstance = saveFileButtonPrefab.CloneTree();
-
-                saveFileInstance.Q<Label>("SaveFileName").text = saveFileName;
-
-                Texture2D screenshotThumbnail = SaveUtils.GetScreenshotFilePath(saveManager.SAVE_FILES_FOLDER, saveFileName);
-                saveFileInstance.Q<VisualElement>("SaveScreenshot").style.backgroundImage = screenshotThumbnail;
-                saveFileInstance.Q<VisualElement>("SaveScreenshot").Q<Label>("SaveFileNotFoundLabel").style.display =
-                    screenshotThumbnail == null ? DisplayStyle.Flex : DisplayStyle.None;
-
-                UIUtils.SetupButton(saveFileInstance.Q<Button>("Button"), () =>
-                {
-                    saveManager.LoadSaveFile(saveFileName);
-                }, () =>
-                {
-                    scrollPanel.ScrollTo(saveFileInstance.Q<Button>());
-                },
-                () =>
-                {
-
-                }, true, soundbank);
-
-                scrollPanel.Add(saveFileInstance);
-            }
-
+            // Draw first batch
+            DrawSaveFileBatch();
 
             if (lastScrollElementIndex == -1)
             {
@@ -132,6 +111,72 @@ namespace AF
             else
             {
                 Invoke(nameof(GiveFocus), 0f);
+            }
+        }
+
+        void DrawSaveFileBatch()
+        {
+            int startIndex = currentPage * FILES_PER_PAGE;
+            int endIndex = Mathf.Min(startIndex + FILES_PER_PAGE, allSaveFiles.Count);
+
+            for (int i = startIndex; i < endIndex; i++)
+            {
+                string saveFileName = allSaveFiles[i];
+                var saveFileInstance = saveFileButtonPrefab.CloneTree();
+
+                saveFileInstance.Q<Label>("SaveFileName").text = saveFileName;
+
+                Texture2D screenshotThumbnail = SaveUtils.GetScreenshotFilePath(saveManager.SAVE_FILES_FOLDER, saveFileName);
+                var screenshotElement = saveFileInstance.Q<VisualElement>("SaveScreenshot");
+                screenshotElement.style.backgroundImage = screenshotThumbnail;
+                screenshotElement.Q<Label>("SaveFileNotFoundLabel").style.display =
+                    screenshotThumbnail == null ? DisplayStyle.Flex : DisplayStyle.None;
+
+                UIUtils.SetupButton(saveFileInstance.Q<Button>("Button"), () =>
+                {
+                    saveManager.LoadSaveFile(saveFileName);
+                }, () =>
+                {
+                    scrollPanel.ScrollTo(saveFileInstance.Q<Button>());
+                }, () => { }, true, soundbank);
+
+                scrollPanel.Add(saveFileInstance);
+            }
+
+            // Remove any existing "Load More" before adding a new one
+            var existingLoadMore = scrollPanel.Q<Button>("LoadMoreButton");
+            existingLoadMore?.RemoveFromHierarchy();
+
+            // Add "Load More" button if there are more files
+            if (endIndex < allSaveFiles.Count)
+            {
+                Button loadMoreButton = new()
+                {
+                    name = "LoadMoreButton",
+                    text = Utils.IsPortuguese() ? "Mostrar mais..." : "Load More Saves..."
+                };
+                loadMoreButton.AddToClassList("primary-button");
+
+                UIUtils.SetupButton(
+                    loadMoreButton,
+                () =>
+                {
+                    currentPage++;
+                    loadMoreButton.SetEnabled(false); // prevent double-click
+                    DrawSaveFileBatch(); // append next batch
+                    lastScrollElementIndex = scrollPanel.childCount - 1;
+                    Invoke(nameof(GiveFocus), 0f);
+                },
+                () =>
+                {
+                    scrollPanel.ScrollTo(loadMoreButton);
+                },
+                () =>
+                {
+
+                }, false, soundbank);
+
+                scrollPanel.Add(loadMoreButton);
             }
         }
 
@@ -146,12 +191,8 @@ namespace AF
             UIUtils.ScrollToLastPosition(
                 lastScrollElementIndex,
                 scrollPanel,
-                () =>
-                {
-                    lastScrollElementIndex = -1;
-                }
+                () => { lastScrollElementIndex = -1; }
             );
         }
-
     }
 }

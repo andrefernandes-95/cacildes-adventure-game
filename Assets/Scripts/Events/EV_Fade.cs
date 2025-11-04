@@ -21,8 +21,21 @@ namespace AF
         // Scene Refs    
         FadeManager fadeManager;
 
+        UIDocumentDialogueWindow uIDocumentDialogueWindow;
+
+        UIDocumentDialogueWindow GetUIDocumentDialogueWindow()
+        {
+            if (uIDocumentDialogueWindow == null)
+            {
+                uIDocumentDialogueWindow = FindAnyObjectByType<UIDocumentDialogueWindow>(FindObjectsInactive.Include);
+            }
+
+            return uIDocumentDialogueWindow;
+        }
+
         public override IEnumerator Dispatch()
         {
+
             if (fadeIn)
             {
                 GetFadeManager().FadeIn(duration);
@@ -38,8 +51,14 @@ namespace AF
 
             GetFadeManager().FadeIn(duration);
             yield return new WaitForSeconds(duration);
+
+            // Safely disable dialogue window when fading, for the bug where we talk to companions and they join the party
+            // and the dialogue might be triggered by double keys from the player, causing the dialogue to become stale
+            GetUIDocumentDialogueWindow().HideDialogueWindow();
+
             GetFadeManager().FadeOut(1f);
             duringFadeTransitionsEventCallback?.Invoke();
+
         }
 
         FadeManager GetFadeManager()

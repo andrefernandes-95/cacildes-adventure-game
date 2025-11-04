@@ -62,6 +62,7 @@ namespace AF
 
         [Header("Components")]
         public PlayerManager playerManager;
+        public UIDocumentDialogueWindow uIDocumentDialogueWindow;
 
         UIGameControls uIGameControls => GetComponent<UIGameControls>();
 
@@ -414,7 +415,7 @@ namespace AF
                 return false;
             }
 
-            if (root.style.opacity.value < 1)
+            if (uIDocumentDialogueWindow.isActiveAndEnabled)
             {
                 return false;
             }

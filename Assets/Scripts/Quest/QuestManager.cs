@@ -82,5 +82,13 @@ namespace AF
         {
             return allQuests.Where(q => q.hasStarted).ToList();
         }
+
+        public void ClearQuestsForNewGamePlus()
+        {
+            foreach (QuestParent quest in allQuests)
+            {
+                quest.ResetQuest();
+            }
+        }
     }
 }

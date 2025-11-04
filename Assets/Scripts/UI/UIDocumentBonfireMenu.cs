@@ -42,6 +42,8 @@ namespace AF
         Bonfire currentBonfire;
         bool canEscape = false;
 
+        Coroutine MoveTimeCoroutine;
+
         private void Start()
         {
             originalDaySpeed = gameSession.daySpeed;
@@ -108,15 +110,10 @@ namespace AF
             SetButtonTexts();
             RegisterButtonCallbacks();
 
-            if (currentBonfire == null)
-            {
-                Debug.LogError("currentBonfire is null!");
-            }
-
-            bool canFastTravel = currentBonfire != null && currentBonfire.bonfireSite != null && currentBonfire.bonfireSite.canFastTravel || currentBonfire.canUseTravelToOtherMaps;
+            bool canFastTravel = currentBonfire != null && currentBonfire.bonfireSite != null && (currentBonfire.bonfireSite.canFastTravel || currentBonfire.canUseTravelToOtherMaps);
             travelButton.style.display = (currentBonfire != null && canFastTravel) ? DisplayStyle.Flex : DisplayStyle.None;
 
-            exitBonfireButton.Focus();
+            exitBonfireButton?.Focus();
         }
 
         void SetButtonTexts()
@@ -135,7 +132,15 @@ namespace AF
             UIUtils.SetupButton(passTimeButton, () =>
             {
                 if (!isPassingTime)
-                    StartCoroutine(MoveTime());
+                {
+                    if (MoveTimeCoroutine != null)
+                    {
+                        StopCoroutine(MoveTimeCoroutine);
+                    }
+
+                    MoveTimeCoroutine = StartCoroutine(MoveTime());
+                }
+
             }, soundbank);
 
             UIUtils.SetupButton(travelButton, () =>
@@ -215,6 +220,19 @@ namespace AF
 
                 gameSession.daySpeed = originalDaySpeed;
                 isPassingTime = false;
+            }
+        }
+
+        private void OnDisable()
+        {
+            if (isPassingTime)
+            {
+                if (MoveTimeCoroutine != null)
+                {
+                    StopCoroutine(MoveTimeCoroutine);
+                }
+
+                gameSession.daySpeed = originalDaySpeed;
             }
         }
     }

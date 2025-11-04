@@ -94,7 +94,8 @@ namespace AF
                     return false;
                 }
 
-                return true;
+                // Only allow left weapon attacks if not null, we don't currently support humanoid left attacks for unarmed
+                return leftWeapon != null;
             }
 
             return true;

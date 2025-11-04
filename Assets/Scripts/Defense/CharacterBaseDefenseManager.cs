@@ -61,7 +61,7 @@ namespace AF
                 magic = character.statsBonusController.equipmentMagicDefenseBonus,
                 water = character.statsBonusController.equipmentWaterDefenseBonus,
                 darkness = character.statsBonusController.equipmentDarkDefenseBonus,
-                poiseDamage = character.statsBonusController.equipmentPoise,
+                poiseDamage = character.characterPoise.GetMaxPoiseHits(),
                 postureDamage = character.characterPosture.GetMaxPostureDamage()
             };
 
@@ -90,11 +90,11 @@ namespace AF
             // If the character has a reputation, they don't get a bonus to their defense from their stats, only from their equipment
             int reputation = character.characterBaseStats.GetReputation();
 
-            // If is evil character, makes sense to get lightning damage because of negative reputation
-            reputation = Mathf.Abs(character.characterBaseStats.GetReputation());
-
-            // Defense from stats
-            defense += DefenseUtils.GetElementalDefenseFromReputation(reputation);
+            if (reputation > 1)
+            {
+                // Defense from stats
+                defense += DefenseUtils.GetElementalDefenseFromReputation(reputation);
+            }
 
             return defense;
         }
@@ -106,8 +106,11 @@ namespace AF
             // If the character has negative reputation, they don't get a bonus to their defense from their stats, only from their equipment
             int reputation = character.characterBaseStats.GetReputation();
 
-            // Defense from stats
-            defense += DefenseUtils.GetElementalDefenseFromReputation(reputation);
+            if (reputation < 0)
+            {
+                // Defense from stats
+                defense += DefenseUtils.GetElementalDefenseFromReputation(reputation * -1);
+            }
 
             return defense;
         }

@@ -6612,7 +6612,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   systemSuccess: {fileID: 0}
-  systemError: {fileID: 0}
+  gameSaved: {fileID: 21300000, guid: 7145a04e42126c046870cac926d6dce4, type: 3}
+  systemError: {fileID: 21300000, guid: 75541d0a941b7d346965c96c6c69f9b1, type: 3}
   alchemyLackOfIngredients: {fileID: 21300000, guid: 54df9bb5ff556c542b3f0363dcb37e8b, type: 3}
   recipeIcon: {fileID: 21300000, guid: acc1bb18ade345e4cbf448516e0d92cb, type: 3}
   door: {fileID: 21300000, guid: f995c78bfbca76543a0b3b9dda8a5c88, type: 3}
@@ -21034,15 +21035,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af0228bbb6e37cc458ded2bfa99373c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  heavyAttackBonusDamage: 50
-  unarmedLightAttackPostureDamage: 18
-  unarmedPostureDamageBonus: 10
-  basePhysicalAttack: 100
   jumpAttackMultiplier: 1.85
   twoHandAttackBonusMultiplier: 1.5
   heavyAttackBonusMultiplier: 1.65
-  footDamageMultiplier: 1.2
-  increaseNextAttackDamageFX: {fileID: 0}
   rightWeaponCurrentDamage:
     basePhysicalDamage: 0
     physical: 0
@@ -41864,8 +41859,6 @@ MonoBehaviour:
       Value: {fileID: 3377777064871277640}
     - Key: {fileID: 11400000, guid: 3f5ade7ad816df1478720c51c0d3a6a3, type: 2}
       Value: {fileID: 4740378537735612393}
-    - Key: {fileID: 11400000, guid: 6d8ea05d1bece904b9299e0f0221bb6e, type: 2}
-      Value: {fileID: 8671788232379444613}
     - Key: {fileID: 11400000, guid: 752e8d29295385349a1589462e7037cf, type: 2}
       Value: {fileID: 1570474033750587088}
     - Key: {fileID: 11400000, guid: ef352f6a23f0b8540a91440f73717882, type: 2}
@@ -41880,8 +41873,6 @@ MonoBehaviour:
       Value: {fileID: 6347621195178313610}
     - Key: {fileID: 11400000, guid: 5669a70ab1176ac4d8ee4ad60d4516a5, type: 2}
       Value: {fileID: 5653393237074534222}
-    - Key: {fileID: 11400000, guid: 15b04b54d41ca5c419ba1aefdca416da, type: 2}
-      Value: {fileID: 5757811875342561585}
     - Key: {fileID: 11400000, guid: b6bfcce1623995143b001bb51ebc3e18, type: 2}
       Value: {fileID: 215975678164703213}
     - Key: {fileID: 11400000, guid: 8c08e0cc5b9df2f43a40af80989daeeb, type: 2}
@@ -44204,7 +44195,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d05ddf730273ee44d9c036a9deb0261e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  statusEffect: {fileID: 11400000, guid: 7ff2a56421f4a2d47b42da659f70fb72, type: 2}
+  statusEffect: {fileID: 0}
   onConsumeStart:
     m_PersistentCalls:
       m_Calls:
@@ -59242,6 +59233,7 @@ MonoBehaviour:
   oneHandIcon: {fileID: 21300000, guid: 8b90eb22af01148428ed0a16b899b3c5, type: 3}
   twoHandIcon: {fileID: 21300000, guid: 39ff3e0598763b546a2d864ded5b7dff, type: 3}
   playerManager: {fileID: 4363140735506542586}
+  uIDocumentDialogueWindow: {fileID: 5309569914835900366}
   popEffectWhenSwitchingSlots: {x: 0.7, y: 0.7, z: 0.7}
   starterAssetsInputs: {fileID: 3450680162556713538}
   oneHandIndicator_LocalizedString:
@@ -60593,7 +60585,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d05ddf730273ee44d9c036a9deb0261e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  statusEffect: {fileID: 11400000, guid: 6d8ea05d1bece904b9299e0f0221bb6e, type: 2}
+  statusEffect: {fileID: 0}
   onConsumeStart:
     m_PersistentCalls:
       m_Calls: []
@@ -65717,6 +65709,7 @@ MonoBehaviour:
   questManager: {fileID: 6825649313841880435}
   canSave: 1
   SAVE_FILES_FOLDER: QuickSave
+  SAVE_VERSION: 1
   useBowDebugTools: 0
 --- !u!1 &6265902340761769546
 GameObject:
@@ -68986,7 +68979,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d05ddf730273ee44d9c036a9deb0261e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  statusEffect: {fileID: 11400000, guid: 15b04b54d41ca5c419ba1aefdca416da, type: 2}
+  statusEffect: {fileID: 0}
   onConsumeStart:
     m_PersistentCalls:
       m_Calls: []
@@ -75887,6 +75880,9 @@ MonoBehaviour:
   grischaKilledObjective: {fileID: 11400000, guid: 8d2a9f09f5abad0448b2594f0941bc1a, type: 2}
   playerManager: {fileID: 4363140735506542586}
   flagsDatabase: {fileID: 11400000, guid: 676ba9bd89bc57e47b44e9f5b1b78458, type: 2}
+  companionsDatabase: {fileID: 11400000, guid: 304c7a15385a5904b83eaaa8ed072aa2, type: 2}
+  alcinoCompanionID: {fileID: 11400000, guid: a2616753233446d4fa99a439e3e686bb, type: 2}
+  bellaCompanionID: {fileID: 11400000, guid: 855bb2b71671a5142a03359a56df6fff, type: 2}
   hasPreservedTheColdFireStone: {fileID: 11400000, guid: 3e7d8c1c8ab84af449e87c7719ee0db1, type: 2}
   hasDefeatedHawkBand: {fileID: 11400000, guid: a80e9426fb5815a48a15f4bfb025b7e1, type: 2}
 --- !u!82 &3560754770968972700
@@ -76506,6 +76502,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 974394593436275042}
+        m_TargetAssemblyTypeName: AF.UIDocumentBlacksmith, AF
+        m_MethodName: OnClose
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   onLightAttackInput:
     m_PersistentCalls:
       m_Calls:
@@ -76823,6 +76831,18 @@ MonoBehaviour:
       - m_Target: {fileID: 7173039414540753141}
         m_TargetAssemblyTypeName: AF.UIDocumentCharacterCustomization, AF
         m_MethodName: Close
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 974394593436275042}
+        m_TargetAssemblyTypeName: AF.UIDocumentBlacksmith, AF
+        m_MethodName: OnClose
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -82430,6 +82450,98 @@ MonoBehaviour:
   nightSprite: {fileID: 21300000, guid: 0bbc84667327d644093b4c23e1de3f68, type: 3}
   sceneSettings: {fileID: 8446632806595815852}
   canUpdateLighting: 1
+  isInCavern: 0
+  CavernAmbientColor:
+    serializedVersion: 2
+    key0: {r: 1, g: 1, b: 1, a: 1}
+    key1: {r: 1, g: 1, b: 1, a: 1}
+    key2: {r: 0, g: 0, b: 0, a: 0}
+    key3: {r: 0, g: 0, b: 0, a: 0}
+    key4: {r: 0, g: 0, b: 0, a: 0}
+    key5: {r: 0, g: 0, b: 0, a: 0}
+    key6: {r: 0, g: 0, b: 0, a: 0}
+    key7: {r: 0, g: 0, b: 0, a: 0}
+    ctime0: 0
+    ctime1: 65535
+    ctime2: 0
+    ctime3: 0
+    ctime4: 0
+    ctime5: 0
+    ctime6: 0
+    ctime7: 0
+    atime0: 0
+    atime1: 65535
+    atime2: 0
+    atime3: 0
+    atime4: 0
+    atime5: 0
+    atime6: 0
+    atime7: 0
+    m_Mode: 0
+    m_ColorSpace: -1
+    m_NumColorKeys: 2
+    m_NumAlphaKeys: 2
+  CavernDirectionalColor:
+    serializedVersion: 2
+    key0: {r: 1, g: 1, b: 1, a: 1}
+    key1: {r: 1, g: 1, b: 1, a: 1}
+    key2: {r: 0, g: 0, b: 0, a: 0}
+    key3: {r: 0, g: 0, b: 0, a: 0}
+    key4: {r: 0, g: 0, b: 0, a: 0}
+    key5: {r: 0, g: 0, b: 0, a: 0}
+    key6: {r: 0, g: 0, b: 0, a: 0}
+    key7: {r: 0, g: 0, b: 0, a: 0}
+    ctime0: 0
+    ctime1: 65535
+    ctime2: 0
+    ctime3: 0
+    ctime4: 0
+    ctime5: 0
+    ctime6: 0
+    ctime7: 0
+    atime0: 0
+    atime1: 65535
+    atime2: 0
+    atime3: 0
+    atime4: 0
+    atime5: 0
+    atime6: 0
+    atime7: 0
+    m_Mode: 0
+    m_ColorSpace: -1
+    m_NumColorKeys: 2
+    m_NumAlphaKeys: 2
+  CavernFogColor:
+    serializedVersion: 2
+    key0: {r: 1, g: 1, b: 1, a: 1}
+    key1: {r: 1, g: 1, b: 1, a: 1}
+    key2: {r: 0, g: 0, b: 0, a: 0}
+    key3: {r: 0, g: 0, b: 0, a: 0}
+    key4: {r: 0, g: 0, b: 0, a: 0}
+    key5: {r: 0, g: 0, b: 0, a: 0}
+    key6: {r: 0, g: 0, b: 0, a: 0}
+    key7: {r: 0, g: 0, b: 0, a: 0}
+    ctime0: 0
+    ctime1: 65535
+    ctime2: 0
+    ctime3: 0
+    ctime4: 0
+    ctime5: 0
+    ctime6: 0
+    ctime7: 0
+    atime0: 0
+    atime1: 65535
+    atime2: 0
+    atime3: 0
+    atime4: 0
+    atime5: 0
+    atime6: 0
+    atime7: 0
+    m_Mode: 0
+    m_ColorSpace: -1
+    m_NumColorKeys: 2
+    m_NumAlphaKeys: 2
+  CavernFogDensity: 0.03
   gameSession: {fileID: 11400000, guid: 806862db69fa7244189bed36885b18a4, type: 2}
 --- !u!108 &8391052791088436041
 Light:
@@ -83881,7 +83993,7 @@ MonoBehaviour:
   burnt: {fileID: 11400000, guid: a557eb86264eeb44085a58001fccdb60, type: 2}
   frostbite: {fileID: 11400000, guid: ef352f6a23f0b8540a91440f73717882, type: 2}
   paralysis: {fileID: 11400000, guid: fe5921b6918c7534eb2aa78e03e2927b, type: 2}
-  fear: {fileID: 11400000, guid: 6d8ea05d1bece904b9299e0f0221bb6e, type: 2}
+  fear: {fileID: 0}
   curse: {fileID: 11400000, guid: 223fff3a7b278884fa6f766ec3e22a1f, type: 2}
   drowning: {fileID: 11400000, guid: 8ce46be040a8fc644abfeb606c003eaa, type: 2}
 --- !u!1 &8104775862980015545

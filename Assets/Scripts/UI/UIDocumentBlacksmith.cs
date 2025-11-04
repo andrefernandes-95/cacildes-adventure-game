@@ -1,15 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using AF.Equipment;
-using AF.Events;
 using AF.Health;
 using AF.Inventory;
 using AF.Music;
 using GameAnalyticsSDK;
-using TigerForge;
 using UnityEngine;
-using UnityEngine.Localization;
+using UnityEngine.InputSystem;
 using UnityEngine.Localization.Settings;
 using UnityEngine.UIElements;
 
@@ -77,6 +74,20 @@ namespace AF
         Label PhysicalDefense, FireDefense, FrostDefense, WaterDefense, MagicDefense, LightningDefense, DarknessDefense;
         Label BlockAbsorption;
 
+        ToggleButtonGroup filterButtonGroup;
+        Button filterAll;
+        Button filterByWeapons;
+        Button filterByArmors;
+
+        public enum FilterType
+        {
+            ALL,
+            WEAPONS,
+            ARMORS,
+        }
+
+        FilterType filterType = FilterType.ALL;
+
         private void Awake()
         {
             this.gameObject.SetActive(false);
@@ -117,6 +128,37 @@ namespace AF
             DefenseDifferencesContainer = root.Q<VisualElement>("DefenseDifferencesContainer");
             ShieldDifferencesContainer = root.Q<VisualElement>("ShieldDifferencesContainer");
 
+            filterButtonGroup = root.Q<ToggleButtonGroup>();
+            filterAll = filterButtonGroup.Q<Button>("Filter_All");
+            filterByWeapons = filterButtonGroup.Q<Button>("Filter_Weapons");
+            filterByArmors = filterButtonGroup.Q<Button>("Filter_Armors");
+
+            UIUtils.SetupButton(filterAll, OnFilterAll, soundbank);
+            UIUtils.SetupButton(filterByWeapons, OnFilterWeapons, soundbank);
+            UIUtils.SetupButton(filterByArmors, OnFilterArmors, soundbank);
+
+            // TODO: For now, only enable filters for keyboard until we add proper gamepad support
+            filterButtonGroup.style.display = Gamepad.current == null && isUpgradingSpells == false
+                ? DisplayStyle.Flex : DisplayStyle.None;
+
+            DrawUI();
+        }
+
+        void OnFilterAll()
+        {
+            filterType = FilterType.ALL;
+            DrawUI();
+        }
+
+        void OnFilterWeapons()
+        {
+            filterType = FilterType.WEAPONS;
+            DrawUI();
+        }
+
+        void OnFilterArmors()
+        {
+            filterType = FilterType.ARMORS;
             DrawUI();
         }
 
@@ -288,54 +330,7 @@ namespace AF
 
             int i = 0;
 
-            List<UpgradableItem> upgradableItems = new();
-
-            if (!isUpgradingSpells)
-            {
-                List<Weapon> weaponsForUpgrade = inventoryDatabase.ownedWeapons.Where(weapon => weapon != null && weapon.canBeUpgraded).ToList();
-                foreach (Weapon wp in weaponsForUpgrade)
-                {
-                    upgradableItems.Add(wp);
-                }
-
-                List<Helmet> helmets = inventoryDatabase.ownedHelmets.Where(helmet => helmet != null && helmet.canBeUpgraded).ToList();
-                foreach (Helmet helmet in helmets)
-                {
-                    upgradableItems.Add(helmet);
-                }
-
-                List<Armor> armors = inventoryDatabase.ownedArmors.Where(armor => armor != null && armor.canBeUpgraded).ToList();
-                foreach (Armor armor in armors)
-                {
-                    upgradableItems.Add(armor);
-                }
-
-                List<Gauntlet> gauntlets = inventoryDatabase.ownedGauntlets.Where(gauntlet => gauntlet != null && gauntlet.canBeUpgraded).ToList();
-                foreach (Gauntlet gauntlet in gauntlets)
-                {
-                    upgradableItems.Add(gauntlet);
-                }
-
-                List<Legwear> legwears = inventoryDatabase.ownedLegwears.Where(legwear => legwear != null && legwear.canBeUpgraded).ToList();
-                foreach (Legwear legwear in legwears)
-                {
-                    upgradableItems.Add(legwear);
-                }
-
-                List<Accessory> accessories = inventoryDatabase.ownedAccessories.Where(accessory => accessory != null && accessory.canBeUpgraded).ToList();
-                foreach (Accessory accessory in accessories)
-                {
-                    upgradableItems.Add(accessory);
-                }
-            }
-            else
-            {
-                List<Spell> spells = inventoryDatabase.ownedSpells.Where(spell => spell != null && spell.canBeUpgraded).ToList();
-                foreach (Spell spell in spells)
-                {
-                    upgradableItems.Add(spell);
-                }
-            }
+            List<UpgradableItem> upgradableItems = GetUpgradableItems();
 
             foreach (UpgradableItem upgradableItem in upgradableItems)
             {
@@ -391,6 +386,66 @@ namespace AF
             }
         }
 
+        List<UpgradableItem> GetUpgradableItems()
+        {
+            List<UpgradableItem> upgradableItems = new();
+
+            if (isUpgradingSpells)
+            {
+                List<Spell> spells = inventoryDatabase.ownedSpells.Where(spell => spell != null && spell.canBeUpgraded).ToList();
+
+                foreach (Spell spell in spells)
+                {
+                    upgradableItems.Add(spell);
+                }
+
+                return upgradableItems;
+            }
+
+            if (filterType == FilterType.ALL || filterType == FilterType.WEAPONS)
+            {
+                List<Weapon> weaponsForUpgrade = inventoryDatabase.ownedWeapons.Where(weapon => weapon != null && weapon.canBeUpgraded).ToList();
+                foreach (Weapon wp in weaponsForUpgrade)
+                {
+                    upgradableItems.Add(wp);
+                }
+            }
+
+            if (filterType == FilterType.ALL || filterType == FilterType.ARMORS)
+            {
+                List<Helmet> helmets = inventoryDatabase.ownedHelmets.Where(helmet => helmet != null && helmet.canBeUpgraded).ToList();
+                foreach (Helmet helmet in helmets)
+                {
+                    upgradableItems.Add(helmet);
+                }
+
+                List<Armor> armors = inventoryDatabase.ownedArmors.Where(armor => armor != null && armor.canBeUpgraded).ToList();
+                foreach (Armor armor in armors)
+                {
+                    upgradableItems.Add(armor);
+                }
+
+                List<Gauntlet> gauntlets = inventoryDatabase.ownedGauntlets.Where(gauntlet => gauntlet != null && gauntlet.canBeUpgraded).ToList();
+                foreach (Gauntlet gauntlet in gauntlets)
+                {
+                    upgradableItems.Add(gauntlet);
+                }
+
+                List<Legwear> legwears = inventoryDatabase.ownedLegwears.Where(legwear => legwear != null && legwear.canBeUpgraded).ToList();
+                foreach (Legwear legwear in legwears)
+                {
+                    upgradableItems.Add(legwear);
+                }
+
+                List<Accessory> accessories = inventoryDatabase.ownedAccessories.Where(accessory => accessory != null && accessory.canBeUpgraded).ToList();
+                foreach (Accessory accessory in accessories)
+                {
+                    upgradableItems.Add(accessory);
+                }
+            }
+
+            return upgradableItems;
+        }
 
         void HandleCraftError(string errorMessage)
         {

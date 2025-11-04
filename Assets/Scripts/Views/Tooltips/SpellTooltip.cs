@@ -128,7 +128,7 @@ namespace AF
                 itemTooltip.CreateTooltip(GUIIconsDatabase.pushForce, Color.white, label);
             }
 
-            if (spell.manaCostPerCast > 0)
+            if (spell.GetManaCost() > 0)
             {
                 string label = $"-{spell.staminaCostPerCast} ";
 

@@ -6,11 +6,11 @@ Brumild: Wipe your boots on the rug, did you? Good! No muddy footprints in my ho
     Brumild: Our place is small, but it’s full of laughter, music, and the smell of fresh bread. We’re not much for gold and glitter—give me a warm hearth and a good story any day.
 
 * [What's going on around town?]
-    Brumild: {shuffle:
-        - That skeleton in the church sings better than me.
-        - Thought you were the librarian for a second—got a pile of overdue books. What? Stories matter, you know.
-        - The clothier’s daughter is learning her dad’s trade. She could sell snow to a snowman, that one. Armor at double the price, and folks still buy it!
-        - Festival’s coming up, mark my words. I’m pickling twice as much—never know who’ll show up hungry.
+    {shuffle:
+        - Brumild: That skeleton in the church sings better than me.
+        - Brumild: Thought you were the librarian for a second—got a pile of overdue books. What? Stories matter, you know.
+        - Brumild: The clothier’s daughter is learning her dad’s trade. She could sell snow to a snowman, that one. Armor at double the price, and folks still buy it!
+        - Brumild: Festival’s coming up, mark my words. I’m pickling twice as much—never know who’ll show up hungry.
     }
 
 * [Tell me about your pickles.]

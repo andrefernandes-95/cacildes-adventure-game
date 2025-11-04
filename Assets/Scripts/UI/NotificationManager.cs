@@ -11,6 +11,7 @@ namespace AF
 
         [Header("Icons")]
         public Sprite systemSuccess;
+        public Sprite gameSaved;
         public Sprite systemError;
         public Sprite alchemyLackOfIngredients;
         public Sprite recipeIcon;
@@ -83,18 +84,17 @@ namespace AF
                 this.notificationsPanel.RemoveAt(0);
             }
 
-
             VisualElement notificationInstance = notificationItemPrefab.CloneTree();
             notificationInstance.Q<Label>().text = message;
 
             if (sprite == null)
             {
-                notificationInstance.Q<IMGUIContainer>().style.display = DisplayStyle.None;
+                notificationInstance.Q<VisualElement>("IconContainer").style.display = DisplayStyle.None;
             }
             else
             {
                 notificationInstance.Q<IMGUIContainer>().style.backgroundImage = new StyleBackground(sprite);
-                notificationInstance.Q<IMGUIContainer>().style.display = DisplayStyle.Flex;
+                notificationInstance.Q<VisualElement>("IconContainer").style.display = DisplayStyle.Flex;
             }
 
             UIUtils.PlayPopAnimation(notificationInstance);
