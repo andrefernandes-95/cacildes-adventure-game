@@ -6,14 +6,34 @@ Possibly fixed:
 ? Check if dragon is fixed: Received blizzard at the start
 ? Can not save at this time after drogocutscene
 ? Test the epilogue again with the king to test in english if rise is working.
-Adjust spell mana costs
+
 ? Chest is activating the pcikup id for the trio boss fight - check if we can fight with them again
 ? Check Quests on new game plus
-? Waterborne ring looks weird in its delay rate
 ? Chest is disappearing in veilglade for impossible city
 
-BUGS FOUND BY TRISTAN:
-x midnight omen hitbox instant start on one of the attacks
+Cacildes Home:
+- should have autosave feature after game starts
+- check camera issue when starting game
+
+Mountainpass
+- midnight omen hitbox instant start on one of the attacks
+
+- Waterborne ring looks weird in its delay rate
+
+- Check Achievements
+- Adjust spell mana costs
+
+
+
+ACHIEVEMENTS
+X maerimond achievement was not set
+X thief who tried to steal you
+
+
+Achievement Ideas
+- Rest at bonfire
+- Mimic chest defeat (mimic-chest.png)
+- Gargoyle Boss (gargoyle.png)
 
 
 To Do:

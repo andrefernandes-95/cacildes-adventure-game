@@ -43,12 +43,8 @@ namespace AF
         public SceneSettings sceneSettings;
         public bool canUpdateLighting = true;
 
-        [Header("Cavern Light Settings")]
-        public bool isInCavern = false;
-        public Gradient CavernAmbientColor;
-        public Gradient CavernDirectionalColor;
-        public Gradient CavernFogColor;
-        public float CavernFogDensity = 0.03f;
+        [Header("Components")]
+        [SerializeField] CavernManager cavernManager;
 
         [Header("Systems")]
         public GameSession gameSession;
@@ -75,9 +71,9 @@ namespace AF
 
         float GetFogDensity()
         {
-            if (isInCavern)
+            if (cavernManager.IsInCavern())
             {
-                return CavernFogDensity;
+                return cavernManager.CavernFogDensity;
             }
 
             if (sceneSettings.sceneLocation != null && sceneSettings.sceneLocation.useSceneLightSettings)
@@ -90,9 +86,9 @@ namespace AF
 
         Gradient GetAmbientColor()
         {
-            if (isInCavern)
+            if (cavernManager.IsInCavern())
             {
-                return CavernAmbientColor;
+                return cavernManager.CavernAmbientColor;
             }
 
             if (sceneSettings.sceneLocation != null && sceneSettings.sceneLocation.useSceneLightSettings)
@@ -105,9 +101,9 @@ namespace AF
 
         Gradient GetDirectionalColor()
         {
-            if (isInCavern)
+            if (cavernManager.IsInCavern())
             {
-                return CavernDirectionalColor;
+                return cavernManager.CavernDirectionalColor;
             }
 
             if (sceneSettings.sceneLocation != null && sceneSettings.sceneLocation.useSceneLightSettings)
@@ -120,9 +116,9 @@ namespace AF
 
         Gradient GetFogColor()
         {
-            if (isInCavern)
+            if (cavernManager.IsInCavern())
             {
-                return CavernFogColor;
+                return cavernManager.CavernFogColor;
             }
 
             if (sceneSettings.sceneLocation != null && sceneSettings.sceneLocation.useSceneLightSettings)
@@ -314,19 +310,33 @@ namespace AF
                 RenderSettings.skybox = dawnSky;
             }
 
-            RenderSettings.ambientLight = ShouldOverride() ? GetAmbientColor().Evaluate(timePercent) : gameSession.AmbientColor.Evaluate(timePercent);
+            // --- Colors ---
+            Color targetAmbient = ShouldOverride() ? GetAmbientColor().Evaluate(timePercent) : gameSession.AmbientColor.Evaluate(timePercent);
+            Color targetFog = ShouldOverride() ? GetFogColor().Evaluate(timePercent) : gameSession.FogColor.Evaluate(timePercent);
+            Color targetLightColor = ShouldOverride() ? GetDirectionalColor().Evaluate(timePercent) : gameSession.DirectionalColor.Evaluate(timePercent);
+
+            // Lerp toward targets for smooth transitions
+            RenderSettings.ambientLight = Color.Lerp(RenderSettings.ambientLight, targetAmbient, Time.deltaTime * 2f);
 
             if (ShouldUseFog())
             {
-                RenderSettings.fogColor = ShouldOverride() ? GetFogColor().Evaluate(timePercent) : gameSession.FogColor.Evaluate(timePercent);
+                RenderSettings.fogColor = Color.Lerp(RenderSettings.fogColor, targetFog, Time.deltaTime * 2f);
             }
 
             if (directionalLight != null)
             {
-                directionalLight.color = ShouldOverride() ? GetDirectionalColor().Evaluate(timePercent) : gameSession.DirectionalColor.Evaluate(timePercent);
-                directionalLight.transform.localRotation = Quaternion.Euler(new Vector3((timePercent * 360f) - 90f, -170f, 0));
+                directionalLight.color = Color.Lerp(directionalLight.color, targetLightColor, Time.deltaTime * 2f);
+
+                // Smooth rotation for the sun
+                Quaternion targetRotation = Quaternion.Euler(new Vector3((timePercent * 360f) - 90f, -170f, 0));
+                directionalLight.transform.localRotation = Quaternion.Lerp(
+                    directionalLight.transform.localRotation,
+                    targetRotation,
+                    Time.deltaTime * 2f
+                );
             }
         }
+
 
         public bool TimePassageAllowed()
         {

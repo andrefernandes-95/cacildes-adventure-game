@@ -508,7 +508,7 @@ namespace AF
                 return 0;
             }
 
-            return damage.physical + GetBonusAttackPerLevel(level);
+            return damage.physical + GetBonusAttackPerLevel(level, false);
         }
 
         public int GetFireAttackForLevel(int level) => GetElementalAttackForLevel(damage.fire, level);
@@ -525,7 +525,7 @@ namespace AF
                 return 0;
             }
 
-            return baseElementalDamage + GetBonusAttackPerLevel(level);
+            return baseElementalDamage + GetBonusAttackPerLevel(level, true);
         }
 
         public virtual void OnEquip(CharacterBaseManager character)

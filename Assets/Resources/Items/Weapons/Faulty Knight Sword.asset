@@ -56,8 +56,8 @@ MonoBehaviour:
   damage:
     basePhysicalDamage: 0
     physical: 50
-    fire: 15
-    frost: 15
+    fire: 10
+    frost: 10
     magic: 0
     lightning: 0
     darkness: 0
@@ -74,8 +74,8 @@ MonoBehaviour:
     ignoreBlocking: 0
     canNotBeParried: 0
     damageType: 0
-    strengthScaling: 3
-    dexterityScaling: 3
+    strengthScaling: 4
+    dexterityScaling: 4
     intelligenceScaling: 3
   weaponSound: {fileID: 11400000, guid: 30f1fce38ecd2644e9950396c63354cc, type: 2}
   weaponSize: 1
@@ -87,6 +87,7 @@ MonoBehaviour:
   negativeReputationRequired: 0
   weaponType: {fileID: 11400000, guid: 464aa2e9d1e43614da59b378db0bbbb2, type: 2}
   staminaCostPerAttack: 30
+  weaponEffects: []
   strengthScaling: 3
   dexterityScaling: 4
   intelligenceScaling: 5
@@ -170,6 +171,8 @@ MonoBehaviour:
   oh_HeavyAttackSpeedPenalty: 1
   twoHandAttackSpeedPenalty: 1
   th_HeavyAttackSpeedPenalty: 1
+  powerStance_AttackSpeedPenalty: 1
+  powerStance_HeavyAttackSpeedPenalty: 1
   amountOfGoldReceivedPerHit: 0
   doubleCoinsUponKillingEnemies: 0
   doubleDamageDuringNightTime: 0
@@ -194,6 +197,12 @@ MonoBehaviour:
   th_BlockRotation: {x: 65.9, y: -115, z: 90.4}
   aimingPosition: {x: 0, y: 0, z: 0}
   aimingRotation: {x: 0, y: 0, z: 0}
+  useCustomAimingPositionForAi: 0
+  customAimingPositionForAi: {x: 0, y: 0, z: 0}
+  customAimingRotationForAi: {x: 0, y: 0, z: 0}
+  oh_heavyAttackAbilities: []
+  th_heavyAttackAbilities: []
+  castAbilitySpeed: 1
   references:
     version: 2
     RefIds: []

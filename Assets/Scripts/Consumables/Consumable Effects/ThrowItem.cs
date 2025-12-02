@@ -25,6 +25,9 @@ namespace AF
         [SerializeField] float throwVelocity = 500;
         [SerializeField] ForceMode forceMode = ForceMode.Force;
 
+        [Header("Achievements")]
+        [SerializeField] Achievement throwItemAchievement;
+
         public override void OnStart(CharacterBaseManager characterBaseManager)
         {
             characterBaseManager.characterBaseWeaponsManager.HideEquipment();
@@ -56,6 +59,11 @@ namespace AF
                 direction.y = 0;
 
                 projectile.Shoot(characterBaseManager, direction, forceMode);
+            }
+
+            if (throwItemAchievement != null)
+            {
+                throwItemAchievement.AwardAchievement();
             }
         }
 

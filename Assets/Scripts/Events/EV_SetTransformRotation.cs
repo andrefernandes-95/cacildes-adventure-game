@@ -8,6 +8,10 @@ namespace AF
         public Transform transformTarget;
         public Quaternion targetRotation;
 
+        [Header("Local Rotation")]
+        public bool isLocal = false;
+        public Vector3 localRotation;
+
         public override IEnumerator Dispatch()
         {
             SetTransformRotation();
@@ -16,6 +20,12 @@ namespace AF
 
         public void SetTransformRotation()
         {
+            if (isLocal)
+            {
+                transformTarget.localRotation = Quaternion.Euler(localRotation);
+                return;
+            }
+
             transformTarget.transform.rotation = targetRotation;
         }
     }

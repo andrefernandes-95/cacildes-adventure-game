@@ -136,12 +136,12 @@ namespace AF
 
             if (playerCombatController.isHeavyAttacking)
             {
-                attackDamage.Multiply(characterBaseAttackManager.heavyAttackBonusMultiplier);
+                characterBaseAttackManager.EnhanceWithHeavyAttackDamage(attackDamage);
             }
 
             if (playerCombatController.isJumpAttacking)
             {
-                attackDamage.Multiply(characterBaseAttackManager.jumpAttackMultiplier);
+                characterBaseAttackManager.EnhanceWithJumpAttackDamage(attackDamage);
             }
 
             if (playerBlockController.isCounterAttacking)

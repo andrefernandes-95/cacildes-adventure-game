@@ -371,11 +371,6 @@ public class EquipmentDatabase : ScriptableObject
         return GetCurrentWeapon() != null && GetCurrentWeapon().damage.weaponAttackType == WeaponAttackType.Staff;
     }
 
-    public bool IsStaffWeaponEquippedOnAnySlot()
-    {
-        return weapons.Any(wp => wp != null && wp.damage.weaponAttackType == WeaponAttackType.Staff);
-    }
-
     public bool HasEnoughCurrentArrows()
     {
         Arrow currentArrow = GetCurrentArrow();

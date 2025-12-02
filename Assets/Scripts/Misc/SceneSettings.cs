@@ -14,9 +14,7 @@ namespace AF
     {
         [Header("Components")]
         public BGMManager bgmManager;
-        public CursorManager cursorManager;
-        public PlayerManager playerManager;
-        public TeleportManager teleportManager;
+        [SerializeField] CavernManager cavernManager;
 
         [Header("Ambient Music")]
         public AudioClip dayMusic;
@@ -24,6 +22,7 @@ namespace AF
 
         [Header("Playlists (Alternative to Ambient Music)")]
         public AudioClip[] playlist;
+
         Coroutine ChooseNextSongCoroutine;
         bool isPlayingMusicFromThePlaylist = false;
 
@@ -221,7 +220,7 @@ namespace AF
 
         public void EvaluateDayNightMusic()
         {
-            if (bgmManager.IsBusy())
+            if (!CanEvaluateDayNightMusic())
             {
                 return;
             }
@@ -238,6 +237,21 @@ namespace AF
             {
                 EvaluateDayMusic();
             }
+        }
+
+        bool CanEvaluateDayNightMusic()
+        {
+            if (cavernManager.IsInCavern())
+            {
+                return false;
+            }
+
+            if (bgmManager.IsBusy())
+            {
+                return false;
+            }
+
+            return true;
         }
 
         void EvaluateNightMusic()

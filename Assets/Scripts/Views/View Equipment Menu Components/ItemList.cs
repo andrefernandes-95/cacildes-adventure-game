@@ -158,20 +158,6 @@ namespace AF.UI.EquipmentMenu
             else if (equipmentType == EquipmentType.SPELL)
             {
                 PopulateScrollView(false, slotIndex, playerManager.characterBaseInventory.GetSpells());
-
-                if (!equipmentDatabase.IsStaffWeaponEquippedOnAnySlot())
-                {
-                    warning.style.display = DisplayStyle.Flex;
-
-                    if (Utils.IsPortuguese())
-                    {
-                        warning.Q<Label>().text = "Precisas de equipar um cajado para usares feitiços.";
-                    }
-                    else
-                    {
-                        warning.Q<Label>().text = "You need to equip a staff to cast spells.";
-                    }
-                }
             }
             else if (equipmentType == EquipmentType.HELMET)
             {

@@ -231,7 +231,7 @@ namespace AF
                 return 0;
             }
 
-            return GetDamageAbsorbed().physical + GetBonusAttackPerLevel(level);
+            return GetDamageAbsorbed().physical + GetBonusAttackPerLevel(level, false);
         }
         public int GetFireDefenseForLevel(int level) => GetElementalDefenseForLevel(GetDamageAbsorbed().fire, level);
         public int GetFrostDefenseForLevel(int level) => GetElementalDefenseForLevel(GetDamageAbsorbed().frost, level);
@@ -247,7 +247,7 @@ namespace AF
                 return 0;
             }
 
-            return baseElementalDamage + GetBonusAttackPerLevel(level);
+            return baseElementalDamage + GetBonusAttackPerLevel(level, true);
         }
 
         public Damage GetDamageAbsorbedForCurrentLevel()

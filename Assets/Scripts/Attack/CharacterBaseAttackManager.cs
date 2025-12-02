@@ -169,7 +169,8 @@
             weaponDamage.ignoreBlocking = weapon.damage.ignoreBlocking;
             weaponDamage.canNotBeParried = weapon.damage.canNotBeParried;
 
-            int twoHandAttackBonus = ApplyWeaponBuffs(weapon, weaponDamage);
+            int twoHandAttackBonus = GetTwoHandBonus();
+            ApplyWeaponBuffs(weapon, weaponDamage);
 
             // If character doesn't meet the requirements
             if (!DoesCharacterMeetWeaponRequirements(weapon))
@@ -180,35 +181,82 @@
             return (weaponDamage, STRBonus, DEXBonus, INTBonus, twoHandAttackBonus);
         }
 
-        int ApplyWeaponBuffs(Weapon weapon, Damage weaponDamage)
+        int GetTwoHandBonus()
         {
-            // Apply Weapon Buffs
-            int twoHandAttackBonus = 0;
+            // Get the character's Strength stat
+            float str = GetCharacter().characterBaseStats.GetStrength();
+
+            // Calculate bonus:
+            // - Starts at a flat +10
+            // - Scales with Strength^0.9 (slightly less than linear for softer growth)
+            // - Multiplied by 1.5 to keep mid-range values meaningful
+            // Example results:
+            // STR 0 → 10
+            // STR 5 → ~16
+            // STR 10 → ~21
+            // STR 25 → ~37
+            // STR 50 → ~60
+            return (int)(10 + Mathf.Pow(str, 0.9f) * 1.5f + GetCharacter().statsBonusController.twoHandAttackBonusMultiplier);
+        }
+
+        int GetJumpAttackBonus()
+        {
+            float str = GetCharacter().characterBaseStats.GetDexterity();
+            return (int)(10 + Mathf.Pow(str, 0.9f) * 1.5f + GetCharacter().statsBonusController.jumpAttackBonusMultiplier);
+        }
+
+        int GetHeavyAttackBonus()
+        {
+            // Get the character's Strength stat
+            int str = GetCharacter().characterBaseStats.GetStrength();
+            int dex = GetCharacter().characterBaseStats.GetDexterity();
+
+            int strengthMultiplier = (int)(10 + Mathf.Pow(str, 0.9f) * 1.5f + GetCharacter().statsBonusController.heavyAttackBonusMultiplier);
+            int dexterityMultiplier = (int)(10 + Mathf.Pow(dex, 0.9f) * 1.25f + GetCharacter().statsBonusController.heavyAttackBonusMultiplier);
+
+            return strengthMultiplier + dexterityMultiplier;
+        }
+
+        void EnhanceDamage(Damage damage, int bonus)
+        {
+            int postureDamageBonus = bonus / 20;
+            int poiseDamageBonus = bonus / 40;
+
+            damage.physical += bonus;
+            if (damage.fire > 0) damage.fire += bonus;
+            if (damage.frost > 0) damage.frost += bonus;
+            if (damage.lightning > 0) damage.lightning += bonus;
+            if (damage.magic > 0) damage.magic += bonus;
+            if (damage.darkness > 0) damage.darkness += bonus;
+            if (damage.water > 0) damage.water += bonus;
+            if (damage.postureDamage > 0) damage.postureDamage += postureDamageBonus;
+            if (damage.poiseDamage > 0) damage.poiseDamage += poiseDamageBonus;
+        }
+
+        public void EnhanceWithTwoHandingDamage(Damage damage)
+        {
+            int damageBonus = GetTwoHandBonus();
+            EnhanceDamage(damage, damageBonus);
+        }
+
+        public void EnhanceWithHeavyAttackDamage(Damage damage)
+        {
+            int damageBonus = GetHeavyAttackBonus();
+            EnhanceDamage(damage, damageBonus);
+        }
+
+        public void EnhanceWithJumpAttackDamage(Damage damage)
+        {
+            int damageBonus = GetJumpAttackBonus();
+            EnhanceDamage(damage, damageBonus);
+        }
+
+        void ApplyWeaponBuffs(Weapon weapon, Damage weaponDamage)
+        {
             if (GetCharacter().characterBaseWeaponsManager.IsTwoHanding())
             {
-                float twoHandMultiplier = twoHandAttackBonusMultiplier + GetCharacter().statsBonusController.twoHandAttackBonusMultiplier;
-
-                weaponDamage.physical = (int)(weaponDamage.physical * twoHandMultiplier);
-                weaponDamage.fire = (int)(weaponDamage.fire * twoHandMultiplier);
-                weaponDamage.frost = (int)(weaponDamage.frost * twoHandMultiplier);
-                weaponDamage.lightning = (int)(weaponDamage.lightning * twoHandMultiplier);
-                weaponDamage.magic = (int)(weaponDamage.magic * twoHandMultiplier);
-                weaponDamage.darkness = (int)(weaponDamage.darkness * twoHandMultiplier);
-                weaponDamage.water = (int)(weaponDamage.water * twoHandMultiplier);
-                weaponDamage.postureDamage = (int)(weaponDamage.postureDamage * twoHandMultiplier);
-                weaponDamage.poiseDamage = (int)(weaponDamage.poiseDamage * twoHandMultiplier);
+                EnhanceWithTwoHandingDamage(weaponDamage);
             }
-
-            // + Attack the lower the rep
-            /* if (GetAccessories().FirstOrDefault(x => x != null && x.increaseAttackPowerTheLowerTheReputation) != null)
-             {
-                 if (playerStatsDatabase.GetCurrentReputation() < 0)
-                 {
-                     int extraAttackPower = Mathf.Min(150, (int)(Mathf.Abs(playerStatsDatabase.GetCurrentReputation()) * 2.25f));
-
-                     value += extraAttackPower;
-                 }
-             }*/
 
             // + Attack the lower the health
             if (GetAccessories().FirstOrDefault(x => x != null && x.increaseAttackPowerWithLowerHealth) != null)
@@ -246,8 +294,6 @@
             }
 
             weaponDamage.physical = (int)(weaponDamage.physical * attackMultiplierBonuses);
-
-            return twoHandAttackBonus;
         }
 
 
@@ -267,7 +313,9 @@
                 weaponDamage.physical += STRBonus + DEXBonus;
             }
 
-            int twoHandAttackBonus = ApplyWeaponBuffs(null, weaponDamage);
+            ApplyWeaponBuffs(null, weaponDamage);
+
+            int twoHandAttackBonus = GetTwoHandBonus();
 
             return (weaponDamage, STRBonus, DEXBonus, INTBonus, twoHandAttackBonus);
         }

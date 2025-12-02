@@ -31,9 +31,6 @@ namespace AF
         VisualElement notificationsPanel;
         float timePassed = 0f;
 
-        [Header("Achievements")]
-        public Achievement negativeReputationAchievement;
-
         [Header("Database")]
         public PlayerStatsDatabase playerStatsDatabase;
 

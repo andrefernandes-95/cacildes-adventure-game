@@ -4,32 +4,29 @@ namespace AF
 
     public class InCavernTrigger : MonoBehaviour
     {
-        DayNightManager dayNightManager;
+        CavernManager cavernManager;
+        [SerializeField] Cavern cavern;
 
-        enum CavernTrigger
-        {
-            ENTERING_CAVERN,
-            EXITING_CAVERN
-        }
-
-        [SerializeField] CavernTrigger cavernTrigger = CavernTrigger.ENTERING_CAVERN;
-
-        private void OnTriggerEnter(Collider other)
+        private void OnTriggerExit(Collider other)
         {
             if (other.CompareTag("Player"))
             {
-                GetDayNightManager().isInCavern = cavernTrigger == CavernTrigger.ENTERING_CAVERN;
+                CavernManager cavernManager = GetCavernManager();
+
+                bool isEnteringCavern = cavernManager.IsInCavern() == false;
+                Cavern cavernToEnter = isEnteringCavern ? cavern : null;
+                GetCavernManager().SetCavern(cavernToEnter);
             }
         }
 
-        DayNightManager GetDayNightManager()
+        CavernManager GetCavernManager()
         {
-            if (dayNightManager == null)
+            if (cavernManager == null)
             {
-                dayNightManager = FindAnyObjectByType<DayNightManager>(FindObjectsInactive.Include);
+                cavernManager = FindAnyObjectByType<CavernManager>(FindObjectsInactive.Include);
             }
 
-            return dayNightManager;
+            return cavernManager;
         }
     }
 }

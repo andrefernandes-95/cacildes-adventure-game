@@ -6276,7 +6276,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 742515730243258021}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.07799033, y: -0.44469222, z: 0.891433, w: 0.038905554}
+  m_LocalRotation: {x: 0.06524021, y: -0.66055864, z: 0.7456985, w: 0.057791427}
   m_LocalPosition: {x: 0.7648863, y: 3, z: 0.953166}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -6293,7 +6293,7 @@ Light:
   m_Enabled: 1
   serializedVersion: 11
   m_Type: 1
-  m_Color: {r: 0.86925876, g: 0.86925876, b: 0.86925876, a: 1}
+  m_Color: {r: 0.9001597, g: 0.9001597, b: 0.9001597, a: 1}
   m_Intensity: 0.01
   m_Range: 10
   m_SpotAngle: 30
@@ -6624,7 +6624,6 @@ MonoBehaviour:
   reputationDecreaseSprite: {fileID: 21300000, guid: ee50f94843c696145a290e69b8a81955, type: 3}
   uiDocumentNotificationUI: {fileID: 2299173291617948439}
   notificationItemPrefab: {fileID: 9197481963319205126, guid: 53a80f8681d6ed945831806e5aff0551, type: 3}
-  negativeReputationAchievement: {fileID: 11400000, guid: 0fa1f81dee8dedb43a19399071b28660, type: 2}
   playerStatsDatabase: {fileID: 11400000, guid: 5700f759ff00d104a97ef4af25190ddd, type: 2}
 --- !u!1 &825674165174664970
 GameObject:
@@ -26944,6 +26943,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76f9b66ee65866848951b3a6287b153c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  maxAngleToEnableInteraction: 30
   onActivate:
     m_PersistentCalls:
       m_Calls:
@@ -58819,6 +58819,7 @@ Transform:
   - {fileID: 8215763201639180109}
   - {fileID: 2608891231149619155}
   - {fileID: 4814290954054197507}
+  - {fileID: 6516040863213413127}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5309569914516403008
@@ -67740,6 +67741,144 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   uIDocument: {fileID: 7262532595387345084}
+--- !u!1 &6566993375540596664
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6516040863213413127}
+  - component: {fileID: 1081481030645719571}
+  m_Layer: 0
+  m_Name: Cavern Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6516040863213413127
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6566993375540596664}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5309569914379906045}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1081481030645719571
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6566993375540596664}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc7cd72218235d448a01ddc840dbd718, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentCavern: {fileID: 0}
+  CavernAmbientColor:
+    serializedVersion: 2
+    key0: {r: 0.6037736, g: 0.570208, b: 0.56105375, a: 1}
+    key1: {r: 0.6037736, g: 0.570208, b: 0.56105375, a: 1}
+    key2: {r: 0.6037736, g: 0.570208, b: 0.56105375, a: 0}
+    key3: {r: 0, g: 0, b: 0, a: 0}
+    key4: {r: 0, g: 0, b: 0, a: 0}
+    key5: {r: 0, g: 0, b: 0, a: 0}
+    key6: {r: 0, g: 0, b: 0, a: 0}
+    key7: {r: 0, g: 0, b: 0, a: 0}
+    ctime0: 0
+    ctime1: 31611
+    ctime2: 65535
+    ctime3: 0
+    ctime4: 0
+    ctime5: 0
+    ctime6: 0
+    ctime7: 0
+    atime0: 0
+    atime1: 65535
+    atime2: 0
+    atime3: 0
+    atime4: 0
+    atime5: 0
+    atime6: 0
+    atime7: 0
+    m_Mode: 0
+    m_ColorSpace: -1
+    m_NumColorKeys: 3
+    m_NumAlphaKeys: 2
+  CavernDirectionalColor:
+    serializedVersion: 2
+    key0: {r: 0.07450981, g: 0.07450981, b: 0.07450981, a: 1}
+    key1: {r: 0, g: 0, b: 0, a: 1}
+    key2: {r: 0.13026729, g: 0.13026729, b: 0.13026729, a: 0}
+    key3: {r: 0.7083179, g: 0.7083179, b: 0.7083179, a: 0}
+    key4: {r: 1, g: 1, b: 1, a: 0}
+    key5: {r: 0.066037714, g: 0.066037714, b: 0.066037714, a: 0}
+    key6: {r: 0.0754717, g: 0.0754717, b: 0.0754717, a: 0}
+    key7: {r: 0, g: 0, b: 0, a: 0}
+    ctime0: 0
+    ctime1: 10794
+    ctime2: 12336
+    ctime3: 27563
+    ctime4: 37394
+    ctime5: 52428
+    ctime6: 65535
+    ctime7: 0
+    atime0: 0
+    atime1: 65535
+    atime2: 0
+    atime3: 0
+    atime4: 0
+    atime5: 0
+    atime6: 0
+    atime7: 0
+    m_Mode: 0
+    m_ColorSpace: -1
+    m_NumColorKeys: 7
+    m_NumAlphaKeys: 2
+  CavernFogColor:
+    serializedVersion: 2
+    key0: {r: 0.20754719, g: 0.20245641, b: 0.20245641, a: 1}
+    key1: {r: 0.4716981, g: 0.4114565, b: 0.3448736, a: 1}
+    key2: {r: 0.23954567, g: 0.23367003, b: 0.23367003, a: 0}
+    key3: {r: 0, g: 0, b: 0, a: 0}
+    key4: {r: 0, g: 0, b: 0, a: 0}
+    key5: {r: 0, g: 0, b: 0, a: 0}
+    key6: {r: 0, g: 0, b: 0, a: 0}
+    key7: {r: 0, g: 0, b: 0, a: 0}
+    ctime0: 0
+    ctime1: 32382
+    ctime2: 65535
+    ctime3: 0
+    ctime4: 0
+    ctime5: 0
+    ctime6: 0
+    ctime7: 0
+    atime0: 0
+    atime1: 65535
+    atime2: 0
+    atime3: 0
+    atime4: 0
+    atime5: 0
+    atime6: 0
+    atime7: 0
+    m_Mode: 0
+    m_ColorSpace: -1
+    m_NumColorKeys: 3
+    m_NumAlphaKeys: 2
+  CavernFogDensity: 0.05
+  sceneSettings: {fileID: 8446632806595815852}
+  bGMManager: {fileID: 2614391276045409048}
 --- !u!1 &6589253828948632054
 GameObject:
   m_ObjectHideFlags: 0
@@ -81342,9 +81481,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bgmManager: {fileID: 2614391276045409048}
-  cursorManager: {fileID: 2836864759723706884}
-  playerManager: {fileID: 4363140735506542586}
-  teleportManager: {fileID: 2257091877794809565}
+  cavernManager: {fileID: 1081481030645719571}
   dayMusic: {fileID: 8300000, guid: 34397c46f1f9b37458d0054a77da8f34, type: 3}
   nightMusic: {fileID: 8300000, guid: b1601baa2872a6b4b82d0566f4e214c1, type: 3}
   playlist: []
@@ -82450,98 +82587,7 @@ MonoBehaviour:
   nightSprite: {fileID: 21300000, guid: 0bbc84667327d644093b4c23e1de3f68, type: 3}
   sceneSettings: {fileID: 8446632806595815852}
   canUpdateLighting: 1
-  isInCavern: 0
-  CavernAmbientColor:
-    serializedVersion: 2
-    key0: {r: 1, g: 1, b: 1, a: 1}
-    key1: {r: 1, g: 1, b: 1, a: 1}
-    key2: {r: 0, g: 0, b: 0, a: 0}
-    key3: {r: 0, g: 0, b: 0, a: 0}
-    key4: {r: 0, g: 0, b: 0, a: 0}
-    key5: {r: 0, g: 0, b: 0, a: 0}
-    key6: {r: 0, g: 0, b: 0, a: 0}
-    key7: {r: 0, g: 0, b: 0, a: 0}
-    ctime0: 0
-    ctime1: 65535
-    ctime2: 0
-    ctime3: 0
-    ctime4: 0
-    ctime5: 0
-    ctime6: 0
-    ctime7: 0
-    atime0: 0
-    atime1: 65535
-    atime2: 0
-    atime3: 0
-    atime4: 0
-    atime5: 0
-    atime6: 0
-    atime7: 0
-    m_Mode: 0
-    m_ColorSpace: -1
-    m_NumColorKeys: 2
-    m_NumAlphaKeys: 2
-  CavernDirectionalColor:
-    serializedVersion: 2
-    key0: {r: 1, g: 1, b: 1, a: 1}
-    key1: {r: 1, g: 1, b: 1, a: 1}
-    key2: {r: 0, g: 0, b: 0, a: 0}
-    key3: {r: 0, g: 0, b: 0, a: 0}
-    key4: {r: 0, g: 0, b: 0, a: 0}
-    key5: {r: 0, g: 0, b: 0, a: 0}
-    key6: {r: 0, g: 0, b: 0, a: 0}
-    key7: {r: 0, g: 0, b: 0, a: 0}
-    ctime0: 0
-    ctime1: 65535
-    ctime2: 0
-    ctime3: 0
-    ctime4: 0
-    ctime5: 0
-    ctime6: 0
-    ctime7: 0
-    atime0: 0
-    atime1: 65535
-    atime2: 0
-    atime3: 0
-    atime4: 0
-    atime5: 0
-    atime6: 0
-    atime7: 0
-    m_Mode: 0
-    m_ColorSpace: -1
-    m_NumColorKeys: 2
-    m_NumAlphaKeys: 2
-  CavernFogColor:
-    serializedVersion: 2
-    key0: {r: 1, g: 1, b: 1, a: 1}
-    key1: {r: 1, g: 1, b: 1, a: 1}
-    key2: {r: 0, g: 0, b: 0, a: 0}
-    key3: {r: 0, g: 0, b: 0, a: 0}
-    key4: {r: 0, g: 0, b: 0, a: 0}
-    key5: {r: 0, g: 0, b: 0, a: 0}
-    key6: {r: 0, g: 0, b: 0, a: 0}
-    key7: {r: 0, g: 0, b: 0, a: 0}
-    ctime0: 0
-    ctime1: 65535
-    ctime2: 0
-    ctime3: 0
-    ctime4: 0
-    ctime5: 0
-    ctime6: 0
-    ctime7: 0
-    atime0: 0
-    atime1: 65535
-    atime2: 0
-    atime3: 0
-    atime4: 0
-    atime5: 0
-    atime6: 0
-    atime7: 0
-    m_Mode: 0
-    m_ColorSpace: -1
-    m_NumColorKeys: 2
-    m_NumAlphaKeys: 2
-  CavernFogDensity: 0.03
+  cavernManager: {fileID: 1081481030645719571}
   gameSession: {fileID: 11400000, guid: 806862db69fa7244189bed36885b18a4, type: 2}
 --- !u!108 &8391052791088436041
 Light:
@@ -88997,7 +89043,7 @@ Transform:
   m_GameObject: {fileID: 8619754588792639567}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -142.2023, y: 1.5, z: 33.51616}
+  m_LocalPosition: {x: 8.59, y: 2.1599998, z: 8.700001}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -89035,7 +89081,7 @@ Camera:
     width: 1
     height: 1
   near clip plane: 0.2
-  far clip plane: 100
+  far clip plane: 500
   field of view: 40
   orthographic: 0
   orthographic size: 10
@@ -103326,11 +103372,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2070925442191277752, guid: a1a802ecaf6775746bb2a929fb554ad8, type: 3}
       propertyPath: DampingFromCollision
-      value: 0.3
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2070925442191277752, guid: a1a802ecaf6775746bb2a929fb554ad8, type: 3}
       propertyPath: DampingIntoCollision
-      value: 0.4
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2070925442191277752, guid: a1a802ecaf6775746bb2a929fb554ad8, type: 3}
       propertyPath: CameraCollisionFilter.m_Bits

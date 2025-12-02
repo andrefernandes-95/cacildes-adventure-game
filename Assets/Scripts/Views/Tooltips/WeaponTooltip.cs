@@ -112,7 +112,7 @@ namespace AF
             }
 
             // === Status Effects ===
-            itemTooltip.DrawStatusEffects(weapon.damage);
+            itemTooltip.DrawStatusEffects(weaponDamage);
 
             // === Requirements ===
             if (weapon.HasRequirements())
@@ -123,9 +123,9 @@ namespace AF
                     weapon.DrawRequirements(playerManager));
             }
 
-            if (weapon.damage.poiseDamage > 0)
+            if (weaponDamage.poiseDamage > 0)
             {
-                string label = $"{weapon.damage.poiseDamage} ";
+                string label = $"{weaponDamage.poiseDamage} ";
 
                 label += Utils.IsPortuguese()
                     ? "Dano de Equilíbrio\n<i><size=80%>(Reduz a resistência do inimigo a ser interrompido durante ataques)</i>"
@@ -134,9 +134,9 @@ namespace AF
                 itemTooltip.CreateTooltip(GUIIconsDatabase.pushForce, Color.white, label);
             }
 
-            if (weapon.damage.postureDamage > 0)
+            if (weaponDamage.postureDamage > 0)
             {
-                string label = $"{weapon.damage.postureDamage} ";
+                string label = $"{weaponDamage.postureDamage} ";
 
                 label += Utils.IsPortuguese()
                     ? "Dano de Postura\n<i><size=80%>(Acumula na barra amarela do inimigo. Ao encher, permite um ataque crítico)</i>"
@@ -145,9 +145,9 @@ namespace AF
                 itemTooltip.CreateTooltip(GUIIconsDatabase.posture, Color.white, label);
             }
 
-            if (weapon.damage.pushForce > 0)
+            if (weaponDamage.pushForce > 0)
             {
-                string label = $"{weapon.damage.pushForce} ";
+                string label = $"{weaponDamage.pushForce} ";
 
                 label += Utils.IsPortuguese()
                     ? "Força de Impacto\n<i><size=80%>(Empurra os inimigos ao acertar)</i>"

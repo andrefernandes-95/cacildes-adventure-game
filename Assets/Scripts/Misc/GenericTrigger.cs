@@ -7,6 +7,8 @@ namespace AF
 {
     public class GenericTrigger : MonoBehaviour
     {
+        [Header("Angle Settings")]
+        [SerializeField] float maxAngleToEnableInteraction = 30f;
 
         [Header("Events")]
         public UnityEvent onActivate;
@@ -139,7 +141,7 @@ namespace AF
             float dot = Vector3.Dot(playerTransform.forward, toTarget);
 
             float angle = Mathf.Acos(dot) * Mathf.Rad2Deg;
-            return angle <= 30f;
+            return angle <= maxAngleToEnableInteraction;
         }
 
         bool CanInteract()

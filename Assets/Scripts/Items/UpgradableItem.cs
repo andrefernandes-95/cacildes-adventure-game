@@ -13,23 +13,43 @@ namespace AF
         {
             if (level <= 3)
             {
-                return 10;
+                return 5;
             }
             else if (level <= 6)
             {
-                return 20;
+                return 10;
             }
             else if (level <= 9)
             {
-                return 30;
+                return 15;
             }
             else
             {
-                return 40;
+                return 20;
             }
         }
 
-        public int GetBonusAttackPerLevel(int level)
+        public virtual float GetElementalBonusStep(int level)
+        {
+            if (level <= 3)
+            {
+                return 3;
+            }
+            else if (level <= 6)
+            {
+                return 6;
+            }
+            else if (level <= 9)
+            {
+                return 9;
+            }
+            else
+            {
+                return 12;
+            }
+        }
+
+        public int GetBonusAttackPerLevel(int level, bool isElementalDamage)
         {
             if (level == 0)
             {
@@ -40,7 +60,7 @@ namespace AF
 
             for (int i = 1; i <= level; i++)
             {
-                total += GetBonusStep(i);
+                total += isElementalDamage ? GetElementalBonusStep(i) : GetBonusStep(i);
             }
 
             return Mathf.RoundToInt(total);
@@ -63,13 +83,13 @@ namespace AF
             for (int i = 1; i <= level; i++)
             {
                 if (i <= 3)
-                    total += .25f;
+                    total += .15f;
                 else if (i <= 6)
-                    total += .5f;
+                    total += .25f;
                 else if (i <= 9)
-                    total += 0.75f;
+                    total += 0.5f;
                 else
-                    total += 1f;
+                    total += .75f;
             }
 
             return Mathf.CeilToInt(total);
@@ -92,13 +112,13 @@ namespace AF
             for (int i = 1; i <= level; i++)
             {
                 if (i <= 3)
-                    total += 1.5f;
+                    total += .5f;
                 else if (i <= 6)
-                    total += 2.5f;
+                    total += 1f;
                 else if (i <= 9)
-                    total += 3.5f;
+                    total += 1.5f;
                 else
-                    total += 4.5f;
+                    total += 2f;
             }
 
             return Mathf.CeilToInt(total);
