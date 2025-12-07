@@ -24,7 +24,7 @@ namespace AF
         public AudioClip[] playlist;
 
         Coroutine ChooseNextSongCoroutine;
-        bool isPlayingMusicFromThePlaylist = false;
+        public bool isPlayingMusicFromThePlaylist = false;
 
         [Header("Ambience Sounds")]
         public AudioClip dayAmbience;
@@ -73,6 +73,15 @@ namespace AF
             }
 
             gameSettings.LoadSettings();
+
+            // Attach an event to bgm manager so that we know that if the music
+            // is interrupted, we mark the isPlayingFromThePlaylist as false
+            // in order to force a new playlist choice whenever we resume the map music
+            // A better solution should be thought in the future
+            bgmManager.onMusicStopped.AddListener(() =>
+            {
+                isPlayingMusicFromThePlaylist = false;
+            });
         }
 
         private void Start()

@@ -339,5 +339,6 @@ namespace AF
         {
             return 1f;
         }
+
     }
 }

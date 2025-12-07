@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace AF
 {
-    [CreateAssetMenu(menuName = "Items / Weapon / New Weapon Sound")]
+    [CreateAssetMenu(menuName = "Sound / New Weapon Sound")]
     public class WeaponSound : ScriptableObject
     {
         [SerializeField] AudioClip[] swing;

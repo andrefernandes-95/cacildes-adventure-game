@@ -21,11 +21,6 @@ public class GameSession : ScriptableObject
     [Header("Arena Settings")]
     public bool isParticipatingInArenaEvent = false;
 
-    [Header("Save Settings")]
-    public bool loadSavedPlayerPositionAndRotation = false;
-    public Vector3 savedPlayerPosition;
-    public Quaternion savedPlayerRotation;
-
     [Header("World Settings")]
     public Gradient AmbientColor;
     public Gradient DirectionalColor;
@@ -66,7 +61,6 @@ public class GameSession : ScriptableObject
         gameState = GameState.NOT_INITIALIZED;
         initialTimeOfDay = 11;
         isParticipatingInArenaEvent = false;
-        loadSavedPlayerPositionAndRotation = false;
         nextMap_SpawnLocationData = null;
         currentGameIteration = 0;
         daySpeed = 0.005f;

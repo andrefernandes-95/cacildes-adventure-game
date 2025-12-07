@@ -36779,6 +36779,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameSession: {fileID: 11400000, guid: 806862db69fa7244189bed36885b18a4, type: 2}
+  tempDataFromSaveFile: {fileID: 11400000, guid: a54dbfd0112bc5f4ca956babd1ba7505, type: 2}
   bonfiresDatabase: {fileID: 11400000, guid: 7c00954bbe23c8240bf4234a7f7c826f, type: 2}
   playerManager: {fileID: 4363140735506542586}
   fadeManager: {fileID: 933397460142209731}
@@ -63867,6 +63868,9 @@ MonoBehaviour:
   gameSettings: {fileID: 11400000, guid: c45719dc8e6e81947b7f2a5be9b2993a, type: 2}
   fadeDuration: 1
   musicPlayerHUD: {fileID: 8250134912164277134}
+  onMusicStopped:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &6016224245865381520
 GameObject:
   m_ObjectHideFlags: 0
@@ -65700,6 +65704,7 @@ MonoBehaviour:
   companionsDatabase: {fileID: 11400000, guid: 304c7a15385a5904b83eaaa8ed072aa2, type: 2}
   bonfiresDatabase: {fileID: 11400000, guid: 7c00954bbe23c8240bf4234a7f7c826f, type: 2}
   gameSession: {fileID: 11400000, guid: 806862db69fa7244189bed36885b18a4, type: 2}
+  tempDataFromSaveFile: {fileID: 11400000, guid: a54dbfd0112bc5f4ca956babd1ba7505, type: 2}
   flagsDatabase: {fileID: 11400000, guid: 676ba9bd89bc57e47b44e9f5b1b78458, type: 2}
   recipesDatabase: {fileID: 11400000, guid: c6ee84f65e9f6f746a93959f9be72442, type: 2}
   fadeManager: {fileID: 933397460142209731}
@@ -65710,7 +65715,6 @@ MonoBehaviour:
   questManager: {fileID: 6825649313841880435}
   canSave: 1
   SAVE_FILES_FOLDER: QuickSave
-  SAVE_VERSION: 1
   useBowDebugTools: 0
 --- !u!1 &6265902340761769546
 GameObject:
@@ -67786,99 +67790,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentCavern: {fileID: 0}
-  CavernAmbientColor:
-    serializedVersion: 2
-    key0: {r: 0.6037736, g: 0.570208, b: 0.56105375, a: 1}
-    key1: {r: 0.6037736, g: 0.570208, b: 0.56105375, a: 1}
-    key2: {r: 0.6037736, g: 0.570208, b: 0.56105375, a: 0}
-    key3: {r: 0, g: 0, b: 0, a: 0}
-    key4: {r: 0, g: 0, b: 0, a: 0}
-    key5: {r: 0, g: 0, b: 0, a: 0}
-    key6: {r: 0, g: 0, b: 0, a: 0}
-    key7: {r: 0, g: 0, b: 0, a: 0}
-    ctime0: 0
-    ctime1: 31611
-    ctime2: 65535
-    ctime3: 0
-    ctime4: 0
-    ctime5: 0
-    ctime6: 0
-    ctime7: 0
-    atime0: 0
-    atime1: 65535
-    atime2: 0
-    atime3: 0
-    atime4: 0
-    atime5: 0
-    atime6: 0
-    atime7: 0
-    m_Mode: 0
-    m_ColorSpace: -1
-    m_NumColorKeys: 3
-    m_NumAlphaKeys: 2
-  CavernDirectionalColor:
-    serializedVersion: 2
-    key0: {r: 0.07450981, g: 0.07450981, b: 0.07450981, a: 1}
-    key1: {r: 0, g: 0, b: 0, a: 1}
-    key2: {r: 0.13026729, g: 0.13026729, b: 0.13026729, a: 0}
-    key3: {r: 0.7083179, g: 0.7083179, b: 0.7083179, a: 0}
-    key4: {r: 1, g: 1, b: 1, a: 0}
-    key5: {r: 0.066037714, g: 0.066037714, b: 0.066037714, a: 0}
-    key6: {r: 0.0754717, g: 0.0754717, b: 0.0754717, a: 0}
-    key7: {r: 0, g: 0, b: 0, a: 0}
-    ctime0: 0
-    ctime1: 10794
-    ctime2: 12336
-    ctime3: 27563
-    ctime4: 37394
-    ctime5: 52428
-    ctime6: 65535
-    ctime7: 0
-    atime0: 0
-    atime1: 65535
-    atime2: 0
-    atime3: 0
-    atime4: 0
-    atime5: 0
-    atime6: 0
-    atime7: 0
-    m_Mode: 0
-    m_ColorSpace: -1
-    m_NumColorKeys: 7
-    m_NumAlphaKeys: 2
-  CavernFogColor:
-    serializedVersion: 2
-    key0: {r: 0.20754719, g: 0.20245641, b: 0.20245641, a: 1}
-    key1: {r: 0.4716981, g: 0.4114565, b: 0.3448736, a: 1}
-    key2: {r: 0.23954567, g: 0.23367003, b: 0.23367003, a: 0}
-    key3: {r: 0, g: 0, b: 0, a: 0}
-    key4: {r: 0, g: 0, b: 0, a: 0}
-    key5: {r: 0, g: 0, b: 0, a: 0}
-    key6: {r: 0, g: 0, b: 0, a: 0}
-    key7: {r: 0, g: 0, b: 0, a: 0}
-    ctime0: 0
-    ctime1: 32382
-    ctime2: 65535
-    ctime3: 0
-    ctime4: 0
-    ctime5: 0
-    ctime6: 0
-    ctime7: 0
-    atime0: 0
-    atime1: 65535
-    atime2: 0
-    atime3: 0
-    atime4: 0
-    atime5: 0
-    atime6: 0
-    atime7: 0
-    m_Mode: 0
-    m_ColorSpace: -1
-    m_NumColorKeys: 3
-    m_NumAlphaKeys: 2
-  CavernFogDensity: 0.05
   sceneSettings: {fileID: 8446632806595815852}
   bGMManager: {fileID: 2614391276045409048}
+  dayNightManager: {fileID: 8700499893797104305}
+  tempDataFromSaveFile: {fileID: 11400000, guid: a54dbfd0112bc5f4ca956babd1ba7505, type: 2}
 --- !u!1 &6589253828948632054
 GameObject:
   m_ObjectHideFlags: 0
@@ -73235,7 +73150,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   alertDuration: 5
-  questAppearPopupSfx: {fileID: 8300000, guid: 32351c0df759a3b44a47dd41410ca7c6, type: 3}
+  questAppearPopupSfx: {fileID: 8300000, guid: 2cac08fa6d2ce614bba6e464fe3321a1, type: 3}
   bGMManager: {fileID: 2614391276045409048}
 --- !u!1 &7180663369931851546
 GameObject:
@@ -81485,6 +81400,7 @@ MonoBehaviour:
   dayMusic: {fileID: 8300000, guid: 34397c46f1f9b37458d0054a77da8f34, type: 3}
   nightMusic: {fileID: 8300000, guid: b1601baa2872a6b4b82d0566f4e214c1, type: 3}
   playlist: []
+  isPlayingMusicFromThePlaylist: 0
   dayAmbience: {fileID: 8300000, guid: 0aed9a4e0da542e44bc82265aaeeb46a, type: 3}
   nightAmbience: {fileID: 8300000, guid: 6f116d05d1c89c148b136edd087b0b6c, type: 3}
   isInterior: 0

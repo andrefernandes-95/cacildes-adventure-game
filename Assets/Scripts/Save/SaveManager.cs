@@ -32,6 +32,7 @@ namespace AF
         public CompanionsDatabase companionsDatabase;
         public BonfiresDatabase bonfiresDatabase;
         public GameSession gameSession;
+        [SerializeField] TempDataFromSaveFile tempDataFromSaveFile;
         public FlagsDatabase flagsDatabase;
         public RecipesDatabase recipesDatabase;
 
@@ -51,7 +52,7 @@ namespace AF
         public string SAVE_FILES_FOLDER = "QuickSave";
 
         // USED FOR MIGRATIONS
-        public int SAVE_VERSION = 1;
+        int SAVE_VERSION = 2; // Every time we update the save logic, we must increment this number
 
         [Header("Bow Debug Tools")]
         public bool useBowDebugTools = false; // For position the bow and arrows during editor, it shouldnt be in this script but just reusing Update methods
@@ -375,13 +376,13 @@ namespace AF
         {
             gameSession.currentGameIteration = 0;
             gameSession.nextMap_SpawnLocationData = null;
-            gameSession.loadSavedPlayerPositionAndRotation = true;
+            tempDataFromSaveFile.loadSavedPlayerPositionAndRotation = true;
 
             quickSaveReader.TryRead("playerPosition", out Vector3 playerPosition);
-            gameSession.savedPlayerPosition = playerPosition;
+            tempDataFromSaveFile.savedPlayerPosition = playerPosition;
 
             quickSaveReader.TryRead("playerRotation", out Quaternion playerRotation);
-            gameSession.savedPlayerRotation = playerRotation;
+            tempDataFromSaveFile.savedPlayerRotation = playerRotation;
 
             quickSaveReader.TryRead("currentGameIteration", out int currentGameIteration);
             if (currentGameIteration != -1)
@@ -459,6 +460,14 @@ namespace AF
             SaveRecipes(quickSaveWriter);
             SaveSceneSettings(quickSaveWriter);
             SaveGameSessionSettings(quickSaveWriter);
+
+            MonoBehaviour[] allBehaviours = FindObjectsByType<MonoBehaviour>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+            ISaveable[] saveables = allBehaviours.OfType<ISaveable>().ToArray();
+
+            foreach (ISaveable saveable in saveables)
+            {
+                saveable.OnSaveData(quickSaveWriter);
+            }
 
             quickSaveWriter.Write("gameVersion", Application.version);
             quickSaveWriter.Write("saveVersion", SAVE_VERSION);
@@ -538,6 +547,15 @@ namespace AF
                 LoadRecipes(quickSaveReader);
                 LoadGameSessionSettings(quickSaveReader);
                 LoadSceneSettings(quickSaveReader);
+
+
+                MonoBehaviour[] allBehaviours = FindObjectsByType<MonoBehaviour>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+                ISaveable[] loadables = allBehaviours.OfType<ISaveable>().ToArray();
+
+                foreach (ISaveable loadable in loadables)
+                {
+                    loadable.OnLoadData(quickSaveReader);
+                }
             });
         }
 

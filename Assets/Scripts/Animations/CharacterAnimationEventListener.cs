@@ -38,6 +38,7 @@ namespace AF.Animations
         public UnityEvent onImpact;
         public UnityEvent onOpenCombo;
         public UnityEvent onBlood;
+        [HideInInspector] public UnityEvent onRoar;
 
         float defaultAnimatorSpeed;
 
@@ -417,6 +418,11 @@ namespace AF.Animations
         public void HideEquipment()
         {
             characterManager.characterWeaponsManager.HideEquipment();
+        }
+
+        public void OnRoar()
+        {
+            onRoar?.Invoke();
         }
     }
 }

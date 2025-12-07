@@ -36,6 +36,7 @@ namespace AF
 
         [Header("Gestures")]
         public AnimationClip roar;
+        public AnimationClip taunt;
 
         public Dictionary<string, AnimationClip> GetClipOverrides()
         {
@@ -60,6 +61,7 @@ namespace AF
             if (ambushExit != null) animations.Add("Generic Creature - Ambush - Exit", ambushExit);
             if (castSpell != null) animations.Add("Generic Creature - Cast Spell", castSpell);
             if (roar != null) animations.Add("Generic Creature - Roar", roar);
+            if (taunt != null) animations.Add("Generic Creature - Taunt", taunt);
             return animations;
         }
     }

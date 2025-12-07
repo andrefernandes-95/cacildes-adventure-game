@@ -9,6 +9,7 @@ namespace AF
         public CharacterManager characterManager;
 
         bool isPushed = false;
+        public bool IsPushed() => isPushed;
 
         public UnityEvent onPush_Begin;
         public UnityEvent onPush_End;
@@ -27,6 +28,13 @@ namespace AF
         {
             float elapsed = 0f;
             isPushed = true;
+
+            if (characterManager.agent != null) characterManager.agent.enabled = false;
+            if (characterManager.isCuttingDistanceToTarget)
+            {
+                characterManager.isCuttingDistanceToTarget = false;
+            }
+
             while (elapsed < duration)
             {
                 float forceMagnitude = Mathf.Lerp(pushForce, 0f, elapsed / duration);
@@ -38,6 +46,8 @@ namespace AF
                 elapsed += Time.deltaTime;
                 yield return null;
             }
+
+            if (characterManager.agent != null) characterManager.agent.enabled = true;
 
             onPush_End?.Invoke();
             isPushed = false;

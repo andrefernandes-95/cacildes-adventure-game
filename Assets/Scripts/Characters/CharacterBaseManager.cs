@@ -63,6 +63,8 @@ namespace AF
         public CharacterBaseWeaknessesManager characterBaseWeaknessesManager;
         public CharacterBaseWeaponBuffManager characterBaseWeaponBuffManager;
 
+        Coroutine WaitForPetrificationToKillCoroutine;
+
         #region Public Events
 
         /// <summary>
@@ -260,5 +262,61 @@ namespace AF
         public abstract void OnParalyzedEnd();
 
         public abstract float GetDefaultAnimatorSpeed();
+
+
+        public void OnPetrified(Material petrifiedMaterial)
+        {
+            OnParalyzedStart();
+
+            if (agent != null)
+            {
+                agent.speed = 0f;
+                agent.isStopped = true;
+            }
+
+            ApplyMaterialToSkinnedMeshRenderers(petrifiedMaterial);
+
+            if (WaitForPetrificationToKillCoroutine != null)
+            {
+                StopCoroutine(WaitForPetrificationToKillCoroutine);
+            }
+
+            WaitForPetrificationToKillCoroutine = StartCoroutine(WaitForPetrificationToKill());
+        }
+
+        IEnumerator WaitForPetrificationToKill()
+        {
+            yield return new WaitForSeconds(3f);
+            this.health.TakeDamage(Mathf.Infinity);
+        }
+
+        void ApplyMaterialToSkinnedMeshRenderers(Material mat)
+        {
+            SkinnedMeshRenderer[] allSkinnedMeshRenderers =
+                Utils.CollectComponentsFromGameObject<SkinnedMeshRenderer>(this.gameObject);
+
+            foreach (SkinnedMeshRenderer skinnedMeshRenderer in allSkinnedMeshRenderers)
+            {
+                Material[] mats = skinnedMeshRenderer.materials;
+
+                for (int i = 0; i < mats.Length; i++)
+                    mats[i] = mat;
+
+                skinnedMeshRenderer.materials = mats;
+            }
+
+            MeshRenderer[] meshRenderers =
+                Utils.CollectComponentsFromGameObject<MeshRenderer>(this.gameObject);
+
+            foreach (MeshRenderer meshRenderer in meshRenderers)
+            {
+                Material[] mats = meshRenderer.materials;
+
+                for (int i = 0; i < mats.Length; i++)
+                    mats[i] = mat;
+
+                meshRenderer.materials = mats;
+            }
+        }
     }
 }

@@ -38,8 +38,15 @@ namespace AF.Footsteps
                 {
                     isTriggering = true;
 
-                    footstepEffectsDictionary[hit.transform.gameObject.tag].SetActive(false);
-                    footstepEffectsDictionary[hit.transform.gameObject.tag].SetActive(true);
+                    if (footstepEffectsDictionary[hit.transform.gameObject.tag] != null)
+                    {
+                        footstepEffectsDictionary[hit.transform.gameObject.tag].SetActive(false);
+                        footstepEffectsDictionary[hit.transform.gameObject.tag].SetActive(true);
+                    }
+                    else
+                    {
+                        Debug.Log($"Footstep receiver not configured correctly for {gameObject.name}");
+                    }
 
                     Invoke(nameof(ResetIsTriggering), footstepCooldown);
                 }

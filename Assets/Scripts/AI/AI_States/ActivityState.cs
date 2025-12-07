@@ -46,6 +46,11 @@ namespace AF
             onStateExit?.Invoke();
             characterManager.agent.enabled = false;
             characterManager.agent.stoppingDistance = defaultStoppingDistance;
+
+            if (characterManager.characterActivityManager.currentActivity != null)
+            {
+                characterManager.characterActivityManager.StopCurrentActivity();
+            }
         }
 
         public override State Tick(StateManager stateManager)

@@ -1,5 +1,6 @@
 using AF.Flags;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace AF.Misc
 {
@@ -18,6 +19,13 @@ namespace AF.Misc
         public string notificationSuffixTextEn;
         public string notificationSuffixTextPt;
 
+        [Header("Sounds")]
+        [SerializeField] AudioClip notificationSound;
+        [SerializeField] Soundbank soundbank;
+
+        [Header("Events")]
+        [SerializeField] UnityEvent onAllBehaviourIDCompleted;
+
         /// <summary>
         /// Unity Event
         /// </summary>
@@ -26,6 +34,16 @@ namespace AF.Misc
             string notificationSuffixText = Utils.IsPortuguese() ? notificationSuffixTextPt : notificationSuffixTextEn;
 
             notificationManager.ShowNotification($"{GetCounter()}/{monoBehaviourIDs.Length}{notificationSuffixText}", notificationSprite);
+
+            if (notificationSound != null)
+            {
+                soundbank.PlaySound(notificationSound);
+            }
+
+            if (GetCounter() >= monoBehaviourIDs.Length)
+            {
+                onAllBehaviourIDCompleted?.Invoke();
+            }
         }
 
         int GetCounter()

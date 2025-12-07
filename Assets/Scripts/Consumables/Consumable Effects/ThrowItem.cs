@@ -8,7 +8,8 @@ namespace AF
     public class ThrowItem : ConsumableEffect
     {
         [Header("Animation")]
-        [SerializeField] string startAnimation = "Throw";
+        [SerializeField] string humanoidStartAnimation = "Throw";
+        [SerializeField] string genericCreatureStartAnimation = "Attack D";
 
         [Header("Throwable Item")]
         [SerializeField] GameObject itemToThrow;
@@ -31,7 +32,18 @@ namespace AF
         public override void OnStart(CharacterBaseManager characterBaseManager)
         {
             characterBaseManager.characterBaseWeaponsManager.HideEquipment();
-            characterBaseManager.PlayBusyAnimationWithRootMotion(startAnimation);
+
+            if (characterBaseManager.combatant.isHumanoid)
+            {
+                characterBaseManager.PlayBusyAnimationWithRootMotion(humanoidStartAnimation);
+            }
+            else
+            {
+                characterBaseManager.PlayBusyAnimationWithRootMotion(genericCreatureStartAnimation);
+            }
+
+            // Destroy any previous placeholder graphic if it exists
+            DestroyPlaceholderGraphic();
 
             itemToThrowGraphicInstance = Instantiate(itemToThrow_GraphicOnly, characterBaseManager.characterTransformHelper.rightHand);
             itemToThrowGraphicInstance.transform.localPosition = consumableLocalPosition;

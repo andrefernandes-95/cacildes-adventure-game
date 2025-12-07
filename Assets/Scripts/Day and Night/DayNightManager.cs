@@ -2,6 +2,7 @@ using AF.Events;
 using TigerForge;
 using UnityEngine;
 using UnityEngine.UIElements;
+using System.Collections;
 
 namespace AF
 {
@@ -21,7 +22,8 @@ namespace AF
 
         [Header("Values")]
         [Range(0, 24)]
-        [TextArea] public string comment = "Put timeOfDay at 0 after finishing playing around with it";
+        [TextArea]
+        public string comment = "Put timeOfDay at 0 after finishing playing around with it";
         public bool tick = true;
 
         [Header("Skyboxes")]
@@ -37,8 +39,14 @@ namespace AF
         public Sprite daySprite;
         public Sprite eveningSprite;
         public Sprite nightSprite;
-        [HideInInspector] public IMGUIContainer dayNightIcon;
-        [HideInInspector] public Label dayNightText;
+
+        private IMGUIContainer dayNightIcon;
+        private Label dayNightText;
+
+        private StyleBackground dawnBg;
+        private StyleBackground dayBg;
+        private StyleBackground eveningBg;
+        private StyleBackground nightBg;
 
         public SceneSettings sceneSettings;
         public bool canUpdateLighting = true;
@@ -49,338 +57,306 @@ namespace AF
         [Header("Systems")]
         public GameSession gameSession;
 
-        bool ShouldUseFog()
-        {
-            if (sceneSettings.sceneLocation != null && sceneSettings.sceneLocation.useFog)
-            {
-                return true;
-            }
+        // Coroutine for smooth lighting
+        private Coroutine lightingCoroutine;
+        private float transitionSpeed = 2f; // can be tuned for smoothness
 
-            return useFog;
+        // -------------------------------------------------
+        // Cached UI Setup
+        // -------------------------------------------------
+
+        private void OnEnable()
+        {
+            CacheUI();
+            EventManager.StartListening(EventMessages.ON_HOUR_CHANGED, OnHourChanged);
+            CacheStyleBackgrounds();
         }
 
-        bool ShouldOverride()
+        private void OnDisable()
         {
-            if (sceneSettings.sceneLocation != null && sceneSettings.sceneLocation.useSceneLightSettings)
-            {
-                return true;
-            }
-
-            return useOverride;
+            EventManager.StopListening(EventMessages.ON_HOUR_CHANGED, OnHourChanged);
         }
 
-        float GetFogDensity()
+        private void CacheUI()
         {
-            if (cavernManager.IsInCavern())
-            {
-                return cavernManager.CavernFogDensity;
-            }
+            if (uIDocumentPlayerHUDV2 == null || uIDocumentPlayerHUDV2.root == null)
+                return;
 
-            if (sceneSettings.sceneLocation != null && sceneSettings.sceneLocation.useSceneLightSettings)
-            {
-                return sceneSettings.sceneLocation.fogDensity;
-            }
-
-            return fogDensity;
+            var root = uIDocumentPlayerHUDV2.root;
+            dayNightIcon = root.Q<IMGUIContainer>("DayTimeIcon");
+            dayNightText = root.Q<VisualElement>("Clock")?.Q<Label>("Value");
         }
 
-        Gradient GetAmbientColor()
+        private void CacheStyleBackgrounds()
         {
-            if (cavernManager.IsInCavern())
-            {
-                return cavernManager.CavernAmbientColor;
-            }
-
-            if (sceneSettings.sceneLocation != null && sceneSettings.sceneLocation.useSceneLightSettings)
-            {
-                return sceneSettings.sceneLocation.AmbientColor;
-            }
-
-            return AmbientColor;
-        }
-
-        Gradient GetDirectionalColor()
-        {
-            if (cavernManager.IsInCavern())
-            {
-                return cavernManager.CavernDirectionalColor;
-            }
-
-            if (sceneSettings.sceneLocation != null && sceneSettings.sceneLocation.useSceneLightSettings)
-            {
-                return sceneSettings.sceneLocation.DirectionalColor;
-            }
-
-            return DirectionalColor;
-        }
-
-        Gradient GetFogColor()
-        {
-            if (cavernManager.IsInCavern())
-            {
-                return cavernManager.CavernFogColor;
-            }
-
-            if (sceneSettings.sceneLocation != null && sceneSettings.sceneLocation.useSceneLightSettings)
-            {
-                return sceneSettings.sceneLocation.FogColor;
-            }
-
-            return FogColor;
+            dawnBg = new StyleBackground(dawnSprite);
+            dayBg = new StyleBackground(daySprite);
+            eveningBg = new StyleBackground(eveningSprite);
+            nightBg = new StyleBackground(nightSprite);
         }
 
         private void Start()
         {
-            RenderSettings.fogDensity = GetFogDensity();
+            SetFogDensity(GetFogDensity());
+            CacheUI();
+            UpdateClockUI();
+            UpdateClockIcon();
+            ForceLightingUpdate();
         }
 
-        /// <summary>
-        /// Unity Event
-        /// </summary>
-        public void AdvanceOneHour()
+        // -------------------------------------------------
+        // Time & Update
+        // -------------------------------------------------
+
+        private void Update()
         {
-            SetHour((int)(gameSession.timeOfDay + 1));
+            if (!Application.isPlaying || gameSession == null)
+                return;
+
+            // update clock (minutes)
+            UpdateClockUI();
+
+            if (!tick || !TimePassageAllowed())
+                return;
+
+            float newTime = gameSession.timeOfDay + Time.deltaTime * gameSession.daySpeed;
+            float copy = newTime % 25f;
+            newTime %= 24f;
+
+            if (copy >= 24f && newTime < 23f)
+                gameSession.daysPassed++;
+
+            SetInternalTime(newTime);
         }
 
-        /// <summary>
-        /// Unity Event
-        /// </summary>
-        public void GoBackOneHour()
+        private void SetInternalTime(float newValue)
         {
-            var targetHour = (int)gameSession.timeOfDay - 1;
-            if (targetHour < 0)
-            {
-                targetHour = 23;
-            }
-
-            SetHour(targetHour);
-        }
-
-        public void SetHour(int hour)
-        {
-            SetTimeOfDay(hour, 0);
-        }
-
-        public void SetTimeOfDay(int hours, int minutes)
-        {
-            var min = (minutes / 60);
-            _SetInternalTimeOfDay(hours + min);
-        }
-
-        void _SetInternalTimeOfDay(float newValue)
-        {
-            var oldHour = Mathf.Round(gameSession.timeOfDay);
+            float oldHour = Mathf.Floor(gameSession.timeOfDay);
             gameSession.timeOfDay = newValue;
 
-
-            if (oldHour != Mathf.Round(newValue))
+            float newHour = Mathf.Floor(newValue);
+            if (newHour != oldHour)
             {
                 EventManager.EmitEvent(EventMessages.ON_HOUR_CHANGED);
             }
         }
 
-        private void OnEnable()
+        // -------------------------------------------------
+        // Hour Event (UI + Lighting)
+        // -------------------------------------------------
+
+        private void OnHourChanged()
         {
-            if (dayNightIcon == null || dayNightText == null)
-            {
-                var root = uIDocumentPlayerHUDV2.root;
-                if (root != null)
-                {
-                    dayNightIcon = root.Q<IMGUIContainer>("DayTimeIcon");
-                    dayNightText = root.Q<VisualElement>("Clock").Q<Label>("Value");
-                }
-            }
-        }
-
-        private void Update()
-        {
-            if (Application.isPlaying)
-            {
-                var newTimeOfDayValue = gameSession.timeOfDay;
-
-                if (TimePassageAllowed() && tick)
-                {
-                    newTimeOfDayValue += Time.deltaTime * gameSession.daySpeed;
-                }
-
-                var copy = newTimeOfDayValue;
-                copy %= 25;
-
-                newTimeOfDayValue %= 24; // Clamp between 0 - 24
-
-                if (copy >= 24 && newTimeOfDayValue >= 0 && newTimeOfDayValue < 23)
-                {
-                    gameSession.daysPassed++;
-                }
-
-
-                _SetInternalTimeOfDay(newTimeOfDayValue);
-            }
-
-
+            UpdateClockIcon();
             if (canUpdateLighting)
-            {
-                UpdateLighting(gameSession.timeOfDay / 24f);
-            }
-
-            ShowClockText();
-            ShowClockIcon();
+                SmoothLightingTransition();
         }
 
-        void ShowClockText()
-        {
-            if (uIDocumentPlayerHUDV2 != null && uIDocumentPlayerHUDV2.root != null && uIDocumentPlayerHUDV2.isActiveAndEnabled)
-            {
-                dayNightText = uIDocumentPlayerHUDV2.root.Q<VisualElement>("Clock").Q<Label>("Value");
-            }
+        // -------------------------------------------------
+        // CLOCK UI
+        // -------------------------------------------------
 
-            if (dayNightText == null)
-            {
+        private void UpdateClockUI()
+        {
+            if (dayNightText == null || gameSession == null)
                 return;
-            }
 
-            var hour = (int)gameSession.timeOfDay;
-            var minutes = Mathf.Abs(hour - gameSession.timeOfDay) * 60;
-            minutes = (int)System.Math.Round(minutes, 2);
-            string hourString = hour.ToString();
-            if (hourString.Length == 1)
-            {
-                hourString = "0" + hour.ToString();
-            }
-
-            string minutesString = minutes.ToString();
-            if (minutesString.Length == 1)
-            {
-                minutesString = "0" + minutesString;
-            }
-
-            dayNightText.text = hourString + ":" + minutesString;
+            int hour = Mathf.FloorToInt(gameSession.timeOfDay);
+            int minutes = Mathf.FloorToInt((gameSession.timeOfDay - hour) * 60);
+            dayNightText.text = $"{hour:00}:{minutes:00}";
         }
 
-        void ShowClockIcon()
+        private void UpdateClockIcon()
         {
-            if (uIDocumentPlayerHUDV2.isActiveAndEnabled && uIDocumentPlayerHUDV2 != null && uIDocumentPlayerHUDV2.root != null)
-            {
-                dayNightIcon = uIDocumentPlayerHUDV2.root.Q<IMGUIContainer>("DayTimeIcon");
-            }
-
             if (dayNightIcon == null)
-            {
                 return;
-            }
 
-            if (gameSession.timeOfDay >= 5 && gameSession.timeOfDay < 8)
-            {
-                dayNightIcon.style.backgroundImage = new StyleBackground(dawnSprite);
-            }
-            else if (gameSession.timeOfDay > 8 && gameSession.timeOfDay < 17)
-            {
-                dayNightIcon.style.backgroundImage = new StyleBackground(daySprite);
-            }
-            else if (gameSession.timeOfDay > 17 && gameSession.timeOfDay < 21)
-            {
-                dayNightIcon.style.backgroundImage = new StyleBackground(eveningSprite);
-            }
-            else if (gameSession.timeOfDay >= 0 && gameSession.timeOfDay < 5 || gameSession.timeOfDay > 21 && gameSession.timeOfDay <= 24)
-            {
-                dayNightIcon.style.backgroundImage = new StyleBackground(nightSprite);
-            }
+            float t = gameSession.timeOfDay;
+
+            if (t >= 5 && t < 8) dayNightIcon.style.backgroundImage = dawnBg;
+            else if (t >= 8 && t < 17) dayNightIcon.style.backgroundImage = dayBg;
+            else if (t >= 17 && t < 21) dayNightIcon.style.backgroundImage = eveningBg;
+            else dayNightIcon.style.backgroundImage = nightBg;
         }
 
-        void UpdateLighting(float timePercent)
+        // -------------------------------------------------
+        // LIGHTING (Smooth Coroutine)
+        // -------------------------------------------------
+
+        void ForceLightingUpdate()
         {
-            if (gameSession.timeOfDay >= 7 && gameSession.timeOfDay < 18f)
+            if (lightingCoroutine != null)
+                StopCoroutine(lightingCoroutine);
+
+            lightingCoroutine = StartCoroutine(LightingTransitionCoroutine(1f));
+        }
+
+        public void UpdateLighting()
+        {
+            SmoothLightingTransition();
+        }
+
+        private void SmoothLightingTransition()
+        {
+            if (lightingCoroutine != null)
+                StopCoroutine(lightingCoroutine);
+
+            lightingCoroutine = StartCoroutine(LightingTransitionCoroutine(0f));
+        }
+
+        private IEnumerator LightingTransitionCoroutine(float instant)
+        {
+            float timePercent = gameSession.timeOfDay / 24f;
+
+            Color startAmbient = RenderSettings.ambientLight;
+            Color targetAmbient = (ShouldOverride() ? GetAmbientColor() : gameSession.AmbientColor).Evaluate(timePercent);
+
+            Color startFog = RenderSettings.fogColor;
+            Color targetFog = (ShouldOverride() ? GetFogColor() : gameSession.FogColor).Evaluate(timePercent);
+
+            Color startLight = directionalLight != null ? directionalLight.color : Color.white;
+            Color targetLight = (ShouldOverride() ? GetDirectionalColor() : gameSession.DirectionalColor).Evaluate(timePercent);
+
+            Quaternion startRot = directionalLight != null ? directionalLight.transform.localRotation : Quaternion.identity;
+            Quaternion targetRot = Quaternion.Euler(new Vector3((timePercent * 360f) - 90f, -170f, 0));
+
+            // Skybox immediate (cannot lerp)
+            UpdateSkybox();
+
+            bool fogEnabled = ShouldUseFog();
+            RenderSettings.fog = fogEnabled;
+            if (fogEnabled)
+                RenderSettings.fogDensity = GetFogDensity();
+
+            if (instant >= 1f)
             {
-                RenderSettings.skybox = daySky;
-            }
-            else if (gameSession.timeOfDay >= 18f && gameSession.timeOfDay < 20)
-            {
-                RenderSettings.skybox = duskSky;
-            }
-            else if (gameSession.timeOfDay >= 20 && gameSession.timeOfDay <= 22)
-            {
-                RenderSettings.skybox = nightfallSky;
-            }
-            else if (gameSession.timeOfDay >= 22 && gameSession.timeOfDay <= 24 || gameSession.timeOfDay >= 0 && gameSession.timeOfDay < 5)
-            {
-                RenderSettings.skybox = nightSky;
-            }
-            else if (gameSession.timeOfDay >= 5 && gameSession.timeOfDay < 7)
-            {
-                RenderSettings.skybox = dawnSky;
+                // immediate
+                RenderSettings.ambientLight = targetAmbient;
+                if (fogEnabled) RenderSettings.fogColor = targetFog;
+                if (directionalLight != null)
+                {
+                    directionalLight.color = targetLight;
+                    directionalLight.transform.localRotation = targetRot;
+                }
+
+                yield break;
             }
 
-            // --- Colors ---
-            Color targetAmbient = ShouldOverride() ? GetAmbientColor().Evaluate(timePercent) : gameSession.AmbientColor.Evaluate(timePercent);
-            Color targetFog = ShouldOverride() ? GetFogColor().Evaluate(timePercent) : gameSession.FogColor.Evaluate(timePercent);
-            Color targetLightColor = ShouldOverride() ? GetDirectionalColor().Evaluate(timePercent) : gameSession.DirectionalColor.Evaluate(timePercent);
-
-            // Lerp toward targets for smooth transitions
-            RenderSettings.ambientLight = Color.Lerp(RenderSettings.ambientLight, targetAmbient, Time.deltaTime * 2f);
-
-            if (ShouldUseFog())
+            float t = 0f;
+            while (t < 1f)
             {
-                RenderSettings.fogColor = Color.Lerp(RenderSettings.fogColor, targetFog, Time.deltaTime * 2f);
-            }
+                t += Time.deltaTime * transitionSpeed;
+                RenderSettings.ambientLight = Color.Lerp(startAmbient, targetAmbient, t);
+                if (fogEnabled)
+                    RenderSettings.fogColor = Color.Lerp(startFog, targetFog, t);
 
-            if (directionalLight != null)
-            {
-                directionalLight.color = Color.Lerp(directionalLight.color, targetLightColor, Time.deltaTime * 2f);
+                if (directionalLight != null)
+                {
+                    directionalLight.color = Color.Lerp(startLight, targetLight, t);
+                    directionalLight.transform.localRotation = Quaternion.Slerp(startRot, targetRot, t);
+                }
 
-                // Smooth rotation for the sun
-                Quaternion targetRotation = Quaternion.Euler(new Vector3((timePercent * 360f) - 90f, -170f, 0));
-                directionalLight.transform.localRotation = Quaternion.Lerp(
-                    directionalLight.transform.localRotation,
-                    targetRotation,
-                    Time.deltaTime * 2f
-                );
+                yield return null;
             }
         }
 
+        private void UpdateSkybox()
+        {
+            float tod = gameSession.timeOfDay;
+
+            if (tod >= 7 && tod < 18) RenderSettings.skybox = daySky;
+            else if (tod >= 18 && tod < 20) RenderSettings.skybox = duskSky;
+            else if (tod >= 20 && tod < 22) RenderSettings.skybox = nightfallSky;
+            else if (tod >= 22 || tod < 5) RenderSettings.skybox = nightSky;
+            else if (tod >= 5 && tod < 7) RenderSettings.skybox = dawnSky;
+        }
+
+        // -------------------------------------------------
+        // Helpers
+        // -------------------------------------------------
+
+        public void AdvanceOneHour() => SetHour((int)(gameSession.timeOfDay + 1));
+        public void GoBackOneHour() => SetHour((int)(gameSession.timeOfDay + 23) % 24);
+        public void SetHour(int hour) => SetTimeOfDay(hour, 0);
+        public void SetTimeOfDay(int hours, int minutes) => SetInternalTime(hours + (minutes / 60f));
 
         public bool TimePassageAllowed()
         {
-            if (sceneSettings != null)
-            {
-                if (sceneSettings.sceneLocation != null)
-                {
-                    return !sceneSettings.sceneLocation.isInterior;
-                }
+            if (sceneSettings?.sceneLocation != null)
+                return !sceneSettings.sceneLocation.isInterior;
 
-                return !sceneSettings.isInterior;
-            }
-
-            return false;
+            return sceneSettings == null || !sceneSettings.isInterior;
         }
 
         private void OnValidate()
         {
             if (directionalLight != null)
-            {
                 return;
-            }
 
             if (RenderSettings.sun != null)
             {
                 directionalLight = RenderSettings.sun;
+                return;
             }
-            else
+
+            foreach (var light in FindObjectsByType<Light>(FindObjectsInactive.Include, FindObjectsSortMode.None))
             {
-                Light[] lights = FindObjectsByType<Light>(FindObjectsInactive.Include, FindObjectsSortMode.None);
-                foreach (Light light in lights)
+                if (light.type == LightType.Directional)
                 {
-                    if (light.type == LightType.Directional)
-                    {
-                        directionalLight = light;
-                    }
+                    directionalLight = light;
+                    break;
                 }
             }
         }
 
-        public void SetFogDensity(float value)
+        // -------------------------------------------------
+        // Environment Values
+        // -------------------------------------------------
+
+        bool ShouldUseFog()
         {
-            this.fogDensity = value;
-            RenderSettings.fogDensity = fogDensity;
+            if (cavernManager.IsInCavern()) return true;
+            if (sceneSettings?.sceneLocation != null && sceneSettings.sceneLocation.useFog) return true;
+            return useFog;
         }
+
+        bool ShouldOverride()
+        {
+            return (sceneSettings?.sceneLocation != null && sceneSettings.sceneLocation.useSceneLightSettings) || useOverride;
+        }
+
+        float GetFogDensity()
+        {
+            if (cavernManager.IsInCavern())
+                return cavernManager.currentCavern.CavernFogDensity;
+
+            if (sceneSettings?.sceneLocation != null && sceneSettings.sceneLocation.useSceneLightSettings)
+                return sceneSettings.sceneLocation.fogDensity;
+
+            return fogDensity;
+        }
+
+        Gradient GetAmbientColor() =>
+            cavernManager.IsInCavern()
+                ? cavernManager.currentCavern.CavernAmbientColor
+                : sceneSettings?.sceneLocation != null && sceneSettings.sceneLocation.useSceneLightSettings
+                    ? sceneSettings.sceneLocation.AmbientColor
+                    : AmbientColor;
+
+        Gradient GetDirectionalColor() =>
+            cavernManager.IsInCavern()
+                ? cavernManager.currentCavern.CavernDirectionalColor
+                : sceneSettings?.sceneLocation != null && sceneSettings.sceneLocation.useSceneLightSettings
+                    ? sceneSettings.sceneLocation.DirectionalColor
+                    : DirectionalColor;
+
+        Gradient GetFogColor() =>
+            cavernManager.IsInCavern()
+                ? cavernManager.currentCavern.CavernFogColor
+                : sceneSettings?.sceneLocation != null && sceneSettings.sceneLocation.useSceneLightSettings
+                    ? sceneSettings.sceneLocation.FogColor
+                    : FogColor;
+
+        public void SetFogDensity(float value) => RenderSettings.fogDensity = value;
     }
 }

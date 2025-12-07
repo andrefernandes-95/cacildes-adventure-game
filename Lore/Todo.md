@@ -35,6 +35,7 @@ Achievement Ideas
 - Mimic chest defeat (mimic-chest.png)
 - Gargoyle Boss (gargoyle.png)
 
+- Shield that acts a mirror, deflecting damage
 
 To Do:
 - Companions should mirror player stats

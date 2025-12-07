@@ -2,6 +2,7 @@
 using System.Collections;
 using TigerForge;
 using AF.Events;
+using UnityEngine.Events;
 
 namespace AF.Music
 {
@@ -20,9 +21,13 @@ namespace AF.Music
         [SerializeField] MusicPlayerHUD musicPlayerHUD;
 
         private Coroutine musicCoroutine;
+        private Coroutine musicalEffectCoroutine;
         private Coroutine fadeCoroutine;
 
         private AudioClip mainMusic;
+
+        // Events
+        [HideInInspector] public UnityEvent onMusicStopped;
 
         private void Awake()
         {
@@ -47,13 +52,18 @@ namespace AF.Music
             musicPlayerHUD.DisplayMusic(clip);
         }
 
-        public void StopMusic() => FadeOutMusic(clearClip: true);
+        public void StopMusic()
+        {
+            FadeOutMusic(clearClip: true);
+            onMusicStopped?.Invoke();
+        }
 
         public void StopMusicImmediately()
         {
             StopAllCoroutines();
             bgmAudioSource.Stop();
             bgmAudioSource.clip = null;
+            onMusicStopped?.Invoke();
         }
 
         private IEnumerator TransitionMusicCoroutine(AudioClip newClip)
@@ -131,8 +141,8 @@ namespace AF.Music
         public void PlayMusicalEffect(AudioClip effectClip)
         {
             if (effectClip == null) return;
-            StopCoroutineSafe(ref musicCoroutine);
-            musicCoroutine = StartCoroutine(MusicalEffectCoroutine(effectClip));
+            StopCoroutineSafe(ref musicalEffectCoroutine);
+            musicalEffectCoroutine = StartCoroutine(MusicalEffectCoroutine(effectClip));
         }
 
         private IEnumerator MusicalEffectCoroutine(AudioClip effectClip)

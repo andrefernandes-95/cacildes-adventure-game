@@ -1,4 +1,6 @@
 using AF.Companions;
+using AF.Events;
+using TigerForge;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Events;
@@ -31,12 +33,22 @@ namespace AF
         PlayerManager playerManager;
         public CompanionsDatabase companionsDatabase;
 
+        [Header("Taunt Animation On First Time Spotting Target")]
+        bool hasPlayedTauntAnimation = false;
+        [SerializeField] bool playTauntAnimation = false;
+        [SerializeField] string tauntAnimationName = "Taunt";
+
         private void Awake()
         {
             if (characterManager.IsCompanion())
             {
                 playerManager = FindAnyObjectByType<PlayerManager>(FindObjectsInactive.Include);
             }
+
+            EventManager.StartListening(EventMessages.ON_LEAVING_BONFIRE, () =>
+            {
+                hasPlayedTauntAnimation = false;
+            });
         }
 
         public override void OnStateEnter(StateManager stateManager)
@@ -44,6 +56,12 @@ namespace AF
             currentIntervalBetweenChaseActions = 0f;
             onStateEnter?.Invoke();
             characterManager.agent.enabled = true;
+
+            if (!hasPlayedTauntAnimation && playTauntAnimation)
+            {
+                hasPlayedTauntAnimation = true;
+                characterManager.PlayBusyAnimationWithRootMotion(tauntAnimationName);
+            }
         }
 
         public override void OnStateExit(StateManager stateManager)

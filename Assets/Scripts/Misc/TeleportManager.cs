@@ -13,6 +13,7 @@ namespace AF
     {
         [Header("Game Session")]
         public GameSession gameSession;
+        [SerializeField] TempDataFromSaveFile tempDataFromSaveFile;
 
         [Header("Databases")]
         public BonfiresDatabase bonfiresDatabase;
@@ -80,11 +81,11 @@ namespace AF
 
         void SpawnPlayer()
         {
-            if (gameSession.loadSavedPlayerPositionAndRotation)
+            if (tempDataFromSaveFile.loadSavedPlayerPositionAndRotation)
             {
-                gameSession.loadSavedPlayerPositionAndRotation = false;
+                tempDataFromSaveFile.loadSavedPlayerPositionAndRotation = false;
 
-                playerManager.playerComponentManager.UpdatePosition(gameSession.savedPlayerPosition, gameSession.savedPlayerRotation);
+                playerManager.playerComponentManager.UpdatePosition(tempDataFromSaveFile.savedPlayerPosition, tempDataFromSaveFile.savedPlayerRotation);
             }
             else if (gameSession.nextMap_SpawnLocationData != null)
             {

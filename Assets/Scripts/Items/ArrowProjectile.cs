@@ -88,7 +88,7 @@ namespace AF
 
         bool CanDamageTarget(CharacterBaseDamageReceiver damageReceiver)
         {
-            if (damageReceiver == null)
+            if (damageReceiver == null || shooter == null)
             {
                 return false;
             }

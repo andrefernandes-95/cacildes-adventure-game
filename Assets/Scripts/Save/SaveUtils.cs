@@ -2,10 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using AF.Companions;
 using AF.Inventory;
-using AF.Pickups;
-using AYellowpaper.SerializedCollections;
 using CI.QuickSave;
 using UnityEngine;
 

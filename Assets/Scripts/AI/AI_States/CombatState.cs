@@ -34,7 +34,8 @@ namespace AF
 
         public override State Tick(StateManager stateManager)
         {
-            if (!characterManager.IsTargetInView())
+            // If target is in the back and we can counter-attack, try it
+            if (!characterManager.IsTargetInView() && characterManager.characterCombatController.backCombatAbilities.Count > 0)
             {
                 characterManager.characterCombatController.CheckForBackActions();
                 return this;

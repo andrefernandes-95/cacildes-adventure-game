@@ -14,7 +14,6 @@ using System.Linq;
 using AF.Shops;
 using AF.Detection;
 
-
 namespace AF
 {
     public class CharacterManager : CharacterBaseManager
@@ -55,6 +54,7 @@ namespace AF
         public float patrolSpeed = 2f;
         public float chaseSpeed = 4.5f;
         public float rotationSpeed = 6f;
+        public float minimumAgentMagnitudeToAllowSpeed = 0.1f;
 
         [Header("Cutting Distance To Target")]
         public float cutDistanceToTargetSpeed = 2;
@@ -154,6 +154,7 @@ namespace AF
             characterAbilityManager.ResetStates();
             characterActivityManager.ResetStates();
             characterConsumableManager.ResetStates();
+            characterDodgeController.ResetStates();
 
             faceTarget = false;
         }
@@ -331,6 +332,11 @@ namespace AF
                         direction += agent.transform.forward * 2f;
                     }
 
+                    if (agent.velocity.magnitude <= 0.1f)
+                    {
+                        speed = 0f;
+                    }
+
                     characterController.Move(speed * Time.deltaTime * direction);
 
                     HandleAgentRotation();
@@ -367,7 +373,7 @@ namespace AF
             }
 
             // Patrolling / Running / Fleeing
-            else if (agent.enabled && agent.velocity.magnitude > 0.1f)
+            else if (agent.enabled && agent.velocity.magnitude > 0.1f && !characterPushController.IsPushed())
             {
                 float speed = ShouldRun() ? 1f : 0.5f;
                 animator.SetFloat(speedParameter, speed);
@@ -682,5 +688,6 @@ namespace AF
         {
             return characterAnimationEventListener != null ? characterAnimationEventListener.animatorSpeed : 1f;
         }
+
     }
 }

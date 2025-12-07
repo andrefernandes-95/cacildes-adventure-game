@@ -84,6 +84,7 @@ namespace AF
         [Header("Components")]
         public PlayerStatsDatabase playerStatsDatabase;
         public EquipmentDatabase equipmentDatabase;
+        public GameSession gameSession;
 
         public InventoryDatabase inventoryDatabase;
 
@@ -97,6 +98,11 @@ namespace AF
 
         public void LoadPlayerPreset()
         {
+            if (gameSession != null)
+            {
+                gameSession.gameState = GameSession.GameState.INITIALIZED_AND_SHOWN_TITLE_SCREEN;
+            }
+
             LoadStats();
             LoadInventory();
             LoadEquipment();
