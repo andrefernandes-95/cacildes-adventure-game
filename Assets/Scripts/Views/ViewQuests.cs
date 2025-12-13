@@ -90,7 +90,15 @@ namespace AF
                 return;
             }
 
-            selectedQuest.TrackQuest();
+            if (selectedQuest.isTracked)
+            {
+                selectedQuest.UntrackQuest();
+            }
+            else
+            {
+                selectedQuest.TrackQuest();
+            }
+
             RedrawUI();
             soundbank.PlaySound(trackQuestSound);
 

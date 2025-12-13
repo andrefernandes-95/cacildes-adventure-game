@@ -202,7 +202,8 @@
         int GetJumpAttackBonus()
         {
             float str = GetCharacter().characterBaseStats.GetDexterity();
-            return (int)(10 + Mathf.Pow(str, 0.9f) * 1.5f + GetCharacter().statsBonusController.jumpAttackBonusMultiplier);
+            int jumpAttackBonus = (int)(10 + Mathf.Pow(str, 0.9f) * 1.5f + GetCharacter().statsBonusController.jumpAttackBonusMultiplier);
+            return jumpAttackBonus;
         }
 
         int GetHeavyAttackBonus()

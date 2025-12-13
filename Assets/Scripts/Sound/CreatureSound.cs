@@ -12,6 +12,7 @@ namespace AF
         public AudioClip[] roars;
         public AudioClip[] hurt;
         public AudioClip[] death;
+        public AudioClip[] footstep;
 
     }
 }

@@ -120,7 +120,7 @@ namespace AF
             foreach (var resistance in GetDamageAbsorbed().statusEffects)
             {
 
-                if (resistance != null && resistance.statusEffect != null && resistance.statusEffect.GetName().Length > 0)
+                if (resistance != null && resistance.statusEffect != null && resistance.statusEffect.GetName().Length > 0 && resistance.amountPerHit > 0)
                 {
                     result += $"+{resistance.amountPerHit} {resistenceAgainstLabel} {resistance.statusEffect.GetName()}\n";
                 }

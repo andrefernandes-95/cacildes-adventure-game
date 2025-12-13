@@ -17,6 +17,7 @@ namespace AF
         [Header("Components")]
         public PlayerManager playerManager;
         [SerializeField] GameSettings gameSettings;
+        [SerializeField] StarterAssetsInputs starterAssetsInputs;
 
         public Soundbank soundbank;
         public CursorManager cursorManager;
@@ -123,9 +124,27 @@ namespace AF
         public List<string> eyebrows = new();
         public List<string> beards = new();
 
+        // Cached sliders
+        SliderInt bodyTypeSlider;
+        SliderInt faceTypeSlider;
+        SliderInt hairTypeSlider;
+        SliderInt eyebrowTypeSlider;
+        SliderInt beardTypeSlider;
+
+        SliderInt hairColorSlider;
+        SliderInt bodyColorSlider;
+        SliderInt eyeColorSlider;
+        SliderInt tattooColorSlider;
+        SliderInt portraitSlider;
+
+        VisualElement portraitPreview;
+
+
         private void Awake()
         {
             gameObject.SetActive(false);
+
+            starterAssetsInputs.onMenuEvent.AddListener(Close);
         }
 
         private void OnEnable()
@@ -205,128 +224,120 @@ namespace AF
 
         void SetupColorSliders()
         {
-            SliderInt hairColorSlider = root.Q<SliderInt>("HairColorSlider");
-            hairColorSlider.value = availableColors.IndexOf(gameSettings.hairColor);
-            hairColorSlider.lowValue = 0;
-            hairColorSlider.highValue = availableColors.Count - 1;
+            hairColorSlider = root.Q<SliderInt>("HairColorSlider");
+            bodyColorSlider = root.Q<SliderInt>("BodyColorSlider");
+            eyeColorSlider = root.Q<SliderInt>("EyeColorSlider");
+            tattooColorSlider = root.Q<SliderInt>("TattooColorSlider");
+            portraitSlider = root.Q<SliderInt>("PortraitSlider");
 
-            hairColorSlider.RegisterValueChangedCallback(ev =>
+            portraitPreview = root.Q<VisualElement>("PortraitPreview");
+
+            SetupColorSlider(hairColorSlider, gameSettings.hairColor, c => gameSettings.hairColor = c);
+            SetupColorSlider(bodyColorSlider, gameSettings.skinColor, c => gameSettings.skinColor = c);
+            SetupColorSlider(eyeColorSlider, gameSettings.eyeColor, c => gameSettings.eyeColor = c);
+            SetupColorSlider(tattooColorSlider, gameSettings.tattooColor, c => gameSettings.tattooColor = c);
+
+            portraitSlider.lowValue = 0;
+            portraitSlider.highValue = portraits.Length - 1;
+            portraitSlider.value = Mathf.Clamp(gameSettings.playerPortrait, 0, portraits.Length - 1);
+
+            portraitPreview.style.backgroundImage =
+                new StyleBackground(portraits[portraitSlider.value]);
+
+            portraitSlider.RegisterValueChangedCallback(ev =>
             {
-                int indx = (int)ev.newValue;
-                gameSettings.hairColor = availableColors[indx];
+                gameSettings.playerPortrait = ev.newValue;
+                portraitPreview.style.backgroundImage =
+                    new StyleBackground(portraits[ev.newValue]);
                 OnCharacterCustomized();
             });
+        }
 
-            SliderInt bodyColorSlider = root.Q<SliderInt>("BodyColorSlider");
-            bodyColorSlider.value = availableColors.IndexOf(gameSettings.skinColor);
-            bodyColorSlider.lowValue = 0;
-            bodyColorSlider.highValue = availableColors.Count - 1;
-            bodyColorSlider.RegisterValueChangedCallback(ev =>
+        void SetupColorSlider(
+            SliderInt slider,
+            string currentColor,
+            Action<string> onChanged)
+        {
+            slider.lowValue = 0;
+            slider.highValue = availableColors.Count - 1;
+
+            int index = availableColors.IndexOf(currentColor);
+            slider.value = index >= 0 ? index : 0;
+
+            slider.RegisterValueChangedCallback(ev =>
             {
-                int indx = (int)ev.newValue;
-                gameSettings.skinColor = availableColors[indx];
-                OnCharacterCustomized();
-            });
-
-
-            SliderInt eyeColorSlider = root.Q<SliderInt>("EyeColorSlider");
-            eyeColorSlider.value = availableColors.IndexOf(gameSettings.eyeColor);
-            eyeColorSlider.lowValue = 0;
-            eyeColorSlider.highValue = availableColors.Count - 1;
-            eyeColorSlider.RegisterValueChangedCallback(ev =>
-            {
-                int indx = (int)ev.newValue;
-                gameSettings.eyeColor = availableColors[indx];
-                OnCharacterCustomized();
-            });
-
-            SliderInt tattooColorSlider = root.Q<SliderInt>("TattooColorSlider");
-            tattooColorSlider.value = availableColors.IndexOf(gameSettings.tattooColor);
-            tattooColorSlider.lowValue = 0;
-            tattooColorSlider.highValue = availableColors.Count - 1;
-            tattooColorSlider.RegisterValueChangedCallback(ev =>
-            {
-                int indx = (int)ev.newValue;
-                gameSettings.tattooColor = availableColors[indx];
-                OnCharacterCustomized();
-            });
-
-            VisualElement portraitPreview = root.Q<VisualElement>("PortraitPreview");
-            portraitPreview.style.backgroundImage = new StyleBackground(portraits[gameSettings.playerPortrait]);
-
-            SliderInt portrairSlider = root.Q<SliderInt>("PortraitSlider");
-            portrairSlider.value = gameSettings.playerPortrait;
-            portrairSlider.lowValue = 0;
-            portrairSlider.highValue = portraits.Length - 1;
-            portrairSlider.RegisterValueChangedCallback(ev =>
-            {
-                gameSettings.playerPortrait = (int)ev.newValue;
-                portraitPreview.style.backgroundImage = new StyleBackground(portraits[gameSettings.playerPortrait]);
+                onChanged.Invoke(availableColors[ev.newValue]);
                 OnCharacterCustomized();
             });
         }
 
         void SetupTypeSliders()
         {
-            SliderInt bodyTypeSlider = root.Q<SliderInt>("BodyTypeSlider");
-            bodyTypeSlider.value = gameSettings.isMale ? 0 : 1;
+            bodyTypeSlider = root.Q<SliderInt>("BodyTypeSlider");
+            faceTypeSlider = root.Q<SliderInt>("FaceTypeSlider");
+            hairTypeSlider = root.Q<SliderInt>("HairTypeSlider");
+            eyebrowTypeSlider = root.Q<SliderInt>("EyebrowTypeSlider");
+            beardTypeSlider = root.Q<SliderInt>("BeardTypeSlider");
+
             bodyTypeSlider.lowValue = 0;
             bodyTypeSlider.highValue = 1;
+            bodyTypeSlider.value = gameSettings.isMale ? 0 : 1;
             bodyTypeSlider.RegisterValueChangedCallback(ev =>
             {
                 HandleBodyTypeChange(ev.newValue);
+                RefreshFaceSlider();
+                OnCharacterCustomized();
             });
 
-            SliderInt faceTypeSlider = root.Q<SliderInt>("FaceTypeSlider");
+            SetupIndexedSlider(
+                faceTypeSlider,
+                gameSettings.isMale ? maleFaces : femaleFaces,
+                gameSettings.face,
+                HandleFaceChange);
 
-            if (gameSettings.isMale)
-            {
-                faceTypeSlider.value = Array.IndexOf(maleFaces.ToArray(), gameSettings.face);
-            }
-            else
-            {
-                faceTypeSlider.value = Array.IndexOf(femaleFaces.ToArray(), gameSettings.face);
-            }
+            SetupIndexedSlider(
+                hairTypeSlider,
+                hairs,
+                gameSettings.hair,
+                HandleHairChange);
 
-            faceTypeSlider.lowValue = 0;
-            faceTypeSlider.highValue = gameSettings.isMale ? maleFaces.Count : femaleFaces.Count;
-            faceTypeSlider.RegisterValueChangedCallback(ev =>
-            {
-                HandleFaceChange((int)ev.newValue);
-            });
+            SetupIndexedSlider(
+                eyebrowTypeSlider,
+                eyebrows,
+                gameSettings.eyebrows,
+                HandleEyebrowsChange);
 
-            SliderInt hairTypeSlider = root.Q<SliderInt>("HairTypeSlider");
-            hairTypeSlider.value = Array.IndexOf(hairs.ToArray(), gameSettings.hair);
-            hairTypeSlider.lowValue = 0;
-            hairTypeSlider.highValue = hairs.Count;
-            hairTypeSlider.RegisterValueChangedCallback(ev =>
-            {
-                HandleHairChange((int)ev.newValue);
-            });
+            SetupIndexedSlider(
+                beardTypeSlider,
+                beards,
+                gameSettings.beard,
+                HandleBeardChange);
+        }
 
-            SliderInt eyebrowTypeSlider = root.Q<SliderInt>("EyebrowTypeSlider");
-            eyebrowTypeSlider.value = Array.IndexOf(eyebrows.ToArray(), gameSettings.eyebrows);
-            eyebrowTypeSlider.lowValue = 0;
-            eyebrowTypeSlider.highValue = eyebrows.Count;
-            eyebrowTypeSlider.RegisterValueChangedCallback(ev =>
-            {
-                HandleEyebrowsChange((int)ev.newValue);
-            });
+        void SetupIndexedSlider(
+            SliderInt slider,
+            List<string> source,
+            string currentValue,
+            Action<int> onChanged)
+        {
+            slider.lowValue = 0;
+            slider.highValue = source.Count - 1;
 
-            SliderInt beardTypeSlider = root.Q<SliderInt>("BeardTypeSlider");
-            beardTypeSlider.value = Array.IndexOf(beards.ToArray(), gameSettings.beard);
-            beardTypeSlider.lowValue = 0;
-            beardTypeSlider.highValue = beards.Count;
-            beardTypeSlider.RegisterValueChangedCallback(ev =>
-            {
-                HandleBeardChange((int)ev.newValue);
-            });
+            int index = source.IndexOf(currentValue);
+            slider.value = index >= 0 ? index : 0;
+
+            slider.RegisterValueChangedCallback(ev => onChanged(ev.newValue));
+        }
+
+        void RefreshFaceSlider()
+        {
+            var list = gameSettings.isMale ? maleFaces : femaleFaces;
+            SetupIndexedSlider(faceTypeSlider, list, list[0], HandleFaceChange);
         }
 
         void HandleBodyTypeChange(int value)
         {
             gameSettings.isMale = value == 0;
-            OnCharacterCustomized();
             EventManager.EmitEvent(EventMessages.ON_BODY_TYPE_CHANGED);
         }
 
@@ -385,16 +396,23 @@ namespace AF
         void ResetDefaults()
         {
             gameSettings.playerName = gameSettings.defaultPlayerName;
-            gameSettings.isMale = true;
-            gameSettings.hair = hairs[0];
-            gameSettings.face = maleFaces[0];
-            gameSettings.beard = beards[0];
-            gameSettings.eyebrows = eyebrows[0];
-            gameSettings.skinColor = gameSettings.defaultSkinColor;
-            gameSettings.hairColor = gameSettings.defaultHairColor;
-            gameSettings.eyeColor = gameSettings.defaultEyeColor;
-            gameSettings.tattooColor = gameSettings.defaultTattooColor;
-            gameSettings.playerPortrait = 0;
+
+            bodyTypeSlider.value = 0; // Male default
+            hairTypeSlider.value = 0;
+            faceTypeSlider.value = 0;
+            eyebrowTypeSlider.value = 0;
+            beardTypeSlider.value = 0;
+
+            hairColorSlider.value = availableColors.IndexOf(gameSettings.defaultHairColor);
+            bodyColorSlider.value = availableColors.IndexOf(gameSettings.defaultSkinColor);
+            eyeColorSlider.value = availableColors.IndexOf(gameSettings.defaultEyeColor);
+            tattooColorSlider.value = availableColors.IndexOf(gameSettings.defaultTattooColor);
+
+            portraitSlider.value = 0;
+
+            portraitPreview.style.backgroundImage =
+                new StyleBackground(portraits[0]);
+
             OnCharacterCustomized();
         }
 

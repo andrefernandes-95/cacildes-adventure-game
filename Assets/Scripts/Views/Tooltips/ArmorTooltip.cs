@@ -94,7 +94,11 @@ namespace AF
 
             if (armor.GetDamageAbsorbed().statusEffects != null && armor.GetDamageAbsorbed().statusEffects.Length > 0)
             {
-                itemTooltip.CreateTooltip(GUIIconsDatabase.statusEffects, Color.white, armor.GetFormattedStatusResistances());
+                string label = armor.GetFormattedStatusResistances();
+                if (!string.IsNullOrEmpty(label))
+                {
+                    itemTooltip.CreateTooltip(GUIIconsDatabase.statusEffects, Color.white, label);
+                }
             }
 
             if (armor.statusEffectDelayRates != null && armor.statusEffectDelayRates.Length > 0)

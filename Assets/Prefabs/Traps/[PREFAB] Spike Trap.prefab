@@ -337,6 +337,7 @@ MonoBehaviour:
   onMoment_End:
     m_PersistentCalls:
       m_Calls: []
+  skipTurnCapturableOnMomentEnd: 0
 --- !u!1 &4373227698562338246
 GameObject:
   m_ObjectHideFlags: 0
@@ -573,6 +574,7 @@ MonoBehaviour:
   target: {fileID: 0}
   tagsToDetect:
   - Player
+  - Enemy
   intervalBetweenInvokations: 1
   requirePlayerDodgeToTrigger: 0
   onTriggerEnterEvent:
@@ -817,6 +819,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   projectile: {fileID: 0}
   damage:
+    basePhysicalDamage: 0
     physical: 200
     fire: 0
     frost: 0
@@ -832,9 +835,15 @@ MonoBehaviour:
     ignoreBlocking: 0
     canNotBeParried: 0
     damageType: 0
+    strengthScaling: 5
+    dexterityScaling: 5
+    intelligenceScaling: 5
   damageOwner: {fileID: 0}
   damageCooldown: 1
   onParticleDamage:
+    m_PersistentCalls:
+      m_Calls: []
+  onColliding:
     m_PersistentCalls:
       m_Calls: []
   doubleDamageOnNightTime: 0
@@ -842,5 +851,6 @@ MonoBehaviour:
   healingAmount: -1
   tagsToDetect:
   - Player
+  - Enemy
   onTriggerEnter: 1
   onTriggerStay: 0

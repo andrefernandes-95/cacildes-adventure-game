@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using AF.Stats;
 using UnityEngine;
 
@@ -10,6 +11,7 @@ namespace AF
         [Header("Regeneration Settings")]
         public float STAMINA_REGENERATION_RATE = 20f;
         public float STAMINA_REGENERATION_RATE_BONUS = 0f;
+        public float staminaRegenerationBonusMultiplier = 1f;
         public float negativeStaminaRegenerationBonus = 0f;
         public const float EMPTY_STAMINA_REGENERATION_DELAY = .85f;
         public bool shouldRegenerateStamina = false;
@@ -110,6 +112,8 @@ namespace AF
         {
             float value = STAMINA_REGENERATION_RATE + playerManager.statsBonusController.staminaRegenerationBonus - negativeStaminaRegenerationBonus + STAMINA_REGENERATION_RATE_BONUS;
 
+            value *= staminaRegenerationBonusMultiplier;
+
             if (GetCurrentStaminaPercentage() <= 25)
             {
                 value *= 2.5f;
@@ -182,11 +186,14 @@ namespace AF
             // Only take into account right hand if not attacking with left hand or we are dual wielding
             if (!isAttackingWithLeftHand || isDualWieldingAnAttack)
             {
-                lightAttackStaminaCost = isHeavyAttack ? GetUnarmedHeavyAttackStaminaCost() : unarmedLightAttackStaminaCost;
                 Weapon rightWeapon = equipmentDatabase.GetCurrentWeapon();
                 if (rightWeapon != null)
                 {
                     lightAttackStaminaCost += isHeavyAttack ? rightWeapon.GetHeavyAttackStaminaCost() : rightWeapon.GetLightAttackStaminaCost();
+                }
+                else
+                {
+                    lightAttackStaminaCost = isHeavyAttack ? GetUnarmedHeavyAttackStaminaCost() : unarmedLightAttackStaminaCost;
                 }
             }
 
@@ -269,6 +276,12 @@ namespace AF
         public void SetStaminaRegenerationBonus(float value)
         {
             this.STAMINA_REGENERATION_RATE_BONUS = value;
+        }
+
+        public void SetStaminaRegenerationBonusMultiplier(float value)
+        {
+            this.staminaRegenerationBonusMultiplier += value;
+            if (this.staminaRegenerationBonusMultiplier < 1f) staminaRegenerationBonusMultiplier = 1f;
         }
     }
 }

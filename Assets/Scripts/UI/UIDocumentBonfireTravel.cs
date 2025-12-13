@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using AF.Bonfires;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -7,7 +8,7 @@ namespace AF
 {
     public class UIDocumentBonfireTravel : MonoBehaviour
     {
-        public List<BonfireSite> bonfireLocations = new();
+        List<BonfireSite> bonfireLocations = new();
 
         [Header("Components")]
         public Soundbank soundbank;
@@ -20,7 +21,6 @@ namespace AF
         public VisualTreeAsset travelOptionAsset;
         public UIDocumentBonfireMenu uIDocumentBonfireMenu;
 
-
         [Header("Databases")]
         public BonfiresDatabase bonfiresDatabase;
 
@@ -30,10 +30,23 @@ namespace AF
         // Last scroll position
         int lastScrollElementIndex = -1;
 
+        bool hasLoadedBonfires = false;
 
         private void Awake()
         {
             gameObject.SetActive(false);
+
+            TryLoadBonfires();
+        }
+
+        void TryLoadBonfires()
+        {
+            if (!hasLoadedBonfires)
+            {
+                hasLoadedBonfires = true;
+                // Slight overhead, but ensures we don't have to manually include all bonfires
+                bonfireLocations = Resources.LoadAll<BonfireSite>("Bonfire Sites").ToList();
+            }
         }
 
         /// <summary>
@@ -46,7 +59,6 @@ namespace AF
                 Close();
             }
         }
-
 
         void Close()
         {
@@ -85,7 +97,7 @@ namespace AF
             root.Q<ScrollView>().Add(exitOption);
 
             // Add callbacks
-            foreach (var location in bonfireLocations)
+            foreach (var location in GetBonfireLocations())
             {
                 if (bonfiresDatabase.unlockedBonfires.Contains(location.name))
                 {
@@ -135,6 +147,7 @@ namespace AF
                 Invoke(nameof(GiveFocus), 0f);
             }
         }
+
         void GiveFocus()
         {
             UIUtils.ScrollToLastPosition(
@@ -147,15 +160,10 @@ namespace AF
             );
         }
 
-        public string GetBonfireLocalizedNameByBonfireId(string bonfireId)
+        List<BonfireSite> GetBonfireLocations()
         {
-            var target = bonfireLocations.Find(x => x.name == bonfireId);
-            if (target == null)
-            {
-                return "Unknown Bonfire";
-            }
-
-            return Utils.IsPortuguese() ? target.portugueseName : target.englishName;
+            TryLoadBonfires();
+            return bonfireLocations;
         }
     }
 }

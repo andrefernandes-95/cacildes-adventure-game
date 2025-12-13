@@ -23,7 +23,7 @@ namespace AF
 
         [HideInInspector] public bool shouldRerender = true;
 
-        public StatusEffect poison, bleed, burnt, frostbite, paralysis, fear, curse, drowning;
+        public StatusEffect poison, bleed, burnt, frostbite, paralysis, fear, curse, drowning, petrification;
 
         private void OnEnable()
         {
@@ -144,6 +144,7 @@ namespace AF
             DrawStatusEffectLabel("Fear", fear, item);
             DrawStatusEffectLabel("Curse", curse, item);
             DrawStatusEffectLabel("Drowning", drowning, item);
+            DrawStatusEffectLabel("Petrification", petrification, item);
         }
 
         void DrawAttackStats(Weapon weapon, bool equippingOnRightHand)

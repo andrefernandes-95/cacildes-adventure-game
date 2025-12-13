@@ -25,9 +25,6 @@ namespace AF
 
         VisualElement root;
 
-        // Tutorial
-        public readonly string tutorialSceneName = "Tutorials";
-
         void LogAnalytic(string eventName)
         {
             if (!GameAnalytics.Initialized)
@@ -69,9 +66,7 @@ namespace AF
             Button exitButton = root.Q<Button>("ExitButton");
             Button btnGithub = root.Q<Button>("btnGithub");
             Button joinDiscordButton = root.Q<Button>("JoinDiscord");
-            Button websiteButton = root.Q<Button>("OfficalSite");
             Button myMusicButton = root.Q<Button>("VisitBandcamp");
-            Button gameGuideButton = root.Q<Button>("GuidesButton");
             Button btnYoutube = root.Q<Button>("btnYoutube");
             Button btnBlueSky = root.Q<Button>("btnBlueSky");
             Button btnItchio = root.Q<Button>("btnItchio");
@@ -113,15 +108,6 @@ namespace AF
             joinDiscordButton.style.scale = new Scale(Vector3.one); // Set initial scale
             joinDiscordButton.RegisterCallback<GeometryChangedEvent>(evt => PopIn(joinDiscordButton));
 
-            UIUtils.SetupButton(playTutorialButton, () =>
-            {
-                saveManager.fadeManager.FadeIn(1f, () =>
-                {
-                    SceneManager.LoadScene(tutorialSceneName);
-                });
-            }, soundbank);
-
-            playTutorialButton.style.display = DisplayStyle.None;
 
             UIUtils.SetupButton(creditsButton, () =>
             {
@@ -142,29 +128,12 @@ namespace AF
                 gameObject.SetActive(false);
             }, soundbank);
 
-            UIUtils.SetupButton(gameGuideButton, () =>
-            {
-                LogAnalytic(AnalyticsUtils.OnUIButtonClick("Game Guides"));
-                Application.OpenURL("https://steamcommunity.com/app/2617740/guides/");
-
-                gameGuideButton.Focus();
-            }, soundbank);
-
-
             UIUtils.SetupButton(myMusicButton, () =>
             {
                 LogAnalytic(AnalyticsUtils.OnUIButtonClick("Visit Bandcamp"));
                 Application.OpenURL("https://polygoncity.bandcamp.com/");
 
                 myMusicButton.Focus();
-            }, soundbank);
-
-            UIUtils.SetupButton(websiteButton, () =>
-            {
-                LogAnalytic(AnalyticsUtils.OnUIButtonClick("Visit Website"));
-                Application.OpenURL("https://store.steampowered.com/app/2617740/Cacildes_Adventure/");
-
-                websiteButton.Focus();
             }, soundbank);
 
             UIUtils.SetupButton(exitButton, () =>
@@ -207,7 +176,7 @@ namespace AF
                 Application.OpenURL("https://www.instagram.com/cacildes_adventure/");
             }, soundbank);
 
-            websiteButton.style.display = DisplayStyle.None;
+            root.Q<VisualElement>("Snow").style.display = SeasonalEvents.IsChristmasTime() ? DisplayStyle.Flex : DisplayStyle.None;
 
             cursorManager.ShowCursor();
 

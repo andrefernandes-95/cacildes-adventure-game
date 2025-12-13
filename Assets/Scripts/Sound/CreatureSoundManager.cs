@@ -21,6 +21,11 @@ namespace AF
 
         void Awake()
         {
+            if (creatureSound == null)
+            {
+                return;
+            }
+
             pool = new AudioSource[audioPoolSize];
             for (int i = 0; i < audioPoolSize; i++)
             {
@@ -31,31 +36,16 @@ namespace AF
             }
         }
 
-        private void OnEnable()
+        void Start()
         {
-            if (creatureSound == null)
-            {
-                return;
-            }
-
             SubscribeEvents();
-        }
-
-        private void OnDisable()
-        {
-            if (creatureSound == null)
-            {
-                return;
-            }
-            UnsubscribeEvents();
         }
 
         void SubscribeEvents()
         {
-            if (creatureSound.attacks.Length > 0)
+            if (creatureSound == null)
             {
-                characterAnimationEventListener.onRightWeaponHitboxOpen.AddListener(OnAttack);
-                characterAnimationEventListener.onLeftWeaponHitboxOpen.AddListener(OnAttack);
+                return;
             }
 
             if (ambushState != null)
@@ -63,67 +53,45 @@ namespace AF
                 ambushState.onAmbushBegin.AddListener(OnAmbush);
             }
 
-            if (targetManager != null && creatureSound.targetSpotted.Length > 0)
+            if (targetManager != null && targetManager.onTargetSet_Event != null && creatureSound.targetSpotted?.Length > 0)
             {
                 targetManager.onTargetSet_Event.AddListener(OnTargetSpotted);
             }
 
             if (characterAnimationEventListener != null)
             {
-                if (creatureSound.roars.Length > 0)
+                if (creatureSound.attacks?.Length > 0)
+                {
+                    characterAnimationEventListener.onRightWeaponHitboxOpen.AddListener(OnAttack);
+                    characterAnimationEventListener.onLeftWeaponHitboxOpen.AddListener(OnAttack);
+                    characterAnimationEventListener.onHeadHitboxOpen.AddListener(OnAttack);
+                }
+
+                if (creatureSound.roars?.Length > 0)
                 {
                     characterAnimationEventListener.onRoar.AddListener(OnRoar);
                 }
-            }
 
-            if (creatureSound.hurt.Length > 0)
-            {
-                characterBaseManager.health.onTakeDamage.AddListener(OnHurt);
-            }
-
-            if (creatureSound.death.Length > 0)
-            {
-                characterBaseManager.health.onDeath.AddListener(OnDeath);
-            }
-        }
-
-        void UnsubscribeEvents()
-        {
-            if (creatureSound.attacks.Length > 0)
-            {
-                characterAnimationEventListener.onRightWeaponHitboxOpen.RemoveListener(OnAttack);
-                characterAnimationEventListener.onLeftWeaponHitboxOpen.RemoveListener(OnAttack);
-            }
-
-            if (ambushState != null)
-            {
-                ambushState.onAmbushBegin.RemoveListener(OnAmbush);
-            }
-
-            if (targetManager != null && creatureSound.targetSpotted.Length > 0)
-            {
-                targetManager.onTargetSet_Event.RemoveListener(OnTargetSpotted);
-            }
-
-            if (characterAnimationEventListener != null)
-            {
-                if (creatureSound.roars.Length > 0)
+                if (creatureSound.footstep?.Length > 0)
                 {
-                    characterAnimationEventListener.onRoar.RemoveListener(OnRoar);
+                    characterAnimationEventListener.onLeftFootstep.AddListener(OnFootstep);
+                    characterAnimationEventListener.onRightFootstep.AddListener(OnFootstep);
                 }
             }
 
-            if (creatureSound.hurt.Length > 0)
+            if (characterBaseManager != null)
             {
-                characterBaseManager.health.onTakeDamage.RemoveListener(OnHurt);
-            }
+                if (creatureSound.hurt?.Length > 0)
+                {
+                    characterBaseManager.health.onTakeDamage.AddListener(OnHurt);
+                }
 
-            if (creatureSound.death.Length > 0)
-            {
-                characterBaseManager.health.onDeath.RemoveListener(OnDeath);
+                if (creatureSound.death?.Length > 0)
+                {
+                    characterBaseManager.health.onDeath.AddListener(OnDeath);
+                }
             }
         }
-
         void OnAttack() => PlayFromSoundpack(creatureSound.attacks);
 
         void OnAmbush() => PlayFromSoundpack(creatureSound.ambush);
@@ -132,7 +100,7 @@ namespace AF
         void OnRoar() => PlayFromSoundpack(creatureSound.roars);
         void OnHurt() => PlayFromSoundpack(creatureSound.hurt);
         void OnDeath() => PlayFromSoundpack(creatureSound.death);
-
+        void OnFootstep() => PlayFromSoundpack(creatureSound.footstep);
 
         void PlayFromSoundpack(AudioClip[] sounds)
         {

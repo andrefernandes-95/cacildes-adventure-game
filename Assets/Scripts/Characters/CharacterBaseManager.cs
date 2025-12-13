@@ -76,6 +76,10 @@ namespace AF
 
         #endregion
 
+        // Store original materials so they can be restored
+        private Dictionary<Renderer, Material[]> originalMaterials;
+        private bool originalMaterialsCached = false;
+
         public abstract void ResetStates();
 
         public bool IsBusy()
@@ -266,6 +270,8 @@ namespace AF
 
         public void OnPetrified(Material petrifiedMaterial)
         {
+            CacheOriginalMaterials();   // <-- IMPORTANT
+
             OnParalyzedStart();
 
             if (agent != null)
@@ -289,6 +295,29 @@ namespace AF
             yield return new WaitForSeconds(3f);
             this.health.TakeDamage(Mathf.Infinity);
         }
+
+        private void CacheOriginalMaterials()
+        {
+            if (originalMaterialsCached)
+                return;
+
+            originalMaterials = new Dictionary<Renderer, Material[]>();
+
+            // SkinnedMeshRenderers
+            foreach (var skinned in Utils.CollectComponentsFromGameObject<SkinnedMeshRenderer>(this.gameObject))
+            {
+                originalMaterials[skinned] = skinned.sharedMaterials.ToArray();
+            }
+
+            // MeshRenderers
+            foreach (var meshRenderer in Utils.CollectComponentsFromGameObject<MeshRenderer>(this.gameObject))
+            {
+                originalMaterials[meshRenderer] = meshRenderer.sharedMaterials.ToArray();
+            }
+
+            originalMaterialsCached = true;
+        }
+
 
         void ApplyMaterialToSkinnedMeshRenderers(Material mat)
         {
@@ -318,5 +347,19 @@ namespace AF
                 meshRenderer.materials = mats;
             }
         }
+        public void RestoreOriginalMaterials()
+        {
+            if (!originalMaterialsCached || originalMaterials == null)
+                return;
+
+            foreach (var kvp in originalMaterials)
+            {
+                if (kvp.Key == null)
+                    continue;
+
+                kvp.Key.sharedMaterials = kvp.Value;
+            }
+        }
+
     }
 }

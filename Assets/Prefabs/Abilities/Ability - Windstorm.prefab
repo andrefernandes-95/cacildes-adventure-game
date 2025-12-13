@@ -14,7 +14,9 @@ GameObject:
   - component: {fileID: 8615024569638840719}
   - component: {fileID: 2584524021490372445}
   - component: {fileID: 1306624810566723351}
-  - component: {fileID: 7838545264447536420}
+  - component: {fileID: 5401757406925813282}
+  - component: {fileID: 2598263434894740600}
+  - component: {fileID: 1220272578275227560}
   m_Layer: 0
   m_Name: Ability - Windstorm
   m_TagString: Untagged
@@ -3633,7 +3635,7 @@ ParticleSystem:
         m_NumAlphaKeys: 2
     range: {x: 0, y: 1}
   CollisionModule:
-    enabled: 1
+    enabled: 0
     serializedVersion: 4
     type: 1
     collisionMode: 0
@@ -5067,7 +5069,28 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &7838545264447536420
+--- !u!65 &5401757406925813282
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1979196817757608}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 2.5802794, y: 2.797141, z: 24.591602}
+  m_Center: {x: 0.020104766, y: -0.1434989, z: 11.251268}
+--- !u!114 &2598263434894740600
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -5076,11 +5099,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1979196817757608}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3ec899dd3fa9a114590d29d6f874a136, type: 3}
+  m_Script: {fileID: 11500000, guid: a67276a42e3da7241b6ad933e78c0afa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   projectile: {fileID: 0}
   damage:
+    basePhysicalDamage: 0
     physical: 0
     fire: 0
     frost: 0
@@ -5104,7 +5128,7 @@ MonoBehaviour:
     dexterityScaling: 5
     intelligenceScaling: 5
   damageOwner: {fileID: 0}
-  damageCooldown: 0.05
+  damageCooldown: 0.25
   onParticleDamage:
     m_PersistentCalls:
       m_Calls: []
@@ -5114,11 +5138,22 @@ MonoBehaviour:
   doubleDamageOnNightTime: 0
   gameSession: {fileID: 0}
   healingAmount: -1
-  onAnyCollisionEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  collisionSound: {fileID: 0}
-  collisionSoundCooldown: 0.1
+  tagsToDetect: []
+  onTriggerEnter: 0
+  onTriggerStay: 1
+--- !u!114 &1220272578275227560
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1979196817757608}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0bd5177536f9d9b49ad9c70a866b6ecb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  upOffset: {x: 0, y: 0.5, z: 0}
 --- !u!1 &2470809854231576127
 GameObject:
   m_ObjectHideFlags: 0

@@ -33,6 +33,7 @@ namespace AF.Animations
         public UnityEvent onLeftFootHitboxClose;
         public UnityEvent onRightFootHitboxOpen;
         public UnityEvent onRightFootHitboxClose;
+        public UnityEvent onHeadHitboxOpen;
         public UnityEvent onBuff;
         public UnityEvent onCloth;
         public UnityEvent onImpact;
@@ -320,7 +321,8 @@ namespace AF.Animations
                 return;
             }
 
-            SetAnimatorSpeed(Random.Range(0.1f, 0.3f));
+            // TODO: Do not pause animation, it creates lots of bugs for now
+            // SetAnimatorSpeed(Random.Range(0.1f, 0.3f));
         }
 
         public void ResumeAnimation()
@@ -394,6 +396,8 @@ namespace AF.Animations
             if (characterManager.characterWeaponsManager.headHitbox != null)
             {
                 characterManager.characterWeaponsManager.headHitbox.EnableHitbox();
+
+                onHeadHitboxOpen?.Invoke();
             }
         }
 

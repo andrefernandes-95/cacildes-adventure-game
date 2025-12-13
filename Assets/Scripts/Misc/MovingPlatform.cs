@@ -42,6 +42,11 @@ namespace AF
                 if (cc != null && !riders.Contains(cc))
                 {
                     riders.Add(cc);
+
+                    if (cc is PlayerManager playerManager)
+                    {
+                        playerManager.thirdPersonController.SetTrackFallDamage(false);
+                    }
                 }
             }
         }
@@ -53,6 +58,11 @@ namespace AF
                 CharacterBaseManager cc = other.GetComponent<CharacterBaseManager>();
                 if (cc != null && riders.Contains(cc))
                 {
+                    if (cc is PlayerManager playerManager)
+                    {
+                        playerManager.thirdPersonController.SetTrackFallDamage(true);
+                    }
+
                     riders.Remove(cc);
                 }
             }

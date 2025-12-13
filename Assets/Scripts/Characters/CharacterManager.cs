@@ -523,6 +523,8 @@ namespace AF
                     animator.Play(defaultAnimationHash);
                 }
             }
+
+            RestoreOriginalMaterials();
         }
 
         public string GetCharacterID()

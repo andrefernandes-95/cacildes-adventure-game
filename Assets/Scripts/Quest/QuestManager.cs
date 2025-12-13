@@ -16,15 +16,38 @@ namespace AF
 
     public class QuestManager : MonoBehaviour
     {
-        public List<QuestParent> allQuests = new();
+        List<QuestParent> allQuests = new();
 
         public const string SAVE_KEY = "quests";
+
+        private bool hasLoadedQuests = false;
+
+        private void Awake()
+        {
+            TryLoadQuests();
+        }
+
+        void TryLoadQuests()
+        {
+            if (!hasLoadedQuests)
+            {
+                hasLoadedQuests = true;
+
+                allQuests = Resources.LoadAll<QuestParent>("Quests").ToList();
+            }
+        }
+
+        List<QuestParent> GetAllQuests()
+        {
+            TryLoadQuests();
+            return allQuests;
+        }
 
         public void OnSave(QuickSaveWriter quickSaveWriter)
         {
             List<QuestSerializedState> serializedStates = new();
 
-            foreach (QuestParent questParent in allQuests)
+            foreach (QuestParent questParent in GetAllQuests())
             {
                 QuestSerializedState questSerializedState = new()
                 {
@@ -42,9 +65,11 @@ namespace AF
 
         public void OnLoad(QuickSaveReader quickSaveReader)
         {
+            TryLoadQuests();
+
             quickSaveReader.TryRead(SAVE_KEY, out List<QuestSerializedState> serializedQuests);
 
-            foreach (QuestParent questParent in allQuests)
+            foreach (QuestParent questParent in GetAllQuests())
             {
                 questParent.Clear();
             }
@@ -53,7 +78,7 @@ namespace AF
             {
                 foreach (QuestSerializedState questSerializedState in serializedQuests)
                 {
-                    QuestParent target = allQuests.FirstOrDefault(quest => quest.name == questSerializedState.questName);
+                    QuestParent target = GetAllQuests().FirstOrDefault(quest => quest.name == questSerializedState.questName);
                     if (target != null)
                     {
                         target.hasStarted = questSerializedState.hasStarted;
@@ -76,16 +101,16 @@ namespace AF
 
         public List<QuestParent> GetTrackedQuests()
         {
-            return allQuests.Where(q => q.isTracked).ToList();
+            return GetAllQuests().Where(q => q.isTracked).ToList();
         }
         public List<QuestParent> GetQuestsStarted()
         {
-            return allQuests.Where(q => q.hasStarted).ToList();
+            return GetAllQuests().Where(q => q.hasStarted).ToList();
         }
 
         public void ClearQuestsForNewGamePlus()
         {
-            foreach (QuestParent quest in allQuests)
+            foreach (QuestParent quest in GetAllQuests())
             {
                 quest.ResetQuest();
             }

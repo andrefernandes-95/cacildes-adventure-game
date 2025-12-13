@@ -1,5 +1,17 @@
 # IN PROGRESS
 
+
+BUG GRAVE:
+- Slow Down player doesnt have animation speed restored after it wears off
+(Cant reproduce it all the time)
+
+needs fixing
+alcool atrasa regeneracao vida deveriamos remover loading
+
+Ideas:
+- Add a resistance stat which increases 2 points per level on every status effect
+- Make categories for each location to make naviation easier
+
 Possibly fixed:
 ? Hugo dialogue when asking him to join the party might be fixed; used fade to clear dialogue window.
 ? We must test orc, alcino quest again to make sure we didnt break anything
