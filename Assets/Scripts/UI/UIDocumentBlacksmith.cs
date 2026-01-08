@@ -4,7 +4,6 @@ using System.Linq;
 using AF.Health;
 using AF.Inventory;
 using AF.Music;
-using GameAnalyticsSDK;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Localization.Settings;
@@ -167,8 +166,6 @@ namespace AF
         /// </summary>
         public void OpenBlacksmithMenu()
         {
-            LogAnalytic(AnalyticsUtils.OnUIButtonClick("Blacksmith"));
-
             isUpgradingSpells = false;
 
             this.craftActivity = CraftActivity.BLACKSMITH;
@@ -180,8 +177,6 @@ namespace AF
         /// </summary>
         public void OpenSpellSmithingMenu()
         {
-            LogAnalytic(AnalyticsUtils.OnUIButtonClick("Blacksmith"));
-
             isUpgradingSpells = true;
 
             this.craftActivity = CraftActivity.BLACKSMITH;
@@ -193,8 +188,6 @@ namespace AF
         /// </summary>
         public void OpenAlchemyMenu()
         {
-            LogAnalytic(AnalyticsUtils.OnUIButtonClick("Alchemy"));
-
             isUpgradingSpells = false;
 
             this.craftActivity = CraftActivity.ALCHEMY;
@@ -470,15 +463,13 @@ namespace AF
             notificationManager.ShowNotification(
                 Utils.IsPortuguese() ? "Item melhorado!" : "Item improved", upgradableItem.sprite);
 
-            LogAnalytic(AnalyticsUtils.OnUIButtonClick("UpgradeWeapon"), new() {
-                { "item_upgraded", upgradableItem.name }
-            });
-
             CraftingUtils.UpgradeItem(
                 upgradableItem,
                 (goldUsed) => uIDocumentPlayerGold.LoseGold(goldUsed),
                 (upgradeMaterialUsed) => playerManager.playerInventory.RemoveItem(upgradeMaterialUsed.Key, upgradeMaterialUsed.Value)
             );
+
+            AnalyticsUtils.OnItemUpgrade(upgradableItem, playerManager);
 
             if (upgradableItem is Weapon weapon)
             {
@@ -914,26 +905,6 @@ namespace AF
             DrawGoldRequired(upgradeData);
 
             RequirementsPreview.style.opacity = 1;
-        }
-
-        void LogAnalytic(string eventName)
-        {
-            if (!GameAnalytics.Initialized)
-            {
-                GameAnalytics.Initialize();
-            }
-
-            GameAnalytics.NewDesignEvent(eventName);
-        }
-
-        void LogAnalytic(string eventName, Dictionary<string, object> values)
-        {
-            if (!GameAnalytics.Initialized)
-            {
-                GameAnalytics.Initialize();
-            }
-
-            GameAnalytics.NewDesignEvent(eventName, values);
         }
 
         void UpdateWeaponIfEquipped(Weapon weaponAfterUpgrade)

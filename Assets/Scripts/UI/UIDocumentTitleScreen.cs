@@ -1,4 +1,4 @@
-using GameAnalyticsSDK;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
@@ -10,6 +10,7 @@ namespace AF
         UIDocument document => GetComponent<UIDocument>();
 
         [Header("Components")]
+        [SerializeField] PlayerManager playerManager;
         public TitleScreenManager titleScreenManager;
 
         public CursorManager cursorManager;
@@ -20,20 +21,17 @@ namespace AF
         public Soundbank soundbank;
         public SaveManager saveManager;
 
+        [SerializeField] SteamDLC supporterEdition;
+
         [Header("Game Session")]
         public GameSession gameSession;
 
         VisualElement root;
+        VisualElement TitleScreenContainer;
+        VisualElement GDPRWarning;
+        Button acceptGDPRButton;
+        Button rejectGDPRButton;
 
-        void LogAnalytic(string eventName)
-        {
-            if (!GameAnalytics.Initialized)
-            {
-                GameAnalytics.Initialize();
-            }
-
-            GameAnalytics.NewDesignEvent(eventName);
-        }
         private void PopIn(Button button)
         {
             // Animate scale to 1.2x size (pop-in)
@@ -55,6 +53,8 @@ namespace AF
             var versionLabel = root.Q<Label>("Version");
             versionLabel.text = Application.version;
 
+            root.Q<Label>("SupporterEdition").style.display = supporterEdition.IsOwned() ? DisplayStyle.Flex : DisplayStyle.None;
+
             Button newGameButton = root.Q<Button>("NewGameButton");
             Button continueButton = root.Q<Button>("ContinueButton");
             Button loadGameButton = root.Q<Button>("LoadGameButton");
@@ -74,10 +74,10 @@ namespace AF
 
             UIUtils.SetupButton(newGameButton, () =>
             {
-                LogAnalytic(AnalyticsUtils.OnUIButtonClick("NewGame"));
-
+                AnalyticsUtils.OnBeginNewGame(playerManager.discordNotifier);
                 saveManager.ResetGameState(false);
                 titleScreenManager.StartGame();
+
                 gameObject.SetActive(false);
             }, soundbank);
 
@@ -85,7 +85,6 @@ namespace AF
 
             UIUtils.SetupButton(continueButton, () =>
             {
-                LogAnalytic(AnalyticsUtils.OnUIButtonClick("ContinueSavedGame"));
                 saveManager.LoadLastSavedGame(false);
                 gameObject.SetActive(false);
             }, soundbank);
@@ -96,23 +95,19 @@ namespace AF
                 gameObject.SetActive(false);
             }, soundbank);
 
-
             UIUtils.SetupButton(joinDiscordButton, () =>
             {
-                LogAnalytic(AnalyticsUtils.OnUIButtonClick("Discord"));
+                AnalyticsUtils.OnDiscordVisit();
                 Application.OpenURL("https://discord.gg/JwnZMc27D2");
-
                 joinDiscordButton.Focus();
             }, soundbank);
 
             joinDiscordButton.style.scale = new Scale(Vector3.one); // Set initial scale
             joinDiscordButton.RegisterCallback<GeometryChangedEvent>(evt => PopIn(joinDiscordButton));
 
-
             UIUtils.SetupButton(creditsButton, () =>
             {
                 uIDocumentTitleScreenCredits.gameObject.SetActive(true);
-                LogAnalytic(AnalyticsUtils.OnUIButtonClick("ShowCredits"));
                 gameObject.SetActive(false);
             }, soundbank);
 
@@ -130,9 +125,8 @@ namespace AF
 
             UIUtils.SetupButton(myMusicButton, () =>
             {
-                LogAnalytic(AnalyticsUtils.OnUIButtonClick("Visit Bandcamp"));
+                AnalyticsUtils.OnBandcampVisit();
                 Application.OpenURL("https://polygoncity.bandcamp.com/");
-
                 myMusicButton.Focus();
             }, soundbank);
 
@@ -143,36 +137,29 @@ namespace AF
 
             UIUtils.SetupButton(btnGithub, () =>
             {
-                LogAnalytic(AnalyticsUtils.OnUIButtonClick("Github"));
-
+                AnalyticsUtils.OnGithubVisit();
                 Application.OpenURL("https://github.com/andrefernandes-95/cacildes-adventure-game");
             }, soundbank);
 
             UIUtils.SetupButton(btnBlueSky, () =>
             {
-                LogAnalytic(AnalyticsUtils.OnUIButtonClick("Bluesky"));
 
                 Application.OpenURL("https://bsky.app/profile/cacildesadventure.bsky.social");
             }, soundbank);
 
             UIUtils.SetupButton(btnItchio, () =>
             {
-                LogAnalytic(AnalyticsUtils.OnUIButtonClick("Itchio"));
 
                 Application.OpenURL("https://andrefcasimiro.itch.io/");
             }, soundbank);
 
             UIUtils.SetupButton(btnYoutube, () =>
             {
-                LogAnalytic(AnalyticsUtils.OnUIButtonClick("Youtube"));
-
                 Application.OpenURL("https://www.youtube.com/@CacildesAdventure");
             }, soundbank);
 
             UIUtils.SetupButton(btnInstagram, () =>
             {
-                LogAnalytic(AnalyticsUtils.OnUIButtonClick("Instagram"));
-
                 Application.OpenURL("https://www.instagram.com/cacildes_adventure/");
             }, soundbank);
 
@@ -180,15 +167,99 @@ namespace AF
 
             cursorManager.ShowCursor();
 
-            // Delay the focus until the next frame, required as an hack for now
-            Invoke(nameof(GiveFocus), 0f);
+            SetupGDPRWarning();
         }
 
-        void GiveFocus()
+        void SetupGDPRWarning()
         {
-            Button newGameButton = root.Q<Button>("NewGameButton");
+            GDPRWarning = root.Q<VisualElement>("GDPRWarning");
+            TitleScreenContainer = root.Q<VisualElement>("TitleScreenContainer");
 
-            newGameButton.Focus();
+            acceptGDPRButton = root.Q<Button>("AcceptGDPR");
+            rejectGDPRButton = root.Q<Button>("DeclineGDPR");
+
+            var DataCollectionToggle = root.Q<Toggle>("DataCollectionToggle");
+            DataCollectionToggle.RegisterValueChangedCallback(ev =>
+            {
+                if (ev.newValue)
+                {
+                    AnalyticsConsentManager.Instance.AcceptAnalytics();
+                }
+                else
+                {
+
+                    AnalyticsConsentManager.Instance.DeclineAnalytics();
+                }
+            });
+
+            UpdateConsentToggle();
+
+            bool isShowingGDPRWarning = false;
+
+            if (AnalyticsConsentManager.Instance == null || AnalyticsConsentManager.Instance.ConsentState != AnalyticsConsentState.Unknown)
+            {
+                Debug.LogWarning("AnalyticsConsentManager not found.");
+                GDPRWarning.style.display = DisplayStyle.None;
+                TitleScreenContainer.style.display = DisplayStyle.Flex;
+            }
+            else
+            {
+                isShowingGDPRWarning = true;
+                GDPRWarning.style.display = DisplayStyle.Flex;
+                TitleScreenContainer.style.display = DisplayStyle.None;
+            }
+
+            UIUtils.SetupButton(acceptGDPRButton, () =>
+            {
+                HandleGDPRClick(true);
+            }, soundbank);
+
+            UIUtils.SetupButton(rejectGDPRButton, () =>
+            {
+                HandleGDPRClick(false);
+            }, soundbank);
+
+            StartCoroutine(GiveFocus(isShowingGDPRWarning));
+        }
+
+        void HandleGDPRClick(bool isConsenting)
+        {
+            if (isConsenting)
+            {
+                AnalyticsConsentManager.Instance.AcceptAnalytics();
+            }
+            else
+            {
+                AnalyticsConsentManager.Instance.DeclineAnalytics();
+            }
+
+            GDPRWarning.style.display = DisplayStyle.None;
+            TitleScreenContainer.style.display = DisplayStyle.Flex;
+
+            UpdateConsentToggle();
+
+            StartCoroutine(GiveFocus(false));
+        }
+
+        void UpdateConsentToggle()
+        {
+            var DataCollectionToggle = root.Q<Toggle>("DataCollectionToggle");
+            DataCollectionToggle.value = AnalyticsConsentManager.Instance.ConsentState == AnalyticsConsentState.Accepted;
+        }
+
+        IEnumerator GiveFocus(bool isShowingGDPRWarning)
+        {
+            yield return new WaitForSeconds(.5f);
+
+            if (isShowingGDPRWarning)
+            {
+                acceptGDPRButton.Focus();
+            }
+            else
+            {
+                Button newGameButton = root.Q<Button>("NewGameButton");
+                newGameButton.Focus();
+            }
         }
     }
 }

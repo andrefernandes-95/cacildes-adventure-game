@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using AF.Events;
-using GameAnalyticsSDK;
 using TigerForge;
 using UnityEditor;
 using UnityEngine;
@@ -69,11 +68,19 @@ namespace AF
 
         public void CompleteObjective(QuestObjective questObjective)
         {
+            PlayerManager playerManager = FindAnyObjectByType<PlayerManager>(FindObjectsInactive.Include);
+
             StartQuest();
 
             if (!completedObjectives.Contains(questObjective))
             {
                 completedObjectives.Add(questObjective);
+            }
+
+
+            if (playerManager != null)
+            {
+                AnalyticsUtils.OnQuestObjectiveCompleted(playerManager, questObjective);
             }
 
             EventManager.EmitEvent(EventMessages.ON_QUESTS_PROGRESS_CHANGED);
@@ -82,6 +89,11 @@ namespace AF
             {
                 // Untrack quest
                 UntrackQuest();
+
+                if (playerManager != null)
+                {
+                    AnalyticsUtils.OnQuestCompleted(playerManager, this);
+                }
             }
         }
 
@@ -108,6 +120,12 @@ namespace AF
             {
                 hasStarted = true;
                 EventManager.EmitEventData(EventMessages.ON_QUEST_ADDED, this);
+
+                PlayerManager playerManager = FindAnyObjectByType<PlayerManager>(FindObjectsInactive.Include);
+                if (playerManager != null)
+                {
+                    AnalyticsUtils.OnQuestStarted(playerManager, this);
+                }
             }
         }
 

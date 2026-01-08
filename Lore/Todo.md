@@ -1,14 +1,38 @@
+# Set time in midnight omen boss not on night
+
+# Captain ahrold stop fight midst fight
+
+# samurai dodge into water
+
+If player has alcino after molok fight, alcino appears twice in cutscene with king and drogo
+
+- Whispering vale, check the pit illusionary wall, not triggering with celes sword
+  Something buggy with celes sword, cant hit the wood tree pzuzle on whipsering vale
+
+# Analytics
+
+- track how long a player wanders a map
+- track if player recruits companions
+- track if player dismisses companions
+- track what items a player buys
+- track what items a player sells
+- track what kills a player
+- track if player kills while two handing
+
+- if we drink 1 orange juice, then pick the other, the counter doesnt uipdate
+
 # IN PROGRESS
 
-
 BUG GRAVE:
+
 - Slow Down player doesnt have animation speed restored after it wears off
-(Cant reproduce it all the time)
+  (Cant reproduce it all the time)
 
 needs fixing
 alcool atrasa regeneracao vida deveriamos remover loading
 
 Ideas:
+
 - Add a resistance stat which increases 2 points per level on every status effect
 - Make categories for each location to make naviation easier
 
@@ -24,10 +48,12 @@ Possibly fixed:
 ? Chest is disappearing in veilglade for impossible city
 
 Cacildes Home:
+
 - should have autosave feature after game starts
 - check camera issue when starting game
 
 Mountainpass
+
 - midnight omen hitbox instant start on one of the attacks
 
 - Waterborne ring looks weird in its delay rate
@@ -35,14 +61,12 @@ Mountainpass
 - Check Achievements
 - Adjust spell mana costs
 
-
-
 ACHIEVEMENTS
 X maerimond achievement was not set
 X thief who tried to steal you
 
-
 Achievement Ideas
+
 - Rest at bonfire
 - Mimic chest defeat (mimic-chest.png)
 - Gargoyle Boss (gargoyle.png)
@@ -50,6 +74,7 @@ Achievement Ideas
 - Shield that acts a mirror, deflecting damage
 
 To Do:
+
 - Companions should mirror player stats
 - ashes should give error notification
 - prison key used danuris, looks like its not being lost
@@ -63,7 +88,7 @@ To Do:
 - Add Gorth Greataxe since its used in promotion material
 - Add oakshield back as ability
 - Status Effect - cant cast spells or abilities
-- Rename every chest in the game so we know where each item is. 
+- Rename every chest in the game so we know where each item is.
 - Remove Elven Ear from Arun Village
 - During Molok fight he stopped taking damage
 - Add mana to spells, check intelligence requirements
@@ -84,10 +109,11 @@ To Do:
 - Spells should spend mana
 - Enemy Posture should increase every time its broke
 - I think save game is resetting favorite managers
-- UNtrack quest button not working 
+- UNtrack quest button not working
 - Arena should give smithing shards as a reward
 
 Low:
+
 - Made wood sword upgradeable
 - Requirements for spells can still exist, but damage will be lessen
 - Poise: Simplify Logic of isbroken, too many side effects
@@ -132,8 +158,8 @@ BACKLOG:
 - Setup Analytics for Unity
 - Add camera damping options
 
-
 DONE:
+
 - Inventory weight, if too heavy, do heavy roll ( do not hinder jump )
 - Blocking with weapon we are running on the speed
 - Rework lady that gives attributes in West Bridge, we need to use functions in playerLevel Up
@@ -181,7 +207,6 @@ drogo hideway
 X cant travel in drogos hidewaybonfire
 X Add more health to orc duo boss fight
 X add more health to orcs
-
 
 Sewers:
 X Soldier shield no icon

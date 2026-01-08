@@ -1,10 +1,7 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using AF.Inventory;
 using AF.Ladders;
-using AF.StatusEffects;
-using GameAnalyticsSDK;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Localization.Settings;
@@ -76,16 +73,6 @@ namespace AF
                     playerManager.playerAchievementsManager.achievementOnAcquiringFirstSpell.AwardAchievement();
                 }
             }
-        }
-
-        void LogAnalytic(string eventName)
-        {
-            if (!GameAnalytics.Initialized)
-            {
-                GameAnalytics.Initialize();
-            }
-
-            GameAnalytics.NewDesignEvent(eventName);
         }
 
         public void AddItem(Item item, int quantity)
@@ -404,6 +391,8 @@ namespace AF
             clone.itemID = GenerateItemId();
             clone.level = 0;
             inventoryDatabase.ownedWeapons.Add(clone);
+
+            AnalyticsUtils.OnItemFound(playerManager, clone, "weapon");
             return clone;
         }
 
@@ -413,6 +402,7 @@ namespace AF
             clone.itemID = GenerateItemId();
             clone.level = 0;
             inventoryDatabase.ownedWeapons.Add(clone);
+            AnalyticsUtils.OnItemFound(playerManager, clone, "shield");
             return clone;
         }
 
@@ -431,6 +421,7 @@ namespace AF
             clone.itemID = GenerateItemId();
             clone.level = 0;
             inventoryDatabase.ownedArmors.Add(clone);
+            AnalyticsUtils.OnItemFound(playerManager, clone, "armor");
             return clone;
         }
 
@@ -458,6 +449,7 @@ namespace AF
             clone.itemID = GenerateItemId();
             clone.level = 0;
             inventoryDatabase.ownedAccessories.Add(clone);
+            AnalyticsUtils.OnItemFound(playerManager, clone, "accessory");
             return clone;
         }
 
@@ -475,6 +467,7 @@ namespace AF
             clone.itemID = GenerateItemId();
             clone.level = 0;
             inventoryDatabase.ownedSpells.Add(clone);
+            AnalyticsUtils.OnItemFound(playerManager, clone, "spell");
             return clone;
         }
 
@@ -483,6 +476,7 @@ namespace AF
             Consumable clone = Instantiate(consumable);
             clone.itemID = GenerateItemId();
             inventoryDatabase.ownedConsumables.Add(clone);
+            AnalyticsUtils.OnItemFound(playerManager, clone, "consumable");
             return clone;
         }
 
@@ -491,6 +485,7 @@ namespace AF
             UpgradeMaterial clone = Instantiate(upgradeMaterial);
             clone.itemID = GenerateItemId();
             inventoryDatabase.ownedUpgradeMaterials.Add(clone);
+            AnalyticsUtils.OnItemFound(playerManager, clone, "upgradeMaterial");
             return clone;
         }
 
@@ -499,6 +494,7 @@ namespace AF
             CraftingMaterial clone = Instantiate(craftingMaterial);
             clone.itemID = GenerateItemId();
             inventoryDatabase.ownedCraftingMaterials.Add(clone);
+            AnalyticsUtils.OnItemFound(playerManager, clone, "craftingMaterial");
             return clone;
         }
 
@@ -507,6 +503,7 @@ namespace AF
             KeyItem clone = Instantiate(keyItem);
             clone.itemID = GenerateItemId();
             inventoryDatabase.ownedKeyItems.Add(clone);
+            AnalyticsUtils.OnItemFound(playerManager, clone, "item");
             return clone;
         }
 

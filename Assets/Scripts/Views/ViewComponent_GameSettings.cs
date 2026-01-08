@@ -1,5 +1,4 @@
 using System.Linq;
-using GameAnalyticsSDK;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -173,7 +172,7 @@ namespace AF
             {
                 UIUtils.SetupButton(newGamePlusButton, () =>
                 {
-                    LogAnalytic(AnalyticsUtils.OnUIButtonClick("NewGamePlus"));
+                    AnalyticsUtils.OnBeginNewGamePlus(saveManager.playerManager);
 
                     fadeManager.FadeIn(1f, () =>
                     {
@@ -209,15 +208,5 @@ namespace AF
             }, soundbank);
         }
 
-
-        void LogAnalytic(string eventName)
-        {
-            if (!GameAnalytics.Initialized)
-            {
-                GameAnalytics.Initialize();
-            }
-
-            GameAnalytics.NewDesignEvent(eventName);
-        }
     }
 }

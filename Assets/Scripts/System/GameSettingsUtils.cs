@@ -70,47 +70,47 @@ namespace AF
                 // Character Customization
                 if (gamePreferencesReader.TryRead("playerName", out string playerName))
                 {
-                    gameSettings.playerName = playerName;
+                    gameSettings.SetPlayerName(playerName);
                 }
                 if (gamePreferencesReader.TryRead("hairColor", out string hairColor))
                 {
-                    gameSettings.hairColor = hairColor;
+                    gameSettings.SetHairColor(hairColor);
                 }
                 if (gamePreferencesReader.TryRead("skinColor", out string skinColor))
                 {
-                    gameSettings.skinColor = skinColor;
+                    gameSettings.SetSkinColor(skinColor);
                 }
                 if (gamePreferencesReader.TryRead("eyeColor", out string eyeColor))
                 {
-                    gameSettings.eyeColor = eyeColor;
+                    gameSettings.SetEyeColor(eyeColor);
                 }
                 if (gamePreferencesReader.TryRead("tattooColor", out string tattooColor))
                 {
-                    gameSettings.tattooColor = tattooColor;
+                    gameSettings.SetTattooColor(tattooColor);
                 }
                 if (gamePreferencesReader.TryRead("hair", out string hair))
                 {
-                    gameSettings.hair = hair;
+                    gameSettings.SetHair(hair);
                 }
                 if (gamePreferencesReader.TryRead("eyebrows", out string eyebrows))
                 {
-                    gameSettings.eyebrows = eyebrows;
+                    gameSettings.SetEyebrows(eyebrows);
                 }
                 if (gamePreferencesReader.TryRead("beard", out string beard))
                 {
-                    gameSettings.beard = beard;
+                    gameSettings.SetBeard(beard);
                 }
                 if (gamePreferencesReader.TryRead("face", out string face))
                 {
-                    gameSettings.face = face;
+                    gameSettings.SetFace(face);
                 }
                 if (gamePreferencesReader.TryRead("isMale", out bool isMale))
                 {
-                    gameSettings.isMale = isMale;
+                    gameSettings.SetIsMale(isMale);
                 }
                 if (gamePreferencesReader.TryRead("playerPortrait", out int playerPortrait))
                 {
-                    gameSettings.playerPortrait = playerPortrait;
+                    gameSettings.SetPlayerPortrait(playerPortrait);
                 }
             }
             catch (Exception e)
@@ -141,17 +141,17 @@ namespace AF
                 quickSaveWriter.Write("useAbilityBinding", gameSettings.useAbilityBinding);
 
                 // Character Customization
-                quickSaveWriter.Write("playerName", gameSettings.playerName);
-                quickSaveWriter.Write("hairColor", gameSettings.hairColor);
-                quickSaveWriter.Write("skinColor", gameSettings.skinColor);
-                quickSaveWriter.Write("eyeColor", gameSettings.eyeColor);
-                quickSaveWriter.Write("tattooColor", gameSettings.tattooColor);
-                quickSaveWriter.Write("hair", gameSettings.hair);
-                quickSaveWriter.Write("eyebrows", gameSettings.eyebrows);
-                quickSaveWriter.Write("beard", gameSettings.beard);
-                quickSaveWriter.Write("face", gameSettings.face);
-                quickSaveWriter.Write("isMale", gameSettings.isMale);
-                quickSaveWriter.Write("playerPortrait", gameSettings.playerPortrait);
+                quickSaveWriter.Write("playerName", gameSettings.GetPlayerName());
+                quickSaveWriter.Write("hairColor", gameSettings.GetHairColor());
+                quickSaveWriter.Write("skinColor", gameSettings.GetSkinColor());
+                quickSaveWriter.Write("eyeColor", gameSettings.GetEyeColor());
+                quickSaveWriter.Write("tattooColor", gameSettings.GetTattooColor());
+                quickSaveWriter.Write("hair", gameSettings.GetHair());
+                quickSaveWriter.Write("eyebrows", gameSettings.GetEyebrows());
+                quickSaveWriter.Write("beard", gameSettings.GetBeard());
+                quickSaveWriter.Write("face", gameSettings.GetFace());
+                quickSaveWriter.Write("isMale", gameSettings.IsMale());
+                quickSaveWriter.Write("playerPortrait", gameSettings.GetPlayerPortrait());
 
                 if (quickSaveWriter.TryCommit())
                 {

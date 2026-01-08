@@ -5,7 +5,6 @@ using AF.Events;
 using AF.Inventory;
 using AF.Music;
 using AYellowpaper.SerializedCollections;
-using GameAnalyticsSDK;
 using TigerForge;
 using UnityEngine;
 using UnityEngine.AI;
@@ -130,16 +129,6 @@ namespace AF.Arena
             EndArena(false);
         }
 
-        void LogAnalytic(string eventName)
-        {
-            if (!GameAnalytics.Initialized)
-            {
-                GameAnalytics.Initialize();
-            }
-
-            GameAnalytics.NewDesignEvent(eventName);
-        }
-
         public void EndArena(bool hasWon)
         {
             gameSession.SetIsParticipatingInArenaEvent(false);
@@ -156,7 +145,7 @@ namespace AF.Arena
 
                 AwardLoot();
 
-                LogAnalytic(AnalyticsUtils.OnArenaWon(SceneManager.GetActiveScene().name));
+                AnalyticsUtils.OnArenaWon(playerManager);
             }
             else
             {

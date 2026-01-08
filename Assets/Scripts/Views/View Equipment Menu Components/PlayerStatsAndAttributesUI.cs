@@ -1,12 +1,17 @@
 
 namespace AF
 {
+    using System.Collections.Generic;
     using AF.Health;
-    using AF.Stats;
     using AF.StatusEffects;
     using UnityEngine;
     using UnityEngine.Localization.Settings;
     using UnityEngine.UIElements;
+    class StatRow
+    {
+        public Label value;
+        public Label change;
+    }
 
     public class PlayerStatsAndAttributesUI : MonoBehaviour
     {
@@ -21,35 +26,46 @@ namespace AF
         public PlayerStatsDatabase playerStatsDatabase;
         public EquipmentDatabase equipmentDatabase;
 
-        [HideInInspector] public bool shouldRerender = true;
-
         public StatusEffect poison, bleed, burnt, frostbite, paralysis, fear, curse, drowning, petrification;
+
+        Dictionary<string, StatRow> statRows;
 
         private void OnEnable()
         {
-            if (shouldRerender)
-            {
-                shouldRerender = false;
-
-                SetupRefs();
-            }
+            SetupRefs();
         }
 
         void SetupRefs()
         {
             root = uIDocument.rootVisualElement;
+            statRows = new Dictionary<string, StatRow>();
+
+            foreach (var element in root.Query<VisualElement>().ToList())
+            {
+                var value = element.Q<Label>("Value");
+                var change = element.Q<Label>("ChangeIndicator");
+
+                if (value != null && change != null)
+                {
+                    statRows[element.name] = new StatRow
+                    {
+                        value = value,
+                        change = change
+                    };
+                }
+            }
         }
 
         public void DrawStats(Item item, bool equippingOnRightHand, int slotIndex)
         {
-            root.Q<VisualElement>("PlayerName").Q<Label>().text = playerManager.gameSettings.playerName;
+            root.Q<VisualElement>("PlayerName").Q<Label>("Value").text = playerManager.gameSettings.GetPlayerName();
 
             root.Q<VisualElement>("Level").Q<Label>("Value").text = playerStatsDatabase.GetCurrentLevel().ToString();
             root.Q<VisualElement>("Gold").Q<Label>("Value").text = playerStatsDatabase.gold.ToString();
             SetGoldForNextLevelLabel();
 
             float baseEquipLoad = playerManager.statsBonusController.weightPenalty;
-            float itemEquipLoad = EquipmentUtils.GetEquipLoadFromItem(item, baseEquipLoad, equipmentDatabase, slotIndex);
+            float itemEquipLoad = EquipmentUtils.GetEquipLoadFromItem(item, baseEquipLoad, equipmentDatabase, slotIndex, equippingOnRightHand);
 
             var playerBaseStats = GetPlayerBaseStats();
             var itemBonusStats = GetItemBonusStats(item);
@@ -73,7 +89,6 @@ namespace AF
             SetWeightLoadLabel("WeightLoad", baseEquipLoad, itemEquipLoad);
 
             DrawAttackStats(item as Weapon, equippingOnRightHand);
-
 
             // Base defenses (without equipment)
             int basePhysDEF = playerManager.characterBaseDefenseManager.BaseDamageAbsorbed.physical;
@@ -159,7 +174,7 @@ namespace AF
             {
                 int rightCurrent = GetStatValue(rightDamage, stat);
                 int leftCurrent = GetStatValue(leftDamage, stat);
-                int newValue = GetStatValue(newDamage, stat);
+                int newValue = weapon == null ? -1 : GetStatValue(newDamage, stat);
 
                 SetStatLabel($"Right{stat}", rightCurrent, equippingOnRightHand ? newValue : rightCurrent);
                 SetStatLabel($"Left{stat}", leftCurrent, !equippingOnRightHand ? newValue : leftCurrent);
@@ -190,35 +205,26 @@ namespace AF
                 playerStatusController.GetCurrentResistanceForStatusEffect(statusEffect),
                 item != null
                     ? EquipmentUtils.GetStatusEffectResistanceFromEquipment(item as ArmorBase, statusEffect, playerStatusController, equipmentDatabase)
-                    : 0);
+                    : -1);
         }
 
-        private void SetStatLabel(string elementName, int baseValue, int itemValue, string currentValue = "")
+        void SetStatLabel(string id, int baseValue, int itemValue, string currentValue = "")
         {
-            string label = (!string.IsNullOrEmpty(currentValue) ?
-                (currentValue + "/")
-                : "") + baseValue.ToString();
+            if (!statRows.TryGetValue(id, out var row))
+                return;
 
-            Label changeIndicator =
-                  root.Q<VisualElement>(elementName).Q<Label>("ChangeIndicator");
-            changeIndicator.style.display = DisplayStyle.None;
+            row.change.style.display = DisplayStyle.None;
 
-            if (itemValue > 0 && itemValue != baseValue)
-            {
-                if (itemValue > baseValue)
-                {
-                    changeIndicator.style.color = Color.green;
-                }
-                else if (itemValue < baseValue)
-                {
-                    changeIndicator.style.color = Color.red;
-                }
+            row.value.text =
+                (string.IsNullOrEmpty(currentValue) ? "" : currentValue + "/")
+                + baseValue;
 
-                changeIndicator.text = " > " + itemValue;
-                changeIndicator.style.display = DisplayStyle.Flex;
-            }
+            if (itemValue < 0 || itemValue == baseValue)
+                return;
 
-            root.Q<VisualElement>(elementName).Q<Label>("Value").text = label;
+            row.change.style.color = itemValue > baseValue ? Color.green : Color.red;
+            row.change.text = " > " + itemValue;
+            row.change.style.display = DisplayStyle.Flex;
         }
 
         void SetGoldForNextLevelLabel()
@@ -344,7 +350,7 @@ namespace AF
                     EquipmentUtils.GetAttributeFromAccessory(armor as Accessory, EquipmentUtils.AccessoryAttributeType.MANA_BONUS, playerManager, equipmentDatabase)
                 );
             }
-            return (0, 0, 0, 0, 0, 0, 0, 0, 0);
+            return (-1, -1, -1, -1, -1, -1, -1, -1, -1);
         }
 
     }

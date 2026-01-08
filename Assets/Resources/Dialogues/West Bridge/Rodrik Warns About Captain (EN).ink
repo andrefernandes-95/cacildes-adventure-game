@@ -1,4 +1,5 @@
 EXTERNAL runEvent(eventId)
+EXTERNAL runEventOnce(eventId)
 
 Rodrik: What’s that? Looking for Captain Pleias?...  
 

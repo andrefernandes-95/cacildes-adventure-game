@@ -25,5 +25,10 @@ namespace AF
             onDestroy?.Invoke();
             Destroy(this.gameObject);
         }
+
+        public CharacterBaseManager GetCharacter()
+        {
+            return null;
+        }
     }
 }

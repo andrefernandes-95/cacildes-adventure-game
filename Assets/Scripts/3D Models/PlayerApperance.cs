@@ -24,10 +24,6 @@ namespace AF
         [SerializeField] SyntyCharacterModelManager syntyCharacterModelManager;
         [SerializeField] PlayerManager playerManager;
 
-        [Header("Default Apperance")]
-        public string defaultHair = "Chr_Hair_23";
-        public string defaultFace = "_Chr_Head_Male_00";
-
         private void Awake()
         {
             EventManager.StartListening(EventMessages.ON_CHARACTER_CUSTOMIZED, syntyCharacterModelManager.UpdateAvatar);
@@ -53,37 +49,47 @@ namespace AF
 
         public override List<string> GetBeard()
         {
-            return new List<string>() { gameSettings.beard };
+            if (string.IsNullOrEmpty(gameSettings.GetBeard()))
+            {
+                return new List<string>() { gameSettings.GetDefaultBeard() };
+            }
+
+            return new List<string>() { gameSettings.GetBeard() };
         }
 
         public override List<string> GetEyebrows()
         {
-            return new List<string>() { gameSettings.eyebrows };
+            if (string.IsNullOrEmpty(gameSettings.GetEyebrows()))
+            {
+                return new List<string>() { gameSettings.GetDefaultEyebrows() };
+            }
+
+            return new List<string>() { gameSettings.GetEyebrows() };
         }
 
         public override List<string> GetHairs()
         {
-            if (string.IsNullOrEmpty(gameSettings.hair))
+            if (string.IsNullOrEmpty(gameSettings.GetHair()))
             {
-                return new List<string>() { defaultHair };
+                return new List<string>() { gameSettings.GetDefaultHair() };
             }
 
-            return new List<string>() { gameSettings.hair };
+            return new List<string>() { gameSettings.GetHair() };
         }
 
         public override List<string> GetFace()
         {
-            if (string.IsNullOrEmpty(gameSettings.face))
+            if (string.IsNullOrEmpty(gameSettings.GetFace()))
             {
-                return new List<string>() { defaultFace };
+                return new List<string>() { gameSettings.GetDefaultFace() };
             }
 
-            return new List<string>() { gameSettings.face };
+            return new List<string>() { gameSettings.GetFace() };
         }
 
         public override List<string> GetHands()
         {
-            if (gameSettings.isMale)
+            if (IsMale())
             {
                 return maleHands;
             }
@@ -93,7 +99,7 @@ namespace AF
 
         public override List<string> GetLegs()
         {
-            if (gameSettings.isMale)
+            if (IsMale())
             {
                 return maleLegs;
             }
@@ -103,7 +109,7 @@ namespace AF
 
         public override List<string> GetTorso()
         {
-            if (gameSettings.isMale)
+            if (IsMale())
             {
                 return maleTorso;
             }
@@ -113,52 +119,51 @@ namespace AF
 
         public override bool IsMale()
         {
-            return gameSettings.isMale;
+            return gameSettings.IsMale();
         }
 
         public override Color GetHairColor()
         {
-            if (ColorUtility.TryParseHtmlString(gameSettings.hairColor, out var hairColor))
+            if (ColorUtility.TryParseHtmlString(gameSettings.GetHairColor(), out var hairColor))
             {
                 return hairColor;
             }
 
-            ColorUtility.TryParseHtmlString(gameSettings.defaultHairColor, out var defaultHairColor);
+            ColorUtility.TryParseHtmlString(gameSettings.GetDefaultHairColor(), out var defaultHairColor);
             return defaultHairColor;
         }
 
         public override Color GetEyesColor()
         {
-            if (ColorUtility.TryParseHtmlString(gameSettings.eyeColor, out var eyeColor))
+            if (ColorUtility.TryParseHtmlString(gameSettings.GetEyeColor(), out var eyeColor))
             {
                 return eyeColor;
             }
 
-            ColorUtility.TryParseHtmlString(gameSettings.defaultEyeColor, out var defaultEyeColor);
+            ColorUtility.TryParseHtmlString(gameSettings.GetDefaultEyeColor(), out var defaultEyeColor);
             return defaultEyeColor;
         }
 
         public override Color GetSkinColor()
         {
-            if (ColorUtility.TryParseHtmlString(gameSettings.skinColor, out var skinColor))
+            if (ColorUtility.TryParseHtmlString(gameSettings.GetSkinColor(), out var skinColor))
             {
                 return skinColor;
             }
 
-            ColorUtility.TryParseHtmlString(gameSettings.defaultSkinColor, out var defaultSkinColor);
+            ColorUtility.TryParseHtmlString(gameSettings.GetDefaultSkinColor(), out var defaultSkinColor);
             return defaultSkinColor;
         }
 
         public override Color GetTattooColor()
         {
-            if (ColorUtility.TryParseHtmlString(gameSettings.tattooColor, out var tattooColor))
+            if (ColorUtility.TryParseHtmlString(gameSettings.GetTattooColor(), out var tattooColor))
             {
                 return tattooColor;
             }
 
-            ColorUtility.TryParseHtmlString(gameSettings.defaultTattooColor, out var defaultTattooColor);
+            ColorUtility.TryParseHtmlString(gameSettings.GetDefaultTattooColor(), out var defaultTattooColor);
             return defaultTattooColor;
         }
-
     }
 }

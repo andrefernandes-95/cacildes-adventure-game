@@ -10,8 +10,6 @@ public class RecipesDatabase : ScriptableObject
     [Obsolete("Alchemy system will change. For now, display all available recipes to the user using 'availableRecipes'")]
     public List<CraftingRecipe> craftingRecipes = new();
 
-    public List<CraftingRecipe> availableRecipes = new();
-
 
 #if UNITY_EDITOR 
 

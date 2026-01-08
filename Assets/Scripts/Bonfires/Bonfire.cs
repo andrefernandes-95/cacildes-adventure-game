@@ -1,6 +1,5 @@
 using AF.Companions;
 using AF.Events;
-using GameAnalyticsSDK;
 using TigerForge;
 using UnityEngine;
 using UnityEngine.Events;
@@ -37,19 +36,8 @@ namespace AF.Bonfires
         UIDocumentBonfireMenu _uiDocumentBonfireMenu;
         CompanionsSceneManager _companionsSceneManager;
 
-
         [Header("References")]
         public Transform playerTransformRef;
-
-        void LogAnalytic(string eventName)
-        {
-            if (!GameAnalytics.Initialized)
-            {
-                GameAnalytics.Initialize();
-            }
-
-            GameAnalytics.NewDesignEvent(eventName);
-        }
 
         public void UnlockBonfire(string bonfireID)
         {
@@ -58,7 +46,7 @@ namespace AF.Bonfires
                 return;
             }
 
-            LogAnalytic(AnalyticsUtils.OnUnlockBonfire(bonfireID));
+            AnalyticsUtils.OnUnlockBonfire(bonfireID, GetPlayerManager());
 
             bonfiresDatabase.unlockedBonfires.Add(bonfireID);
         }

@@ -72,7 +72,6 @@ namespace AF
 
             if (incomingDamage == null)
             {
-                LogIncomingDamageNullError(attacker);
                 return;
             }
 
@@ -100,6 +99,12 @@ namespace AF
 
             onTakeDamage?.Invoke(incomingDamage);
             isTakingDamage = true;
+
+            if (playerManager.health.GetCurrentHealth() <= 0)
+            {
+                // Player has died
+                AnalyticsUtils.OnPlayerKilled(attacker, playerManager);
+            }
         }
 
         void HandlePlayerArmorAttacks(CharacterBaseManager damageOwner)

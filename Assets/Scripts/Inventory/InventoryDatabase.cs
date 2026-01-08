@@ -154,8 +154,46 @@ namespace AF.Inventory
             RemoveItem(itemToAdd, 1);
         }
 
+        void RemoveItemEntry<T>(List<T> itemList, string itemID) where T : Item
+        {
+            if (itemList == null || itemList.Count == 0 || string.IsNullOrEmpty(itemID))
+                return;
+
+            int index = itemList.FindIndex(i => i.itemID == itemID);
+            if (index >= 0)
+            {
+                itemList.RemoveAt(index);
+            }
+        }
+
+        void RemoveArrow(Arrow arrow)
+        {
+            if (ownedArrows == null || ownedArrows.Count == 0 || arrow == null)
+                return;
+
+            Arrow arrowMatch = ownedArrows.Find(i => i.EqualsTo(arrow));
+            if (arrowMatch != null)
+            {
+                ownedArrows.Remove(arrowMatch);
+            }
+        }
+
         public void RemoveItem(Item itemToRemove, int quantity)
         {
+            if (itemToRemove is Shield) RemoveItemEntry<Weapon>(ownedWeapons, itemToRemove.itemID);
+            if (itemToRemove is Weapon) RemoveItemEntry<Weapon>(ownedWeapons, itemToRemove.itemID);
+            if (itemToRemove is Arrow arr) RemoveArrow(arr);
+            if (itemToRemove is Spell) RemoveItemEntry<Spell>(ownedSpells, itemToRemove.itemID);
+            if (itemToRemove is Helmet) RemoveItemEntry<Helmet>(ownedHelmets, itemToRemove.itemID);
+            if (itemToRemove is Gauntlet) RemoveItemEntry<Gauntlet>(ownedGauntlets, itemToRemove.itemID);
+            if (itemToRemove is Armor) RemoveItemEntry<Armor>(ownedArmors, itemToRemove.itemID);
+            if (itemToRemove is Legwear) RemoveItemEntry<Legwear>(ownedLegwears, itemToRemove.itemID);
+            if (itemToRemove is Accessory) RemoveItemEntry<Accessory>(ownedAccessories, itemToRemove.itemID);
+            if (itemToRemove is Consumable) RemoveItemEntry<Consumable>(ownedConsumables, itemToRemove.itemID);
+            if (itemToRemove is KeyItem) RemoveItemEntry<KeyItem>(ownedKeyItems, itemToRemove.itemID);
+            if (itemToRemove is UpgradeMaterial) RemoveItemEntry<UpgradeMaterial>(ownedUpgradeMaterials, itemToRemove.itemID);
+            if (itemToRemove is CraftingMaterial) RemoveItemEntry<CraftingMaterial>(ownedCraftingMaterials, itemToRemove.itemID);
+
             if (!ownedItems.ContainsKey(itemToRemove))
             {
                 return;
@@ -221,6 +259,27 @@ namespace AF.Inventory
                 CraftingMaterial craftingMaterial => ownedCraftingMaterials.Exists(x => x.EqualsTo(itemToFind)),
                 KeyItem keyItem => ownedKeyItems.Exists(x => x.EqualsTo(itemToFind)),
                 _ => false,
+            };
+        }
+
+        public Item GetFirstItem(Item itemToFind)
+        {
+            return itemToFind switch
+            {
+                Shield shield => ownedWeapons.FirstOrDefault(x => x.EqualsTo(itemToFind)),
+                Weapon weapon => ownedWeapons.FirstOrDefault(x => x.EqualsTo(itemToFind)),
+                Spell spell => ownedSpells.FirstOrDefault(x => x.EqualsTo(itemToFind)),
+                Arrow arrow => ownedArrows.FirstOrDefault(x => x.EqualsTo(itemToFind)),
+                Helmet helmet => ownedHelmets.FirstOrDefault(x => x.EqualsTo(itemToFind)),
+                Gauntlet gauntlet => ownedGauntlets.FirstOrDefault(x => x.EqualsTo(itemToFind)),
+                Armor armor => ownedArmors.FirstOrDefault(x => x.EqualsTo(itemToFind)),
+                Legwear legwear => ownedLegwears.FirstOrDefault(x => x.EqualsTo(itemToFind)),
+                Consumable consumable => ownedConsumables.FirstOrDefault(x => x.EqualsTo(itemToFind)),
+                Accessory accessory => ownedAccessories.FirstOrDefault(x => x.EqualsTo(itemToFind)),
+                UpgradeMaterial upgradeMaterial => ownedUpgradeMaterials.FirstOrDefault(x => x.EqualsTo(itemToFind)),
+                CraftingMaterial craftingMaterial => ownedCraftingMaterials.FirstOrDefault(x => x.EqualsTo(itemToFind)),
+                KeyItem keyItem => ownedKeyItems.FirstOrDefault(x => x.EqualsTo(itemToFind)),
+                _ => null,
             };
         }
 

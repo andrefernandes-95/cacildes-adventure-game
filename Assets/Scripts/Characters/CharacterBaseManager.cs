@@ -62,6 +62,7 @@ namespace AF
         public CharacterBaseBuffManager characterBaseBuffManager;
         public CharacterBaseWeaknessesManager characterBaseWeaknessesManager;
         public CharacterBaseWeaponBuffManager characterBaseWeaponBuffManager;
+        public CharacterAbstractGesture characterAbstractGesture;
 
         Coroutine WaitForPetrificationToKillCoroutine;
 

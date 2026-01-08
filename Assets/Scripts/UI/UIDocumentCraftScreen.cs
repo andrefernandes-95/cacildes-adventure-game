@@ -3,7 +3,6 @@ using System.Linq;
 using AF.Events;
 using AF.Inventory;
 using AF.Music;
-using GameAnalyticsSDK;
 using TigerForge;
 using UnityEngine;
 using UnityEngine.Localization;
@@ -55,6 +54,7 @@ namespace AF
         public RecipesDatabase recipesDatabase;
         public InventoryDatabase inventoryDatabase;
         public PlayerStatsDatabase playerStatsDatabase;
+        [SerializeField] GameSettings gameSettings;
         public List<CraftingRecipe> availableRecipes = new();
 
         // Last scroll position
@@ -75,26 +75,14 @@ namespace AF
         // "Upgrade"
         public LocalizedString Upgrade_LocalizedString;
         // "Next Physical Damage: "
-        public LocalizedString NextPhysicalDamage_LocalizedString;
-        // "Next Fire Bonus: "
-        public LocalizedString NextFireBonus_LocalizedString;
-        // "Next Frost Bonus: "
-        public LocalizedString NextFrostBonus_LocalizedString;
-        // "Next Lightning Bonus: "
-        public LocalizedString NextLightningBonus_LocalizedString;
-        // "Next Magic Bonus: "
-        public LocalizedString NextMagicBonus_LocalizedString;
-        // "Next Darkness Bonus: "
-        public LocalizedString NextDarknessBonus_LocalizedString;
-        // "Next Darkness Bonus: "
-        public LocalizedString NextWaterBonus_LocalizedString;
-        // "Gold"
-        public LocalizedString Gold_LocalizedString;
 
 
         private void Awake()
         {
             this.gameObject.SetActive(false);
+
+            availableRecipes = Resources.LoadAll<CraftingRecipe>("Recipes").Where(
+                craftingRecipe => craftingRecipe != null && craftingRecipe.games.Contains(gameSettings.GetCurrentGame())).ToList();
         }
 
         private void OnEnable()
@@ -112,8 +100,6 @@ namespace AF
         /// </summary>
         public void OpenBlacksmithMenu()
         {
-            LogAnalytic(AnalyticsUtils.OnUIButtonClick("Blacksmith"));
-
             this.craftActivity = CraftActivity.BLACKSMITH;
             this.gameObject.SetActive(true);
         }
@@ -123,8 +109,6 @@ namespace AF
         /// </summary>
         public void OpenAlchemyMenu()
         {
-            LogAnalytic(AnalyticsUtils.OnUIButtonClick("Alchemy"));
-
             this.craftActivity = CraftActivity.ALCHEMY;
             this.gameObject.SetActive(true);
         }
@@ -202,7 +186,7 @@ namespace AF
 
             SetupActivity();
 
-            PopulateScrollView(recipesDatabase.availableRecipes.ToArray());
+            PopulateScrollView(availableRecipes.ToArray());
         }
 
         void PopulateScrollView(CraftingRecipe[] ownedCraftingRecipes)
@@ -433,9 +417,7 @@ namespace AF
                 playerManager.playerAchievementsManager.achievementForBrewingFirstPotion.AwardAchievement();
             }
 
-            LogAnalytic(AnalyticsUtils.OnUIButtonClick("CraftItem"), new() {
-                { "item_created", recipe.resultingItem.name }
-            });
+            AnalyticsUtils.OnItemCrafted(recipe.resultingItem, playerManager);
 
             soundbank.PlaySound(soundbank.craftSuccess);
             playerManager.playerInventory.AddItem(recipe.resultingItem, recipe.resultingAmount);
@@ -466,10 +448,6 @@ namespace AF
             playerManager.playerAchievementsManager.achievementForUpgradingFirstWeapon.AwardAchievement();
             soundbank.PlaySound(soundbank.craftSuccess);
             notificationManager.ShowNotification(LocalizationSettings.StringDatabase.GetLocalizedString("UIDocuments", "Weapon improved!"), wp.sprite);
-
-            LogAnalytic(AnalyticsUtils.OnUIButtonClick("UpgradeWeapon"), new() {
-                { "weapon_upgraded", wp.name }
-            });
 
             CraftingUtils.UpgradeItem(
                 wp,
@@ -676,23 +654,5 @@ namespace AF
             root.Q<VisualElement>("IngredientsListPreview").style.opacity = 1;
         }
 
-        void LogAnalytic(string eventName)
-        {
-            if (!GameAnalytics.Initialized)
-            {
-                GameAnalytics.Initialize();
-            }
-
-            GameAnalytics.NewDesignEvent(eventName);
-        }
-        void LogAnalytic(string eventName, Dictionary<string, object> values)
-        {
-            if (!GameAnalytics.Initialized)
-            {
-                GameAnalytics.Initialize();
-            }
-
-            GameAnalytics.NewDesignEvent(eventName, values);
-        }
     }
 }

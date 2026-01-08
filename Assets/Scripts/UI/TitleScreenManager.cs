@@ -1,4 +1,5 @@
 using System.Collections;
+using AF.Music;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -15,7 +16,9 @@ namespace AF
         public GameSession gameSession;
         public SaveManager saveManager;
         [SerializeField] PlayerManager playerManager;
+        [SerializeField] BGMManager bGMManager;
         public GameSettings gameSettings;
+        [SerializeField] CursorManager cursorManager;
 
         private void Awake()
         {
@@ -48,13 +51,31 @@ namespace AF
 
             onAwake_Event?.Invoke();
 
+            // Show cursor
+            if (cursorManager != null)
+            {
+                cursorManager.ShowCursor();
+            }
+
+            // Hide Player HUD
+            playerManager.uIDocumentPlayerHUDV2.HideHUD();
 
             if (shouldBeginImmediately)
             {
                 StartGame();
             }
 
+            PlayTitleScreenMusic();
+
             StartCoroutine(MakePlayerSleep());
+        }
+
+        void PlayTitleScreenMusic()
+        {
+            if (bGMManager != null && gameSettings.GetCurrentGame() != null && gameSettings.GetCurrentGame().titleScreenMusic != null)
+            {
+                bGMManager.PlayMusic(gameSettings.GetCurrentGame().titleScreenMusic);
+            }
         }
 
         IEnumerator MakePlayerSleep()
@@ -68,6 +89,16 @@ namespace AF
         {
             gameSession.gameState = GameSession.GameState.INITIALIZED_AND_SHOWN_TITLE_SCREEN;
             onPlayerBeginsGame_Event?.Invoke();
+
+            // Hide cursor
+            if (cursorManager != null)
+            {
+                cursorManager.HideCursor();
+            }
+
+            // Show Player HUD
+            playerManager.uIDocumentPlayerHUDV2.ShowHUD();
+
             gameObject.SetActive(false);
         }
     }

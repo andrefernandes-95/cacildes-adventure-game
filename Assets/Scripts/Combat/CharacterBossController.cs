@@ -1,9 +1,9 @@
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using AF.Events;
 using AF.Flags;
 using AF.Music;
-using GameAnalyticsSDK;
 using TigerForge;
 using UnityEditor;
 using UnityEngine;
@@ -187,11 +187,6 @@ namespace AF
         {
             bool isDead = characterManager.health.GetCurrentHealth() <= 0;
 
-            if (isDead)
-            {
-                LogAnalytic(AnalyticsUtils.OnBossKilled(bossName));
-            }
-
             bool allPartnersAreDead = isDead && characterManager.partners?.Length > 0
                 && characterManager.partners.All(partner => partner != null && partner.health.GetCurrentHealth() <= 0);
 
@@ -243,16 +238,6 @@ namespace AF
                 sceneSettings = FindAnyObjectByType<SceneSettings>(FindObjectsInactive.Include);
             }
             return sceneSettings;
-        }
-
-        void LogAnalytic(string eventName)
-        {
-            if (!GameAnalytics.Initialized)
-            {
-                GameAnalytics.Initialize();
-            }
-
-            GameAnalytics.NewDesignEvent(eventName);
         }
 
         public void TestBossFight()

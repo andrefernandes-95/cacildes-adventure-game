@@ -13,6 +13,7 @@ namespace AF
         }
 
         public BuildType buildType = BuildType.PRODUCTION;
+
     }
 
 }

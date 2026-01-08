@@ -2,7 +2,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using GameAnalyticsSDK;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UIElements;
@@ -133,13 +132,6 @@ namespace AF
             }
 
             errors.Add(errorMessage, stackTrace);
-
-            if (!GameAnalytics.Initialized)
-            {
-                GameAnalytics.Initialize();
-            }
-
-            GameAnalytics.NewErrorEvent(GAErrorSeverity.Error, errorMessage + " | Stack Trace: " + stackTrace);
 
             DisplayErrorEntry(errorMessage, stackTrace);
 

@@ -75,14 +75,14 @@ namespace AF
             upgradableItem.level++;
         }
 
-        public static bool IsItemAnIngredientOfCurrentLearnedRecipes(RecipesDatabase recipesDatabase, Item item)
+        public static bool IsItemAnIngredientOfCurrentLearnedRecipes(UIDocumentCraftScreen uIDocumentCraftScreen, Item item)
         {
-            if (recipesDatabase.availableRecipes.Count == 0)
+            if (uIDocumentCraftScreen.availableRecipes.Count == 0)
             {
                 return false;
             }
 
-            foreach (var recipe in recipesDatabase.availableRecipes)
+            foreach (var recipe in uIDocumentCraftScreen.availableRecipes)
             {
                 if (recipe.ingredients.Exists(craftingIngredientEntry =>
                     craftingIngredientEntry != null
@@ -96,11 +96,11 @@ namespace AF
             return false;
         }
 
-        public static List<CraftingRecipe> GetRecipesUsingItem(RecipesDatabase recipesDatabase, Item item)
+        public static List<CraftingRecipe> GetRecipesUsingItem(UIDocumentCraftScreen uIDocumentCraftScreen, Item item)
         {
             List<CraftingRecipe> recipesUsingItem = new List<CraftingRecipe>();
 
-            foreach (var recipe in recipesDatabase.availableRecipes)
+            foreach (var recipe in uIDocumentCraftScreen.availableRecipes)
             {
                 if (recipe.ingredients.Exists(craftingIngredientEntry =>
                     craftingIngredientEntry != null

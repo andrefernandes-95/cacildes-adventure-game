@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -12,7 +13,7 @@ namespace AF.Loading
         VisualElement tipImage;
         Label tipText;
 
-        public LoadingScreen[] loadingScreens;
+        List<LoadingScreen> loadingScreens = new();
 
         VisualElement root;
 
@@ -33,6 +34,8 @@ namespace AF.Loading
             instance = this;
 
             DontDestroyOnLoad(gameObject);
+
+            loadingScreens = Resources.LoadAll<LoadingScreen>("LoadingScreens").ToList();
 
             loadingScreen.enabled = false;
 
