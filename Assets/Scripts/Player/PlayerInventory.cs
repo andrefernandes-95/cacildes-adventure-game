@@ -458,6 +458,13 @@ namespace AF
             Arrow clone = Instantiate(arrow);
             clone.itemID = GenerateItemId();
             inventoryDatabase.ownedArrows.Add(clone);
+
+            // If no arrow equipped, try equipping it
+            if (playerManager.equipmentDatabase.arrows[0] == null)
+            {
+                playerManager.equipmentDatabase.EquipArrow(clone, 0);
+            }
+
             return clone;
         }
 

@@ -157,7 +157,7 @@ namespace AF
 
             UIUtils.SetupButton(saveChangesButton, () =>
             {
-                this.gameObject.SetActive(false);
+                Close();
             }, soundbank);
 
             UIUtils.SetupButton(resetSettingsButton, () =>
@@ -197,6 +197,7 @@ namespace AF
             if (this.gameObject.activeSelf)
             {
                 this.gameObject.SetActive(false);
+                cursorManager.HideCursor();
             }
         }
 

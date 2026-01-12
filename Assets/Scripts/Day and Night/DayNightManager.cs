@@ -149,8 +149,7 @@ namespace AF
         private void OnHourChanged()
         {
             UpdateClockIcon();
-            if (canUpdateLighting)
-                SmoothLightingTransition();
+            SmoothLightingTransition();
         }
 
         // -------------------------------------------------
@@ -192,7 +191,7 @@ namespace AF
 
         void ForceLightingUpdate()
         {
-            if (!gameSettings.UseDayAndNightCycling())
+            if (!gameSettings.UseDayAndNightCycling() || !canUpdateLighting)
             {
                 return;
             }
@@ -210,7 +209,7 @@ namespace AF
 
         private void SmoothLightingTransition()
         {
-            if (!gameSettings.UseDayAndNightCycling())
+            if (!gameSettings.UseDayAndNightCycling() || !canUpdateLighting)
             {
                 return;
             }
@@ -313,32 +312,6 @@ namespace AF
                 return !sceneSettings.sceneLocation.isInterior;
 
             return sceneSettings == null || !sceneSettings.isInterior;
-        }
-
-        private void OnValidate()
-        {
-            if (!gameSettings.UseDayAndNightCycling())
-            {
-                return;
-            }
-
-            if (directionalLight != null)
-                return;
-
-            if (RenderSettings.sun != null)
-            {
-                directionalLight = RenderSettings.sun;
-                return;
-            }
-
-            foreach (var light in FindObjectsByType<Light>(FindObjectsInactive.Include, FindObjectsSortMode.None))
-            {
-                if (light.type == LightType.Directional)
-                {
-                    directionalLight = light;
-                    break;
-                }
-            }
         }
 
         // -------------------------------------------------

@@ -42,6 +42,8 @@ EXTERNAL runEvent(eventId)
 
 - Gunthar: Come see him at his keep. Oh, and careful with the road. My cousin skeletons won't be happy to see you. And your...
 
+~ runEvent("Equip Abandoned Axe")
+
 - Balbino: Axe? Yes. It really rattles them... I wonder why?
 
 - Gunthar: Don't take it personally. Half of them are here because of you.

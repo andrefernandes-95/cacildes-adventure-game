@@ -119,6 +119,7 @@ namespace AF
             gameObject.SetActive(false);
             playerManager.uIDocumentPlayerHUDV2.FadeIn();
             playerManager.thirdPersonController.LockCameraPosition = false;
+            cursorManager.HideCursor();
         }
 
         private void ShowMessage(Character character, string message)

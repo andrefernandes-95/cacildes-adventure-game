@@ -39,7 +39,8 @@ namespace AF
             "CharacterController.Move called on inactive controller",
             "Stack Trace: AF.Shooting.CharacterShooter.FireProjectile",
             "AF.Combat.TargetManager.ClearTarget ()",
-            "Concave Mesh Colliders are not supported when used with dynamic Rigidbody GameObjects"
+            "Concave Mesh Colliders are not supported when used with dynamic Rigidbody GameObjects",
+            "IMGUIContainer cannot "
         };
 
         void Start()

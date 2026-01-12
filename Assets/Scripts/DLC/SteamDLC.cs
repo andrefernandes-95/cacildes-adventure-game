@@ -9,9 +9,16 @@ namespace AF
         [Header("Steam DLC")]
         public AppId_t appId;
 
+        [Header("Is Enabled?")]
+        public bool enabled = true;
+
         public bool IsOwned()
         {
-            if (!SteamManager.Initialized) return false;
+            if (!enabled || !SteamManager.Initialized)
+            {
+                return false;
+            }
+
             return SteamApps.BIsDlcInstalled(appId);
         }
     }

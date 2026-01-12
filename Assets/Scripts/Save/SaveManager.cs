@@ -91,7 +91,7 @@ namespace AF
 
         public void ResetGameState(bool isFromGameOver)
         {
-            playerStatsDatabase.Clear(isFromGameOver);
+            playerStatsDatabase.Clear(isFromGameOver, playerManager.health.GetMaxHealth(), playerManager.staminaStatManager.GetMaxStamina(), playerManager.manaManager.GetMaxMana());
             equipmentDatabase.Clear();
             inventoryDatabase.SetDefaultItems(playerManager);
             pickupDatabase.Clear();

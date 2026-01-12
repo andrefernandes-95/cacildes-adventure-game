@@ -5,6 +5,7 @@ using AF.Inventory;
 using AF.Music;
 using TigerForge;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.Localization;
 using UnityEngine.Localization.Settings;
 using UnityEngine.UIElements;
@@ -75,6 +76,8 @@ namespace AF
         // "Upgrade"
         public LocalizedString Upgrade_LocalizedString;
         // "Next Physical Damage: "
+
+        [HideInInspector] public UnityEvent<Item> onItemCreated;
 
 
         private void Awake()
@@ -418,6 +421,8 @@ namespace AF
             }
 
             AnalyticsUtils.OnItemCrafted(recipe.resultingItem, playerManager);
+
+            onItemCreated?.Invoke(recipe.resultingItem);
 
             soundbank.PlaySound(soundbank.craftSuccess);
             playerManager.playerInventory.AddItem(recipe.resultingItem, recipe.resultingAmount);
