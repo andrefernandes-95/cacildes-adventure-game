@@ -18,6 +18,8 @@ namespace AF
         [AssetPreview]
         public Sprite objectiveImage;
 
+        public LocalizedString objectiveDescription;
+
         [TextArea] public string objectiveDescription_English;
         [TextArea] public string objectiveDescription_Portuguese;
 
@@ -26,6 +28,11 @@ namespace AF
 
         public string GetDescription()
         {
+            if (objectiveDescription != null && objectiveDescription.IsEmpty == false)
+            {
+                return objectiveDescription.GetLocalizedString();
+            }
+
             if (Utils.IsPortuguese())
             {
                 return objectiveDescription_Portuguese;

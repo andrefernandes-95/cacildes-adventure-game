@@ -3,6 +3,7 @@ using AF.Events;
 using AF.Stats;
 using TigerForge;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace AF
 {
@@ -15,6 +16,8 @@ namespace AF
 
         [Header("Components")]
         public PlayerManager playerManager;
+
+        [HideInInspector] public UnityEvent onDecreaseMana;
 
         [Header("Regeneration Settings")]
         public float MANA_REGENERATION_RATE = 20f;
@@ -56,6 +59,7 @@ namespace AF
         public void DecreaseMana(float amount)
         {
             SetCurrentMana(Mathf.Clamp(playerStatsDatabase.currentMana - amount, 0, GetMaxMana()));
+            onDecreaseMana?.Invoke();
         }
 
         public bool HasEnoughManaForSpell(Spell spell)

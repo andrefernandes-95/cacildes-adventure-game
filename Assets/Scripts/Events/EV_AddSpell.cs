@@ -1,18 +1,15 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 namespace AF
 {
+    using System.Collections;
+    using System.Collections.Generic;
+    using UnityEngine;
 
-    public class EV_AddAndAutoEquipBowAndArrow : EventBase
+    public class EV_AddSpell : EventBase
     {
         [SerializeField] PlayerManager playerManager;
 
-        [SerializeField] Weapon bow;
-        [SerializeField] Arrow arrow;
-        [SerializeField] int arrowAmount = 15;
+        [SerializeField] Spell spell;
+        [SerializeField] bool autoEquip = false;
 
         UIDocumentReceivedItemPrompt _uIDocumentReceivedItemPrompt;
         Soundbank _soundbank;
@@ -20,16 +17,12 @@ namespace AF
         public override IEnumerator Dispatch()
         {
             // Add items
-            Weapon addedBow = playerManager.playerInventory.AddWeapon(bow);
-            playerManager.characterBaseEquipment.EquipWeapon(Instantiate(addedBow), 0, false);
+            Spell addedSpell = playerManager.playerInventory.AddSpell(spell);
 
-            // Added arrows
-            for (int i = 0; i < arrowAmount; i++)
+            if (autoEquip)
             {
-                playerManager.playerInventory.AddArrow(arrow);
+                playerManager.characterBaseEquipment.EquipSpell(addedSpell, 0);
             }
-
-            playerManager.equipmentDatabase.EquipArrow(arrow, 0);
 
             ShowNotification();
 
@@ -42,12 +35,13 @@ namespace AF
             var combinedList = new List<UIDocumentReceivedItemPrompt.ItemsReceived>();
             UIDocumentReceivedItemPrompt.ItemsReceived itemReceived = new()
             {
-                itemName = bow.GetName(),
+                itemName = spell.GetName(),
                 quantity = 1,
-                sprite = bow.sprite
+                sprite = spell.sprite
             };
             combinedList.Add(itemReceived);
             GetUIDocumentReceivedItemPrompt().DisplayItemsReceived(combinedList);
+
             GetSoundbank().PlaySound(GetSoundbank().uiItemReceived);
         }
 
@@ -60,6 +54,7 @@ namespace AF
 
             return _uIDocumentReceivedItemPrompt;
         }
+
         Soundbank GetSoundbank()
         {
             if (_soundbank == null)

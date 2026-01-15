@@ -120,9 +120,9 @@ namespace AF
                 }
 
                 HandleDamageFromStatusEffects(damage);
-
-                HandleDamageEvents(damage);
             }
+
+            HandleDamageEvents(damage);
 
             if (callOnDamageReceivedEvent)
             {

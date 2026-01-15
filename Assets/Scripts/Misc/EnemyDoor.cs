@@ -12,6 +12,7 @@ namespace AF
         [SerializeField] CharacterManager[] enemies;
 
         AudioSource audioSource => GetComponent<AudioSource>();
+        [SerializeField] float audioDuration = 1f;
 
         void Awake()
         {
@@ -45,7 +46,13 @@ namespace AF
                 Utils.UpdateTransformChildren(this.transform, false);
                 flagsDatabase.AddFlag(monoBehaviourID);
                 audioSource.Play();
+                Invoke(nameof(StopDoorSound), audioDuration);
             }
+        }
+
+        void StopDoorSound()
+        {
+            audioSource.Stop();
         }
     }
 }

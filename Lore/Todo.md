@@ -1,3 +1,8 @@
+# Unholy Sword
+
+BAckstab skeleton makes it spin
+Pick bow and flambe not showing the GUI of received item
+
 # Set time in midnight omen boss not on night
 
 # Captain ahrold stop fight midst fight

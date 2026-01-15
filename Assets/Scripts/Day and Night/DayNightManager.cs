@@ -158,9 +158,13 @@ namespace AF
 
         private void UpdateClockUI()
         {
-            if (!gameSettings.UseDayAndNightCycling())
+            if (!gameSettings.UseDayAndNightCycling() && uIDocumentPlayerHUDV2)
             {
-                uIDocumentPlayerHUDV2.root.Q<IMGUIContainer>("DayTimeClockContainer").style.display = DisplayStyle.None;
+                if (uIDocumentPlayerHUDV2 != null && uIDocumentPlayerHUDV2.root != null)
+                {
+                    uIDocumentPlayerHUDV2.root.Q<IMGUIContainer>("DayTimeClockContainer").style.display = DisplayStyle.None;
+
+                }
                 return;
             }
 

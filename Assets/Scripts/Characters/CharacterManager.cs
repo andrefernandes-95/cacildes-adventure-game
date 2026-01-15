@@ -42,6 +42,7 @@ namespace AF
         public CharacterWeaponBuffManager characterWeaponBuffManager;
         public Sight sight;
         public CharacterGesture characterGesture;
+        public CharacterBackstabController characterBackstabController;
 
         CharacterAnimationEventListener characterAnimationEventListener => GetComponent<CharacterAnimationEventListener>();
 
@@ -162,6 +163,7 @@ namespace AF
             characterDodgeController.ResetStates();
 
             characterGesture.ResetStates();
+            characterBackstabController.ResetStates();
 
             faceTarget = false;
         }

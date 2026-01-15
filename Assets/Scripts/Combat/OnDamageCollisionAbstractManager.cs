@@ -99,7 +99,7 @@ namespace AF
 
                 if (damageOwner is PlayerManager)
                 {
-                    damageReceiver?.GetCharacter().health?.onDamageFromPlayer?.Invoke();
+                    damageReceiver?.GetCharacter()?.health?.onDamageFromPlayer?.Invoke();
                 }
             }
 

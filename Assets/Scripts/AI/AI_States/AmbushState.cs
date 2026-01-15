@@ -128,7 +128,7 @@ namespace AF
         {
             yield return new WaitForEndOfFrame();
 
-            if (ambushHasBegun)
+            if (ambushHasBegun || characterManager.characterBackstabController.isBeingBackstabbed)
             {
                 // if enemy is awake, we should skip to FinishAmbush() since that will make us chase the target
                 FinishAmbush();

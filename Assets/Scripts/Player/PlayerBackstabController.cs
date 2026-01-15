@@ -50,6 +50,7 @@ namespace AF
                     playerManager.transform.rotation = enemy.transform.rotation;
                     playerManager.playerComponentManager.DisablePlayerControlAndRegainControlAfterResetStates();
                     enemy.targetManager.SetTarget(playerManager);
+                    enemy.characterBackstabController.isBeingBackstabbed = true;
 
                     playerManager.PlayBusyHashedAnimationWithRootMotion(hashBackstabExecution);
                     Invoke(nameof(PlayDelayedBackstab), 0.8f);
@@ -136,6 +137,11 @@ namespace AF
 
             // Do not play backstab animation if it is going to kill the target
             if (target.health.GetCurrentHealth() - incomingDamage.GetTotalDamage() <= 0)
+            {
+                return false;
+            }
+
+            if (target.characterBackstabController.isBeingBackstabbed)
             {
                 return false;
             }
