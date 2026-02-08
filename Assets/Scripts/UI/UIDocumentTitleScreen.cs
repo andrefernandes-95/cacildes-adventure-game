@@ -21,7 +21,7 @@ namespace AF
         public Soundbank soundbank;
         public SaveManager saveManager;
 
-        [SerializeField] SteamDLC supporterEdition;
+        [SerializeField] BuildManager buildManager;
 
         [Header("Game Session")]
         public GameSession gameSession;
@@ -53,7 +53,8 @@ namespace AF
             var versionLabel = root.Q<Label>("Version");
             versionLabel.text = Application.version;
 
-            root.Q<Label>("SupporterEdition").style.display = supporterEdition.IsOwned() ? DisplayStyle.Flex : DisplayStyle.None;
+            root.Q<Label>("SupporterEdition").style.display = buildManager.buildType == BuildManager.BuildType.PRODUCTION ? DisplayStyle.Flex : DisplayStyle.None;
+            root.Q<Label>("FreeEdition").style.display = buildManager.buildType == BuildManager.BuildType.DEMO ? DisplayStyle.Flex : DisplayStyle.None;
 
             Button newGameButton = root.Q<Button>("NewGameButton");
             Button continueButton = root.Q<Button>("ContinueButton");
@@ -66,6 +67,7 @@ namespace AF
             Button exitButton = root.Q<Button>("ExitButton");
             Button btnGithub = root.Q<Button>("btnGithub");
             Button joinDiscordButton = root.Q<Button>("JoinDiscord");
+            Button getTheFullVersionButton = root.Q<Button>("GetTheFullVersion");
             Button myMusicButton = root.Q<Button>("VisitBandcamp");
             Button btnYoutube = root.Q<Button>("btnYoutube");
             Button btnBlueSky = root.Q<Button>("btnBlueSky");
@@ -94,6 +96,17 @@ namespace AF
                 uIDocumentTitleScreenSaveFiles.gameObject.SetActive(true);
                 gameObject.SetActive(false);
             }, soundbank);
+
+
+            UIUtils.SetupButton(getTheFullVersionButton, () =>
+            {
+                Application.OpenURL("https://store.steampowered.com/app/2617740/Cacildes_Adventure/");
+                getTheFullVersionButton.Focus();
+            }, soundbank);
+
+            getTheFullVersionButton.style.scale = new Scale(Vector3.one); // Set initial scale
+            getTheFullVersionButton.RegisterCallback<GeometryChangedEvent>(evt => PopIn(joinDiscordButton));
+            getTheFullVersionButton.style.display = buildManager.buildType == BuildManager.BuildType.PRODUCTION ? DisplayStyle.None : DisplayStyle.Flex;
 
             UIUtils.SetupButton(joinDiscordButton, () =>
             {

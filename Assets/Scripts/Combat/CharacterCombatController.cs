@@ -307,7 +307,7 @@ namespace AF.Combat
 
                 foreach (CombatAction possibleChaseAction in shuffledChaseActions)
                 {
-                    if (possibleChaseAction.CanUseCombatAction())
+                    if (possibleChaseAction != null && possibleChaseAction.CanUseCombatAction())
                     {
                         newCombatAction = possibleChaseAction;
                         break;

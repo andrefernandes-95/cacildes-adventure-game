@@ -872,7 +872,11 @@ namespace AF
             StatsChangedContainer.style.display = DisplayStyle.Flex;
 
             // Item preview
-            ItemNamePreview.text = upgradableItem.GetName() + " +" + nextLevel;
+            string itemNamePreview = upgradableItem.GetName() + " +" + upgradableItem.level;
+            string nextItemPreview = " > +" + nextLevel;
+
+            ItemNamePreview.text = itemNamePreview + nextItemPreview;
+
             ItemDescriptionPreview.text = upgradableItem.GetDescription();
             ItemSprite.style.backgroundImage = new StyleBackground(upgradableItem.sprite);
             ItemInfoPreview.style.display = DisplayStyle.Flex;

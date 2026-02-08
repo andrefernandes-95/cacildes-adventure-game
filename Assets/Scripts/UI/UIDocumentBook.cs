@@ -27,9 +27,13 @@ namespace AF
         [SerializeField] StarterAssetsInputs starterAssetsInputs;
         public Soundbank soundbank;
         public CursorManager cursorManager;
+        [SerializeField] Translator translator;
 
         bool isReading = false;
         Coroutine SetIsReadingCoroutine;
+
+        Coroutine ShowPageCoroutine;
+        Coroutine ShowNoteCoroutine;
 
         private void Awake()
         {
@@ -76,6 +80,12 @@ namespace AF
             currentJournal = null;
             cursorManager.HideCursor();
             isReading = false;
+            Invoke(nameof(DisableBook), 0f);
+        }
+
+        void DisableBook()
+        {
+            gameObject.SetActive(false);
         }
 
         /// <summary>
@@ -118,7 +128,12 @@ namespace AF
             if (journal.isNote)
             {
                 currentPage = 0;
-                ShowNote();
+                if (ShowNoteCoroutine != null)
+                {
+                    StopCoroutine(ShowNoteCoroutine);
+                }
+                ShowNoteCoroutine = StartCoroutine(ShowNote());
+
                 soundbank.PlaySound(soundbank.bookFlip);
             }
             else
@@ -177,19 +192,41 @@ namespace AF
             bookBack.style.backgroundColor = currentJournal.coverColor;
         }
 
-        public void ShowNote()
+        IEnumerator ShowNote()
         {
+            yield return null;
+
             bookFront.style.display = DisplayStyle.None;
             bookPage.style.display = DisplayStyle.None;
             bookBack.style.display = DisplayStyle.None;
             notePage.style.display = DisplayStyle.Flex;
 
             notePageTitle.text = currentJournal.pages[currentPage].pageTitle;
-            notePageText.text = currentJournal.pages[currentPage].pageText;
+            notePageText.text = "";
+
+            if (string.IsNullOrEmpty(currentJournal.pages[currentPage].pageText))
+            {
+                notePageText.text = "";
+                yield break;
+            }
+
+            // If auto-translation is enabled, attempt to translate text using Google API
+            string translatedText = "";
+
+            translator.TranslateText(currentJournal.pages[currentPage].pageText, (value) =>
+            {
+                translatedText = value;
+            });
+
+            yield return new WaitUntil(() => string.IsNullOrEmpty(translatedText) == false);
+
+            notePageText.text = translatedText;
         }
 
-        public void ShowSinglePage(JournalPage page, bool renderOnRight)
+        IEnumerator ShowSinglePage(JournalPage page, bool renderOnRight)
         {
+            yield return null;
+
             soundbank.PlaySound(soundbank.bookFlip);
 
             bookFront.style.display = DisplayStyle.None;
@@ -212,8 +249,22 @@ namespace AF
                     leftPageTitle.text = "";
                     rightPageTitle.style.display = DisplayStyle.Flex;
                 }
-                rightPageText.text = FormatText(page.pageText);
-                leftPageText.text = "";
+
+                if (!string.IsNullOrEmpty(page.pageText))
+                {
+                    // If auto-translation is enabled, attempt to translate text using Google API
+                    string translatedText = "";
+
+                    translator.TranslateText(FormatText(page.pageText), (value) =>
+                    {
+                        translatedText = value;
+                    });
+
+                    yield return new WaitUntil(() => string.IsNullOrEmpty(translatedText) == false);
+
+                    rightPageText.text = translatedText;
+                    leftPageText.text = "";
+                }
             }
             else
             {
@@ -230,14 +281,30 @@ namespace AF
                     rightPageTitle.text = "";
                     leftPageTitle.style.display = DisplayStyle.Flex;
                 }
-                leftPageText.text = FormatText(page.pageText);
-                rightPageText.text = "";
+
+                if (!string.IsNullOrEmpty(page.pageText))
+                {
+                    // If auto-translation is enabled, attempt to translate text using Google API
+                    string translatedText = "";
+
+                    translator.TranslateText(FormatText(page.pageText), (value) =>
+                    {
+                        translatedText = value;
+                    });
+
+                    yield return new WaitUntil(() => string.IsNullOrEmpty(translatedText) == false);
+
+                    leftPageText.text = translatedText;
+                    rightPageText.text = "";
+                }
             }
 
         }
 
-        public void ShowPages(JournalPage journalLeftPage, JournalPage journalRightPage)
+        IEnumerator ShowPages(JournalPage journalLeftPage, JournalPage journalRightPage)
         {
+            yield return null;
+
             soundbank.PlaySound(soundbank.bookFlip);
 
             bookFront.style.display = DisplayStyle.None;
@@ -254,8 +321,22 @@ namespace AF
                 leftPageTitle.text = journalLeftPage.pageTitle;
                 leftPageTitle.style.display = DisplayStyle.Flex;
             }
-            leftPageText.text = FormatText(journalLeftPage.pageText);
 
+            leftPageText.text = "";
+            if (!string.IsNullOrEmpty(journalLeftPage.pageText))
+            {
+                // If auto-translation is enabled, attempt to translate text using Google API
+                string translatedLeftText = "";
+
+                translator.TranslateText(FormatText(journalLeftPage.pageText), (value) =>
+                {
+                    translatedLeftText = value;
+                });
+
+                yield return new WaitUntil(() => string.IsNullOrEmpty(translatedLeftText) == false);
+
+                leftPageText.text = translatedLeftText;
+            }
 
             if (string.IsNullOrEmpty(journalRightPage.pageTitle))
             {
@@ -266,7 +347,22 @@ namespace AF
                 rightPageTitle.text = journalRightPage.pageTitle;
                 rightPageTitle.style.display = DisplayStyle.Flex;
             }
-            rightPageText.text = FormatText(journalRightPage.pageText);
+
+            rightPageText.text = "";
+            if (!string.IsNullOrEmpty(journalRightPage.pageText))
+            {
+                // If auto-translation is enabled, attempt to translate text using Google API
+                string translatedRightText = "";
+
+                translator.TranslateText(FormatText(journalRightPage.pageText), (value) =>
+                {
+                    translatedRightText = value;
+                });
+
+                yield return new WaitUntil(() => string.IsNullOrEmpty(translatedRightText) == false);
+
+                rightPageText.text = translatedRightText;
+            }
         }
 
 
@@ -280,7 +376,13 @@ namespace AF
             if (currentJournal.isNote)
             {
                 currentPage = 0;
-                ShowNote();
+
+                if (ShowNoteCoroutine != null)
+                {
+                    StopCoroutine(ShowNoteCoroutine);
+                }
+                ShowNoteCoroutine = StartCoroutine(ShowNote());
+
                 return;
             }
 
@@ -309,13 +411,19 @@ namespace AF
             }
             else
             {
+                if (ShowPageCoroutine != null)
+                {
+                    StopCoroutine(ShowPageCoroutine);
+                }
+
                 if (currentPage + 1 > currentJournal.pages.Count - 1)
                 {
-                    ShowSinglePage(currentJournal.pages[currentPage], false);
+
+                    ShowPageCoroutine = StartCoroutine(ShowSinglePage(currentJournal.pages[currentPage], false));
                 }
                 else
                 {
-                    ShowPages(currentJournal.pages[currentPage], currentJournal.pages[currentPage + 1]);
+                    ShowPageCoroutine = StartCoroutine(ShowPages(currentJournal.pages[currentPage], currentJournal.pages[currentPage + 1]));
                 }
             }
         }

@@ -36,7 +36,9 @@ namespace AF
                 return false;
             }
 
-            int maxPoiseHits = characterManager.characterBaseDefenseManager.CurrentDamageAbsorbed.poiseDamage;
+            CharacterBaseStats stats = characterManager.characterBaseStats;
+            int maxPoiseHits = characterManager.characterBaseDefenseManager.GetCurrentDefense(
+                stats.GetVitality(), stats.GetEndurance(), stats.GetStrength(), stats.GetIntelligence()).poiseDamage;
 
             currentPoiseHitCount = poiseDamage > 0 ? Mathf.Clamp(currentPoiseHitCount + 1 + poiseDamage, 0, maxPoiseHits) : 0;
 

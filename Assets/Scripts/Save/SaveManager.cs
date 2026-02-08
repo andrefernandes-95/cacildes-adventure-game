@@ -604,6 +604,9 @@ namespace AF
                 playerManager.staminaStatManager.RestoreStaminaPoints(playerManager.staminaStatManager.GetMaxStamina());
                 playerManager.manaManager.RestoreFullMana();
 
+                // Restore orange juices
+                playerManager.playerInventory.ReplenishItems();
+
                 QuickSaveReader quickSaveReader = QuickSaveReader.Create(lastSave);
                 LoadSceneSettings(quickSaveReader);
             }

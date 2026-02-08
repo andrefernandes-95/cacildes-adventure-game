@@ -366,6 +366,14 @@ namespace AF
                     ? sceneSettings.sceneLocation.FogColor
                     : FogColor;
 
-        public void SetFogDensity(float value) => RenderSettings.fogDensity = value;
+        public void SetFogDensity(float value)
+        {
+            if (!gameSettings.UseDayAndNightCycling())
+            {
+                return;
+            }
+
+            RenderSettings.fogDensity = value;
+        }
     }
 }

@@ -502,6 +502,7 @@ namespace AF
 
             targetManager.ClearTarget();
             stateManager?.ResetDefaultState();
+            characterPosture.ResetCumulativePosture();
 
             if (health is CharacterHealth characterHealth)
             {

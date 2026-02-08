@@ -35,6 +35,7 @@ namespace AF
 
         private Coroutine postureDecayRoutine;
 
+        int cumulativePosture = 0;
 
         public void ResetStates()
         {
@@ -161,6 +162,26 @@ namespace AF
             }
 
             increasePostureEffects.Remove(increasePosture);
+        }
+
+        public void ResetCumulativePosture()
+        {
+            cumulativePosture = 0;
+        }
+
+        protected void IncreaseCumulativePosture()
+        {
+            cumulativePosture++;
+        }
+
+        protected float GetCumulativeMultiplier()
+        {
+            if (cumulativePosture <= 0) return 1f;
+
+            float maxMultiplier = 3.0f; // posture can at most triple
+            float growthRate = 0.5f;   // smaller = slower growth
+
+            return 1f + (maxMultiplier - 1f) * (1f - Mathf.Exp(-cumulativePosture * growthRate));
         }
     }
 }

@@ -7,7 +7,7 @@ namespace AF
 {
     public static class GameSettingsUtils
     {
-        private static readonly string PreferencesFileName = "GamePreferences";
+        private static readonly string PreferencesFileName = "GamePreferences.json";
         private static readonly string PreferencesFolder = Path.Combine(Application.persistentDataPath, "GamePreferences");
         private static readonly string PreferencesFilePath = Path.Combine(PreferencesFolder, PreferencesFileName);
 
@@ -62,9 +62,38 @@ namespace AF
                 {
                     gameSettings.toggleCombatStanceBinding = toggleCombatStanceBinding;
                 }
+
                 if (gamePreferencesReader.TryRead("useAbilityBinding", out string useAbilityBinding))
                 {
                     gameSettings.useAbilityBinding = useAbilityBinding;
+                }
+
+                // Gameplay Options
+                if (gamePreferencesReader.TryRead("cameraSensitivity", out int cameraSensitivity))
+                {
+                    gameSettings.SetCameraSensitivity(cameraSensitivity);
+                }
+
+                if (gamePreferencesReader.TryRead("cameraDistance", out int cameraDistance))
+                {
+                    gameSettings.SetCameraDistance(cameraDistance);
+                }
+
+                if (gamePreferencesReader.TryRead("invertYAxis", out bool invertYAxis))
+                {
+                    gameSettings.SetInvertYAxis(invertYAxis);
+                }
+
+                // Audio Options
+                if (gamePreferencesReader.TryRead("musicVolume", out float musicVolume))
+                {
+                    gameSettings.SetMusicVolume(musicVolume);
+                }
+
+                // Graphics Options
+                if (gamePreferencesReader.TryRead("graphicsQuality", out int graphicsQuality))
+                {
+                    gameSettings.SetGraphicsQuality(graphicsQuality);
                 }
 
                 // Character Customization
@@ -112,6 +141,17 @@ namespace AF
                 {
                     gameSettings.SetPlayerPortrait(playerPortrait);
                 }
+
+                // Auto Translation
+                if (gamePreferencesReader.TryRead("automaticTranslationCode", out string automaticTranslationCode))
+                {
+                    gameSettings.SetAutomaticTranslation(automaticTranslationCode);
+                }
+
+                if (gamePreferencesReader.TryRead("gameLanguage", out string gameLanguage))
+                {
+                    gameSettings.SetGameLanguage(gameLanguage);
+                }
             }
             catch (Exception e)
             {
@@ -152,6 +192,21 @@ namespace AF
                 quickSaveWriter.Write("face", gameSettings.GetFace());
                 quickSaveWriter.Write("isMale", gameSettings.IsMale());
                 quickSaveWriter.Write("playerPortrait", gameSettings.GetPlayerPortrait());
+
+                // Gameplay Options
+                quickSaveWriter.Write("cameraSensitivity", gameSettings.GetCameraSensitivity());
+                quickSaveWriter.Write("cameraDistance", gameSettings.GetCameraDistance());
+                quickSaveWriter.Write("invertYAxis", gameSettings.GetInvertYAxis());
+
+                // Audio Options
+                quickSaveWriter.Write("musicVolume", gameSettings.GetMusicVolume());
+
+                // Video Quality Options
+                quickSaveWriter.Write("graphicsQuality", gameSettings.GetGraphicsQuality());
+
+                // Auto language
+                quickSaveWriter.Write("automaticTranslationCode", gameSettings.automaticTranslationCode);
+                quickSaveWriter.Write("gameLanguage", gameSettings.GetGameLanguage());
 
                 if (quickSaveWriter.TryCommit())
                 {

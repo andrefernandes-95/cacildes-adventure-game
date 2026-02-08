@@ -32,6 +32,8 @@ namespace AF.StatusEffects
         [SerializeField] SerializedDictionary<StatusEffect, GameObject> startEffectsVfx = new();
         [SerializeField] SerializedDictionary<StatusEffect, GameObject> updateEffectsVfx = new();
 
+        [SerializeField] SerializedDictionary<StatusEffect, int> cumulativeResistances = new();
+
         List<StatusEffect> effectsToRemove = new();
 
         private void Awake()
@@ -42,6 +44,8 @@ namespace AF.StatusEffects
             {
                 ScaleResistancesToNewGamePlus();
             }
+
+            characterBaseManager.health.onDeath.AddListener(ResetCumulativeResistances);
         }
 
         /// <summary>
@@ -91,6 +95,15 @@ namespace AF.StatusEffects
             {
                 state.hasReachedTotalAmount = true;
                 ApplyEffect(effect, state);
+
+                if (cumulativeResistances.ContainsKey(effect))
+                {
+                    cumulativeResistances[effect]++;
+                }
+                else
+                {
+                    cumulativeResistances.Add(effect, 1);
+                }
             }
 
             characterBaseManager.characterHUD.UpdateStatusEffectBar(effect, state.currentAmount, maximumResistance, state.hasReachedTotalAmount);
@@ -223,7 +236,15 @@ namespace AF.StatusEffects
         {
             if (calculatedResistances.TryGetValue(effect, out var resistance))
             {
-                return resistance;
+                float existingResistance = resistance;
+
+                if (cumulativeResistances.ContainsKey(effect))
+                {
+
+                    existingResistance *= 1 + cumulativeResistances[effect];
+                }
+
+                return existingResistance;
             }
 
             return effect.fallbackResistance; // fallback
@@ -317,6 +338,11 @@ namespace AF.StatusEffects
                     Destroy(tmpInstance);
                 }
             }
+        }
+
+        void ResetCumulativeResistances()
+        {
+            cumulativeResistances.Clear();
         }
     }
 }

@@ -104,17 +104,6 @@ namespace AF.Stats
         public Dictionary<StatusEffect, float> statusEffectResistances = new();
         public Dictionary<StatusEffect, float> statusEffectDelayRates = new();
 
-        private void Awake()
-        {
-            // TODO: This needs to be a character event, not global, otherwise it will run every time the player changes his equipment!
-
-            /*
-            EventManager.StartListening(EventMessages.ON_SHIELD_EQUIPMENT_CHANGED, () =>
-            {
-                RecalculateEquipmentBonus();
-            });*/
-        }
-
         (Weapon, Weapon) GetCurrentWeapons()
         {
             Weapon currentRightWeapon = character.characterBaseWeaponsManager.GetCurrentRightWeapon();
@@ -643,24 +632,6 @@ namespace AF.Stats
         public void SetIgnoreNextWeaponToEquipRequirements(bool value)
         {
             ignoreWeaponRequirements = value;
-        }
-
-        // TODO: Stuff related to rebirth, move it to its own proper class
-        public void ReturnGoldAndResetStats()
-        {
-            int goldAmount = LevelUtils.GetRequiredExperienceForLevel(character.characterBaseStats.GetCurrentLevel());
-            character.characterBaseStats.ResetStats();
-
-            // TODO: Override in PlayerStatsBonusController
-
-            uIDocumentPlayerGold.AddGold(goldAmount);
-
-            bool isPortuguese = LocalizationSettings.SelectedLocale.Identifier.Code == "pt";
-
-            notificationManager.ShowNotification(
-                isPortuguese ? "Os teus atributos foram resetados" : "Your stats have been reset",
-                notificationManager.systemSuccess
-            );
         }
     }
 }

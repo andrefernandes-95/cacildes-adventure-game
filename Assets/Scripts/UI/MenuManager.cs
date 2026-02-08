@@ -50,6 +50,7 @@ namespace AF
 
         public Texture2D screenshotBeforeOpeningMenu;
 
+        Coroutine CloseMenuCoroutine;
 
         /// <summary>
         /// Unity Event
@@ -150,17 +151,16 @@ namespace AF
         {
             isMenuOpen = false;
 
-            CloseMenuViews();
-
             playerManager.thirdPersonController.LockCameraPosition = false;
 
             playerManager.playerComponentManager.EnablePlayerControl();
 
             onMenuClose?.Invoke();
 
-            cursorManager.HideCursor();
-
             uIDocumentPlayerHUDV2.ShowHUD();
+
+
+            CloseMenuCoroutine = StartCoroutine(HandleCloseMenu());
         }
 
         public void CloseMenuViews()
@@ -171,6 +171,13 @@ namespace AF
             }
         }
 
+        IEnumerator HandleCloseMenu()
+        {
+            yield return new WaitForEndOfFrame();
+            CloseMenuViews();
+            yield return new WaitForEndOfFrame();
+            cursorManager.HideCursor();
+        }
 
         /// <summary>
         /// Unity Event

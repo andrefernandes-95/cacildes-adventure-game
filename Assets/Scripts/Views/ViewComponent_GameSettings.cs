@@ -199,6 +199,7 @@ namespace AF
 
             }, soundbank);
         }
+
         void SetupResetSettingsButton()
         {
             UIUtils.SetupButton(resetSettingsButton, () =>

@@ -27,8 +27,8 @@ namespace AF
         {
             Slider cameraSensitivity = root.Q<Slider>("CameraSensitivity");
 
-            cameraSensitivity.lowValue = gameSettings.minimumMouseSensitivity;
-            cameraSensitivity.highValue = gameSettings.maximumMouseSensitivity;
+            cameraSensitivity.lowValue = gameSettings.minimumCameraSensitivity;
+            cameraSensitivity.highValue = gameSettings.maximumCameraSensitivity;
             cameraSensitivity.value = gameSettings.GetCameraSensitivity();
             cameraSensitivity.label =
                 (Utils.IsPortuguese() ? "Sensibilidade da Câmara: " : "Camera Sensitivity: ") + gameSettings.GetCameraSensitivity();
@@ -47,6 +47,26 @@ namespace AF
                 gameSettings.SetInvertYAxis(ev.newValue);
             });
 
+            SetupCameraDistance();
+        }
+
+        void SetupCameraDistance()
+        {
+            Slider slider = root.Q<Slider>("CameraDistance");
+
+            slider.lowValue = gameSettings.minimumCameraDistanceToPlayer;
+            slider.highValue = gameSettings.maximumCameraDistanceToPlayer;
+            slider.value = gameSettings.GetCameraDistance();
+
+            slider.label =
+                (Utils.IsPortuguese() ? "Distância da Câmara: " : "Camera Distance: ") + slider.value;
+
+            slider.RegisterValueChangedCallback(ev =>
+            {
+                gameSettings.SetCameraDistance(ev.newValue);
+                slider.label =
+                    (Utils.IsPortuguese() ? "Distância da Câmara: " : "Camera Distance: ") + ev.newValue;
+            });
         }
     }
 }

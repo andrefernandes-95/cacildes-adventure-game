@@ -1,5 +1,6 @@
 using AF.Shops;
 using AF.UI;
+using AF.UIExperimental;
 using UnityEngine;
 using UnityEngine.Localization.Settings;
 
@@ -18,6 +19,8 @@ namespace AF
         [SerializeField] private UIDocumentKeyPrompt keyPrompt;
         [SerializeField] private UIDocumentReceivedItemPrompt itemPrompt;
 
+        [Header("Critical Experimental UIs")]
+        [SerializeField] private DialogueWindow uiExperimentalDialogueWindow;
 
         [SerializeField] private UIDocumentBonfireMenu bonfireMenu;
         [SerializeField] private UIDocumentBonfireTravel bonfireTravel;
@@ -106,6 +109,11 @@ namespace AF
             }
 
             if (dialogueWindow != null && dialogueWindow.isActiveAndEnabled)
+            {
+                return true;
+            }
+
+            if (uiExperimentalDialogueWindow != null && uiExperimentalDialogueWindow.isActiveAndEnabled)
             {
                 return true;
             }

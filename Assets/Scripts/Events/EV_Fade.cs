@@ -1,4 +1,5 @@
 using System.Collections;
+using AF.UIExperimental;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -22,6 +23,7 @@ namespace AF
         FadeManager fadeManager;
 
         UIDocumentDialogueWindow uIDocumentDialogueWindow;
+        DialogueWindow dialogueWindowExperimental;
 
         UIDocumentDialogueWindow GetUIDocumentDialogueWindow()
         {
@@ -31,6 +33,15 @@ namespace AF
             }
 
             return uIDocumentDialogueWindow;
+        }
+        DialogueWindow GetUIDocumentDialogueWindowExperimental()
+        {
+            if (dialogueWindowExperimental == null)
+            {
+                dialogueWindowExperimental = FindAnyObjectByType<DialogueWindow>(FindObjectsInactive.Include);
+            }
+
+            return dialogueWindowExperimental;
         }
 
         public override IEnumerator Dispatch()
@@ -55,6 +66,7 @@ namespace AF
             // Safely disable dialogue window when fading, for the bug where we talk to companions and they join the party
             // and the dialogue might be triggered by double keys from the player, causing the dialogue to become stale
             GetUIDocumentDialogueWindow().HideDialogueWindow();
+            GetUIDocumentDialogueWindowExperimental().HideDialogue();
 
             GetFadeManager().FadeOut(1f);
             duringFadeTransitionsEventCallback?.Invoke();

@@ -6,6 +6,10 @@ using DG.Tweening;
 using UnityEngine.Events;
 using AF.Dialogue;
 using AF.Flags;
+using AF.UIExperimental;
+using System.Collections.Generic;
+using Steamworks;
+using Ink.Runtime;
 
 namespace AF
 {
@@ -30,6 +34,8 @@ namespace AF
         public CursorManager cursorManager;
         public PlayerManager playerManager;
         public FlagsDatabase flagsDatabase;
+        public Translator translator;
+        [SerializeField] DialogueWindow dialogueWindow;
 
         [Header("Unity Events")]
         public UnityEvent onEnableEvent;
@@ -41,18 +47,12 @@ namespace AF
         VisualElement actorSpriteContainer;
         VisualElement actorInfoContainer;
 
+        [Header("Feature Toggles")]
+        [SerializeField] FeatureToggles featureToggles;
+
         private void Awake()
         {
             this.gameObject.SetActive(false);
-
-            // Fix for issue where opening menu while choosing options hides cursor
-            /*inputs.onLightAttackInput.AddListener(() =>
-            {
-                if (this.isActiveAndEnabled)
-                {
-                    cursorManager.ShowCursor();
-                }
-            });*/
         }
 
         private void OnEnable()
@@ -66,8 +66,15 @@ namespace AF
             this.actorSpriteContainer = this.root.Q<VisualElement>("ActorSpriteContainer");
             this.actorInfoContainer = this.root.Q<VisualElement>("ActorInfoContainer");
 
+            this.actorNameLabel.text = "";
+            this.actorTitleLabel.text = "";
+            this.messageTextLabel.text = "";
+            this.actorSprite.style.backgroundImage = null;
+            dialogueChoicePanel.Clear();
+
             onEnableEvent?.Invoke();
         }
+
 
         private void OnDisable()
         {
@@ -80,38 +87,45 @@ namespace AF
                     Response[] responses
                 )
         {
-            gameObject.SetActive(true);
-
-            playerManager.uIDocumentPlayerHUDV2.FadeOut();
-
-            ShowMessage(character, message);
-
-            // Create a new copy to prevent mutation
-            Response[] clonedResponses = responses.ToArray();
-
-            yield return new WaitUntil(() => inputs.interact == false);
-
-            while (hasFinishedTypewriter == false)
+            if (featureToggles.useExperimentalUI)
             {
-                if (inputs.interact)
+                yield return dialogueWindow.DisplayMessage(character, message, responses);
+            }
+            else
+            {
+                gameObject.SetActive(true);
+
+                playerManager.uIDocumentPlayerHUDV2.FadeOut();
+
+                ShowMessage(character, message);
+
+                // Create a new copy to prevent mutation
+                Response[] clonedResponses = responses.ToArray();
+
+                yield return new WaitUntil(() => inputs.interact == false);
+
+                while (hasFinishedTypewriter == false)
                 {
-                    ShowAllTextAtOnce(message);
+                    if (inputs.interact)
+                    {
+                        ShowAllTextAtOnce(message);
+                    }
+
+                    yield return null;
                 }
 
-                yield return null;
+                yield return new WaitUntil(() => inputs.interact == false);
+                yield return new WaitUntil(() => inputs.interact == true);
+
+                if (clonedResponses != null && clonedResponses.Length > 0)
+                {
+                    yield return ShowResponses(clonedResponses);
+                }
+
+                yield return new WaitUntil(() => inputs.interact == false);
+
+                HideDialogueWindow();
             }
-
-            yield return new WaitUntil(() => inputs.interact == false);
-            yield return new WaitUntil(() => inputs.interact == true);
-
-            if (clonedResponses != null && clonedResponses.Length > 0)
-            {
-                yield return ShowResponses(clonedResponses);
-            }
-
-            yield return new WaitUntil(() => inputs.interact == false);
-
-            HideDialogueWindow();
         }
 
         public void HideDialogueWindow()
@@ -185,7 +199,19 @@ namespace AF
 
         public IEnumerator Typewrite(string dialogueText, Label messageTextLabel)
         {
-            messageTextLabel.text = dialogueText;
+            // If auto-translation is enabled, attempt to translate text using Google API
+            string translatedText = "";
+
+            translator.TranslateText(dialogueText, (value) =>
+            {
+                translatedText = value;
+            });
+
+            yield return new WaitUntil(() => string.IsNullOrEmpty(translatedText) == false);
+
+            // Apply translation to original text
+            messageTextLabel.text = translatedText;
+
             UIUtils.PlayPopAnimation(messageTextLabel, new Vector3(1.05f, 1.05f, 1.05f));
             yield return null;
             /*
@@ -204,6 +230,47 @@ namespace AF
             StopAllCoroutines();
             hasFinishedTypewriter = true;
             messageTextLabel.text = dialogueText;
+        }
+
+        public IEnumerator BuildChoicesFromStory(Story story, System.Action<List<Response>> onChoicesProcessed, System.Action onChoiceSelected)
+        {
+            var responses = new List<Response>();
+
+            if (!story.currentChoices.Any())
+            {
+                onChoicesProcessed?.Invoke(responses);
+                yield break;
+            }
+
+            foreach (var choice in story.currentChoices)
+            {
+                // If auto-translation is enabled, attempt to translate text using Google API
+                string translatedChoiceText = "";
+
+                translator.TranslateText(choice.text, (value) =>
+                {
+                    translatedChoiceText = value;
+                });
+
+                yield return new WaitUntil(() => string.IsNullOrEmpty(translatedChoiceText) == false);
+
+                var r = new Response
+                {
+                    text = translatedChoiceText,
+                    onResponseSelected = new UnityEvent()
+                };
+
+                // When selected
+                r.onResponseSelected.AddListener(() =>
+                {
+                    story.ChooseChoiceIndex(choice.index);
+                    onChoiceSelected?.Invoke();
+                });
+
+                responses.Add(r);
+            }
+
+            onChoicesProcessed?.Invoke(responses);
         }
 
         public IEnumerator ShowResponses(Response[] responses)
@@ -225,7 +292,18 @@ namespace AF
             foreach (var response in responses)
             {
                 var newDialogueChoiceItem = dialogueChoiceItem.CloneTree();
-                newDialogueChoiceItem.Q<Button>().text = response.text;
+
+                // If auto-translation is enabled, attempt to translate text using Google API
+                string translatedChoiceText = "";
+
+                translator.TranslateText(response.text, (value) =>
+                {
+                    translatedChoiceText = value;
+                });
+
+                yield return new WaitUntil(() => string.IsNullOrEmpty(translatedChoiceText) == false);
+
+                newDialogueChoiceItem.Q<Button>().text = translatedChoiceText;
 
                 UIUtils.SetupButton(newDialogueChoiceItem.Q<Button>(), () =>
                 {
@@ -321,5 +399,6 @@ namespace AF
             elementToFocus?.Focus();
         }
 
+        public bool UseExperimentalUI() => featureToggles.useExperimentalUI;
     }
 }

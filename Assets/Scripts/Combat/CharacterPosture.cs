@@ -30,7 +30,9 @@ namespace AF
 
         public override int GetMaxPostureDamage()
         {
-            return Utils.ScaleWithCurrentNewGameIteration(base.GetMaxPostureDamage(), gameSession.currentGameIteration, gameSession.newGamePlusScalingFactor);
+            int basePostureDamage = Utils.ScaleWithCurrentNewGameIteration(base.GetMaxPostureDamage(), gameSession.currentGameIteration, gameSession.newGamePlusScalingFactor);
+
+            return (int)(basePostureDamage * GetCumulativeMultiplier());
         }
 
         public override float GetPostureDecreateRate()
@@ -50,6 +52,7 @@ namespace AF
             if (hasBrokenPosture)
             {
                 maxPostureDamage += (int)(maxPostureDamage / 2);
+                IncreaseCumulativePosture();
             }
 
             return hasBrokenPosture;

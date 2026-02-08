@@ -74,8 +74,6 @@ namespace AF
 
         public void CloseBook()
         {
-            GetUIDocumentBook().gameObject.SetActive(false);
-
             onRead_End?.Invoke();
 
             GetPlayerManager().playerComponentManager.EnableCharacterController();
