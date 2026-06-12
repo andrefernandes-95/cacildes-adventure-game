@@ -72,9 +72,9 @@ namespace AF
 
         void PlayTitleScreenMusic()
         {
-            if (bGMManager != null && gameSettings.GetCurrentGame() != null && gameSettings.GetCurrentGame().titleScreenMusic != null)
+            if (bGMManager != null && gameSettings.titleScreenMusic != null)
             {
-                bGMManager.PlayMusic(gameSettings.GetCurrentGame().titleScreenMusic);
+                bGMManager.PlayMusic(gameSettings.titleScreenMusic);
             }
         }
 

@@ -87,8 +87,9 @@ namespace AF
         {
             this.gameObject.SetActive(false);
 
-            availableRecipes = Resources.LoadAll<CraftingRecipe>("Recipes").Where(
-                craftingRecipe => craftingRecipe != null && craftingRecipe.games.Contains(gameSettings.GetCurrentGame())).ToList();
+            availableRecipes = Resources.LoadAll<CraftingRecipe>("Recipes")
+                .Where(craftingRecipe => craftingRecipe != null)
+                .ToList();
         }
 
         private void OnEnable()

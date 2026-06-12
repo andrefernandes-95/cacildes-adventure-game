@@ -44,9 +44,6 @@ namespace AF
     [CreateAssetMenu(fileName = "New Player Preset", menuName = "System/New Player Preset", order = 0)]
     public class PlayerPreset : ScriptableObject
     {
-        [Header("Game")]
-        [SerializeField] Game game;
-
         [Header("Inventory")]
         public SerializedDictionary<Item, ItemAmount> ownedItems = new();
         public bool loadAllItems = false;
@@ -102,8 +99,6 @@ namespace AF
 
         public void LoadPlayerPreset()
         {
-            LoadGame();
-
             if (gameSession != null)
             {
                 gameSession.gameState = GameSession.GameState.INITIALIZED_AND_SHOWN_TITLE_SCREEN;
@@ -115,14 +110,6 @@ namespace AF
             LoadQuests();
             LoadCompanions();
             LoadFlags();
-        }
-
-        void LoadGame()
-        {
-            if (game != null && gameSettings != null)
-            {
-                gameSettings.SetCurrentGame(game);
-            }
         }
 
         void LoadStats()

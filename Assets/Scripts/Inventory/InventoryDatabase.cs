@@ -96,38 +96,36 @@ namespace AF.Inventory
         {
             Clear();
 
-            Game currentGame = playerManager.gameSettings.GetCurrentGame();
+            GameSettings gameSettings = playerManager.gameSettings;
 
-            if (currentGame != null)
+            if (gameSettings.defaultArmor != null)
             {
-                if (currentGame.defaultArmor != null)
-                {
-                    Armor addedArmor = playerManager.playerInventory.AddArmor(currentGame.defaultArmor);
-                    playerManager.equipmentDatabase.EquipArmor(addedArmor, false);
-                }
+                Armor addedArmor = playerManager.playerInventory.AddArmor(gameSettings.defaultArmor);
+                playerManager.equipmentDatabase.EquipArmor(addedArmor, false);
+            }
 
-                if (currentGame.defaultLegwear != null)
-                {
-                    Legwear addedLegwear = playerManager.playerInventory.AddLegwear(currentGame.defaultLegwear);
-                    playerManager.equipmentDatabase.EquipLegwear(addedLegwear, false);
-                }
-                if (currentGame.defaultGauntlet != null)
-                {
-                    Gauntlet addedGauntlet = playerManager.playerInventory.AddGauntlet(currentGame.defaultGauntlet);
-                    playerManager.equipmentDatabase.EquipGauntlet(addedGauntlet, false);
-                }
+            if (gameSettings.defaultLegwear != null)
+            {
+                Legwear addedLegwear = playerManager.playerInventory.AddLegwear(gameSettings.defaultLegwear);
+                playerManager.equipmentDatabase.EquipLegwear(addedLegwear, false);
+            }
 
-                if (currentGame.defaultSpell != null)
-                {
-                    Spell addedSpell = playerManager.playerInventory.AddSpell(currentGame.defaultSpell);
-                    equipmentDatabase.EquipSpell(addedSpell, 0, false);
-                }
+            if (gameSettings.defaultGauntlet != null)
+            {
+                Gauntlet addedGauntlet = playerManager.playerInventory.AddGauntlet(gameSettings.defaultGauntlet);
+                playerManager.equipmentDatabase.EquipGauntlet(addedGauntlet, false);
+            }
 
-                if (currentGame.defaultConsumable != null)
-                {
-                    Consumable addedConsumable = playerManager.playerInventory.AddConsumable(currentGame.defaultConsumable);
-                    playerManager.equipmentDatabase.EquipConsumable(addedConsumable, 0);
-                }
+            if (gameSettings.defaultSpell != null)
+            {
+                Spell addedSpell = playerManager.playerInventory.AddSpell(gameSettings.defaultSpell);
+                equipmentDatabase.EquipSpell(addedSpell, 0, false);
+            }
+
+            if (gameSettings.defaultConsumable != null)
+            {
+                Consumable addedConsumable = playerManager.playerInventory.AddConsumable(gameSettings.defaultConsumable);
+                playerManager.equipmentDatabase.EquipConsumable(addedConsumable, 0);
             }
         }
 
@@ -191,10 +189,7 @@ namespace AF.Inventory
             {
                 ownedArrows.Remove(arrowMatch);
             }
-<<<<<<< HEAD
-=======
 
-            // If this was the last arrow
             if (ownedArrows.All(ownedArrow => ownedArrow != null && ownedArrow.EqualsTo(arrowMatch) == false))
             {
                 int slotIndex = Array.FindIndex(equipmentDatabase.arrows, (arrow) => arrow != null && arrow.EqualsTo(arrowMatch));
@@ -203,7 +198,6 @@ namespace AF.Inventory
                     equipmentDatabase.UnequipArrow(slotIndex);
                 }
             }
->>>>>>> 09e69b8b9995dbf284b0d4a00aca13a12d2e52cb
         }
 
         public void RemoveItem(Item itemToRemove, int quantity)
