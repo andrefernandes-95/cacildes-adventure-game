@@ -96,22 +96,37 @@ namespace AF.Inventory
         {
             Clear();
 
-            foreach (var defaultItem in defaultItems)
+            Game currentGame = playerManager.gameSettings.GetCurrentGame();
+
+            if (currentGame != null)
             {
-                if (defaultItem.Key is Armor armor)
+                if (currentGame.defaultArmor != null)
                 {
-                    Armor addedArmor = playerManager.playerInventory.AddArmor(armor);
+                    Armor addedArmor = playerManager.playerInventory.AddArmor(currentGame.defaultArmor);
                     playerManager.equipmentDatabase.EquipArmor(addedArmor, false);
                 }
-                else if (defaultItem.Key is Legwear legwear)
+
+                if (currentGame.defaultLegwear != null)
                 {
-                    Legwear addedLegwear = playerManager.playerInventory.AddLegwear(legwear);
+                    Legwear addedLegwear = playerManager.playerInventory.AddLegwear(currentGame.defaultLegwear);
                     playerManager.equipmentDatabase.EquipLegwear(addedLegwear, false);
                 }
-                else if (defaultItem.Key is Spell spell)
+                if (currentGame.defaultGauntlet != null)
                 {
-                    Spell addedSpell = playerManager.playerInventory.AddSpell(spell);
+                    Gauntlet addedGauntlet = playerManager.playerInventory.AddGauntlet(currentGame.defaultGauntlet);
+                    playerManager.equipmentDatabase.EquipGauntlet(addedGauntlet, false);
+                }
+
+                if (currentGame.defaultSpell != null)
+                {
+                    Spell addedSpell = playerManager.playerInventory.AddSpell(currentGame.defaultSpell);
                     equipmentDatabase.EquipSpell(addedSpell, 0, false);
+                }
+
+                if (currentGame.defaultConsumable != null)
+                {
+                    Consumable addedConsumable = playerManager.playerInventory.AddConsumable(currentGame.defaultConsumable);
+                    playerManager.equipmentDatabase.EquipConsumable(addedConsumable, 0);
                 }
             }
         }
@@ -176,6 +191,19 @@ namespace AF.Inventory
             {
                 ownedArrows.Remove(arrowMatch);
             }
+<<<<<<< HEAD
+=======
+
+            // If this was the last arrow
+            if (ownedArrows.All(ownedArrow => ownedArrow != null && ownedArrow.EqualsTo(arrowMatch) == false))
+            {
+                int slotIndex = Array.FindIndex(equipmentDatabase.arrows, (arrow) => arrow != null && arrow.EqualsTo(arrowMatch));
+                if (slotIndex != -1)
+                {
+                    equipmentDatabase.UnequipArrow(slotIndex);
+                }
+            }
+>>>>>>> 09e69b8b9995dbf284b0d4a00aca13a12d2e52cb
         }
 
         public void RemoveItem(Item itemToRemove, int quantity)

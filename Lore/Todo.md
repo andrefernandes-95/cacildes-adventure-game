@@ -1,3 +1,11 @@
+<<<<<<< HEAD
+=======
+# Unholy Sword
+
+BAckstab skeleton makes it spin
+Pick bow and flambe not showing the GUI of received item
+
+>>>>>>> 09e69b8b9995dbf284b0d4a00aca13a12d2e52cb
 # Set time in midnight omen boss not on night
 
 # Captain ahrold stop fight midst fight

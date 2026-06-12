@@ -13,7 +13,7 @@ namespace AF
         {
             int defense = 0;
 
-            defense += (int)Mathf.Floor(endurance / 4);
+            defense += (int)Mathf.Floor(endurance / 2);
 
             return defense;
         }
@@ -33,7 +33,7 @@ namespace AF
         }
 
         /// <summary>
-        /// // Strength gives +1 defense per 1 point
+        /// // Strength gives +1 defense per 3 point
         /// </summary>
         /// <param name="endurance"></param>
         /// <returns></returns>
@@ -41,13 +41,13 @@ namespace AF
         {
             int defense = 0;
 
-            defense += (int)Mathf.Floor(strength / 8);
+            defense += (int)Mathf.Floor(strength / 3);
 
             return defense;
         }
 
         /// <summary>
-        /// // Intelligence gives +1 elemental defense per 1 point
+        /// // Intelligence gives +1 elemental defense per 2 point
         /// </summary>
         /// <param name="endurance"></param>
         /// <returns></returns>
@@ -56,20 +56,6 @@ namespace AF
             int defense = 0;
 
             defense += (int)Mathf.Floor(intelligence / 2);
-
-            return defense;
-        }
-
-        /// <summary>
-        /// // Reputation gives +1 holy / darkness defense per 1 point
-        /// </summary>
-        /// <param name="endurance"></param>
-        /// <returns></returns>
-        public static int GetElementalDefenseFromReputation(int reputation)
-        {
-            int defense = 0;
-
-            defense += (int)Mathf.Floor(reputation);
 
             return defense;
         }

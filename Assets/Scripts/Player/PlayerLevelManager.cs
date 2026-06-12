@@ -64,7 +64,6 @@ namespace AF
         {
             // On Levelling Up, we must make sure we recalculate the current damages
             playerManager.characterBaseAttackManager.CalculateCurrentDamage();
-            playerManager.characterBaseDefenseManager.RecalculateDamageAbsorbed();
         }
     }
 }

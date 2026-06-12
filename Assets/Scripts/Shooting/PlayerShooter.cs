@@ -52,6 +52,7 @@ namespace AF.Shooting
 
         [Header("Events")]
         public UnityEvent onBowAim_Begin;
+        [HideInInspector] public UnityEvent onShootBow;
 
         [Header("Cinemachine")]
         Cinemachine3rdPersonFollow cinemachine3RdPersonFollow;
@@ -304,6 +305,8 @@ namespace AF.Shooting
                     characterBaseManager.PlayBusyHashedAnimation(hashFireBowLockedOn);
                 }
             }
+
+            onShootBow?.Invoke();
         }
 
         public override void FireArrow()

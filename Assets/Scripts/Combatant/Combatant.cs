@@ -32,6 +32,11 @@ namespace AF
         public int maximumPoise = 3;
         public int maximumCarryingWeight = 100;
 
+        [Header("Poise & Posture Resistances")]
+        public float poiseDamageAbsorption = 1f;
+        public float postureDamageAbsorption = 1f;
+        public float pushForceAbsorption = 1f;
+
         [Header("Resistances")]
         public float pierceAbsorption = 1f;
         public float bluntAbsorption = 1f;

@@ -1,5 +1,4 @@
 using System.Linq;
-using GameAnalyticsSDK;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -200,6 +199,7 @@ namespace AF
 
             }, soundbank);
         }
+
         void SetupResetSettingsButton()
         {
             UIUtils.SetupButton(resetSettingsButton, () =>
@@ -209,15 +209,5 @@ namespace AF
             }, soundbank);
         }
 
-
-        void LogAnalytic(string eventName)
-        {
-            if (!GameAnalytics.Initialized)
-            {
-                GameAnalytics.Initialize();
-            }
-
-            GameAnalytics.NewDesignEvent(eventName);
-        }
     }
 }

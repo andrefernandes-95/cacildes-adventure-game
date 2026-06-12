@@ -825,22 +825,22 @@ namespace AF.UI.EquipmentMenu
             }
             else if (item is Helmet helmet)
             {
-                value = playerManager.characterBaseDefenseManager.CompareHelmet(helmet);
+                value = playerManager.characterBaseDefenseManager.CompareArmorPiece(helmet).comparison;
                 shouldReturn = true;
             }
             else if (item is Armor armor)
             {
-                value = playerManager.characterBaseDefenseManager.CompareArmor(armor);
+                value = playerManager.characterBaseDefenseManager.CompareArmorPiece(armor).comparison;
                 shouldReturn = true;
             }
             else if (item is Gauntlet gauntlet)
             {
-                value = playerManager.characterBaseDefenseManager.CompareGauntlets(gauntlet);
+                value = playerManager.characterBaseDefenseManager.CompareArmorPiece(gauntlet).comparison;
                 shouldReturn = true;
             }
             else if (item is Legwear legwear)
             {
-                value = playerManager.characterBaseDefenseManager.CompareLegwears(legwear);
+                value = playerManager.characterBaseDefenseManager.CompareArmorPiece(legwear).comparison;
                 shouldReturn = true;
             }
 

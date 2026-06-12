@@ -1,0 +1,40 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <ui:Template name="Mod Window - Asset List" src="project://database/Assets/UI%20Components/Modding/Mod%20Window%20-%20Asset%20List.uxml?fileID=9197481963319205126&amp;guid=38eda6ea5312f71478b960af910adef7&amp;type=3#Mod Window - Asset List"/>
+    <ui:Template name="Mod_SelectedObjectPanel" src="project://database/Assets/UI%20Components/Modding/Mod_SelectedObjectPanel.uxml?fileID=9197481963319205126&amp;guid=94d50f622131fe3458a313987351c942&amp;type=3#Mod_SelectedObjectPanel"/>
+    <Style src="project://database/Assets/UI%20Components/Styles/Styles.uss?fileID=7433441132597879392&amp;guid=756241e74d42bab43b4532533f359ba2&amp;type=3#Styles"/>
+    <ui:VisualElement name="EditModeContainer" picking-mode="Ignore" style="flex-grow: 1; display: flex;">
+        <ui:VisualElement name="Toolbar" style="flex-grow: 0; -unity-font-style: normal; background-image: url(&quot;project://database/Assets/Synty/InterfaceFantasyWarriorHUD/Sprites/HUD/SPR_HUD_FantasyWarrior_Gradient_Vertical_Solid_02.png?fileID=2800000&amp;guid=d68c7076c362f0a46b88c86da5329b7e&amp;type=3#SPR_HUD_FantasyWarrior_Gradient_Vertical_Solid_02&quot;); -unity-background-image-tint-color: rgb(46, 46, 46); background-color: rgba(0, 0, 0, 0); -unity-slice-type: sliced; rotate: 0; flex-direction: row; flex-shrink: 0;">
+            <ui:TextField label="" placeholder-text="Insert mod name..." name="ModNameTextField" class="label-text primary-button" style="flex-shrink: 1; text-shadow: 0 0 0 rgba(0, 0, 0, 0); color: rgb(0, 0, 0); min-width: 350px;">
+                <Bindings>
+                    <UnityEngine.Localization.LocalizedString property="placeholderText" table="GUID:dbb3674ad34b76b458d72593e4ca5a4a" entry="Id(214925408466890752)"/>
+                </Bindings>
+            </ui:TextField>
+            <ui:Button text="Save Mod" name="SaveMod" class="primary-button">
+                <Bindings>
+                    <UnityEngine.Localization.LocalizedString property="text" table="GUID:dbb3674ad34b76b458d72593e4ca5a4a" entry="Id(214924972850671616)"/>
+                </Bindings>
+            </ui:Button>
+            <ui:Button text="Save Mod" name="LoadOtherMod" class="primary-button">
+                <Bindings>
+                    <UnityEngine.Localization.LocalizedString property="text" table="GUID:dbb3674ad34b76b458d72593e4ca5a4a" entry="Id(214924900800917504)"/>
+                </Bindings>
+            </ui:Button>
+            <ui:Label text="|" class="label-text" style="padding-top: 5px; padding-right: 5px; padding-bottom: 5px; padding-left: 5px;"/>
+            <ui:Button text="Play" name="PlayMode" class="primary-button">
+                <Bindings>
+                    <UnityEngine.Localization.LocalizedString property="text" table="GUID:dbb3674ad34b76b458d72593e4ca5a4a" entry="Id(214225053089263616)"/>
+                </Bindings>
+            </ui:Button>
+        </ui:VisualElement>
+        <ui:VisualElement name="WorkWindow" picking-mode="Ignore" style="flex-grow: 1; flex-direction: row; justify-content: space-between;">
+            <ui:Instance template="Mod Window - Asset List" name="Mod Window - Asset List"/>
+            <ui:VisualElement name="Commands" picking-mode="Ignore" style="flex-grow: 1; align-items: flex-end;">
+                <ui:Instance template="Mod_SelectedObjectPanel"/>
+                <ui:Label text="F - Lock / Unlock Camera" class="label-text" style="flex-grow: 1; font-size: 16px; -unity-font-style: normal;"/>
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+    <ui:VisualElement name="PlayModeContainer" style="flex-grow: 1; position: absolute; bottom: 10px; align-items: center; justify-content: center; -unity-text-align: upper-center; width: 100%; display: flex;">
+        <ui:Label text="Press F10 to return to Edit Mode" class="label-text" style="flex-grow: 1; font-size: 16px; -unity-font-style: normal;"/>
+    </ui:VisualElement>
+</ui:UXML>

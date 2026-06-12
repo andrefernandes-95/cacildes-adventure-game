@@ -42,6 +42,10 @@ namespace AF
         public CharacterWeaponBuffManager characterWeaponBuffManager;
         public Sight sight;
         public CharacterGesture characterGesture;
+<<<<<<< HEAD
+=======
+        public CharacterBackstabController characterBackstabController;
+>>>>>>> 09e69b8b9995dbf284b0d4a00aca13a12d2e52cb
 
         CharacterAnimationEventListener characterAnimationEventListener => GetComponent<CharacterAnimationEventListener>();
 
@@ -162,6 +166,10 @@ namespace AF
             characterDodgeController.ResetStates();
 
             characterGesture.ResetStates();
+<<<<<<< HEAD
+=======
+            characterBackstabController.ResetStates();
+>>>>>>> 09e69b8b9995dbf284b0d4a00aca13a12d2e52cb
 
             faceTarget = false;
         }
@@ -500,6 +508,7 @@ namespace AF
 
             targetManager.ClearTarget();
             stateManager?.ResetDefaultState();
+            characterPosture.ResetCumulativePosture();
 
             if (health is CharacterHealth characterHealth)
             {

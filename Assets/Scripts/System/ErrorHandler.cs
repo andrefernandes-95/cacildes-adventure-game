@@ -2,7 +2,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using GameAnalyticsSDK;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UIElements;
@@ -40,7 +39,8 @@ namespace AF
             "CharacterController.Move called on inactive controller",
             "Stack Trace: AF.Shooting.CharacterShooter.FireProjectile",
             "AF.Combat.TargetManager.ClearTarget ()",
-            "Concave Mesh Colliders are not supported when used with dynamic Rigidbody GameObjects"
+            "Concave Mesh Colliders are not supported when used with dynamic Rigidbody GameObjects",
+            "IMGUIContainer cannot "
         };
 
         void Start()
@@ -133,13 +133,6 @@ namespace AF
             }
 
             errors.Add(errorMessage, stackTrace);
-
-            if (!GameAnalytics.Initialized)
-            {
-                GameAnalytics.Initialize();
-            }
-
-            GameAnalytics.NewErrorEvent(GAErrorSeverity.Error, errorMessage + " | Stack Trace: " + stackTrace);
 
             DisplayErrorEntry(errorMessage, stackTrace);
 

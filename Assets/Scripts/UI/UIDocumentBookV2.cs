@@ -49,6 +49,7 @@ namespace AF
         [SerializeField] PlayerManager playerManager;
         public Soundbank soundbank;
         public CursorManager cursorManager;
+        [SerializeField] Translator translator;
 
         bool isReading = false;
         Coroutine SetIsReadingCoroutine;
@@ -59,6 +60,9 @@ namespace AF
         string bookTitleText = "Untitled";
         string bookAuthorText = "Unknown";
         Color coverColor = Color.white;
+
+        Coroutine LeftPageRenderCoroutine, RightPageRenderCoroutine;
+        Coroutine ShowNotePageCoroutine;
 
         private void Awake()
         {
@@ -327,20 +331,42 @@ namespace AF
                     break;
 
                 case BookState.Note:
-                    ShowNotePage(inkPages[currentPage]);
+                    if (ShowNotePageCoroutine != null)
+                    {
+                        StopCoroutine(ShowNotePageCoroutine);
+                    }
+                    ShowNotePageCoroutine = StartCoroutine(ShowNotePage(inkPages[currentPage]));
                     break;
             }
         }
 
-        public void ShowNotePage(PageElement pageElements)
+        IEnumerator ShowNotePage(PageElement pageElements)
         {
+            yield return null;
+
             bookFront.style.display = DisplayStyle.None;
             bookPage.style.display = DisplayStyle.None;
             bookBack.style.display = DisplayStyle.None;
             notePage.style.display = DisplayStyle.Flex;
 
             notePageTitle.text = pageElements.title;
-            notePageText.text = FormatText(pageElements.content);
+
+
+            notePageText.text = "";
+
+            if (!string.IsNullOrEmpty(pageElements.content))
+            {
+                // If auto-translation is enabled, attempt to translate text using Google API
+                string translatedText = "";
+
+                translator.TranslateText(pageElements.content, (value) =>
+                {
+                    translatedText = value;
+                });
+
+                yield return new WaitUntil(() => string.IsNullOrEmpty(translatedText) == false);
+                notePageText.text = translatedText;
+            }
         }
 
         void ShowCover()
@@ -378,11 +404,19 @@ namespace AF
 
             if (renderOnRight)
             {
-                RenderPageContent(pageElements, rightPageContent, rightPageTitle, pageElements.title);
+                if (RightPageRenderCoroutine != null)
+                {
+                    StopCoroutine(RightPageRenderCoroutine);
+                }
+                RightPageRenderCoroutine = StartCoroutine(RenderPageContent(pageElements, rightPageContent, rightPageTitle, pageElements.title));
             }
             else
             {
-                RenderPageContent(pageElements, leftPageContent, leftPageTitle, pageElements.title);
+                if (LeftPageRenderCoroutine != null)
+                {
+                    StopCoroutine(LeftPageRenderCoroutine);
+                }
+                LeftPageRenderCoroutine = StartCoroutine(RenderPageContent(pageElements, leftPageContent, leftPageTitle, pageElements.title));
             }
         }
 
@@ -394,12 +428,23 @@ namespace AF
             bookBack.style.display = DisplayStyle.None;
             notePage.style.display = DisplayStyle.None;
 
-            RenderPageContent(left, leftPageContent, leftPageTitle, left.title);
-            RenderPageContent(right, rightPageContent, rightPageTitle, right.title);
+            if (LeftPageRenderCoroutine != null)
+            {
+                StopCoroutine(LeftPageRenderCoroutine);
+            }
+            LeftPageRenderCoroutine = StartCoroutine(RenderPageContent(left, leftPageContent, leftPageTitle, left.title));
+
+            if (RightPageRenderCoroutine != null)
+            {
+                StopCoroutine(RightPageRenderCoroutine);
+            }
+            RightPageRenderCoroutine = StartCoroutine(RenderPageContent(right, rightPageContent, rightPageTitle, right.title));
         }
 
-        void RenderPageContent(PageElement elements, VisualElement container, Label titleLabel, string title)
+        IEnumerator RenderPageContent(PageElement elements, VisualElement container, Label titleLabel, string title)
         {
+            yield return null;
+
             container.Clear();
 
             if (!string.IsNullOrEmpty(title))
@@ -477,8 +522,27 @@ namespace AF
             {
                 string textContent = elements.content;
                 textContent = FormatText(textContent);
-                var label = new Label(textContent);
 
+                var label = new Label();
+
+                if (!string.IsNullOrEmpty(textContent))
+                {
+                    // If auto-translation is enabled, attempt to translate text using Google API
+                    string translatedText = "";
+
+                    translator.TranslateText(textContent, (value) =>
+                    {
+                        translatedText = value;
+                    });
+
+                    yield return new WaitUntil(() => string.IsNullOrEmpty(translatedText) == false);
+
+                    label.text = translatedText;
+                }
+                else
+                {
+                    label.text = textContent;
+                }
                 label.style.whiteSpace = WhiteSpace.PreWrap;
                 label.style.marginBottom = 6;
                 label.AddToClassList("label-text");

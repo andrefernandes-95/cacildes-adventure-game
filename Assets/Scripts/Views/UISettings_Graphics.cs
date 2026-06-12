@@ -27,7 +27,7 @@ namespace AF
 
             graphicsOptions.RegisterValueChangedCallback(ev =>
             {
-                gameSettings.SetGameQuality(ev.newValue);
+                gameSettings.SetGraphicsQuality(ev.newValue);
             });
         }
     }

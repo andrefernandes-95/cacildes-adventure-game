@@ -58,7 +58,7 @@ namespace AF
         public int GetHealthPointsForGivenVitality(int vitality)
         {
             int baseValue = Formulas.CalculateStatForLevel(
-                playerStatsDatabase.maxHealth + playerManager.statsBonusController.healthBonus,
+                playerStatsDatabase.player.maximumHealth + playerManager.statsBonusController.healthBonus,
                 vitality,
                 playerStatsDatabase.levelMultiplierForHealth);
 

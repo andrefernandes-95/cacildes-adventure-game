@@ -1,0 +1,38 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI%20Components/Styles/Styles.uss?fileID=7433441132597879392&amp;guid=756241e74d42bab43b4532533f359ba2&amp;type=3#Styles"/>
+    <ui:VisualElement name="SelectedObjectContainer" style="flex-grow: 1;">
+        <ui:VisualElement name="SelectedObjectInfo" style="flex-direction: row;">
+            <ui:Label text="Selected Object:" name="SelectedObjectLabel" class="label-text" style="margin-right: 15px;">
+                <Bindings>
+                    <UnityEngine.Localization.LocalizedString property="text" entry=""/>
+                </Bindings>
+            </ui:Label>
+            <ui:VisualElement name="VisualElement" style="flex-grow: 1; flex-direction: row; justify-content: space-between;">
+                <ui:Label text="Ground_Sand_01" name="ObjectName" class="label-text"/>
+                <ui:Button text="" name="DeleteButton" class="primary-button" style="flex-direction: row; justify-content: center; align-items: center;">
+                    <ui:Image source="project://database/Assets/Synty/InterfaceFantasyWarriorHUD/Sprites/HUD/SPR_HUD_FantasyWarrior_Icon_InactiveItem_01.png?fileID=2800000&amp;guid=e3e3e404eb08546488e88db3c3f93a03&amp;type=3#SPR_HUD_FantasyWarrior_Icon_InactiveItem_01" tint-color="rgb(255, 81, 81)" scale-mode="ScaleToFit" style="width: 20px; height: 20px; margin-right: 5px;"/>
+                    <ui:Label text="Label" name="ButtonLabel" class="label-text" style="color: rgb(255, 81, 81);">
+                        <Bindings>
+                            <UnityEngine.Localization.LocalizedString property="text" table="GUID:dbb3674ad34b76b458d72593e4ca5a4a" entry="Id(215226693141393408)"/>
+                        </Bindings>
+                    </ui:Label>
+                </ui:Button>
+            </ui:VisualElement>
+        </ui:VisualElement>
+        <ui:Vector3Field label="Vec3 Field" name="Position" class="label-text">
+            <Bindings>
+                <UnityEngine.Localization.LocalizedString property="label" table="GUID:dbb3674ad34b76b458d72593e4ca5a4a" entry="Id(215224426313019392)"/>
+            </Bindings>
+        </ui:Vector3Field>
+        <ui:VisualElement name="ContextActions" style="flex-direction: row;">
+            <ui:Button text="" name="EditMomentButton" class="primary-button" style="flex-direction: row;">
+                <ui:Image source="project://database/Assets/Graphics/Sprites/Mod%20Icons/Mod_Camera.png?fileID=2800000&amp;guid=5014e553139a24d41895ec7447acc19e&amp;type=3#Mod_Camera" style="width: 50px; height: 50px; margin-right: 10px;"/>
+                <ui:Label text="EditMoment" class="label-text">
+                    <Bindings>
+                        <UnityEngine.Localization.LocalizedString property="text" table="GUID:dbb3674ad34b76b458d72593e4ca5a4a" entry="Id(215269014528585728)"/>
+                    </Bindings>
+                </ui:Label>
+            </ui:Button>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

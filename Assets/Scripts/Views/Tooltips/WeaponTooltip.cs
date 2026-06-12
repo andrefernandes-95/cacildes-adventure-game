@@ -75,8 +75,8 @@ namespace AF
             if (TwoHandAttackBonus > 0)
             {
                 damageLabel += Utils.IsPortuguese()
-                ? $"<size=80%>+{TwoHandAttackBonus} Bónus de empunhar arma com as duas mãos ({TwoHandAttackBonus})\n"
-                : $"<size=80%>+{TwoHandAttackBonus} Bonus from two-handing weapon ({TwoHandAttackBonus})\n";
+                ? $"<size=80%>+{TwoHandAttackBonus} Bónus de empunhar arma com as duas mãos\n"
+                : $"<size=80%>+{TwoHandAttackBonus} Bonus from two-handing weapon\n";
             }
 
             // Finally create the tooltip

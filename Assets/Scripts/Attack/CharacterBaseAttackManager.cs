@@ -10,11 +10,6 @@
     {
         private Dictionary<string, float> scalingDictionary = new();
 
-        [Header("Physical Attack")]
-        [HideInInspector] public float jumpAttackMultiplier = 1.2f;
-        [HideInInspector] public float twoHandAttackBonusMultiplier = 1.2f;
-        [HideInInspector] public float heavyAttackBonusMultiplier = 1.3f;
-
         [Header("Current Damage")]
         public Damage rightWeaponCurrentDamage;
         public Damage leftWeaponCurrentDamage;
@@ -149,6 +144,7 @@
 
             weaponDamage.poiseDamage = weapon.GetBonusPoisePerLevel(weaponDamage.poiseDamage, weapon.level);
             weaponDamage.postureDamage = weapon.GetBonusPosturePerLevel(weaponDamage.postureDamage, weapon.level);
+
             weaponDamage.statusEffects = new StatusEffectEntry[0];
 
             List<StatusEffectEntry> weaponStatusEffectsToAdd = new();
@@ -170,6 +166,13 @@
             weaponDamage.canNotBeParried = weapon.damage.canNotBeParried;
 
             int twoHandAttackBonus = GetTwoHandBonus();
+
+            // If two handing, increase the posture damage too
+            if (GetCharacter().characterBaseWeaponsManager.IsTwoHanding())
+            {
+                weaponDamage.postureDamage += twoHandAttackBonus;
+            }
+
             ApplyWeaponBuffs(weapon, weaponDamage);
 
             // If character doesn't meet the requirements
@@ -183,20 +186,24 @@
 
         int GetTwoHandBonus()
         {
-            // Get the character's Strength stat
+            if (!GetCharacter().characterBaseWeaponsManager.IsTwoHanding())
+            {
+                return 0;
+            }
+
             float str = GetCharacter().characterBaseStats.GetStrength();
 
-            // Calculate bonus:
-            // - Starts at a flat +10
-            // - Scales with Strength^0.9 (slightly less than linear for softer growth)
-            // - Multiplied by 1.5 to keep mid-range values meaningful
-            // Example results:
-            // STR 0 → 10
-            // STR 5 → ~16
-            // STR 10 → ~21
-            // STR 25 → ~37
-            // STR 50 → ~60
-            return (int)(10 + Mathf.Pow(str, 0.9f) * 1.5f + GetCharacter().statsBonusController.twoHandAttackBonusMultiplier);
+            // Front-loaded bonus with diminishing returns
+            // STR 0  -> 20
+            // STR 5  -> ~27
+            // STR 10 -> ~30
+            // STR 25 -> ~35
+            // STR 50 -> ~39
+            return (int)(
+                20 +
+                Mathf.Pow(str, 0.5f) * 3.0f +
+                GetCharacter().statsBonusController.twoHandAttackBonusMultiplier
+            );
         }
 
         int GetJumpAttackBonus()

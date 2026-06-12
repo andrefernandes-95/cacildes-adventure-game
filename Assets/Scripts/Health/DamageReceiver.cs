@@ -54,7 +54,6 @@ namespace AF
 
             if (incomingDamage == null)
             {
-                LogIncomingDamageNullError(attacker);
                 return;
             }
 
@@ -121,9 +120,9 @@ namespace AF
                 }
 
                 HandleDamageFromStatusEffects(damage);
-
-                HandleDamageEvents(damage);
             }
+
+            HandleDamageEvents(damage);
 
             if (callOnDamageReceivedEvent)
             {

@@ -313,7 +313,6 @@ namespace AF
         protected virtual void UpdateEquipmentValues()
         {
             GetCharacter().statsBonusController.RecalculateEquipmentBonus();
-            GetCharacter().characterBaseDefenseManager.RecalculateDamageAbsorbed();
             GetCharacter().statusController.RecalculateResistances();
         }
 

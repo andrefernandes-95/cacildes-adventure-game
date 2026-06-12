@@ -248,7 +248,7 @@ namespace AF
 
             string currentAttackForRightHand = GetCurrentAttackDamage();
 
-            string currentDefenseAbsorption = playerManager.characterBaseDefenseManager.GetPhysicalDamageAbsorption(desiredVitality, desiredEndurance, desiredStrength).ToString();
+            string currentDefenseAbsorption = playerManager.characterBaseDefenseManager.GetCurrentDefense(desiredVitality, desiredEndurance, desiredStrength, desiredIntelligence).physical.ToString();
 
             root.Q<VisualElement>("MaximumHealth").Q<Label>("Value").text = maxHealth;
             root.Q<VisualElement>("MaximumStamina").Q<Label>("Value").text = maxEndurance;

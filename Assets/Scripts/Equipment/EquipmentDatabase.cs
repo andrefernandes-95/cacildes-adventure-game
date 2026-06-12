@@ -289,10 +289,13 @@ public class EquipmentDatabase : ScriptableObject
         EventManager.EmitEvent(EventMessages.ON_EQUIPMENT_CHANGED);
     }
 
-    public void EquipGauntlet(Gauntlet equip)
+    public void EquipGauntlet(Gauntlet equip, bool emitEvent = true)
     {
         gauntlet = Instantiate(equip);
-        EventManager.EmitEvent(EventMessages.ON_EQUIPMENT_CHANGED);
+        if (emitEvent)
+        {
+            EventManager.EmitEvent(EventMessages.ON_EQUIPMENT_CHANGED);
+        }
     }
 
     public void UnequipGauntlet()

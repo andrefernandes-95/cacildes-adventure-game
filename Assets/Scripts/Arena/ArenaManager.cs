@@ -5,7 +5,6 @@ using AF.Events;
 using AF.Inventory;
 using AF.Music;
 using AYellowpaper.SerializedCollections;
-using GameAnalyticsSDK;
 using TigerForge;
 using UnityEngine;
 using UnityEngine.AI;
@@ -128,16 +127,6 @@ namespace AF.Arena
         {
             notificationManager.ShowNotification(youExitedTheArena.GetLocalizedString(), notificationManager.systemError);
             EndArena(false);
-        }
-
-        void LogAnalytic(string eventName)
-        {
-            if (!GameAnalytics.Initialized)
-            {
-                GameAnalytics.Initialize();
-            }
-
-            GameAnalytics.NewDesignEvent(eventName);
         }
 
         public void EndArena(bool hasWon)

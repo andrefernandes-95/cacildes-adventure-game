@@ -1,0 +1,25 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <ui:Template name="Mod Asset Item" src="project://database/Assets/UI%20Components/Modding/Mod%20Asset%20Item.uxml?fileID=9197481963319205126&amp;guid=cd17d692eb780044391d4bfd0135fef6&amp;type=3#Mod Asset Item"/>
+    <ui:VisualElement name="AssetList" style="flex-grow: 1; -unity-font-style: normal; background-image: url(&quot;project://database/Assets/Synty/InterfaceFantasyWarriorHUD/Sprites/HUD/SPR_HUD_FantasyWarrior_Gradient_Vertical_Solid_02.png?fileID=2800000&amp;guid=d68c7076c362f0a46b88c86da5329b7e&amp;type=3#SPR_HUD_FantasyWarrior_Gradient_Vertical_Solid_02&quot;); -unity-background-image-tint-color: rgb(46, 46, 46); background-color: rgba(0, 0, 0, 0); -unity-slice-type: sliced; rotate: 0; flex-direction: column;">
+        <ui:VisualElement style="flex-shrink: 0; flex-direction: row;">
+            <ui:Button text="Button" name="EnvironmentAssets" class="primary-button">
+                <Bindings>
+                    <UnityEngine.Localization.LocalizedString property="text" table="GUID:dbb3674ad34b76b458d72593e4ca5a4a" entry="Id(214229601283469312)"/>
+                </Bindings>
+            </ui:Button>
+            <ui:Button text="Button" name="ObjectAssets" class="primary-button">
+                <Bindings>
+                    <UnityEngine.Localization.LocalizedString property="text" table="GUID:dbb3674ad34b76b458d72593e4ca5a4a" entry="Id(214229551543218176)"/>
+                </Bindings>
+            </ui:Button>
+            <ui:Button text="Button" name="EntityAssets" class="primary-button">
+                <Bindings>
+                    <UnityEngine.Localization.LocalizedString property="text" table="GUID:dbb3674ad34b76b458d72593e4ca5a4a" entry="Id(215304814389620736)"/>
+                </Bindings>
+            </ui:Button>
+        </ui:VisualElement>
+        <ui:ScrollView name="AssetList" style="align-content: flex-start; align-self: center; width: 230px;">
+            <ui:Instance template="Mod Asset Item" name="Mod Asset Item"/>
+        </ui:ScrollView>
+    </ui:VisualElement>
+</ui:UXML>

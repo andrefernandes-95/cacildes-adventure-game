@@ -3,9 +3,9 @@ using System.Linq;
 using AF.Events;
 using AF.Inventory;
 using AF.Music;
-using GameAnalyticsSDK;
 using TigerForge;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.Localization;
 using UnityEngine.Localization.Settings;
 using UnityEngine.UIElements;
@@ -76,6 +76,11 @@ namespace AF
         // "Upgrade"
         public LocalizedString Upgrade_LocalizedString;
         // "Next Physical Damage: "
+<<<<<<< HEAD
+=======
+
+        [HideInInspector] public UnityEvent<Item> onItemCreated;
+>>>>>>> 09e69b8b9995dbf284b0d4a00aca13a12d2e52cb
 
 
         private void Awake()
@@ -419,6 +424,11 @@ namespace AF
             }
 
             AnalyticsUtils.OnItemCrafted(recipe.resultingItem, playerManager);
+<<<<<<< HEAD
+=======
+
+            onItemCreated?.Invoke(recipe.resultingItem);
+>>>>>>> 09e69b8b9995dbf284b0d4a00aca13a12d2e52cb
 
             soundbank.PlaySound(soundbank.craftSuccess);
             playerManager.playerInventory.AddItem(recipe.resultingItem, recipe.resultingAmount);
@@ -655,23 +665,5 @@ namespace AF
             root.Q<VisualElement>("IngredientsListPreview").style.opacity = 1;
         }
 
-        void LogAnalytic(string eventName)
-        {
-            if (!GameAnalytics.Initialized)
-            {
-                GameAnalytics.Initialize();
-            }
-
-            GameAnalytics.NewDesignEvent(eventName);
-        }
-        void LogAnalytic(string eventName, Dictionary<string, object> values)
-        {
-            if (!GameAnalytics.Initialized)
-            {
-                GameAnalytics.Initialize();
-            }
-
-            GameAnalytics.NewDesignEvent(eventName, values);
-        }
     }
 }

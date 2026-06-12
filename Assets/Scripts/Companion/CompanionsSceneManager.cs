@@ -169,19 +169,19 @@ namespace AF.Companions
                             companionInScene.characterBaseEquipment.EquipWeapon(Instantiate(weapon), 0, isRightHand);
                         }
                     }
-                    else if (item is Helmet helmet && companionInScene.characterBaseDefenseManager.CompareHelmet(helmet) > 0)
+                    else if (item is Helmet helmet && companionInScene.characterBaseDefenseManager.CompareArmorPiece(helmet).comparison > 0)
                     {
                         companionInScene.characterBaseEquipment.EquipHelmet(Instantiate(helmet));
                     }
-                    else if (item is Armor armor && companionInScene.characterBaseDefenseManager.CompareArmor(armor) > 0)
+                    else if (item is Armor armor && companionInScene.characterBaseDefenseManager.CompareArmorPiece(armor).comparison > 0)
                     {
                         companionInScene.characterBaseEquipment.EquipArmor(Instantiate(armor));
                     }
-                    else if (item is Gauntlet gauntlet && companionInScene.characterBaseDefenseManager.CompareGauntlets(gauntlet) > 0)
+                    else if (item is Gauntlet gauntlet && companionInScene.characterBaseDefenseManager.CompareArmorPiece(gauntlet).comparison > 0)
                     {
                         companionInScene.characterBaseEquipment.EquipGauntlets(Instantiate(gauntlet));
                     }
-                    else if (item is Legwear legwear && companionInScene.characterBaseDefenseManager.CompareLegwears(legwear) > 0)
+                    else if (item is Legwear legwear && companionInScene.characterBaseDefenseManager.CompareArmorPiece(legwear).comparison > 0)
                     {
                         companionInScene.characterBaseEquipment.EquipLegwear(Instantiate(legwear));
                     }

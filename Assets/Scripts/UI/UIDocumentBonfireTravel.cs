@@ -45,7 +45,11 @@ namespace AF
             {
                 hasLoadedBonfires = true;
                 // Slight overhead, but ensures we don't have to manually include all bonfires
+<<<<<<< HEAD
                 bonfireLocations = (List<BonfireSite>)Resources.LoadAll<BonfireSite>("Bonfire Sites").ToList().Where(bonfire => bonfire != null && bonfire.canFastTravel);
+=======
+                bonfireLocations = Resources.LoadAll<BonfireSite>("Bonfire Sites").ToList().Where(bonfire => bonfire != null && bonfire.canFastTravel).ToList();
+>>>>>>> 09e69b8b9995dbf284b0d4a00aca13a12d2e52cb
             }
         }
 

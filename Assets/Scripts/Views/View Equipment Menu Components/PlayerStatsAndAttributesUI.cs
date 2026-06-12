@@ -90,6 +90,7 @@ namespace AF
 
             DrawAttackStats(item as Weapon, equippingOnRightHand);
 
+<<<<<<< HEAD
             // Base defenses (without equipment)
             int basePhysDEF = playerManager.characterBaseDefenseManager.BaseDamageAbsorbed.physical;
             int baseFireDEF = playerManager.characterBaseDefenseManager.BaseDamageAbsorbed.fire;
@@ -98,58 +99,23 @@ namespace AF
             int baseLightDEF = playerManager.characterBaseDefenseManager.BaseDamageAbsorbed.lightning;
             int baseDarkDEF = playerManager.characterBaseDefenseManager.BaseDamageAbsorbed.darkness;
             int baseWaterDEF = playerManager.characterBaseDefenseManager.BaseDamageAbsorbed.water;
+=======
+            var result = playerManager.characterBaseDefenseManager.CompareArmorPiece(item as ArmorBase, slotIndex);
 
-            // Item defenses combined with base defenses
-            int itemPhysDEF = -1;
-            int itemFireDEF = -1;
-            int itemFrostDEF = -1;
-            int itemMagicDEF = -1;
-            int itemLightDEF = -1;
-            int itemDarkDEF = -1;
-            int itemWaterDEF = -1;
+            SetStatLabel("PhysicalDefense",
+                result.current.physical,
+                result.withItem.physical);
+>>>>>>> 09e69b8b9995dbf284b0d4a00aca13a12d2e52cb
 
-            int currentPoise = playerManager.characterBaseDefenseManager.CurrentDamageAbsorbed.poiseDamage;
-            int basePoise = playerManager.characterBaseDefenseManager.BaseDamageAbsorbed.poiseDamage;
-            int itemPoise = -1;
+            SetStatLabel("FireDefense", result.current.fire, result.withItem.fire);
+            SetStatLabel("FrostDefense", result.current.frost, result.withItem.frost);
+            SetStatLabel("LightningDefense", result.current.lightning, result.withItem.lightning);
+            SetStatLabel("MagicDefense", result.current.magic, result.withItem.magic);
+            SetStatLabel("DarknessDefense", result.current.darkness, result.withItem.darkness);
+            SetStatLabel("WaterDefense", result.current.water, result.withItem.water);
 
-            int currentPosture = playerManager.characterBaseDefenseManager.CurrentDamageAbsorbed.postureDamage;
-            int basePosture = playerManager.characterBaseDefenseManager.BaseDamageAbsorbed.postureDamage;
-            int itemPosture = -1;
-
-            if (item is ArmorBase armorBase)
-            {
-                Damage damageFromArmor = armorBase.GetDamageAbsorbed();
-                itemPhysDEF = damageFromArmor.physical + basePhysDEF;
-                itemFireDEF = damageFromArmor.fire + baseFireDEF;
-                itemFrostDEF = damageFromArmor.frost + baseFrostDEF;
-                itemMagicDEF = damageFromArmor.magic + baseMagicDEF;
-                itemLightDEF = damageFromArmor.lightning + baseLightDEF;
-                itemDarkDEF = damageFromArmor.darkness + baseDarkDEF;
-                itemWaterDEF = damageFromArmor.water + baseWaterDEF;
-
-                itemPoise = damageFromArmor.poiseDamage + basePoise;
-                itemPosture = damageFromArmor.postureDamage + basePosture;
-            }
-
-            // Current defenses
-            int currentPhysDEF = playerManager.characterBaseDefenseManager.CurrentDamageAbsorbed.physical;
-            int currentFireDEF = playerManager.characterBaseDefenseManager.CurrentDamageAbsorbed.fire;
-            int currentFrostDEF = playerManager.characterBaseDefenseManager.CurrentDamageAbsorbed.frost;
-            int currentMagicDEF = playerManager.characterBaseDefenseManager.CurrentDamageAbsorbed.magic;
-            int currentLightDEF = playerManager.characterBaseDefenseManager.CurrentDamageAbsorbed.lightning;
-            int currentDarkDEF = playerManager.characterBaseDefenseManager.CurrentDamageAbsorbed.darkness;
-            int currentWaterDEF = playerManager.characterBaseDefenseManager.CurrentDamageAbsorbed.water;
-
-            SetStatLabel("PhysicalDefense", currentPhysDEF, itemPhysDEF);
-            SetStatLabel("FireDefense", currentFireDEF, itemFireDEF);
-            SetStatLabel("FrostDefense", currentFrostDEF, itemFrostDEF);
-            SetStatLabel("LightningDefense", currentLightDEF, itemLightDEF);
-            SetStatLabel("MagicDefense", currentMagicDEF, itemMagicDEF);
-            SetStatLabel("DarknessDefense", currentDarkDEF, itemDarkDEF);
-            SetStatLabel("WaterDefense", currentWaterDEF, itemWaterDEF);
-
-            SetStatLabel("Poise", currentPoise, itemPoise);
-            SetStatLabel("Posture", currentPosture, itemPosture);
+            SetStatLabel("Poise", result.current.poiseDamage, result.withItem.poiseDamage);
+            SetStatLabel("Posture", result.current.postureDamage, result.withItem.postureDamage);
 
             DrawStatusEffectLabel("Poison", poison, item);
             DrawStatusEffectLabel("Bleed", bleed, item);

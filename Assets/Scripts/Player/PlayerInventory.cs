@@ -1,10 +1,7 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using AF.Inventory;
 using AF.Ladders;
-using AF.StatusEffects;
-using GameAnalyticsSDK;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Localization.Settings;
@@ -76,16 +73,6 @@ namespace AF
                     playerManager.playerAchievementsManager.achievementOnAcquiringFirstSpell.AwardAchievement();
                 }
             }
-        }
-
-        void LogAnalytic(string eventName)
-        {
-            if (!GameAnalytics.Initialized)
-            {
-                GameAnalytics.Initialize();
-            }
-
-            GameAnalytics.NewDesignEvent(eventName);
         }
 
         public void AddItem(Item item, int quantity)
@@ -471,6 +458,13 @@ namespace AF
             Arrow clone = Instantiate(arrow);
             clone.itemID = GenerateItemId();
             inventoryDatabase.ownedArrows.Add(clone);
+
+            // If no arrow equipped, try equipping it
+            if (playerManager.equipmentDatabase.arrows[0] == null)
+            {
+                playerManager.equipmentDatabase.EquipArrow(clone, 0);
+            }
+
             return clone;
         }
 

@@ -34,6 +34,16 @@ namespace AF
         [Header("Title Screen")]
         public AudioClip titleScreenMusic;
 
+<<<<<<< HEAD
+=======
+        [Header("Starting Equipment")]
+        public Armor defaultArmor;
+        public Gauntlet defaultGauntlet;
+        public Legwear defaultLegwear;
+        public Spell defaultSpell;
+        public Consumable defaultConsumable;
+
+>>>>>>> 09e69b8b9995dbf284b0d4a00aca13a12d2e52cb
         public bool UseDayAndNightCycle() => useDayAndNightCycle;
 
     }

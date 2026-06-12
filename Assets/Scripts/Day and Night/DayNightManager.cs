@@ -149,8 +149,7 @@ namespace AF
         private void OnHourChanged()
         {
             UpdateClockIcon();
-            if (canUpdateLighting)
-                SmoothLightingTransition();
+            SmoothLightingTransition();
         }
 
         // -------------------------------------------------
@@ -159,9 +158,19 @@ namespace AF
 
         private void UpdateClockUI()
         {
+<<<<<<< HEAD
             if (!gameSettings.UseDayAndNightCycling())
             {
                 uIDocumentPlayerHUDV2.root.Q<IMGUIContainer>("DayTimeClockContainer").style.display = DisplayStyle.None;
+=======
+            if (!gameSettings.UseDayAndNightCycling() && uIDocumentPlayerHUDV2)
+            {
+                if (uIDocumentPlayerHUDV2 != null && uIDocumentPlayerHUDV2.root != null)
+                {
+                    uIDocumentPlayerHUDV2.root.Q<IMGUIContainer>("DayTimeClockContainer").style.display = DisplayStyle.None;
+
+                }
+>>>>>>> 09e69b8b9995dbf284b0d4a00aca13a12d2e52cb
                 return;
             }
 
@@ -192,7 +201,11 @@ namespace AF
 
         void ForceLightingUpdate()
         {
+<<<<<<< HEAD
             if (!gameSettings.UseDayAndNightCycling())
+=======
+            if (!gameSettings.UseDayAndNightCycling() || !canUpdateLighting)
+>>>>>>> 09e69b8b9995dbf284b0d4a00aca13a12d2e52cb
             {
                 return;
             }
@@ -210,7 +223,11 @@ namespace AF
 
         private void SmoothLightingTransition()
         {
+<<<<<<< HEAD
             if (!gameSettings.UseDayAndNightCycling())
+=======
+            if (!gameSettings.UseDayAndNightCycling() || !canUpdateLighting)
+>>>>>>> 09e69b8b9995dbf284b0d4a00aca13a12d2e52cb
             {
                 return;
             }
@@ -315,6 +332,7 @@ namespace AF
             return sceneSettings == null || !sceneSettings.isInterior;
         }
 
+<<<<<<< HEAD
         private void OnValidate()
         {
             if (!gameSettings.UseDayAndNightCycling())
@@ -341,6 +359,8 @@ namespace AF
             }
         }
 
+=======
+>>>>>>> 09e69b8b9995dbf284b0d4a00aca13a12d2e52cb
         // -------------------------------------------------
         // Environment Values
         // -------------------------------------------------
@@ -389,6 +409,14 @@ namespace AF
                     ? sceneSettings.sceneLocation.FogColor
                     : FogColor;
 
-        public void SetFogDensity(float value) => RenderSettings.fogDensity = value;
+        public void SetFogDensity(float value)
+        {
+            if (!gameSettings.UseDayAndNightCycling())
+            {
+                return;
+            }
+
+            RenderSettings.fogDensity = value;
+        }
     }
 }

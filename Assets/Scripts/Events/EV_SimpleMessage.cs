@@ -1,14 +1,13 @@
 using System.Collections;
 using System.Linq;
 using AF.Dialogue;
+using EditorAttributes;
 using UnityEngine;
 
 namespace AF
 {
     public class EV_SimpleMessage : EventBase
     {
-
-
         [Header("Actor")]
         public Character character;
 

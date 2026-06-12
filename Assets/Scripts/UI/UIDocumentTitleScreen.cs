@@ -1,5 +1,8 @@
 using System.Collections;
+<<<<<<< HEAD
 using GameAnalyticsSDK;
+=======
+>>>>>>> 09e69b8b9995dbf284b0d4a00aca13a12d2e52cb
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
@@ -22,7 +25,11 @@ namespace AF
         public Soundbank soundbank;
         public SaveManager saveManager;
 
+<<<<<<< HEAD
         [SerializeField] SteamDLC supporterEdition;
+=======
+        [SerializeField] BuildManager buildManager;
+>>>>>>> 09e69b8b9995dbf284b0d4a00aca13a12d2e52cb
 
         [Header("Game Session")]
         public GameSession gameSession;
@@ -54,7 +61,12 @@ namespace AF
             var versionLabel = root.Q<Label>("Version");
             versionLabel.text = Application.version;
 
+<<<<<<< HEAD
             root.Q<Label>("SupporterEdition").style.display = supporterEdition.IsOwned() ? DisplayStyle.Flex : DisplayStyle.None;
+=======
+            root.Q<Label>("SupporterEdition").style.display = buildManager.buildType == BuildManager.BuildType.PRODUCTION ? DisplayStyle.Flex : DisplayStyle.None;
+            root.Q<Label>("FreeEdition").style.display = buildManager.buildType == BuildManager.BuildType.DEMO ? DisplayStyle.Flex : DisplayStyle.None;
+>>>>>>> 09e69b8b9995dbf284b0d4a00aca13a12d2e52cb
 
             Button newGameButton = root.Q<Button>("NewGameButton");
             Button continueButton = root.Q<Button>("ContinueButton");
@@ -67,6 +79,7 @@ namespace AF
             Button exitButton = root.Q<Button>("ExitButton");
             Button btnGithub = root.Q<Button>("btnGithub");
             Button joinDiscordButton = root.Q<Button>("JoinDiscord");
+            Button getTheFullVersionButton = root.Q<Button>("GetTheFullVersion");
             Button myMusicButton = root.Q<Button>("VisitBandcamp");
             Button btnYoutube = root.Q<Button>("btnYoutube");
             Button btnBlueSky = root.Q<Button>("btnBlueSky");
@@ -96,6 +109,20 @@ namespace AF
                 gameObject.SetActive(false);
             }, soundbank);
 
+<<<<<<< HEAD
+=======
+
+            UIUtils.SetupButton(getTheFullVersionButton, () =>
+            {
+                Application.OpenURL("https://store.steampowered.com/app/2617740/Cacildes_Adventure/");
+                getTheFullVersionButton.Focus();
+            }, soundbank);
+
+            getTheFullVersionButton.style.scale = new Scale(Vector3.one); // Set initial scale
+            getTheFullVersionButton.RegisterCallback<GeometryChangedEvent>(evt => PopIn(joinDiscordButton));
+            getTheFullVersionButton.style.display = buildManager.buildType == BuildManager.BuildType.PRODUCTION ? DisplayStyle.None : DisplayStyle.Flex;
+
+>>>>>>> 09e69b8b9995dbf284b0d4a00aca13a12d2e52cb
             UIUtils.SetupButton(joinDiscordButton, () =>
             {
                 AnalyticsUtils.OnDiscordVisit();

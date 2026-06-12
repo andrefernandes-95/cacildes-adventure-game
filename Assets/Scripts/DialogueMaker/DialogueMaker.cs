@@ -25,6 +25,7 @@ namespace AF
 
         [Header("Components")]
         [SerializeField] AudioSource characterAudioSource;
+        [SerializeField] Translator translator;
 
         void Awake()
         {
@@ -89,29 +90,55 @@ namespace AF
 
                     if (!string.IsNullOrEmpty(text))
                     {
-                        OnMessageStart();
-
                         Character character = GetCharacter(characterName);
-                        dialogueWindow.DisplayMessageV2(character, text, GetChoices());
 
                         PlayCharacterGreetingSfx(character);
 
-                        if (story.currentChoices.Count > 0)
+                        if (dialogueWindow.UseExperimentalUI())
                         {
-                            OnChoicesStart();
-                            yield return new WaitUntil(() => hasChosenDialogueOption == true);
-                            OnChoicesEnd();
+                            yield return dialogueWindow.DisplayMessage(character, text, GetChoices());
                         }
                         else
                         {
+                            OnMessageStart();
+
+                            List<Response> responses = new();
+                            bool hasProcessedResponses = false;
+
+                            yield return dialogueWindow.BuildChoicesFromStory(
+                                story,
+                                (processedResponses) =>
+                                {
+                                    responses = processedResponses;
+                                    hasProcessedResponses = true;
+                                },
+                                () =>
+                                {
+                                    hasChosenDialogueOption = true;
+                                }
+                                );
+
+                            yield return new WaitUntil(() => hasProcessedResponses == true);
+
+                            dialogueWindow.DisplayMessageV2(character, text, responses.ToArray());
+
+                            if (story.currentChoices.Count > 0)
+                            {
+                                OnChoicesStart();
+                                yield return new WaitUntil(() => hasChosenDialogueOption == true);
+                                OnChoicesEnd();
+                            }
+                            else
+                            {
+                                yield return new WaitUntil(() => playerManager.starterAssetsInputs.interact == false);
+                                yield return new WaitUntil(() => playerManager.starterAssetsInputs.interact);
+                            }
+
+                            OnMessageEnd();
+
+                            // Wait until input has been fully processed so we dont accidentally trigger unwanted GenericTriggers
                             yield return new WaitUntil(() => playerManager.starterAssetsInputs.interact == false);
-                            yield return new WaitUntil(() => playerManager.starterAssetsInputs.interact);
                         }
-
-                        OnMessageEnd();
-
-                        // Wait until input has been fully processed so we dont accidentally trigger unwanted GenericTriggers
-                        yield return new WaitUntil(() => playerManager.starterAssetsInputs.interact == false);
                     }
                 }
             }

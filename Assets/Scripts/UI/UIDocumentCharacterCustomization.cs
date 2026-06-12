@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using AF.Events;
-using GameAnalyticsSDK;
 using TigerForge;
 using UnityEngine;
 using UnityEngine.Events;
@@ -158,7 +157,11 @@ namespace AF
 
             UIUtils.SetupButton(saveChangesButton, () =>
             {
+<<<<<<< HEAD
                 this.gameObject.SetActive(false);
+=======
+                Close();
+>>>>>>> 09e69b8b9995dbf284b0d4a00aca13a12d2e52cb
             }, soundbank);
 
             UIUtils.SetupButton(resetSettingsButton, () =>
@@ -198,6 +201,7 @@ namespace AF
             if (this.gameObject.activeSelf)
             {
                 this.gameObject.SetActive(false);
+                cursorManager.HideCursor();
             }
         }
 
@@ -379,16 +383,6 @@ namespace AF
             }
 
             OnCharacterCustomized();
-        }
-
-        void LogAnalytic(string eventName)
-        {
-            if (!GameAnalytics.Initialized)
-            {
-                GameAnalytics.Initialize();
-            }
-
-            GameAnalytics.NewDesignEvent(eventName);
         }
 
         void ResetDefaults()

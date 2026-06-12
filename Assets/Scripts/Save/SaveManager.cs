@@ -91,7 +91,7 @@ namespace AF
 
         public void ResetGameState(bool isFromGameOver)
         {
-            playerStatsDatabase.Clear(isFromGameOver);
+            playerStatsDatabase.Clear(isFromGameOver, playerManager.health.GetMaxHealth(), playerManager.staminaStatManager.GetMaxStamina(), playerManager.manaManager.GetMaxMana());
             equipmentDatabase.Clear();
             inventoryDatabase.SetDefaultItems(playerManager);
             pickupDatabase.Clear();
@@ -603,6 +603,9 @@ namespace AF
                 playerManager.health.RestoreFullHealth();
                 playerManager.staminaStatManager.RestoreStaminaPoints(playerManager.staminaStatManager.GetMaxStamina());
                 playerManager.manaManager.RestoreFullMana();
+
+                // Restore orange juices
+                playerManager.playerInventory.ReplenishItems();
 
                 QuickSaveReader quickSaveReader = QuickSaveReader.Create(lastSave);
                 LoadSceneSettings(quickSaveReader);

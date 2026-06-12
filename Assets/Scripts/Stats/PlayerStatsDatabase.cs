@@ -1,3 +1,4 @@
+using AF;
 using AF.Events;
 using TigerForge;
 using UnityEditor;
@@ -15,8 +16,7 @@ public class PlayerStatsDatabase : ScriptableObject
     public int intelligence = 1;
 
     [Header("Max Attributes")]
-    public int defaultMaxHealth = 300;
-    public int maxHealth = 300;
+    public Combatant player;
     public float levelMultiplierForHealth = 200;
     public int defaultMaxStamina = 150;
     public int maxStamina = 150;
@@ -53,22 +53,18 @@ public class PlayerStatsDatabase : ScriptableObject
         if (state == PlayModeStateChange.ExitingPlayMode)
         {
             // Clear the list when exiting play mode
-            Clear(false);
+            Clear(false, player.maximumHealth, maxStamina, maxMana);
         }
     }
 #endif
 
-    public void Clear(bool isFromGameOver)
+    public void Clear(bool isFromGameOver, int maxHealth, int maxStamina, int maxMana)
     {
         vitality = 1;
         endurance = 1;
         strength = 1;
         dexterity = 1;
         intelligence = 1;
-
-        maxHealth = defaultMaxHealth;
-        maxStamina = defaultMaxStamina;
-        maxMana = defaultMaxMana;
 
         SetCurrentHealth(maxHealth);
         SetCurrentStamina(maxStamina);
@@ -103,7 +99,7 @@ public class PlayerStatsDatabase : ScriptableObject
 
     public void ClearForNewGamePlus()
     {
-        SetCurrentHealth(maxHealth);
+        SetCurrentHealth(player.maximumHealth);
         SetCurrentStamina(maxStamina);
         SetCurrentMana(maxMana);
         gold = 0;

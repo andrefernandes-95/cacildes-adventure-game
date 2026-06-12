@@ -11,6 +11,8 @@ namespace AF
         [Header("UI Sounds")]
         public AudioClip uiDecision;
         public AudioClip uiHover;
+        public AudioClip uiExperimental_click;
+        public AudioClip uiExperimental_hover;
         public AudioClip uiCancel;
         public AudioClip uiItemReceived;
         public AudioClip insufficientStamina;

@@ -1,9 +1,7 @@
 namespace AF
 {
     using System;
-    using AF.Combat;
     using AF.Health;
-    using GameAnalyticsSDK;
     using UnityEngine;
     using UnityEngine.Events;
 
@@ -177,16 +175,6 @@ namespace AF
             {
                 onAttackedWhileWithFlatulence?.Invoke();
             }
-        }
-
-        protected void LogIncomingDamageNullError(CharacterBaseManager attacker)
-        {
-            if (!GameAnalytics.Initialized)
-            {
-                GameAnalytics.Initialize();
-            }
-
-            GameAnalytics.NewErrorEvent(GAErrorSeverity.Error, "Incoming Damage was null. Damage Owner was: " + attacker != null ? attacker.gameObject.name : " - null damage owner game object - ");
         }
 
         protected void RecoverFromStunnedStateWhenAttacked()

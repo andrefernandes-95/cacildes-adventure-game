@@ -72,7 +72,6 @@ namespace AF
 
             if (incomingDamage == null)
             {
-                LogIncomingDamageNullError(attacker);
                 return;
             }
 

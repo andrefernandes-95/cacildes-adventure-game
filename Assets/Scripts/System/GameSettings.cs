@@ -12,29 +12,30 @@ public class GameSettings : ScriptableObject
     [Header("Game")]
     [SerializeField] Game currentGame;
 
+<<<<<<< HEAD
     [Header("Games")]
     [SerializeField] Game CacildesAdventure;
     [SerializeField] Game UnholySword;
 
+=======
+>>>>>>> 09e69b8b9995dbf284b0d4a00aca13a12d2e52cb
     [Header("Other Settings")]
     public bool hasInitializedSettings = false;
 
     public float minimumCameraDistanceToPlayer = 0;
-    public float defaultCameraDistanceToPlayer = 4;
     public float maximumCameraDistanceToPlayer = 15;
+    public float cameraDistance = 4;
 
-    public float minimumMouseSensitivity = 0.1f;
-    public float maximumMouseSensitivity = 10f;
+    public float minimumCameraSensitivity = 0.1f;
+    public float maximumCameraSensitivity = 10f;
+    public float cameraSensitivity = 1f;
+
+    // Audio
+    public float musicVolume = 1f;
 
     public bool invertYAxis = false;
 
-    public enum GraphicsQuality { LOW, MEDIUM, GOOD, ULTRA };
-
-    public readonly string GRAPHICS_QUALITY_KEY = "graphicsQuality";
-    public readonly string MUSIC_VOLUME_KEY = "musicVolume";
-    public readonly string MOUSE_SENSITIVITY_KEY = "mouseSensitivity";
-    public readonly string CAMERA_DISTANCE_KEY = "cameraDistance";
-    public readonly string INVERT_Y_AXIS_KEY = "invertYAxis";
+    public int graphicsQuality = 3;
 
     [Header("Custom Bindings")]
     public string jumpBinding = "";
@@ -44,10 +45,22 @@ public class GameSettings : ScriptableObject
     public string heavyAttackBinding = "";
     public string useAbilityBinding = "";
 
-    public readonly string HIDE_PLAYER_HUD_KEY = "HIDE_PLAYER_HUD_KEY";
+    [Header("Automatic Translation")]
+    public string automaticTranslationCode = "";
 
-    [HideInInspector] public string SAVE_FILES_FOLDER = "GamePreferences";
+    public string gameLanguage = "en";
 
+<<<<<<< HEAD
+=======
+    public void SetGameLanguage(string code)
+    {
+        gameLanguage = code;
+        LocalizationSettings.SelectedLocale = LocalizationSettings.AvailableLocales.GetLocale(gameLanguage);
+    }
+
+    public string GetGameLanguage() => gameLanguage;
+
+>>>>>>> 09e69b8b9995dbf284b0d4a00aca13a12d2e52cb
     public string GetDefaultPlayerName() => currentGame == null ? "" : currentGame.defaultPlayerName;
     public string GetPlayerName() => currentGame == null ? "" : currentGame.playerName;
 
@@ -193,6 +206,7 @@ public class GameSettings : ScriptableObject
 
         // Update the global variable
         characterName.Value = GetPlayerName();
+<<<<<<< HEAD
     }
 
     public bool ShouldShowPlayerHUD()
@@ -210,6 +224,8 @@ public class GameSettings : ScriptableObject
         PlayerPrefs.SetString(HIDE_PLAYER_HUD_KEY, value ? "" : "true");
         PlayerPrefs.Save();
         EventManager.EmitEvent(EventMessages.ON_PLAYER_HUD_VISIBILITY_CHANGED);
+=======
+>>>>>>> 09e69b8b9995dbf284b0d4a00aca13a12d2e52cb
     }
 
     public void SetPlayerName(string newPlayerName)
@@ -226,13 +242,31 @@ public class GameSettings : ScriptableObject
 
     public void ResetSettings()
     {
-        SetGameQuality(2);
-        SetCameraSensitivity(1f);
-        SetMusicVolume(1f);
         ResetKeyBindings();
+
+        SetCameraDistance(4);
+        SetCameraSensitivity(1f);
         SetInvertYAxis(false);
 
+        SetGraphicsQuality(3);
+
+        SetMusicVolume(1f);
+
+        SetAutomaticTranslation("");
+        SetGameLanguage("en");
+
         EventManager.EmitEvent(EventMessages.ON_INPUT_BINDINGS_CHANGED);
+    }
+
+
+    public void SetAutomaticTranslation(string code)
+    {
+        this.automaticTranslationCode = code;
+    }
+
+    public bool IsUsingAutomaticTranslation()
+    {
+        return string.IsNullOrEmpty(automaticTranslationCode) == false;
     }
 
     void ResetKeyBindings()
@@ -252,11 +286,13 @@ public class GameSettings : ScriptableObject
             return;
         }
 
+        automaticTranslationCode = "";
+
         // Load from file
         GameSettingsUtils.LoadPreferences(this);
 
         hasInitializedSettings = true;
-        SetGameQuality(GetGraphicsQuality());
+        SetGraphicsQuality(GetGraphicsQuality());
     }
 
     public void SaveSettings()
@@ -264,9 +300,9 @@ public class GameSettings : ScriptableObject
         GameSettingsUtils.SavePreferences(this);
     }
 
-    public void SetGameQuality(int newValue)
+    public void SetGraphicsQuality(int newValue)
     {
-        PlayerPrefs.SetInt(GRAPHICS_QUALITY_KEY, Mathf.Clamp(newValue, 0, 4));
+        graphicsQuality = Mathf.Clamp(newValue, 0, 4);
 
         if (newValue == 0)
         {
@@ -280,7 +316,7 @@ public class GameSettings : ScriptableObject
         {
             QualitySettings.SetQualityLevel(4);
         }
-        else if (newValue == 3)
+        else if (newValue >= 3)
         {
             QualitySettings.SetQualityLevel(5);
         }
@@ -291,30 +327,17 @@ public class GameSettings : ScriptableObject
     public void SetInvertYAxis(bool value)
     {
         invertYAxis = value;
-        PlayerPrefs.SetString(INVERT_Y_AXIS_KEY, value ? "true" : "");
         EventManager.EmitEvent(EventMessages.ON_INVERT_Y_AXIS);
     }
 
     public bool GetInvertYAxis()
     {
-        if (!PlayerPrefs.HasKey(INVERT_Y_AXIS_KEY))
-        {
-            return false;
-        }
-
-        string invertYAxisValue = PlayerPrefs.GetString(INVERT_Y_AXIS_KEY);
-
-        if (string.IsNullOrEmpty(invertYAxisValue))
-        {
-            return false;
-        }
-
-        return true;
+        return invertYAxis;
     }
 
     public void SetCameraDistance(float newValue)
     {
-        PlayerPrefs.SetFloat(CAMERA_DISTANCE_KEY, Mathf.Clamp(newValue, minimumCameraDistanceToPlayer, maximumCameraDistanceToPlayer));
+        cameraDistance = Mathf.Clamp(newValue, minimumCameraDistanceToPlayer, maximumCameraDistanceToPlayer);
         EventManager.EmitEvent(EventMessages.ON_CAMERA_DISTANCE_CHANGED);
     }
 
@@ -330,39 +353,45 @@ public class GameSettings : ScriptableObject
 
     public void SetCameraSensitivity(float newValue)
     {
-        PlayerPrefs.SetFloat(MOUSE_SENSITIVITY_KEY, Mathf.Clamp(newValue, minimumMouseSensitivity, maximumMouseSensitivity));
+        cameraSensitivity = Mathf.Clamp(newValue, minimumCameraSensitivity, maximumCameraSensitivity);
         EventManager.EmitEvent(EventMessages.ON_CAMERA_SENSITIVITY_CHANGED);
     }
+
     public float GetCameraSensitivity()
     {
-        return PlayerPrefs.HasKey(MOUSE_SENSITIVITY_KEY) ? PlayerPrefs.GetFloat(MOUSE_SENSITIVITY_KEY) : 1f;
+        return cameraSensitivity;
     }
 
     public void SetMusicVolume(float newValue)
     {
-        PlayerPrefs.SetFloat(MUSIC_VOLUME_KEY, newValue);
+        musicVolume = newValue;
         EventManager.EmitEvent(EventMessages.ON_MUSIC_VOLUME_CHANGED);
     }
 
     public int GetGraphicsQuality()
     {
-        return PlayerPrefs.HasKey(GRAPHICS_QUALITY_KEY) ? PlayerPrefs.GetInt(GRAPHICS_QUALITY_KEY) : 3;
+        return graphicsQuality;
     }
+
     public float GetCameraDistance()
     {
-        return PlayerPrefs.HasKey(CAMERA_DISTANCE_KEY) ? PlayerPrefs.GetFloat(CAMERA_DISTANCE_KEY) : defaultCameraDistanceToPlayer;
+        return cameraDistance;
     }
 
     public float GetMusicVolume()
     {
-        return PlayerPrefs.HasKey(MUSIC_VOLUME_KEY) ? PlayerPrefs.GetFloat(MUSIC_VOLUME_KEY) : 1f;
+        return musicVolume;
     }
+    public bool UseDayAndNightCycling() => currentGame != null && currentGame.UseDayAndNightCycle();
 
+<<<<<<< HEAD
     public bool IsCacildesAdventure() => currentGame == CacildesAdventure;
     public bool IsUnholySword() => currentGame == UnholySword;
 
     public bool UseDayAndNightCycling() => currentGame != null && currentGame.UseDayAndNightCycle();
 
+=======
+>>>>>>> 09e69b8b9995dbf284b0d4a00aca13a12d2e52cb
     public void SetCurrentGame(Game game) => this.currentGame = game;
     public Game GetCurrentGame() => this.currentGame;
 }
