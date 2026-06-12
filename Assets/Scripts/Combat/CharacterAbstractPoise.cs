@@ -36,7 +36,9 @@ namespace AF
                 return false;
             }
 
-            currentPoiseHitCount = poiseDamage > 0 ? Mathf.Clamp(currentPoiseHitCount + 1 + poiseDamage, 0, GetMaxPoiseHits()) : 0;
+            int maxPoiseHits = characterManager.characterBaseDefenseManager.CurrentDamageAbsorbed.poiseDamage;
+
+            currentPoiseHitCount = poiseDamage > 0 ? Mathf.Clamp(currentPoiseHitCount + 1 + poiseDamage, 0, maxPoiseHits) : 0;
 
             if (ResetPoiseCoroutine != null)
             {
@@ -45,7 +47,7 @@ namespace AF
 
             bool hasBrokenPoise = false;
 
-            if (currentPoiseHitCount >= GetMaxPoiseHits())
+            if (currentPoiseHitCount >= maxPoiseHits)
             {
                 hasBrokenPoise = true;
 
@@ -75,14 +77,12 @@ namespace AF
 
         public int GetMaxPoiseHits()
         {
-            int equipmentPoise = characterManager.statsBonusController.equipmentPoise;
-
             if (characterManager.combatant == null)
             {
-                return equipmentPoise;
+                return 0;
             }
 
-            return characterManager.combatant.maximumPoise + equipmentPoise;
+            return characterManager.combatant.maximumPoise;
         }
 
         public abstract bool CanCallPoiseDamagedEvent();

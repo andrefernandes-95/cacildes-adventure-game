@@ -21,5 +21,8 @@ namespace AF
         public List<CraftingIngredientEntry> ingredients = new();
 
         [TextAreaAttribute(minLines: 1, maxLines: 2)] public string location;
+
+        [Tooltip("The game this recipe is available for")]
+        public Game[] games;
     }
 }

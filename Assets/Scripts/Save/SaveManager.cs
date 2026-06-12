@@ -17,6 +17,7 @@ using System.IO;
 using AF.Loading;
 using UnityEngine.Localization.Settings;
 using System.Collections.Generic;
+using System.Collections;
 
 namespace AF
 {
@@ -523,13 +524,7 @@ namespace AF
 
             if (!CompatabileWithCurrentGameVersion(quickSaveReader))
             {
-                string incompatibleVersion = "Save file is incompatible with current game version";
-                if (Utils.IsPortuguese())
-                {
-                    incompatibleVersion = "Jogo guardado incompatível com a versão atual do jogo";
-                }
-
-                notificationManager.ShowNotification(incompatibleVersion, null);
+                StartCoroutine(ShowIncompatibleSaveWarningAndReload(isFromGameOver));
                 return;
             }
 
@@ -556,6 +551,25 @@ namespace AF
                 {
                     loadable.OnLoadData(quickSaveReader);
                 }
+            });
+        }
+
+        IEnumerator ShowIncompatibleSaveWarningAndReload(bool isFromGameOver)
+        {
+            string incompatibleVersion = "Save file is incompatible with current game version";
+            if (Utils.IsPortuguese())
+            {
+                incompatibleVersion = "Jogo guardado incompatível com a versão atual do jogo";
+            }
+
+            notificationManager.ShowNotification(incompatibleVersion, null);
+
+            yield return new WaitForSeconds(1f);
+
+            // Return to title screen if no save game is available
+            fadeManager.FadeIn(1f, () =>
+            {
+                ResetGameStateAndReturnToTitleScreen(isFromGameOver);
             });
         }
 

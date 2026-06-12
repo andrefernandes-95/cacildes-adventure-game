@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 namespace AF
 {
@@ -11,5 +12,4 @@ namespace AF
         public abstract void OnStateExit(StateManager stateManager);
         public abstract State Tick(StateManager stateManager);
     }
-
 }

@@ -164,6 +164,7 @@ namespace AF
                     stock = 1,
                     dontShowIfPlayerAreadyOwns = false,
                     requiredQuestObjective = null,
+                    onItemSold = new UnityEvent()
                 };
 
                 shopItemForSale.onItemSold.AddListener(() =>
@@ -238,7 +239,11 @@ namespace AF
                 {
                     if (playerManager.playerInventory.inventoryDatabase.HasItem(item) && IsItemWithinBudget(item))
                     {
-                        items.Add(item);
+                        Item itemFromPlayer = playerManager.playerInventory.inventoryDatabase.GetFirstItem(item);
+                        if (itemFromPlayer != null)
+                        {
+                            items.Add(itemFromPlayer);
+                        }
                     }
                 }
             }

@@ -156,7 +156,7 @@ namespace AF.Arena
 
                 AwardLoot();
 
-                LogAnalytic(AnalyticsUtils.OnArenaWon(SceneManager.GetActiveScene().name));
+                AnalyticsUtils.OnArenaWon(playerManager);
             }
             else
             {

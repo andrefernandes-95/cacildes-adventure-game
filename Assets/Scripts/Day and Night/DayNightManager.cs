@@ -56,6 +56,7 @@ namespace AF
 
         [Header("Systems")]
         public GameSession gameSession;
+        [SerializeField] GameSettings gameSettings;
 
         // Coroutine for smooth lighting
         private Coroutine lightingCoroutine;
@@ -110,7 +111,7 @@ namespace AF
 
         private void Update()
         {
-            if (!Application.isPlaying || gameSession == null)
+            if (!Application.isPlaying || gameSession == null || !gameSettings.UseDayAndNightCycling())
                 return;
 
             // update clock (minutes)
@@ -158,6 +159,12 @@ namespace AF
 
         private void UpdateClockUI()
         {
+            if (!gameSettings.UseDayAndNightCycling())
+            {
+                uIDocumentPlayerHUDV2.root.Q<IMGUIContainer>("DayTimeClockContainer").style.display = DisplayStyle.None;
+                return;
+            }
+
             if (dayNightText == null || gameSession == null)
                 return;
 
@@ -185,6 +192,11 @@ namespace AF
 
         void ForceLightingUpdate()
         {
+            if (!gameSettings.UseDayAndNightCycling())
+            {
+                return;
+            }
+
             if (lightingCoroutine != null)
                 StopCoroutine(lightingCoroutine);
 
@@ -198,6 +210,11 @@ namespace AF
 
         private void SmoothLightingTransition()
         {
+            if (!gameSettings.UseDayAndNightCycling())
+            {
+                return;
+            }
+
             if (lightingCoroutine != null)
                 StopCoroutine(lightingCoroutine);
 
@@ -262,6 +279,11 @@ namespace AF
 
         private void UpdateSkybox()
         {
+            if (!gameSettings.UseDayAndNightCycling())
+            {
+                return;
+            }
+
             float tod = gameSession.timeOfDay;
 
             if (tod >= 7 && tod < 18) RenderSettings.skybox = daySky;
@@ -282,6 +304,11 @@ namespace AF
 
         public bool TimePassageAllowed()
         {
+            if (!gameSettings.UseDayAndNightCycling())
+            {
+                return false;
+            }
+
             if (sceneSettings?.sceneLocation != null)
                 return !sceneSettings.sceneLocation.isInterior;
 
@@ -290,6 +317,11 @@ namespace AF
 
         private void OnValidate()
         {
+            if (!gameSettings.UseDayAndNightCycling())
+            {
+                return;
+            }
+
             if (directionalLight != null)
                 return;
 

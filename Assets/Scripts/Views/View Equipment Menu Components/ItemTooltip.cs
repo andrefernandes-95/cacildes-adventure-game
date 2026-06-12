@@ -9,6 +9,7 @@ namespace AF
     public class ItemTooltip : MonoBehaviour
     {
         public PlayerManager playerManager;
+        [SerializeField] UIDocumentCraftScreen uIDocumentCraftScreen;
 
         public const string TOOLTIP = "ItemTooltip";
         VisualElement tooltip;
@@ -19,9 +20,6 @@ namespace AF
         [HideInInspector] public VisualElement tooltipEffectsContainer;
 
         public VisualTreeAsset itemEffectTooltipEntry;
-
-        [Header("Components")]
-        public RecipesDatabase recipesDatabase;
 
         [Header("UI Documents")]
         public UIDocument uIDocument;
@@ -870,9 +868,9 @@ namespace AF
 
             CreateTooltip(craftingMaterialSprite, Color.white, craftingMaterialLabel.GetLocalizedString());
 
-            if (CraftingUtils.IsItemAnIngredientOfCurrentLearnedRecipes(recipesDatabase, craftingMaterial))
+            if (CraftingUtils.IsItemAnIngredientOfCurrentLearnedRecipes(uIDocumentCraftScreen, craftingMaterial))
             {
-                CraftingRecipe[] craftingRecipes = CraftingUtils.GetRecipesUsingItem(recipesDatabase, craftingMaterial).ToArray();
+                CraftingRecipe[] craftingRecipes = CraftingUtils.GetRecipesUsingItem(uIDocumentCraftScreen, craftingMaterial).ToArray();
                 if (craftingRecipes != null && craftingRecipes.Length > 0)
                 {
                     CreateTooltip(craftingMaterialSprite, Color.white, CraftingUtils.GetFormattedTextForRecipesUsingItem(craftingRecipes));
@@ -1054,7 +1052,5 @@ namespace AF
 
             tooltipEffectsContainer.Add(clone);
         }
-
-
     }
 }

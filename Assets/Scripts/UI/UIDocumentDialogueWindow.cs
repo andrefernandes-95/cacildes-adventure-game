@@ -149,7 +149,7 @@ namespace AF
             if (character != null && string.IsNullOrEmpty(character.name) == false)
             {
                 actorNameLabel.style.display = DisplayStyle.Flex;
-                actorNameLabel.text = character.isPlayer ? playerManager.gameSettings.playerName : character.GetCharacterName();
+                actorNameLabel.text = character.isPlayer ? playerManager.gameSettings.GetPlayerName() : character.GetCharacterName();
                 actorInfoContainer.style.display = DisplayStyle.Flex;
             }
             else

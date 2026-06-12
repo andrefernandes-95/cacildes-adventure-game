@@ -2,7 +2,6 @@ using UnityEngine;
 
 namespace AF
 {
-
     [CreateAssetMenu(menuName = "Data / Status Effect / Behaviours / New Decrease Attribute Percentage")]
     public class DecreaseAttributePercentage : StatusEffectBehaviour
     {
@@ -18,7 +17,12 @@ namespace AF
 
             if (isHealth)
             {
-                int amount = (int)(characterBaseManager.health.GetMaxHealth() * percentage / 100);
+                int current = (int)characterBaseManager.health.GetCurrentHealth();
+                int amount = Mathf.Max(
+                    1,
+                    Mathf.RoundToInt(current * percentage / 100f)
+                );
+
                 characterBaseManager.health.TakeDamage(amount);
             }
 
@@ -26,13 +30,23 @@ namespace AF
             {
                 if (isStamina)
                 {
-                    int amount = (int)(playerManager.staminaStatManager.GetMaxStamina() * percentage / 100);
+                    int current = (int)playerManager.staminaStatManager.GetCurrentStamina();
+                    int amount = Mathf.Max(
+                        1,
+                        Mathf.RoundToInt(current * percentage / 100f)
+                    );
+
                     playerManager.staminaStatManager.DecreaseStamina(amount);
                 }
 
                 if (isMana)
                 {
-                    int amount = (int)(playerManager.manaManager.GetMaxMana() * percentage / 100);
+                    int current = (int)playerManager.manaManager.GetCurrentMana();
+                    int amount = Mathf.Max(
+                        1,
+                        Mathf.RoundToInt(current * percentage / 100f)
+                    );
+
                     playerManager.manaManager.DecreaseMana(amount);
                 }
             }
@@ -45,6 +59,5 @@ namespace AF
         public override void OnRemoved(CharacterBaseManager characterBaseManager, StatusEffect statusEffect)
         {
         }
-
     }
 }

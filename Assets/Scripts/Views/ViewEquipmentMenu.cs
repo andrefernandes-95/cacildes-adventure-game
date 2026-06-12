@@ -54,7 +54,6 @@ namespace AF.UI.EquipmentMenu
             equipmentSlots.shouldRerender = true;
             itemList.shouldRerender = true;
             itemTooltip.shouldRerender = true;
-            playerStatsAndAttributesUI.shouldRerender = true;
         }
 
         void InitUI()

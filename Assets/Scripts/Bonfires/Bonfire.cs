@@ -58,7 +58,7 @@ namespace AF.Bonfires
                 return;
             }
 
-            LogAnalytic(AnalyticsUtils.OnUnlockBonfire(bonfireID));
+            AnalyticsUtils.OnUnlockBonfire(bonfireID, GetPlayerManager());
 
             bonfiresDatabase.unlockedBonfires.Add(bonfireID);
         }

@@ -35105,6 +35105,7 @@ Transform:
   - {fileID: 1952524393606602246}
   - {fileID: 3877017500443013299}
   - {fileID: 1859207278494299799}
+  - {fileID: 6599554996017667722}
   m_Father: {fileID: 6242450190264014007}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3705549246472038351
@@ -38142,6 +38143,7 @@ MonoBehaviour:
   characterBaseBuffManager: {fileID: 6193433127975113308}
   characterBaseWeaknessesManager: {fileID: 4176517707101198413}
   characterBaseWeaponBuffManager: {fileID: 3161193166830341740}
+  characterAbstractGesture: {fileID: 4790753307474482337}
   onEnhanceAttackDamageWithEquipmentEffect:
     m_PersistentCalls:
       m_Calls: []
@@ -38169,6 +38171,7 @@ MonoBehaviour:
   characterWeaknessesManager: {fileID: 4176517707101198413}
   characterWeaponBuffManager: {fileID: 3161193166830341740}
   sight: {fileID: 4887290504856783029}
+  characterGesture: {fileID: 4790753307474482337}
   animatorOverrideController: {fileID: 0}
   patrolSpeed: 2
   chaseSpeed: 6
@@ -80499,6 +80502,51 @@ SkinnedMeshRenderer:
     m_Center: {x: 0.11067104, y: -2.2958412, z: 0.87555254}
     m_Extent: {x: 5.4572015, y: 6.2697763, z: 3.437615}
   m_DirtyAABB: 0
+--- !u!1 &8338284668795348929
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6599554996017667722}
+  - component: {fileID: 4790753307474482337}
+  m_Layer: 22
+  m_Name: Character Gesture
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6599554996017667722
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8338284668795348929}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1438186108084557261}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4790753307474482337
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8338284668795348929}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cf61bcd15abfc924e91aef6cf2a03d04, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  characterBaseManager: {fileID: 1759811369383153655}
 --- !u!1 &8344950740144969478
 GameObject:
   m_ObjectHideFlags: 0

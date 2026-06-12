@@ -1,4 +1,5 @@
 using System;
+using GameAnalyticsSDK.Setup;
 using UnityEngine;
 
 namespace AF
@@ -13,6 +14,7 @@ namespace AF
         }
 
         public BuildType buildType = BuildType.PRODUCTION;
+
     }
 
 }

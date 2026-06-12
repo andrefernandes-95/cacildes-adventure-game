@@ -223,13 +223,14 @@
             int postureDamageBonus = bonus / 20;
             int poiseDamageBonus = bonus / 40;
 
+            // Prioritize physical damage over elemental
             damage.physical += bonus;
-            if (damage.fire > 0) damage.fire += bonus;
-            if (damage.frost > 0) damage.frost += bonus;
-            if (damage.lightning > 0) damage.lightning += bonus;
-            if (damage.magic > 0) damage.magic += bonus;
-            if (damage.darkness > 0) damage.darkness += bonus;
-            if (damage.water > 0) damage.water += bonus;
+            if (damage.fire > 0) damage.fire += bonus / 4;
+            if (damage.frost > 0) damage.frost += bonus / 4;
+            if (damage.lightning > 0) damage.lightning += bonus / 4;
+            if (damage.magic > 0) damage.magic += bonus / 4;
+            if (damage.darkness > 0) damage.darkness += bonus / 4;
+            if (damage.water > 0) damage.water += bonus / 4;
             if (damage.postureDamage > 0) damage.postureDamage += postureDamageBonus;
             if (damage.poiseDamage > 0) damage.poiseDamage += poiseDamageBonus;
         }

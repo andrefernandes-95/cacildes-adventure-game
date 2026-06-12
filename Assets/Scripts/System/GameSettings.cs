@@ -9,7 +9,14 @@ using UnityEngine.Localization.SmartFormat.Extensions;
 [CreateAssetMenu(fileName = "GameSettings", menuName = "System/New Game Settings", order = 0)]
 public class GameSettings : ScriptableObject
 {
-    public bool developerModeActive = false;
+    [Header("Game")]
+    [SerializeField] Game currentGame;
+
+    [Header("Games")]
+    [SerializeField] Game CacildesAdventure;
+    [SerializeField] Game UnholySword;
+
+    [Header("Other Settings")]
     public bool hasInitializedSettings = false;
 
     public float minimumCameraDistanceToPlayer = 0;
@@ -41,23 +48,116 @@ public class GameSettings : ScriptableObject
 
     [HideInInspector] public string SAVE_FILES_FOLDER = "GamePreferences";
 
-    [Header("Player Apperance")]
-    public readonly string defaultPlayerName = "Cacildes";
-    public string playerName = "Cacildes";
-    public readonly string defaultHairColor = "#4F412D";
-    public string hairColor = "#4F412D";
-    public readonly string defaultSkinColor = "#FFCCAE";
-    public string skinColor = "#FFCCAE";
-    public readonly string defaultEyeColor = "#000000";
-    public string eyeColor = "#000000";
-    public readonly string defaultTattooColor = "#874FA5";
-    public string tattooColor = "#874FA5";
-    public string hair = "";
-    public string eyebrows = "";
-    public string beard = "";
-    public string face = "";
-    public bool isMale = true;
-    public int playerPortrait = 0;
+    public string GetDefaultPlayerName() => currentGame == null ? "" : currentGame.defaultPlayerName;
+    public string GetPlayerName() => currentGame == null ? "" : currentGame.playerName;
+
+    // Hair
+    public string GetDefaultHairColor() => currentGame == null ? "" : currentGame.defaultHairColor;
+    public string GetHairColor() => currentGame == null ? "" : currentGame.hairColor;
+    public void SetHairColor(string value)
+    {
+        if (currentGame != null)
+        {
+            currentGame.hairColor = value;
+        }
+    }
+
+    // Skin
+    public string GetDefaultSkinColor() => currentGame == null ? "" : currentGame.defaultSkinColor;
+    public string GetSkinColor() => currentGame == null ? "" : currentGame.skinColor;
+    public void SetSkinColor(string value)
+    {
+        if (currentGame != null)
+        {
+            currentGame.skinColor = value;
+        }
+    }
+
+    // Eyes
+    public string GetDefaultEyeColor() => currentGame == null ? "" : currentGame.defaultEyeColor;
+    public string GetEyeColor() => currentGame == null ? "" : currentGame.eyeColor;
+    public void SetEyeColor(string value)
+    {
+        if (currentGame != null)
+        {
+            currentGame.eyeColor = value;
+        }
+    }
+
+    // Tattoo
+    public string GetDefaultTattooColor() => currentGame == null ? "" : currentGame.defaultTattooColor;
+    public string GetTattooColor() => currentGame == null ? "" : currentGame.tattooColor;
+    public void SetTattooColor(string value)
+    {
+        if (currentGame != null)
+        {
+            currentGame.tattooColor = value;
+        }
+    }
+
+    // Hair
+    public string GetDefaultHair() => currentGame == null ? "" : currentGame.defaultHair;
+    public string GetHair() => currentGame == null ? "" : currentGame.hair;
+    public void SetHair(string value)
+    {
+        if (currentGame != null)
+        {
+            currentGame.hair = value;
+        }
+    }
+
+    // Eyebrows
+    public string GetDefaultEyebrows() => currentGame == null ? "" : currentGame.defaultEyebrows;
+    public string GetEyebrows() => currentGame == null ? "" : currentGame.eyebrows;
+    public void SetEyebrows(string value)
+    {
+        if (currentGame != null)
+        {
+            currentGame.eyebrows = value;
+        }
+    }
+
+    // Beard
+    public string GetDefaultBeard() => currentGame == null ? "" : currentGame.defaultBeard;
+    public string GetBeard() => currentGame == null ? "" : currentGame.beard;
+    public void SetBeard(string value)
+    {
+        if (currentGame != null)
+        {
+            currentGame.beard = value;
+        }
+    }
+
+    // Face
+    public string GetDefaultFace() => currentGame == null ? "" : currentGame.defaultFace;
+    public string GetFace() => currentGame == null ? "" : currentGame.face;
+    public void SetFace(string value)
+    {
+        if (currentGame != null)
+        {
+            currentGame.face = value;
+        }
+    }
+
+    // Gender
+    public bool IsMale() => currentGame == null ? true : currentGame.isMale;
+    public void SetIsMale(bool value)
+    {
+        if (currentGame != null)
+        {
+            currentGame.isMale = value;
+        }
+    }
+
+    // Player Portrait
+    public int GetPlayerPortrait() => currentGame == null ? 0 : currentGame.playerPortrait;
+    public void SetPlayerPortrait(int value)
+    {
+        if (currentGame != null)
+        {
+            currentGame.playerPortrait = value;
+        }
+    }
 
 
 #if UNITY_EDITOR
@@ -90,8 +190,9 @@ public class GameSettings : ScriptableObject
         // Get the specific global variable
         var characterName =
             source["global"]["playerName"] as UnityEngine.Localization.SmartFormat.PersistentVariables.StringVariable;
+
         // Update the global variable
-        characterName.Value = playerName;
+        characterName.Value = GetPlayerName();
     }
 
     public bool ShouldShowPlayerHUD()
@@ -113,7 +214,13 @@ public class GameSettings : ScriptableObject
 
     public void SetPlayerName(string newPlayerName)
     {
-        playerName = newPlayerName;
+        if (currentGame == null)
+        {
+            Debug.LogWarning("Current game is null. SetPlayerName() was aborted.");
+            return;
+        }
+
+        currentGame.playerName = newPlayerName;
         UpdatePlayerNameOnLocalizedAssets();
     }
 
@@ -251,4 +358,11 @@ public class GameSettings : ScriptableObject
         return PlayerPrefs.HasKey(MUSIC_VOLUME_KEY) ? PlayerPrefs.GetFloat(MUSIC_VOLUME_KEY) : 1f;
     }
 
+    public bool IsCacildesAdventure() => currentGame == CacildesAdventure;
+    public bool IsUnholySword() => currentGame == UnholySword;
+
+    public bool UseDayAndNightCycling() => currentGame != null && currentGame.UseDayAndNightCycle();
+
+    public void SetCurrentGame(Game game) => this.currentGame = game;
+    public Game GetCurrentGame() => this.currentGame;
 }

@@ -13,7 +13,7 @@ namespace AF
         public enum AccessoryAttributeType { HEALTH_BONUS, STAMINA_BONUS, MANA_BONUS }
 
 
-        public static float GetEquipLoadFromItem(Item itemToEquip, float currentWeightPenalty, EquipmentDatabase equipmentDatabase, int slotIndex)
+        public static float GetEquipLoadFromItem(Item itemToEquip, float currentWeightPenalty, EquipmentDatabase equipmentDatabase, int slotIndex, bool equippingOnRightHand)
         {
             // Define a function to retrieve the current speed penalty from an equipped item.
             Func<Item, float> GetSpeedPenalty = (item) =>
@@ -36,12 +36,9 @@ namespace AF
             // Adjust the weight penalty by the currently equipped item based on type.
             switch (itemToEquip)
             {
-                case Shield shield:
-                    currentWeightPenalty -= GetSpeedPenalty(equipmentDatabase.weapons[slotIndex]);
-                    return Math.Max(0, currentWeightPenalty) + shield.GetWeight();
-
                 case Weapon weapon:
-                    currentWeightPenalty -= GetSpeedPenalty(equipmentDatabase.shields[slotIndex]);
+                    currentWeightPenalty -= GetSpeedPenalty(equippingOnRightHand
+                    ? equipmentDatabase.weapons[slotIndex] : equipmentDatabase.shields[slotIndex]);
                     return Math.Max(0, currentWeightPenalty) + weapon.GetWeight();
 
                 case Helmet helmet:

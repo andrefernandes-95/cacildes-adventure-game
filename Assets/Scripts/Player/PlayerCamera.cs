@@ -24,5 +24,4 @@ namespace AF
             cinemachineVirtualCamera.GetCinemachineComponent<Cinemachine3rdPersonFollow>().CameraDistance = gameSettings.GetCameraDistance();
         }
     }
-
 }
