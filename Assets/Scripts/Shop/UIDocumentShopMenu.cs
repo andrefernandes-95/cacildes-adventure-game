@@ -171,7 +171,7 @@ namespace AF.Shops
         {
             if (playerIsBuying)
             {
-                buyerName.text = playerManager.gameSettings.playerName;
+                buyerName.text = playerManager.gameSettings.GetPlayerName();
                 buyerGold.text = playerStatsDatabase.gold.ToString() + " " + coins_LocalizedString.GetLocalizedString();
                 buyerIcon.style.backgroundImage = new StyleBackground(playerManager.GetPlayerPortrait());
 
@@ -185,7 +185,7 @@ namespace AF.Shops
                 buyerGold.text = shop.shopGold.ToString() + " " + coins_LocalizedString.GetLocalizedString();
                 buyerIcon.style.backgroundImage = new StyleBackground(shop.character.avatar);
 
-                sellerName.text = playerManager.gameSettings.playerName;
+                sellerName.text = playerManager.gameSettings.GetPlayerName();
                 sellerGold.text = playerStatsDatabase.gold.ToString();
                 sellerIcon.style.backgroundImage = new StyleBackground(playerManager.GetPlayerPortrait());
             }

@@ -196,7 +196,11 @@ namespace AF
                 {
                     onDamageInflicted?.Invoke();
 
-                    PlayCameraShake();
+                    // Only play camera shake if player is involved
+                    if (character is PlayerManager || damageable.GetCharacter() != null && damageable.GetCharacter() is PlayerManager)
+                    {
+                        PlayCameraShake();
+                    }
 
                     if (GetImpactSFX() != null && canPlayHitSfx && character != null)
                     {

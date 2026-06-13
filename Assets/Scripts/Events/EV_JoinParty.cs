@@ -15,6 +15,14 @@ namespace AF
         public override IEnumerator Dispatch()
         {
             companionsDatabase.AddToParty(characterManager.GetCharacterID());
+
+            var discordNotifier = FindAnyObjectByType<DiscordNotifier>(FindObjectsInactive.Include);
+
+            if (discordNotifier != null)
+            {
+                AnalyticsUtils.OnCompanionJoinParty(discordNotifier, characterManager.combatant.name);
+            }
+
             yield return null;
         }
     }

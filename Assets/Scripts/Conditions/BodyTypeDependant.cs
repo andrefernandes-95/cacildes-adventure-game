@@ -25,11 +25,11 @@ namespace AF.Conditions
         {
             bool isActive = false;
 
-            if (playerManager.gameSettings.isMale && TrueIfMale)
+            if (playerManager.gameSettings.IsMale() && TrueIfMale)
             {
                 isActive = true;
             }
-            else if (!playerManager.gameSettings.isMale && TrueIfFemale)
+            else if (!playerManager.gameSettings.IsMale() && TrueIfFemale)
             {
                 isActive = true;
             }

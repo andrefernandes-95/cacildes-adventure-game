@@ -48,8 +48,8 @@ namespace AF
                 water = GetElementalDefense(),
                 darkness = GetDarknessDamageAbsorption(),
                 lightning = GetLightningDamageAbsorption(),
-                poiseDamage = 0,
-                postureDamage = 0
+                poiseDamage = character.characterPoise.GetMaxPoiseHits(),
+                postureDamage = character.characterPosture.GetMaxPostureDamage()
             };
 
             _damagedAbsorbedFromEquipment = new Damage
@@ -61,8 +61,8 @@ namespace AF
                 magic = character.statsBonusController.equipmentMagicDefenseBonus,
                 water = character.statsBonusController.equipmentWaterDefenseBonus,
                 darkness = character.statsBonusController.equipmentDarkDefenseBonus,
-                poiseDamage = character.characterPoise.GetMaxPoiseHits(),
-                postureDamage = character.characterPosture.GetMaxPostureDamage()
+                poiseDamage = character.statsBonusController.equipmentPoise,
+                postureDamage = character.statsBonusController.postureBonus
             };
 
             _damageAbsorbed = new Damage();

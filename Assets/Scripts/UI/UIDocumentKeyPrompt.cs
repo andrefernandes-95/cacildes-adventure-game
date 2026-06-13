@@ -12,9 +12,6 @@ namespace AF
         [Header("Components")]
         public Soundbank soundbank;
 
-        [Header("Alchemy Info")]
-        public RecipesDatabase recipesDatabase;
-
         public GenericTrigger currentGenericTrigger;
 
         private void Awake()
@@ -53,14 +50,16 @@ namespace AF
 
         void HandleAlchemyInfoTooltip(VisualElement root, Item item)
         {
-            if (item == null || recipesDatabase == null)
+            if (item == null)
             {
                 return;
             }
 
-            if (CraftingUtils.IsItemAnIngredientOfCurrentLearnedRecipes(recipesDatabase, item))
+            UIDocumentCraftScreen uIDocumentCraftScreen = FindAnyObjectByType<UIDocumentCraftScreen>(FindObjectsInactive.Include);
+
+            if (CraftingUtils.IsItemAnIngredientOfCurrentLearnedRecipes(uIDocumentCraftScreen, item))
             {
-                CraftingRecipe[] resultingRecipes = CraftingUtils.GetRecipesUsingItem(recipesDatabase, item).ToArray();
+                CraftingRecipe[] resultingRecipes = CraftingUtils.GetRecipesUsingItem(uIDocumentCraftScreen, item).ToArray();
                 if (resultingRecipes != null && resultingRecipes.Length > 0)
                 {
                     root.Q<Label>("IngredientDescription").text = CraftingUtils.GetFormattedTextForRecipesUsingItem(resultingRecipes);

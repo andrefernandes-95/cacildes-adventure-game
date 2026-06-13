@@ -173,7 +173,7 @@ namespace AF
             {
                 UIUtils.SetupButton(newGamePlusButton, () =>
                 {
-                    LogAnalytic(AnalyticsUtils.OnUIButtonClick("NewGamePlus"));
+                    AnalyticsUtils.OnBeginNewGamePlus(saveManager.playerManager);
 
                     fadeManager.FadeIn(1f, () =>
                     {

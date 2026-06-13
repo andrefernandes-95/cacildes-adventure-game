@@ -41,6 +41,7 @@ namespace AF
         public CharacterWeaknessesManager characterWeaknessesManager;
         public CharacterWeaponBuffManager characterWeaponBuffManager;
         public Sight sight;
+        public CharacterGesture characterGesture;
 
         CharacterAnimationEventListener characterAnimationEventListener => GetComponent<CharacterAnimationEventListener>();
 
@@ -99,6 +100,8 @@ namespace AF
 
         [HideInInspector] public bool isRunningFromMoveTowardsEvent = false;
 
+        const float NAVMESH_AGENT_HUMANOID_STEP_OFFSET = 0.5f;
+
         private void Awake()
         {
             if (TryGetComponent<AIHumanoidAnimationOverrideHelper>(out var aIHumanoidAnimationOverrideHelperResult))
@@ -116,6 +119,8 @@ namespace AF
             initialRotation = transform.rotation;
 
             agent.enabled = false;
+
+            characterController.stepOffset = NAVMESH_AGENT_HUMANOID_STEP_OFFSET;
 
             EventManager.StartListening(EventMessages.ON_LEAVING_BONFIRE, Revive);
         }
@@ -155,6 +160,8 @@ namespace AF
             characterActivityManager.ResetStates();
             characterConsumableManager.ResetStates();
             characterDodgeController.ResetStates();
+
+            characterGesture.ResetStates();
 
             faceTarget = false;
         }
@@ -323,21 +330,15 @@ namespace AF
                     Vector3 worldDeltaPosition = agent.nextPosition - transform.position;
                     worldDeltaPosition.y = 0f;
 
-                    Vector3 direction = worldDeltaPosition.normalized + gravity;
+                    Vector3 direction = worldDeltaPosition.normalized;
 
                     float speed = ShouldRun() ? chaseSpeed : patrolSpeed;
 
-                    if (!characterController.isGrounded)
-                    {
-                        direction += agent.transform.forward * 2f;
-                    }
+                    // Apply gravity separately
+                    Vector3 velocity = direction * speed;
+                    velocity.y += gravity.y * Time.deltaTime;
 
-                    if (agent.velocity.magnitude <= 0.1f)
-                    {
-                        speed = 0f;
-                    }
-
-                    characterController.Move(speed * Time.deltaTime * direction);
+                    characterController.Move(velocity * Time.deltaTime);
 
                     HandleAgentRotation();
                 }

@@ -1,95 +1,132 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
     <Style src="project://database/Assets/UI%20Components/Styles/Styles.uss?fileID=7433441132597879392&amp;guid=756241e74d42bab43b4532533f359ba2&amp;type=3#Styles" />
     <Style src="project://database/Assets/UI%20Components/Styles/EquipmentMenu.uss?fileID=7433441132597879392&amp;guid=8130d4f12839ca94fa1bef036e27ad88&amp;type=3#EquipmentMenu" />
-    <ui:VisualElement style="height: 100%; align-items: flex-end; padding-right: 0; margin-top: 4px;">
-        <ui:VisualElement name="Background" focusable="false" style="flex-grow: 1; background-image: url(&quot;project://database/Assets/_Asset%20Store/PolygonFantasyKingdom/Textures/Ground/PFK_Texture_Ground_Base_Normals.png?fileID=2800000&amp;guid=ae6da1f30745f024683bad2d094f8220&amp;type=3#PFK_Texture_Ground_Base_Normals&quot;); -unity-background-image-tint-color: rgba(0, 0, 0, 0.63); background-color: rgba(36, 36, 36, 0.98); -unity-background-scale-mode: scale-and-crop; flex-shrink: 0; height: 100%; width: 400px; margin-left: 0; align-items: center; margin-right: 50px; margin-top: 0; margin-bottom: 0; -unity-text-align: upper-left; justify-content: flex-start; padding-right: 0; padding-left: 0; padding-top: 0; padding-bottom: 0;">
-            <ui:VisualElement name="Snow" style="flex-grow: 0; width: 100%; position: absolute; top: 0; height: 100%; background-image: url(&quot;project://database/Assets/_Asset%20Store/3D%20-%20Fantasy%20Animals%20by%20polyperfect/Low%20Poly%20Animated%20Fantasy%20Creatures/-%20Textures/Nature/Ice_Snowy_COL_2K.png?fileID=2800000&amp;guid=675f3ea42af402b4a8799b64b857d4ec&amp;type=3#Ice_Snowy_COL_2K&quot;); -unity-background-scale-mode: scale-and-crop; -unity-background-image-tint-color: rgba(255, 255, 255, 0.1); background-size: cover; background-color: rgba(107, 213, 255, 0.28); display: flex;" />
-            <ui:Label text="Cacildes Adventure" display-tooltip-when-elided="true" name="GameTitle" class="label-text" style="color: rgb(255, 255, 255); font-size: 32px; justify-content: flex-start; -unity-text-align: middle-center; margin-top: 10%; padding-left: 10px; padding-right: 10px; padding-top: 10px; padding-bottom: 10px; -unity-font-style: bold;">
-                <Bindings>
-                    <UnityEngine.Localization.LocalizedString property="text" table="GUID:dbb3674ad34b76b458d72593e4ca5a4a" entry="Id(973970735104)">
-                        <variables>
-                            <UnityEngine.Localization.LocalVariable name="variable">
-                                <UnityEngine.Localization.LocalizedString />
-                            </UnityEngine.Localization.LocalVariable>
-                            <UnityEngine.Localization.LocalVariable name="gameSettings.">
-                                <UnityEngine.Localization.SmartFormat.PersistentVariables.ObjectVariable value="project://database/Assets/Resources/Databases/Game%20Settings.asset?fileID=11400000&amp;guid=c45719dc8e6e81947b7f2a5be9b2993a&amp;type=2#Game Settings" />
-                            </UnityEngine.Localization.LocalVariable>
-                            <UnityEngine.Localization.LocalVariable name="variable">
-                                <UnityEngine.Localization.LocalizedString />
-                            </UnityEngine.Localization.LocalVariable>
-                        </variables>
-                    </UnityEngine.Localization.LocalizedString>
-                </Bindings>
-            </ui:Label>
-            <ui:Label text="(Placeholder)" display-tooltip-when-elided="true" name="Version" class="label-text" style="color: rgb(255, 255, 255); font-size: 16px; justify-content: center; -unity-text-align: middle-center; margin-top: 0; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; -unity-font-style: normal;" />
-            <ui:VisualElement name="EmptySpace" style="height: 25px;" />
-            <ui:VisualElement focusable="false" style="width: 100%; border-left-color: rgba(255, 255, 255, 0); border-right-color: rgba(255, 255, 255, 0); border-top-color: rgba(255, 255, 255, 0); border-bottom-color: rgba(255, 255, 255, 0); border-left-width: 0; border-right-width: 0; border-top-width: 1px; border-bottom-width: 0; margin-top: 0; padding-top: 0; align-items: center; padding-bottom: 15px; background-color: rgba(0, 0, 0, 0); margin-bottom: 0;">
-                <ui:Button text="New Game" display-tooltip-when-elided="true" name="NewGameButton" class="primary-button title-screen-button">
+    <ui:VisualElement style="height: 100%; align-items: flex-end; padding-right: 0; margin-top: 0;">
+        <ui:VisualElement name="TitleScreenContainer" style="flex-grow: 1; width: 100%; height: 100%; align-items: flex-end;">
+            <ui:VisualElement name="TitleScreen" focusable="false" style="flex-grow: 1; background-image: url(&quot;project://database/Assets/_Asset%20Store/PolygonFantasyKingdom/Textures/Ground/PFK_Texture_Ground_Base_Normals.png?fileID=2800000&amp;guid=ae6da1f30745f024683bad2d094f8220&amp;type=3#PFK_Texture_Ground_Base_Normals&quot;); -unity-background-image-tint-color: rgba(0, 0, 0, 0.63); background-color: rgba(36, 36, 36, 0.98); -unity-background-scale-mode: scale-and-crop; flex-shrink: 0; height: 100%; width: 400px; margin-left: 0; align-items: center; margin-right: 50px; margin-top: 0; margin-bottom: 0; -unity-text-align: upper-left; justify-content: flex-start; padding-right: 0; padding-left: 0; padding-top: 0; padding-bottom: 0;">
+                <ui:VisualElement name="Snow" style="flex-grow: 0; width: 100%; position: absolute; top: 0; height: 100%; background-image: url(&quot;project://database/Assets/_Asset%20Store/3D%20-%20Fantasy%20Animals%20by%20polyperfect/Low%20Poly%20Animated%20Fantasy%20Creatures/-%20Textures/Nature/Ice_Snowy_COL_2K.png?fileID=2800000&amp;guid=675f3ea42af402b4a8799b64b857d4ec&amp;type=3#Ice_Snowy_COL_2K&quot;); -unity-background-scale-mode: scale-and-crop; -unity-background-image-tint-color: rgba(255, 255, 255, 0.1); background-size: cover; background-color: rgba(107, 213, 255, 0.28); display: none;" />
+                <ui:Label text="Cacildes Adventure" display-tooltip-when-elided="true" name="GameTitle" class="label-text" style="color: rgb(255, 255, 255); font-size: 32px; justify-content: flex-start; -unity-text-align: middle-center; margin-top: 5%; padding-left: 10px; padding-right: 10px; padding-top: 10px; padding-bottom: 10px; -unity-font-style: bold;">
                     <Bindings>
-                        <UnityEngine.Localization.LocalizedString property="text" table="GUID:dbb3674ad34b76b458d72593e4ca5a4a" entry="Id(334894059094016)" />
+                        <UnityEngine.Localization.LocalizedString property="text" table="GUID:dbb3674ad34b76b458d72593e4ca5a4a" entry="Id(973970735104)">
+                            <variables>
+                                <UnityEngine.Localization.LocalVariable name="variable">
+                                    <UnityEngine.Localization.LocalizedString />
+                                </UnityEngine.Localization.LocalVariable>
+                                <UnityEngine.Localization.LocalVariable name="gameSettings.">
+                                    <UnityEngine.Localization.SmartFormat.PersistentVariables.ObjectVariable value="project://database/Assets/Resources/Databases/Game%20Settings.asset?fileID=11400000&amp;guid=c45719dc8e6e81947b7f2a5be9b2993a&amp;type=2#Game Settings" />
+                                </UnityEngine.Localization.LocalVariable>
+                                <UnityEngine.Localization.LocalVariable name="variable">
+                                    <UnityEngine.Localization.LocalizedString />
+                                </UnityEngine.Localization.LocalVariable>
+                            </variables>
+                        </UnityEngine.Localization.LocalizedString>
                     </Bindings>
-                </ui:Button>
-                <ui:Button text="New Game +" display-tooltip-when-elided="true" name="NewGamePlusButton" class="primary-button title-screen-button" style="width: auto; font-size: 20px; height: auto; padding-left: 4px; padding-right: 4px; padding-top: 4px; padding-bottom: 4px; display: none;" />
-                <ui:Button text="Continue" display-tooltip-when-elided="true" name="ContinueButton" class="primary-button title-screen-button" style="width: auto; font-size: 20px; height: auto;">
+                </ui:Label>
+                <ui:Label text="Cacildes Adventure" display-tooltip-when-elided="true" name="SupporterEdition" class="label-text" style="color: rgb(255, 208, 81); font-size: 24px; justify-content: flex-start; -unity-text-align: middle-center; margin-top: 0%; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; -unity-font-style: normal; margin-right: 0%; margin-bottom: 0%; margin-left: 0%;">
                     <Bindings>
-                        <UnityEngine.Localization.LocalizedString property="text" table="GUID:dbb3674ad34b76b458d72593e4ca5a4a" entry="Id(335034199179264)" />
+                        <UnityEngine.Localization.LocalizedString property="text" table="GUID:dbb3674ad34b76b458d72593e4ca5a4a" entry="Id(203825276267659264)" />
                     </Bindings>
-                </ui:Button>
-                <ui:Button text="Load Game" display-tooltip-when-elided="true" name="LoadGameButton" class="primary-button title-screen-button" style="width: auto; font-size: 20px; height: auto;">
-                    <Bindings>
-                        <UnityEngine.Localization.LocalizedString property="text" table="GUID:dbb3674ad34b76b458d72593e4ca5a4a" entry="Id(335115568676864)" />
-                    </Bindings>
-                </ui:Button>
-                <ui:Button text="Options" display-tooltip-when-elided="true" name="OptionsButton" class="primary-button title-screen-button" style="width: auto; font-size: 20px; height: auto; visibility: visible; display: flex;">
-                    <Bindings>
-                        <UnityEngine.Localization.LocalizedString property="text" table="GUID:dbb3674ad34b76b458d72593e4ca5a4a" entry="Id(5843861598240768)" />
-                    </Bindings>
-                </ui:Button>
-                <ui:Button text="Controls" display-tooltip-when-elided="true" name="ControlsButton" class="primary-button title-screen-button" style="width: auto; margin-top: 10px; font-size: 16px; height: auto; padding-left: 4px; padding-right: 4px; padding-top: 4px; padding-bottom: 4px; display: none;" />
-                <ui:Button text="Options" display-tooltip-when-elided="true" name="ChangelogButton" class="primary-button title-screen-button" style="width: auto; font-size: 20px; height: auto; visibility: visible; display: flex;">
-                    <Bindings>
-                        <UnityEngine.Localization.LocalizedString property="text" table="GUID:dbb3674ad34b76b458d72593e4ca5a4a" entry="Id(23896868474716160)" />
-                    </Bindings>
-                </ui:Button>
-                <ui:Button text="Credits" display-tooltip-when-elided="true" name="CreditsButton" class="primary-button title-screen-button" style="width: auto; font-size: 20px; height: auto;">
-                    <Bindings>
-                        <UnityEngine.Localization.LocalizedString property="text" table="GUID:dbb3674ad34b76b458d72593e4ca5a4a" entry="Id(335193884721152)" />
-                    </Bindings>
-                </ui:Button>
-                <ui:Button text="Exit Game" display-tooltip-when-elided="true" name="ExitButton" class="primary-button title-screen-button" style="width: auto; font-size: 20px; height: auto;">
-                    <Bindings>
-                        <UnityEngine.Localization.LocalizedString property="text" table="GUID:dbb3674ad34b76b458d72593e4ca5a4a" entry="Id(335277133266944)" />
-                    </Bindings>
-                </ui:Button>
-                <ui:Button display-tooltip-when-elided="true" name="JoinDiscord" class="primary-button title-screen-button" style="width: auto; font-size: 20px; height: auto; visibility: visible; display: flex; color: rgb(191, 129, 255);">
-                    <ui:Label text="Label" picking-mode="Ignore" style="-unity-font-style: bold;">
+                </ui:Label>
+                <ui:Label text="(Placeholder)" display-tooltip-when-elided="true" name="Version" class="label-text" style="color: rgb(255, 255, 255); font-size: 16px; justify-content: center; -unity-text-align: middle-center; margin-top: 0; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; -unity-font-style: normal;" />
+                <ui:VisualElement name="EmptySpace" style="height: 25px;" />
+                <ui:VisualElement focusable="false" style="width: 100%; border-left-color: rgba(255, 255, 255, 0); border-right-color: rgba(255, 255, 255, 0); border-top-color: rgba(255, 255, 255, 0); border-bottom-color: rgba(255, 255, 255, 0); border-left-width: 0; border-right-width: 0; border-top-width: 1px; border-bottom-width: 0; margin-top: 0; padding-top: 0; align-items: center; padding-bottom: 15px; background-color: rgba(0, 0, 0, 0); margin-bottom: 0;">
+                    <ui:Button text="New Game" display-tooltip-when-elided="true" name="NewGameButton" class="primary-button title-screen-button">
                         <Bindings>
-                            <UnityEngine.Localization.LocalizedString property="text" table="GUID:dbb3674ad34b76b458d72593e4ca5a4a" entry="Id(41297139521683456)" />
+                            <UnityEngine.Localization.LocalizedString property="text" table="GUID:dbb3674ad34b76b458d72593e4ca5a4a" entry="Id(334894059094016)" />
                         </Bindings>
-                    </ui:Label>
-                    <ui:VisualElement picking-mode="Ignore" style="flex-grow: 1; width: 20px; height: 20px; background-image: url(&quot;project://database/Assets/Graphics/Sprites/Social%20Icons/href%20icon%201.png?fileID=2800000&amp;guid=b4b1045610d88c343ab36064bf46805e&amp;type=3#href icon 1&quot;); -unity-background-image-tint-color: rgb(191, 129, 255); margin-top: 0;" />
-                </ui:Button>
-                <ui:Button display-tooltip-when-elided="true" name="VisitBandcamp" class="primary-button title-screen-button" style="width: auto; font-size: 20px; height: auto; visibility: visible; display: flex; color: rgb(191, 129, 255);">
-                    <ui:Label text="Label" picking-mode="Ignore" name="Label" style="color: rgb(255, 255, 255);">
+                    </ui:Button>
+                    <ui:Button text="New Game +" display-tooltip-when-elided="true" name="NewGamePlusButton" class="primary-button title-screen-button" style="width: auto; font-size: 20px; height: auto; padding-left: 4px; padding-right: 4px; padding-top: 4px; padding-bottom: 4px; display: none;" />
+                    <ui:Button text="Continue" display-tooltip-when-elided="true" name="ContinueButton" class="primary-button title-screen-button" style="width: auto; font-size: 20px; height: auto;">
                         <Bindings>
-                            <UnityEngine.Localization.LocalizedString property="text" table="GUID:dbb3674ad34b76b458d72593e4ca5a4a" entry="Id(122771335190409216)" />
+                            <UnityEngine.Localization.LocalizedString property="text" table="GUID:dbb3674ad34b76b458d72593e4ca5a4a" entry="Id(335034199179264)" />
                         </Bindings>
-                    </ui:Label>
-                    <ui:VisualElement picking-mode="Ignore" style="flex-grow: 1; width: 20px; height: 20px; background-image: url(&quot;project://database/Assets/Graphics/Sprites/Social%20Icons/href%20icon%201.png?fileID=2800000&amp;guid=b4b1045610d88c343ab36064bf46805e&amp;type=3#href icon 1&quot;); -unity-background-image-tint-color: rgb(255, 255, 255); margin-top: 0; color: rgb(255, 255, 255);" />
-                </ui:Button>
-                <ui:VisualElement style="white-space: normal; flex-direction: row; margin-top: 10px; margin-bottom: 25px;">
-                    <ui:Button display-tooltip-when-elided="true" name="btnYoutube" class="title-screen-website-button primary-button" style="background-color: rgba(188, 188, 188, 0); background-image: url(&quot;project://database/Assets/Graphics/Sprites/Social%20Icons/images.png?fileID=2800000&amp;guid=87ece4e33bd24c94593d1822402d62f1&amp;type=3#images&quot;);" />
-                    <ui:Button display-tooltip-when-elided="true" name="btnBlueSky" class="primary-button title-screen-website-button" style="background-color: rgba(188, 188, 188, 0); background-image: url(&quot;project://database/Assets/Graphics/Sprites/Social%20Icons/bluesky.jpg?fileID=2800000&amp;guid=17bc97694dc34c7459bb9e247ab15963&amp;type=3#bluesky&quot;);" />
-                    <ui:Button display-tooltip-when-elided="true" name="btnInstagram" class="title-screen-website-button primary-button" style="background-color: rgb(255, 255, 255); background-image: url(&quot;project://database/Assets/Graphics/Sprites/Social%20Icons/btn%20instagram.jpeg?fileID=2800000&amp;guid=8ed9b7daa81c88341abcb8fb6c695a49&amp;type=3#btn instagram&quot;); -unity-background-scale-mode: stretch-to-fill; -unity-slice-left: 0; -unity-slice-top: 0; -unity-slice-right: 0; -unity-slice-bottom: 0;" />
-                    <ui:Button display-tooltip-when-elided="true" name="btnGithub" class="primary-button title-screen-website-button" style="background-color: rgb(255, 255, 255); background-image: url(&quot;project://database/Assets/Graphics/Sprites/Social%20Icons/Github%20Logo.png?fileID=2800000&amp;guid=21983b5b481bd004dbcf57c477d2f63d&amp;type=3#Github Logo&quot;); -unity-background-scale-mode: stretch-to-fill; -unity-slice-left: 0; -unity-slice-top: 0; -unity-slice-right: 0; -unity-slice-bottom: 0;" />
-                    <ui:Button display-tooltip-when-elided="true" name="btnItchio" class="primary-button title-screen-website-button" style="background-color: rgb(255, 255, 255); background-image: url(&quot;project://database/Assets/Graphics/Sprites/Social%20Icons/itch-io.png?fileID=2800000&amp;guid=a3129e0e4d9cbc04da834e229e33c9bd&amp;type=3#itch-io&quot;); -unity-background-scale-mode: stretch-to-fill; -unity-slice-left: 0; -unity-slice-top: 0; -unity-slice-right: 0; -unity-slice-bottom: 0;" />
+                    </ui:Button>
+                    <ui:Button text="Load Game" display-tooltip-when-elided="true" name="LoadGameButton" class="primary-button title-screen-button" style="width: auto; font-size: 20px; height: auto;">
+                        <Bindings>
+                            <UnityEngine.Localization.LocalizedString property="text" table="GUID:dbb3674ad34b76b458d72593e4ca5a4a" entry="Id(335115568676864)" />
+                        </Bindings>
+                    </ui:Button>
+                    <ui:Button text="Options" display-tooltip-when-elided="true" name="OptionsButton" class="primary-button title-screen-button" style="width: auto; font-size: 20px; height: auto; visibility: visible; display: flex;">
+                        <Bindings>
+                            <UnityEngine.Localization.LocalizedString property="text" table="GUID:dbb3674ad34b76b458d72593e4ca5a4a" entry="Id(5843861598240768)" />
+                        </Bindings>
+                    </ui:Button>
+                    <ui:Button text="Controls" display-tooltip-when-elided="true" name="ControlsButton" class="primary-button title-screen-button" style="width: auto; margin-top: 10px; font-size: 16px; height: auto; padding-left: 4px; padding-right: 4px; padding-top: 4px; padding-bottom: 4px; display: none;" />
+                    <ui:Button text="Options" display-tooltip-when-elided="true" name="ChangelogButton" class="primary-button title-screen-button" style="width: auto; font-size: 20px; height: auto; visibility: visible; display: flex;">
+                        <Bindings>
+                            <UnityEngine.Localization.LocalizedString property="text" table="GUID:dbb3674ad34b76b458d72593e4ca5a4a" entry="Id(23896868474716160)" />
+                        </Bindings>
+                    </ui:Button>
+                    <ui:Button text="Credits" display-tooltip-when-elided="true" name="CreditsButton" class="primary-button title-screen-button" style="width: auto; font-size: 20px; height: auto;">
+                        <Bindings>
+                            <UnityEngine.Localization.LocalizedString property="text" table="GUID:dbb3674ad34b76b458d72593e4ca5a4a" entry="Id(335193884721152)" />
+                        </Bindings>
+                    </ui:Button>
+                    <ui:Button text="Exit Game" display-tooltip-when-elided="true" name="ExitButton" class="primary-button title-screen-button" style="width: auto; font-size: 20px; height: auto;">
+                        <Bindings>
+                            <UnityEngine.Localization.LocalizedString property="text" table="GUID:dbb3674ad34b76b458d72593e4ca5a4a" entry="Id(335277133266944)" />
+                        </Bindings>
+                    </ui:Button>
+                    <ui:Button display-tooltip-when-elided="true" name="JoinDiscord" class="primary-button title-screen-button" style="width: auto; font-size: 20px; height: auto; visibility: visible; display: flex; color: rgb(191, 129, 255);">
+                        <ui:Label text="Label" picking-mode="Ignore" style="-unity-font-style: bold;">
+                            <Bindings>
+                                <UnityEngine.Localization.LocalizedString property="text" table="GUID:dbb3674ad34b76b458d72593e4ca5a4a" entry="Id(41297139521683456)" />
+                            </Bindings>
+                        </ui:Label>
+                        <ui:VisualElement picking-mode="Ignore" style="flex-grow: 1; width: 20px; height: 20px; background-image: url(&quot;project://database/Assets/Graphics/Sprites/Social%20Icons/href%20icon%201.png?fileID=2800000&amp;guid=b4b1045610d88c343ab36064bf46805e&amp;type=3#href icon 1&quot;); -unity-background-image-tint-color: rgb(191, 129, 255); margin-top: 0;" />
+                    </ui:Button>
+                    <ui:Button display-tooltip-when-elided="true" name="VisitBandcamp" class="primary-button title-screen-button" style="width: auto; font-size: 20px; height: auto; visibility: visible; display: flex; color: rgb(191, 129, 255);">
+                        <ui:Label text="Label" picking-mode="Ignore" name="Label" style="color: rgb(255, 255, 255);">
+                            <Bindings>
+                                <UnityEngine.Localization.LocalizedString property="text" table="GUID:dbb3674ad34b76b458d72593e4ca5a4a" entry="Id(122771335190409216)" />
+                            </Bindings>
+                        </ui:Label>
+                        <ui:VisualElement picking-mode="Ignore" style="flex-grow: 1; width: 20px; height: 20px; background-image: url(&quot;project://database/Assets/Graphics/Sprites/Social%20Icons/href%20icon%201.png?fileID=2800000&amp;guid=b4b1045610d88c343ab36064bf46805e&amp;type=3#href icon 1&quot;); -unity-background-image-tint-color: rgb(255, 255, 255); margin-top: 0; color: rgb(255, 255, 255);" />
+                    </ui:Button>
+                    <ui:VisualElement style="white-space: normal; flex-direction: row; margin-top: 10px; margin-bottom: 25px;">
+                        <ui:Button display-tooltip-when-elided="true" name="btnYoutube" class="title-screen-website-button primary-button" style="background-color: rgba(188, 188, 188, 0); background-image: url(&quot;project://database/Assets/Graphics/Sprites/Social%20Icons/images.png?fileID=2800000&amp;guid=87ece4e33bd24c94593d1822402d62f1&amp;type=3#images&quot;);" />
+                        <ui:Button display-tooltip-when-elided="true" name="btnBlueSky" class="primary-button title-screen-website-button" style="background-color: rgba(188, 188, 188, 0); background-image: url(&quot;project://database/Assets/Graphics/Sprites/Social%20Icons/bluesky.jpg?fileID=2800000&amp;guid=17bc97694dc34c7459bb9e247ab15963&amp;type=3#bluesky&quot;);" />
+                        <ui:Button display-tooltip-when-elided="true" name="btnInstagram" class="title-screen-website-button primary-button" style="background-color: rgb(255, 255, 255); background-image: url(&quot;project://database/Assets/Graphics/Sprites/Social%20Icons/btn%20instagram.jpeg?fileID=2800000&amp;guid=8ed9b7daa81c88341abcb8fb6c695a49&amp;type=3#btn instagram&quot;); -unity-background-scale-mode: stretch-to-fill; -unity-slice-left: 0; -unity-slice-top: 0; -unity-slice-right: 0; -unity-slice-bottom: 0;" />
+                        <ui:Button display-tooltip-when-elided="true" name="btnGithub" class="primary-button title-screen-website-button" style="background-color: rgb(255, 255, 255); background-image: url(&quot;project://database/Assets/Graphics/Sprites/Social%20Icons/Github%20Logo.png?fileID=2800000&amp;guid=21983b5b481bd004dbcf57c477d2f63d&amp;type=3#Github Logo&quot;); -unity-background-scale-mode: stretch-to-fill; -unity-slice-left: 0; -unity-slice-top: 0; -unity-slice-right: 0; -unity-slice-bottom: 0;" />
+                        <ui:Button display-tooltip-when-elided="true" name="btnItchio" class="primary-button title-screen-website-button" style="background-color: rgb(255, 255, 255); background-image: url(&quot;project://database/Assets/Graphics/Sprites/Social%20Icons/itch-io.png?fileID=2800000&amp;guid=a3129e0e4d9cbc04da834e229e33c9bd&amp;type=3#itch-io&quot;); -unity-background-scale-mode: stretch-to-fill; -unity-slice-left: 0; -unity-slice-top: 0; -unity-slice-right: 0; -unity-slice-bottom: 0;" />
+                    </ui:VisualElement>
                 </ui:VisualElement>
+                <ui:Label text="A game by André Fernandes" display-tooltip-when-elided="true" name="Author" class="label-text" style="color: rgb(255, 255, 255); font-size: 24px; justify-content: flex-end; -unity-text-align: middle-center; margin-top: 0; padding-left: 10px; padding-right: 10px; padding-top: 10px; padding-bottom: 10px; -unity-font-style: bold; position: absolute; left: auto; bottom: 25px; text-shadow: 1px 1px 0 rgb(0, 0, 0); align-self: center; align-content: flex-end;">
+                    <Bindings>
+                        <UnityEngine.Localization.LocalizedString property="text" table="GUID:dbb3674ad34b76b458d72593e4ca5a4a" entry="Id(335398059245568)" />
+                    </Bindings>
+                </ui:Label>
             </ui:VisualElement>
-            <ui:Label text="A game by André Fernandes" display-tooltip-when-elided="true" name="Author" class="label-text" style="color: rgb(255, 255, 255); font-size: 24px; justify-content: flex-end; -unity-text-align: middle-center; margin-top: 0; padding-left: 10px; padding-right: 10px; padding-top: 10px; padding-bottom: 10px; -unity-font-style: bold; position: absolute; left: auto; bottom: 25px; text-shadow: 1px 1px 0 rgb(0, 0, 0); align-self: center; align-content: flex-end;">
+            <ui:Toggle label="Allow collection of anonymous gameplay data to help improve the game." name="DataCollectionToggle" class="label-text" style="position: absolute; left: 0; bottom: 0; font-size: 12px; margin-top: 10px; margin-right: 10px; margin-bottom: 10px; margin-left: 10px;">
                 <Bindings>
-                    <UnityEngine.Localization.LocalizedString property="text" table="GUID:dbb3674ad34b76b458d72593e4ca5a4a" entry="Id(335398059245568)" />
+                    <UnityEngine.Localization.LocalizedString property="label" table="GUID:dbb3674ad34b76b458d72593e4ca5a4a" entry="Id(204907059696500736)" />
+                </Bindings>
+            </ui:Toggle>
+        </ui:VisualElement>
+        <ui:VisualElement name="GDPRWarning" tabindex="0" style="flex-grow: 1; width: 100%; height: 100%; position: absolute; background-color: rgba(0, 0, 0, 0.96); background-image: none; -unity-background-image-tint-color: rgba(0, 0, 0, 0); -unity-slice-scale: 1px; -unity-slice-left: 1; -unity-slice-top: 1; -unity-slice-right: 1; -unity-slice-bottom: 1; padding-top: 10%; padding-right: 10%; padding-bottom: 10%; padding-left: 10%; display: none;">
+            <ui:Label text="&#10;" name="Title" class="label-text" style="font-size: 32px;">
+                <Bindings>
+                    <UnityEngine.Localization.LocalizedString property="text" table="GUID:dbb3674ad34b76b458d72593e4ca5a4a" entry="Id(204906908059828224)" />
                 </Bindings>
             </ui:Label>
+            <ui:VisualElement style="flex-grow: 0; height: 2px; background-color: rgb(255, 255, 255); margin-top: 15px; margin-bottom: 15px;" />
+            <ui:Label text="This game collect anonymous gameplay data to improve the game. This includes device information, session length, and gameplay events. No personal information is collected." name="Description" class="label-text">
+                <Bindings>
+                    <UnityEngine.Localization.LocalizedString property="text" table="GUID:dbb3674ad34b76b458d72593e4ca5a4a" entry="Id(204906675632472064)" />
+                </Bindings>
+            </ui:Label>
+            <ui:VisualElement name="Buttons" style="flex-grow: 0; flex-direction: row; justify-content: flex-end;">
+                <ui:Button text="Button" name="AcceptGDPR" class="primary-button" style="font-size: 20px;">
+                    <Bindings>
+                        <UnityEngine.Localization.LocalizedString property="text" table="GUID:dbb3674ad34b76b458d72593e4ca5a4a" entry="Id(204898234666975232)" />
+                    </Bindings>
+                </ui:Button>
+                <ui:Button text="Button" name="DeclineGDPR" class="primary-button" style="font-size: 20px;">
+                    <Bindings>
+                        <UnityEngine.Localization.LocalizedString property="text" table="GUID:dbb3674ad34b76b458d72593e4ca5a4a" entry="Id(204898327495311360)" />
+                    </Bindings>
+                </ui:Button>
+            </ui:VisualElement>
         </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>

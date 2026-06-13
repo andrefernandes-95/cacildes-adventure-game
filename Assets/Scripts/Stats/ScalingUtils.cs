@@ -39,16 +39,20 @@ namespace AF
             {
                 case StatType.STRENGTH:
                 case StatType.DEXTERITY:
-                    if (level <= 20) return 2.0f;
+                    if (level <= 20) return 1.5f;
                     if (level <= 40) return 1.0f;
-                    if (level <= 60) return 0.5f;
-                    return 0.25f;
+                    if (level <= 60) return 0.25f;
+                    if (level <= 75) return 0.05f;
+                    if (level <= 99) return 0.01f;
+                    return 0f;
 
                 case StatType.INTELLIGENCE:
-                    if (level <= 20) return 3.0f;
-                    if (level <= 40) return 1.5f;
-                    if (level <= 60) return 0.75f;
-                    return 0.25f;
+                    if (level <= 20) return 3f;
+                    if (level <= 40) return 2.0f;
+                    if (level <= 60) return 1.5f;
+                    if (level <= 75) return .5f;
+                    if (level <= 99) return 0.1f;
+                    return 0;
 
                 default:
                     return 0f;

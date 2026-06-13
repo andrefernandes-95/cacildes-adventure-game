@@ -54,6 +54,8 @@ namespace AF
         public PlayerBuffManager playerBuffManager;
         public PlayerWeaknessesManager playerWeaknessesManager;
         public PlayerWeaponBuffManager playerWeaponBuffManager;
+        public DiscordNotifier discordNotifier;
+        public PlayerGesture playerGesture;
 
         [Header("Databases")]
         public PlayerStatsDatabase playerStatsDatabase;
@@ -128,6 +130,7 @@ namespace AF
             playerAbilityManager.ResetStates();
             playerActivityManager.ResetStates();
             playerConsumableManager.ResetStates();
+            playerGesture.ResetStates();
         }
 
         public override Damage GetAttackDamage(CharacterBaseManager damageReceiver)
@@ -318,8 +321,8 @@ namespace AF
             return lockOnManager.nearestLockOnTarget != null ? lockOnManager.nearestLockOnTarget.characterManager : null;
         }
 
-        public Sprite GetPlayerPortrait() => uIDocumentCharacterCustomization.portraits[gameSettings.playerPortrait];
-        public string GetPlayerName() => gameSettings.playerName;
+        public Sprite GetPlayerPortrait() => uIDocumentCharacterCustomization.portraits[gameSettings.GetPlayerPortrait()];
+        public string GetPlayerName() => gameSettings.GetPlayerName();
 
 
         public override void OnParalyzedStart()

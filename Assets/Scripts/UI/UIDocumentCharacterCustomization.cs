@@ -158,8 +158,6 @@ namespace AF
 
             UIUtils.SetupButton(saveChangesButton, () =>
             {
-                LogAnalytic(AnalyticsUtils.OnUIButtonClick($"CustomizedCharacter:PlayerName:{gameSettings.playerName}"));
-
                 this.gameObject.SetActive(false);
             }, soundbank);
 
@@ -213,10 +211,10 @@ namespace AF
         void SetupNameInput()
         {
             TextField nameInput = root.Q<TextField>("CharacterName");
-            nameInput.value = gameSettings.playerName;
+            nameInput.value = gameSettings.GetPlayerName();
             nameInput.RegisterValueChangedCallback(ev =>
             {
-                gameSettings.playerName = ev.newValue;
+                gameSettings.SetPlayerName(ev.newValue);
                 OnCharacterCustomized();
             });
             nameInput.SetEnabled(Gamepad.current == null);
@@ -232,21 +230,21 @@ namespace AF
 
             portraitPreview = root.Q<VisualElement>("PortraitPreview");
 
-            SetupColorSlider(hairColorSlider, gameSettings.hairColor, c => gameSettings.hairColor = c);
-            SetupColorSlider(bodyColorSlider, gameSettings.skinColor, c => gameSettings.skinColor = c);
-            SetupColorSlider(eyeColorSlider, gameSettings.eyeColor, c => gameSettings.eyeColor = c);
-            SetupColorSlider(tattooColorSlider, gameSettings.tattooColor, c => gameSettings.tattooColor = c);
+            SetupColorSlider(hairColorSlider, gameSettings.GetHairColor(), c => gameSettings.SetHairColor(c));
+            SetupColorSlider(bodyColorSlider, gameSettings.GetSkinColor(), c => gameSettings.SetSkinColor(c));
+            SetupColorSlider(eyeColorSlider, gameSettings.GetEyeColor(), c => gameSettings.SetEyeColor(c));
+            SetupColorSlider(tattooColorSlider, gameSettings.GetTattooColor(), c => gameSettings.SetTattooColor(c));
 
             portraitSlider.lowValue = 0;
             portraitSlider.highValue = portraits.Length - 1;
-            portraitSlider.value = Mathf.Clamp(gameSettings.playerPortrait, 0, portraits.Length - 1);
+            portraitSlider.value = Mathf.Clamp(gameSettings.GetPlayerPortrait(), 0, portraits.Length - 1);
 
             portraitPreview.style.backgroundImage =
                 new StyleBackground(portraits[portraitSlider.value]);
 
             portraitSlider.RegisterValueChangedCallback(ev =>
             {
-                gameSettings.playerPortrait = ev.newValue;
+                gameSettings.SetPlayerPortrait(ev.newValue);
                 portraitPreview.style.backgroundImage =
                     new StyleBackground(portraits[ev.newValue]);
                 OnCharacterCustomized();
@@ -281,7 +279,7 @@ namespace AF
 
             bodyTypeSlider.lowValue = 0;
             bodyTypeSlider.highValue = 1;
-            bodyTypeSlider.value = gameSettings.isMale ? 0 : 1;
+            bodyTypeSlider.value = gameSettings.IsMale() ? 0 : 1;
             bodyTypeSlider.RegisterValueChangedCallback(ev =>
             {
                 HandleBodyTypeChange(ev.newValue);
@@ -291,26 +289,26 @@ namespace AF
 
             SetupIndexedSlider(
                 faceTypeSlider,
-                gameSettings.isMale ? maleFaces : femaleFaces,
-                gameSettings.face,
+                gameSettings.IsMale() ? maleFaces : femaleFaces,
+                gameSettings.GetFace(),
                 HandleFaceChange);
 
             SetupIndexedSlider(
                 hairTypeSlider,
                 hairs,
-                gameSettings.hair,
+                gameSettings.GetHair(),
                 HandleHairChange);
 
             SetupIndexedSlider(
                 eyebrowTypeSlider,
                 eyebrows,
-                gameSettings.eyebrows,
+                gameSettings.GetEyebrows(),
                 HandleEyebrowsChange);
 
             SetupIndexedSlider(
                 beardTypeSlider,
                 beards,
-                gameSettings.beard,
+                gameSettings.GetBeard(),
                 HandleBeardChange);
         }
 
@@ -331,25 +329,25 @@ namespace AF
 
         void RefreshFaceSlider()
         {
-            var list = gameSettings.isMale ? maleFaces : femaleFaces;
+            var list = gameSettings.IsMale() ? maleFaces : femaleFaces;
             SetupIndexedSlider(faceTypeSlider, list, list[0], HandleFaceChange);
         }
 
         void HandleBodyTypeChange(int value)
         {
-            gameSettings.isMale = value == 0;
+            gameSettings.SetIsMale(value == 0);
             EventManager.EmitEvent(EventMessages.ON_BODY_TYPE_CHANGED);
         }
 
         void HandleFaceChange(int faceIndex)
         {
-            if (gameSettings.isMale && faceIndex < maleFaces.Count)
+            if (gameSettings.IsMale() && faceIndex < maleFaces.Count)
             {
-                gameSettings.face = maleFaces[faceIndex];
+                gameSettings.SetFace(maleFaces[faceIndex]);
             }
-            else if (gameSettings.isMale == false && faceIndex < femaleFaces.Count)
+            else if (gameSettings.IsMale() == false && faceIndex < femaleFaces.Count)
             {
-                gameSettings.face = femaleFaces[faceIndex];
+                gameSettings.SetFace(femaleFaces[faceIndex]);
             }
             OnCharacterCustomized();
         }
@@ -358,7 +356,7 @@ namespace AF
         {
             if (hairIndex < hairs.Count)
             {
-                gameSettings.hair = hairs[hairIndex];
+                gameSettings.SetHair(hairs[hairIndex]);
             }
             OnCharacterCustomized();
         }
@@ -367,7 +365,7 @@ namespace AF
         {
             if (beardIndex < beards.Count)
             {
-                gameSettings.beard = beards[beardIndex];
+                gameSettings.SetBeard(beards[beardIndex]);
             }
 
             OnCharacterCustomized();
@@ -377,7 +375,7 @@ namespace AF
         {
             if (eyebrowIndex < eyebrows.Count)
             {
-                gameSettings.eyebrows = eyebrows[eyebrowIndex];
+                gameSettings.SetEyebrows(eyebrows[eyebrowIndex]);
             }
 
             OnCharacterCustomized();
@@ -395,7 +393,7 @@ namespace AF
 
         void ResetDefaults()
         {
-            gameSettings.playerName = gameSettings.defaultPlayerName;
+            gameSettings.SetPlayerName(gameSettings.GetDefaultPlayerName());
 
             bodyTypeSlider.value = 0; // Male default
             hairTypeSlider.value = 0;
@@ -403,10 +401,10 @@ namespace AF
             eyebrowTypeSlider.value = 0;
             beardTypeSlider.value = 0;
 
-            hairColorSlider.value = availableColors.IndexOf(gameSettings.defaultHairColor);
-            bodyColorSlider.value = availableColors.IndexOf(gameSettings.defaultSkinColor);
-            eyeColorSlider.value = availableColors.IndexOf(gameSettings.defaultEyeColor);
-            tattooColorSlider.value = availableColors.IndexOf(gameSettings.defaultTattooColor);
+            hairColorSlider.value = availableColors.IndexOf(gameSettings.GetDefaultHairColor());
+            bodyColorSlider.value = availableColors.IndexOf(gameSettings.GetDefaultSkinColor());
+            eyeColorSlider.value = availableColors.IndexOf(gameSettings.GetDefaultEyeColor());
+            tattooColorSlider.value = availableColors.IndexOf(gameSettings.GetDefaultTattooColor());
 
             portraitSlider.value = 0;
 

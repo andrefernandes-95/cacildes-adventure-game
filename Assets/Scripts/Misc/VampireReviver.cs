@@ -104,5 +104,10 @@ namespace AF
 
             SetCanRevive(false);
         }
+
+        public CharacterBaseManager GetCharacter()
+        {
+            return characterManager;
+        }
     }
 }
